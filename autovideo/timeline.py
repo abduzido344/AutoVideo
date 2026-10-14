@@ -6,9 +6,11 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 FORMATS = {"9:16": (1080, 1920, "portrait"), "16:9": (1920, 1080, "landscape"), "1:1": (1080, 1080, "square")}
 EPS = 0.01
+STRICT = ConfigDict(extra="forbid")  # timeline.json é escrito por LLM: chave desconhecida é erro
 
 
 class Word(BaseModel):
+    model_config = STRICT
     text: str
     start: float
     end: float
@@ -16,7 +18,7 @@ class Word(BaseModel):
 
 
 class Segment(BaseModel):
-    model_config = ConfigDict(populate_by_name=True)
+    model_config = ConfigDict(populate_by_name=True, extra="forbid")
     src: str
     in_: float = Field(alias="in", ge=0)
     out: float
@@ -33,6 +35,7 @@ class Segment(BaseModel):
 
 
 class Zoom(BaseModel):
+    model_config = STRICT
     at: float = Field(ge=0)
     dur: float = Field(gt=0)
     scale: float = Field(1.12, ge=1, le=2)
@@ -41,6 +44,7 @@ class Zoom(BaseModel):
 
 
 class Overlay(BaseModel):
+    model_config = STRICT
     start: float = Field(ge=0)
     dur: float = Field(gt=0)
     src: str
@@ -48,6 +52,7 @@ class Overlay(BaseModel):
 
 
 class BRoll(BaseModel):
+    model_config = STRICT
     start: float = Field(ge=0)
     dur: float = Field(gt=0)
     src: str
@@ -55,6 +60,7 @@ class BRoll(BaseModel):
 
 
 class Sfx(BaseModel):
+    model_config = STRICT
     at: float = Field(ge=0)
     src: str
     dur: float = 1.0
@@ -62,11 +68,13 @@ class Sfx(BaseModel):
 
 
 class Music(BaseModel):
+    model_config = STRICT
     src: str
     volume: float = 0.12
 
 
 class Timeline(BaseModel):
+    model_config = STRICT
     width: int
     height: int
     fps: int = 30
@@ -92,6 +100,9 @@ class Timeline(BaseModel):
             for start, dur in items:
                 if start + dur > d + EPS:
                     raise ValueError(f"{kind} em {start}s+{dur}s ultrapassa a duração {d:.2f}s")
+        for s in self.sfx:
+            if s.at > d + EPS:
+                raise ValueError(f"sfx em {s.at}s ultrapassa a duração {d:.2f}s")
         return self
 
     def dump(self, path: Path) -> None:
@@ -100,6 +111,17 @@ class Timeline(BaseModel):
     @classmethod
     def load(cls, path: Path) -> "Timeline":
         return cls.model_validate_json(Path(path).read_text(encoding="utf-8"))
+
+
+def _merge(segs: list[Segment]) -> list[Segment]:
+    merged: list[Segment] = []
+    for s in segs:
+        if merged and merged[-1].src == s.src and s.in_ <= merged[-1].out + EPS:
+            p = merged[-1]
+            merged[-1] = Segment(src=p.src, **{"in": p.in_}, out=max(p.out, s.out))
+        else:
+            merged.append(s)
+    return merged
 
 
 def plan_segments(words: list[Word], drop: set[int], durations: dict[str, float],
@@ -120,12 +142,22 @@ def plan_segments(words: list[Word], drop: set[int], durations: dict[str, float]
     segs: list[Segment] = []
     for g in groups:
         first, last = words[g[0]], words[g[-1]]
+        dur = durations[first.src]
+        # vizinhos na lista original (inclusive descartados) limitam o padding, sem invadir palavras vizinhas
+        before = words[g[0] - 1] if g[0] > 0 and words[g[0] - 1].src == first.src else None
+        after = words[g[-1] + 1] if g[-1] + 1 < len(words) and words[g[-1] + 1].src == first.src else None
         start = max(0.0, first.start - pad)
+        if before is not None:
+            start = max(start, before.end)
+        start = min(start, first.start)
         if segs and segs[-1].src == first.src:
             start = max(start, segs[-1].out)
-        end = min(durations[first.src], last.end + pad)
+        end = min(last.end + pad, dur)
+        if after is not None:
+            end = min(end, after.start)
+        end = max(end, min(last.end, dur))
         segs.append(Segment(src=first.src, **{"in": round(start, 3)}, out=round(end, 3)))
-    return segs
+    return _merge(segs)
 
 
 def remap_words(words: list[Word], drop: set[int], segments: list[Segment]) -> list[Word]:
@@ -137,8 +169,12 @@ def remap_words(words: list[Word], drop: set[int], segments: list[Segment]) -> l
         if i in drop:
             continue
         for s, off in spans:
-            if s.src == wd.src and wd.start >= s.in_ - EPS and wd.end <= s.out + EPS:
-                out.append(Word(text=wd.text, start=round(off + wd.start - s.in_, 3),
-                                end=round(off + wd.end - s.in_, 3), src="out"))
+            if s.src == wd.src and s.in_ - EPS <= wd.start < s.out + EPS:
+                a = max(wd.start, s.in_)
+                b = max(min(wd.end, s.out), a)
+                out.append(Word(text=wd.text, start=round(off + a - s.in_, 3),
+                                end=round(off + b - s.in_, 3), src="out"))
                 break
+        else:
+            raise ValueError(f"palavra {i} '{wd.text}' fora de qualquer segmento")
     return out

@@ -33,6 +33,8 @@ def test_overlay_vars_are_escaped_json():
     ov = next(a for t, a in tags(build_html(T, [])) if a.get("data-composition-src") == "compositions/hook.html")
     assert json.loads(ov["data-variable-values"]) == {"title": "Olá 'x'"}
 
+    # HyperFrames liga a timeline da sub-composição pelo data-composition-id do host == id do arquivo
+    assert ov["data-composition-id"] == "hook" and ov["id"] == "ov-0"
 def test_timed_media_have_ids():
     # HyperFrames só descobre mídia com id; sem ele o áudio sai mudo no render
     t = T.model_copy(update={"broll": [BRoll(start=0, dur=1, src="assets/b.mp4")],

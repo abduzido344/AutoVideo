@@ -1,0 +1,27 @@
+# recipes/talking-head-punchy.yaml
+id: talking-head-punchy
+title: Talking head — ritmo de Reels
+mode: speech
+aspect: "9:16"
+pacing: {max_gap: 0.3, pad: 0.08, fillers: ["é", "eh", "ãh", "ahn", "hum", "hmm", "uh", "éé"]}
+captions: {enabled: true, component: caption-pill-karaoke}
+motion:
+  zoom_every_s: 3.5
+  zoom_scale: 1.14
+  components: [headline-slam, lt-bold-block, count-up, marker-highlight, push-in, camera-shake, whip-pan-cut, caption-emoji-pop]
+audio: {clean: true, lufs: -14}
+budget: {max_turns: 40, max_usd: 3.0}
+skills: [hyperframes, hyperframes-core, hyperframes-animation, hyperframes-creative, hyperframes-registry, hyperframes-cli, media-use, talking-head-recut, embedded-captions]
+prompts:
+  director: |
+    Formato Reels/TikTok/Shorts. Os 3 primeiros segundos precisam de um hook visual + textual que prometa o payoff.
+    Ritmo alto: nenhum trecho parado > 3.5 s sem mudança visual (zoom, overlay, b-roll ou corte).
+  copywriter: |
+    Corte retakes (frase repetida: mantenha a ÚLTIMA versão completa), gaguejos e frases que fogem do roteiro.
+    Ênfase: 1 palavra-chave a cada ~2 frases (números, verbos fortes, promessas).
+  designer: |
+    Visual disruptivo e legível no celular: contraste alto, fontes condensadas pesadas, 1 cor de acento.
+    Legendas em 2–3 palavras por vez, palavra ativa destacada, dentro da faixa segura (entre 55% e 78% da altura).
+  editor: |
+    Zoom punch-in de 1.10–1.18 nas frases de ênfase; alterne punch e push. Overlay de hook em 0–2.5 s.
+    SFX curtos (whoosh/pop) só em transições e overlays, se houver arquivos em assets/sfx/.

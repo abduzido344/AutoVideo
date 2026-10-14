@@ -1,0 +1,25 @@
+# recipes/montage-beat.yaml
+id: montage-beat
+title: Montagem de clipes no ritmo da música
+mode: montage
+aspect: "9:16"
+pacing: {max_gap: 0, pad: 0, fillers: []}
+captions: {enabled: false, component: caption-kinetic-slam}
+motion:
+  zoom_every_s: 2
+  zoom_scale: 1.08
+  components: [beat-freeze-cut, beat-accent, flash-through-white, whip-pan, headline-slam, light-leak]
+audio: {clean: false, lufs: -14}
+budget: {max_turns: 50, max_usd: 4.0}
+skills: [hyperframes, hyperframes-core, hyperframes-animation, hyperframes-audio, hyperframes-cli, media-use, music-to-video]
+prompts:
+  director: |
+    Montagem: escolha os melhores momentos (movimento, rostos, ação) e uma narrativa em 3 atos curtos.
+  copywriter: |
+    Sem fala: produza 3–6 textos curtos na tela que contem a história e o post.json.
+  designer: |
+    Tipografia cinética grande, transições no beat.
+  editor: |
+    Você define os segments (cortes) diretamente a partir de analysis/scenes.json e dos frames.
+    Se houver música em assets/music.*, rode `npx --yes hyperframes@0.8.158 beats composition --json` depois de
+    incluí-la e alinhe os cortes aos beats. Duração alvo: 15–30 s.

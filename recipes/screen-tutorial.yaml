@@ -1,0 +1,24 @@
+# recipes/screen-tutorial.yaml
+id: screen-tutorial
+title: Gravação de tela — tutorial com zoom no que importa
+mode: speech
+aspect: "16:9"
+pacing: {max_gap: 0.45, pad: 0.1, fillers: ["é", "eh", "ãh", "ahn", "hum", "hmm"]}
+captions: {enabled: true, component: caption-highlight}
+motion:
+  zoom_every_s: 6
+  zoom_scale: 1.6
+  components: [cursor-zoom-follow, ui-focus-zoom, mk-callout-highlight, hw-callout-circle, lt-clean-bar, typed-prompt]
+audio: {clean: true, lufs: -14}
+budget: {max_turns: 40, max_usd: 3.0}
+skills: [hyperframes, hyperframes-core, hyperframes-animation, hyperframes-registry, hyperframes-cli, media-use, embedded-captions]
+prompts:
+  director: |
+    Tutorial: o espectador precisa SEMPRE ver onde está a ação. Estruture em passos numerados.
+  copywriter: |
+    Corte hesitações e esperas de carregamento de tela (trechos sem fala longos). Gere títulos curtos por passo.
+  designer: |
+    Estilo limpo de produto: fundo escuro, 1 cor de acento, callouts com seta/círculo desenhado.
+  editor: |
+    Use os frames em analysis/frames/ para localizar onde está a ação de cada trecho e faça zooms push
+    (scale 1.4–1.8) com origin apontando para essa região. Volte ao quadro inteiro entre passos.

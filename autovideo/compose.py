@@ -45,7 +45,7 @@ def build_html(t: Timeline, words: list[Word]) -> str:
               f'data-start="{_n(o.start)}" data-duration="{_n(o.dur)}" '
               f'data-variable-values="{_attr(o.vars)}" style="z-index:20"></div>' for i, o in enumerate(t.overlays)]
     if t.captions:
-        layers.append(f'<div id="captions-layer" class="layer clip" data-composition-id="captions" '
+        layers.append(f'<div id="captions-layer" class="layer clip" data-composition-id="captions" data-track-kind="captions" '
                       f'data-composition-src="compositions/captions.html" data-start="0" data-duration="{_n(d)}" '
                       f'style="z-index:30"></div>')
     audio = []

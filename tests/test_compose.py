@@ -54,6 +54,8 @@ def test_captions_injects_words(tmp_path):
     cap = (comp / "compositions/captions.html").read_text(encoding="utf-8")
     assert '"text": "oi"' in cap and "/*AV_WORDS*/" not in cap
     assert 'data-composition-src="compositions/captions.html"' in (comp / "index.html").read_text(encoding="utf-8")
+    layer = next(a for _, a in tags(build_html(t, [])) if a.get("id") == "captions-layer")
+    assert layer["data-track-kind"] == "captions" and layer["data-composition-id"] == "captions"
 
 def test_captions_missing_marker_raises(tmp_path):
     comp = tmp_path / "composition"; (comp / "compositions").mkdir(parents=True)

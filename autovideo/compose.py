@@ -2,6 +2,7 @@
 import html
 import json
 from pathlib import Path
+from urllib.parse import quote
 from autovideo.timeline import Timeline, Word
 
 GSAP = "https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"
@@ -13,22 +14,32 @@ class ComposeError(RuntimeError):
 
 
 def _n(x: float) -> str:
-    return f"{round(x, 3):g}"
+    return format(round(x, 3), "f").rstrip("0").rstrip(".") or "0"
 
 
 def _attr(v) -> str:
     return html.escape(v if isinstance(v, str) else json.dumps(v, ensure_ascii=False), quote=True)
 
 
+def _js(v) -> str:
+    # valor dentro de <script>: escapa '<' (fecha </script>) e os separadores de linha que JS antigo não aceita
+    return (json.dumps(v, ensure_ascii=False).replace("<", "\\u003c")
+            .replace("\u2028", "\\u2028").replace("\u2029", "\\u2029"))
+
+
+def _asset(src: str) -> str:
+    return _attr(f"assets/{quote(Path(src).name)}")
+
+
 def build_html(t: Timeline, words: list[Word]) -> str:
     w, h, d = t.width, t.height, t.duration
     segs, off = [], 0.0
     for i, s in enumerate(t.segments):
-        segs.append(f'<video id="seg-{i}" class="clip fill" src="assets/{Path(s.src).name}" playsinline '
+        segs.append(f'<video id="seg-{i}" class="clip fill" src="{_asset(s.src)}" playsinline '
                     f'data-start="{_n(off)}" data-duration="{_n(s.dur)}" data-media-start="{_n(s.in_)}" '
                     f'data-has-audio="true" data-fade-in="0.03" data-fade-out="0.03" data-track-index="{i % 2}"></video>')
         off += s.dur
-    broll = [f'<video id="broll-{i}" class="clip {b.mode}" src="{_attr(b.src)}" muted playsinline data-start="{_n(b.start)}" '
+    broll = [f'<video id="broll-{i}" class="clip {b.mode}" src="{_asset(b.src)}" muted playsinline data-start="{_n(b.start)}" '
              f'data-duration="{_n(b.dur)}" data-media-start="0" style="z-index:10"></video>' for i, b in enumerate(t.broll)]
     layers = [f'<div class="layer clip" data-composition-id="ov-{i}" data-composition-src="{_attr(o.src)}" '
               f'data-start="{_n(o.start)}" data-duration="{_n(o.dur)}" '
@@ -39,13 +50,13 @@ def build_html(t: Timeline, words: list[Word]) -> str:
                       f'style="z-index:30"></div>')
     audio = []
     if t.music:
-        audio.append(f'<audio id="music" class="clip" src="{_attr(t.music.src)}" data-start="0" data-duration="{_n(d)}" '
+        audio.append(f'<audio id="music" class="clip" src="{_asset(t.music.src)}" data-start="0" data-duration="{_n(d)}" '
                      f'data-volume="{t.music.volume}" data-fade-out="1.5"></audio>')
-    audio += [f'<audio id="sfx-{i}" class="clip" src="{_attr(s.src)}" data-start="{_n(s.at)}" data-duration="{_n(s.dur)}" '
+    audio += [f'<audio id="sfx-{i}" class="clip" src="{_asset(s.src)}" data-start="{_n(s.at)}" data-duration="{_n(s.dur)}" '
               f'data-volume="{s.volume}"></audio>' for i, s in enumerate(t.sfx)]
     tweens = []
     for z in t.zooms:
-        o = json.dumps(z.origin)
+        o = _js(z.origin)
         if z.kind == "punch":
             tweens.append(f'tl.set("#cam", {{ scale: {z.scale}, transformOrigin: {o} }}, {_n(z.at)});')
         else:
@@ -98,7 +109,7 @@ def write_composition(comp_dir: Path, t: Timeline, words: list[Word]) -> Path:
         src = tpl.read_text(encoding="utf-8")
         if MARK not in src:
             raise ComposeError(f"captions.template.html sem o marcador {MARK} (AV_WORDS)")
-        data = json.dumps([{"text": x.text, "start": x.start, "end": x.end} for x in words], ensure_ascii=False)
+        data = _js([{"text": x.text, "start": x.start, "end": x.end} for x in words])
         (comp_dir / "compositions" / "captions.html").write_text(src.replace(MARK, data), encoding="utf-8")
     out = comp_dir / "index.html"
     out.write_text(build_html(t, words), encoding="utf-8")

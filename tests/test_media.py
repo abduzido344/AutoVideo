@@ -79,3 +79,17 @@ def test_extract_frames_drops_stale(media_dir, tmp_path):
     out.mkdir()
     (out / "f_0099.jpg").write_bytes(b"x")
     assert len(media.extract_frames(media_dir / "talk.mp4", out, every_s=2)) == 3
+
+
+@needs_ffmpeg
+@pytest.mark.parametrize("clean_audio", [False, True])
+def test_clean_passes_silent_audio_through(tmp_path, clean_audio, monkeypatch):
+    import subprocess
+    monkeypatch.delenv("ELEVENLABS_API_KEY", raising=False)
+    src = tmp_path / "silent.mp4"
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "lavfi", "-i", "color=c=black:s=320x240:r=30:d=2",
+                    "-f", "lavfi", "-i", "anullsrc=r=48000:cl=mono", "-t", "2", "-c:v", "libx264", "-c:a", "aac",
+                    str(src)], check=True)
+    dst = tmp_path / "out.mp4"
+    media.clean(src, dst, clean_audio=clean_audio)
+    assert media.probe(dst)["has_audio"]

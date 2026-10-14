@@ -1,4 +1,5 @@
 import json
+import math
 import os
 import re
 import sys
@@ -35,6 +36,8 @@ def _loudnorm(src: Path, lufs: float, prefilter: str = "") -> str:
     err = run(["ffmpeg", "-hide_banner", "-i", str(src), "-vn", "-af", f"{pre}{base}:print_format=json",
                "-f", "null", "-"]).stderr
     m = json.loads(re.findall(r"\{[^{}]*\}", err)[-1])
+    if not math.isfinite(float(m["input_i"])):  # faixa muda: loudnorm não tem o que normalizar
+        return prefilter or "anull"
     return (f"{pre}{base}:measured_I={m['input_i']}:measured_TP={m['input_tp']}:measured_LRA={m['input_lra']}"
             f":measured_thresh={m['input_thresh']}:offset={m['target_offset']}:linear=true")
 

@@ -37,3 +37,45 @@ def test_detect_scenes(media_dir):
 def test_extract_frames(media_dir, tmp_path):
     frames = media.extract_frames(media_dir / "talk.mp4", tmp_path / "f", every_s=2)
     assert len(frames) == 3 and frames[0].suffix == ".jpg"
+
+
+def _sample_rate(path):
+    import json, subprocess
+    out = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "a:0", "-show_entries", "stream=sample_rate",
+                          "-of", "json", str(path)], capture_output=True, text=True, check=True).stdout
+    return int(json.loads(out)["streams"][0]["sample_rate"])
+
+
+@needs_ffmpeg
+def test_normalize_final_hits_target_on_dynamic_audio(dynamic_dir, tmp_path):
+    import shutil
+    dst = shutil.copy(dynamic_dir / "dyn.mp4", tmp_path / "final.mp4")
+    assert abs(media.integrated_lufs(dynamic_dir / "dyn.mp4") + 14) > 1.5  # entrada realmente fora do alvo
+    media.normalize_final(tmp_path / "final.mp4")
+    assert media.integrated_lufs(tmp_path / "final.mp4") == pytest.approx(-14, abs=1.5)
+    assert _sample_rate(tmp_path / "final.mp4") == 48000
+
+@needs_ffmpeg
+@pytest.mark.parametrize("clean_audio", [False, True])
+def test_clean_hits_target_on_dynamic_audio(dynamic_dir, tmp_path, clean_audio, monkeypatch):
+    monkeypatch.delenv("ELEVENLABS_API_KEY", raising=False)
+    dst = tmp_path / "c.mp4"
+    media.clean(dynamic_dir / "dyn.mp4", dst, clean_audio=clean_audio)
+    assert media.integrated_lufs(dst) == pytest.approx(-14, abs=1.5)
+    assert _sample_rate(dst) == 48000
+
+@needs_ffmpeg
+def test_clean_vfr_without_audio(dynamic_dir, tmp_path):
+    src = media.probe(dynamic_dir / "vfr.mp4")
+    assert not src["has_audio"]
+    dst = tmp_path / "v.mp4"
+    media.clean(dynamic_dir / "vfr.mp4", dst, clean_audio=True)
+    p = media.probe(dst)
+    assert p["fps"] == pytest.approx(30) and not p["has_audio"]
+
+@needs_ffmpeg
+def test_extract_frames_drops_stale(media_dir, tmp_path):
+    out = tmp_path / "f"
+    out.mkdir()
+    (out / "f_0099.jpg").write_bytes(b"x")
+    assert len(media.extract_frames(media_dir / "talk.mp4", out, every_s=2)) == 3

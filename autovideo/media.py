@@ -1,12 +1,14 @@
 import json
 import os
 import re
+import sys
 import tempfile
 from pathlib import Path
 import httpx
 from autovideo.hf import run, ToolError
 
-AUDIO_CHAIN = "highpass=f=80,afftdn=nf=-25,acompressor=threshold=-18dB:ratio=3:attack=5:release=60,loudnorm=I={lufs}:TP=-1.5:LRA=11"
+PRE_CHAIN = "highpass=f=80,afftdn=nf=-25,acompressor=threshold=-18dB:ratio=3:attack=5:release=60"
+LN = "loudnorm=I={lufs}:TP=-1.5:LRA=20"
 
 
 def probe(path: Path) -> dict:
@@ -26,7 +28,18 @@ def probe(path: Path) -> dict:
             "has_audio": any(s["codec_type"] == "audio" for s in data["streams"]), "rotation": rot}
 
 
-def _elevenlabs_isolate(src: Path, wav_out: Path) -> None:
+def _loudnorm(src: Path, lufs: float, prefilter: str = "") -> str:
+    """Two-pass loudnorm: measure (after prefilter), return the pass-2 filter string."""
+    base = LN.format(lufs=lufs)
+    pre = prefilter + "," if prefilter else ""
+    err = run(["ffmpeg", "-hide_banner", "-i", str(src), "-vn", "-af", f"{pre}{base}:print_format=json",
+               "-f", "null", "-"]).stderr
+    m = json.loads(re.findall(r"\{[^{}]*\}", err)[-1])
+    return (f"{pre}{base}:measured_I={m['input_i']}:measured_TP={m['input_tp']}:measured_LRA={m['input_lra']}"
+            f":measured_thresh={m['input_thresh']}:offset={m['target_offset']}:linear=true")
+
+
+def _elevenlabs_isolate(src: Path, mp3_out: Path) -> None:
     key = os.environ["ELEVENLABS_API_KEY"]
     with tempfile.TemporaryDirectory() as td:
         raw = Path(td) / "a.mp3"
@@ -34,30 +47,35 @@ def _elevenlabs_isolate(src: Path, wav_out: Path) -> None:
         r = httpx.post("https://api.elevenlabs.io/v1/audio-isolation", headers={"xi-api-key": key},
                        files={"audio": ("a.mp3", raw.read_bytes(), "audio/mpeg")}, timeout=600)
         r.raise_for_status()
-        wav_out.write_bytes(r.content)
+        mp3_out.write_bytes(r.content)
 
 
 def clean(src: Path, dst: Path, clean_audio: bool, lufs: float = -14) -> None:
     dst.parent.mkdir(parents=True, exist_ok=True)
     vargs = ["-vf", "fps=30,format=yuv420p", "-c:v", "libx264", "-crf", "18", "-preset", "veryfast"]
+    aargs = ["-c:a", "aac", "-b:a", "192k", "-ar", "48000"]
     if not probe(src)["has_audio"]:
         run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(src), *vargs, "-an", str(dst)])
         return
     if clean_audio and os.environ.get("ELEVENLABS_API_KEY"):
         iso = dst.with_suffix(".iso.mp3")
-        _elevenlabs_isolate(src, iso)
-        run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(src), "-i", str(iso), "-map", "0:v:0", "-map", "1:a:0",
-             *vargs, "-af", f"loudnorm=I={lufs}:TP=-1.5:LRA=11", "-c:a", "aac", "-b:a", "192k",
-             "-ar", "48000", str(dst)])
-        iso.unlink()
-        return
-    af = AUDIO_CHAIN.format(lufs=lufs) if clean_audio else f"loudnorm=I={lufs}:TP=-1.5:LRA=11"
-    run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(src), *vargs, "-af", af,
-         "-c:a", "aac", "-b:a", "192k", "-ar", "48000", str(dst)])
+        try:
+            _elevenlabs_isolate(src, iso)
+            run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(src), "-i", str(iso), "-map", "0:v:0", "-map", "1:a:0",
+                 *vargs, "-af", _loudnorm(iso, lufs), *aargs, str(dst)])
+            return
+        except httpx.HTTPError as e:
+            print(f"aviso: ElevenLabs falhou ({e}); usando cadeia ffmpeg", file=sys.stderr)
+        finally:
+            iso.unlink(missing_ok=True)
+    af = _loudnorm(src, lufs, PRE_CHAIN if clean_audio else "")
+    run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(src), *vargs, "-af", af, *aargs, str(dst)])
 
 
 def extract_frames(src: Path, out_dir: Path, every_s: float = 2.0) -> list[Path]:
     out_dir.mkdir(parents=True, exist_ok=True)
+    for old in out_dir.glob("f_*.jpg"):
+        old.unlink()
     run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(src), "-vf", f"fps=1/{every_s},scale=480:-2",
          "-q:v", "4", str(out_dir / "f_%04d.jpg")])
     return sorted(out_dir.glob("f_*.jpg"))
@@ -87,5 +105,5 @@ def integrated_lufs(path: Path) -> float:
 def normalize_final(path: Path, lufs: float = -14) -> None:
     tmp = path.with_suffix(".norm.mp4")
     run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(path), "-c:v", "copy",
-         "-af", f"loudnorm=I={lufs}:TP=-1.5:LRA=11", "-c:a", "aac", "-b:a", "192k", str(tmp)])
+         "-af", _loudnorm(path, lufs), "-c:a", "aac", "-b:a", "192k", "-ar", "48000", str(tmp)])
     tmp.replace(path)

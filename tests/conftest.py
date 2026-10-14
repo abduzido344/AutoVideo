@@ -29,3 +29,18 @@ def media_dir(tmp_path_factory):
 def slow():
     if not os.environ.get("AV_SLOW"):
         pytest.skip("defina AV_SLOW=1 para testes com rede/modelos")
+
+
+@pytest.fixture(scope="session")
+def dynamic_dir(tmp_path_factory):
+    """20 s de ruído rosa com degrau de 20 dB (3 s alto / 7 s baixo) + vídeo; sem vídeo VFR com áudio."""
+    d = tmp_path_factory.mktemp("Dinâmico ç")
+    ff("-f", "lavfi", "-i", "testsrc2=size=320x180:rate=30",
+       "-f", "lavfi", "-i", "anoisesrc=color=pink:amplitude=0.2:sample_rate=44100:duration=20",
+       "-af", "volume='if(lt(mod(t,10),3),1,0.1)':eval=frame", "-t", "20",
+       "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac", str(d / "dyn.mp4"))
+    # VFR sem áudio: timestamps com jitter e frames descartados
+    ff("-f", "lavfi", "-i", "testsrc2=size=320x180:rate=60", "-t", "4",
+       "-vf", "select='not(mod(n,3))*not(between(n,50,80))',setpts='PTS+0.004*sin(N)/TB'",
+       "-fps_mode", "vfr", "-c:v", "libx264", "-pix_fmt", "yuv420p", "-an", str(d / "vfr.mp4"))
+    return d

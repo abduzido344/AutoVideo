@@ -21,7 +21,7 @@ def run(args: list[str], cwd: Path | None = None, timeout: int = 1800) -> subpro
     proc = subprocess.run([exe, *args[1:]], cwd=cwd, capture_output=True, text=True,
                           encoding="utf-8", errors="replace", timeout=timeout)
     if proc.returncode != 0:
-        raise ToolError(f"{args[0]} {' '.join(args[1:4])}... falhou ({proc.returncode}):\n{proc.stderr[-2000:]}")
+        raise ToolError(f"{args[0]} {' '.join(args[1:4])}... falhou ({proc.returncode}):\n{(proc.stderr or proc.stdout)[-2000:]}")
     return proc
 
 

@@ -479,7 +479,7 @@ def plan_segments(words: list[Word], drop: set[int], durations: dict[str, float]
         prev = i
     segs: list[Segment] = []
     for g in groups:
-        first, last = words[g[0]], words[-1 if False else g[-1]]
+        first, last = words[g[0]], words[g[-1]]
         start = max(0.0, first.start - pad)
         if segs and segs[-1].src == first.src:
             start = max(start, segs[-1].out)
@@ -504,7 +504,6 @@ def remap_words(words: list[Word], drop: set[int], segments: list[Segment]) -> l
     return out
 ```
 
-Remova o resíduo `-1 if False else` ao digitar. A linha correta é `first, last = words[g[0]], words[g[-1]]`.
 
 - [ ] **Step 3: Rodar os testes**
 

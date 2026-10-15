@@ -40,7 +40,7 @@ def main(argv: list[str] | None = None) -> int:
             elif a.cmd == "reject":
                 reject(store, jid, pipeline.STAGES, a.feedback, redo_from=pipeline.REDO.get(store.get(jid)["stage"]))
         status = run_job(store, jid, pipeline.STAGES, pipeline.make_ctx)
-    except (GateError, KeyError, ValueError) as err:
+    except (GateError, KeyError, ValueError, FileNotFoundError) as err:
         print(f"erro: {err.args[0] if isinstance(err, KeyError) else err}", file=sys.stderr)
         return 1
     job = store.get(jid)

@@ -54,7 +54,7 @@ def test_stage_order_and_artifacts():
         ("ingest", "input/manifest.json"), ("clean", "input/clean.ok"), ("transcribe", "analysis/words.json"),
         ("analyze", "analysis/summary.json"), ("director", "brief.md"), ("gate1", "approvals/gate1.ok"),
         ("copywriter", "edit.json"), ("plan", "timeline.base.json"), ("designer", "style.json"),
-        ("editor", "timeline.json"), ("render", "out/final.mp4"), ("gate2", "approvals/gate2.ok"),
+        ("editor", "timeline.json"), ("render", "out/review.json"), ("gate2", "approvals/gate2.ok"),
         ("post", "out/post.json")]
     assert [n for n, _, f in pipeline.STAGES if f is None] == ["gate1", "gate2"]
 
@@ -96,10 +96,48 @@ def test_new_job_copies_script_and_assets_and_rejects_clashes(tmp_path):
     clash = tmp_path / "x" / "a.clean.mp4"
     clash.parent.mkdir()
     clash.write_bytes(b"x")
-    with pytest.raises(ValueError, match="repetidos"):
+    with pytest.raises(ValueError, match="mesmo nome"):
         pipeline.new_job(store, tmp_path, [v], None, "montage-beat", False, [clash])
     with pytest.raises(KeyError, match="não existe"):
         pipeline.new_job(store, tmp_path, [v], None, "nao-existe", False)
+
+
+def test_new_job_rejects_case_and_extension_clashes(tmp_path):
+    store = JobStore(tmp_path / "jobs.db")
+
+    def mk(d, n):
+        (tmp_path / d).mkdir(exist_ok=True)
+        (tmp_path / d / n).write_bytes(b"x")
+        return tmp_path / d / n
+    with pytest.raises(ValueError, match="após a limpeza"):  # a.mp4 + a.mov -> a.clean.mp4
+        pipeline.new_job(store, tmp_path, [mk("1", "a.mp4"), mk("2", "a.mov")], None, "montage-beat", False)
+    with pytest.raises(ValueError, match="repetidos"):  # NTFS: A.mp4 == a.mp4
+        pipeline.new_job(store, tmp_path, [mk("3", "A.mp4"), mk("4", "a.mp4")], None, "montage-beat", False)
+    with pytest.raises(ValueError, match="assets"):
+        pipeline.new_job(store, tmp_path, [mk("5", "v.mp4")], None, "montage-beat", False,
+                         [mk("6", "Logo.png"), mk("7", "logo.PNG")])
+    with pytest.raises(ValueError, match="asset com o mesmo nome"):
+        pipeline.new_job(store, tmp_path, [mk("8", "v.mp4")], None, "montage-beat", False, [mk("9", "V.CLEAN.mp4")])
+    assert store.list() == [] and not list(tmp_path.glob("20*"))  # nada criado
+
+
+def test_new_job_requires_existing_inputs_before_creating_anything(tmp_path):
+    store = JobStore(tmp_path / "jobs.db")
+    v = tmp_path / "v.mp4"
+    v.write_bytes(b"x")
+    for kw in ({"videos": [tmp_path / "falta.mp4"]}, {"script": tmp_path / "falta.md"},
+               {"assets": [tmp_path / "falta.png"]}, {"videos": []}):
+        args = {"videos": [v], "script": None, "assets": None, **kw}
+        with pytest.raises(ValueError, match="não encontrado|nenhum vídeo"):
+            pipeline.new_job(store, tmp_path / "h", args["videos"], args["script"], "montage-beat", False, args["assets"])
+    assert not (tmp_path / "h").exists() and store.list() == []
+
+
+def test_cli_edit_missing_file_is_clean_error(tmp_path, monkeypatch, capsys):
+    monkeypatch.setenv("AUTOVIDEO_HOME", str(tmp_path / "h"))
+    assert cli.main(["edit", str(tmp_path / "falta.mp4"), "--recipe", "montage-beat"]) == 1
+    err = capsys.readouterr().err
+    assert err.startswith("erro:") and "falta.mp4" in err and "Traceback" not in err
 
 
 # ---------- plan ----------
@@ -173,6 +211,17 @@ def test_validate_timeline_montage_may_define_segments_but_needs_asset(tmp_path)
 
 
 # ---------- render: loop de revisão ----------
+def render_ready(ctx, timeline):
+    """timeline.json + o que o _validate_timeline do início do render exige (assets/overlay) + words.out.json."""
+    p = ctx.project
+    (p.comp / "assets").mkdir(parents=True, exist_ok=True)
+    (p.comp / "compositions").mkdir(exist_ok=True)
+    (p.comp / "assets/a.clean.mp4").write_bytes(b"x")
+    (p.comp / "compositions/h.html").write_text("ok", encoding="utf-8")
+    (p.root / "timeline.json").write_text(json.dumps(timeline), encoding="utf-8")
+    (p.analysis / "words.out.json").write_text("[]", encoding="utf-8")
+
+
 def test_render_review_loop_orders_grading_and_snapshots(tmp_path, monkeypatch):
     calls = []
     agent_calls = []
@@ -180,8 +229,7 @@ def test_render_review_loop_orders_grading_and_snapshots(tmp_path, monkeypatch):
     p = ctx.project
     base = {"width": 1080, "height": 1920, "segments": [seg("input/a.clean.mp4", 0, 10.0)],
             "grading": {"adjust": {"exposure": 0.1}}, "overlays": [{"start": 2, "dur": 1, "src": "compositions/h.html"}]}
-    (p.root / "timeline.json").write_text(json.dumps(base), encoding="utf-8")
-    (p.analysis / "words.out.json").write_text("[]", encoding="utf-8")
+    render_ready(ctx, base)
     issues = iter([[{"code": "x"}], [{"code": "y"}], [{"code": "z"}]])  # nunca limpa: para depois de 2 rodadas
     r = pipeline.render
     monkeypatch.setattr(pipeline, "write_composition", lambda *a: calls.append("write"))
@@ -191,6 +239,7 @@ def test_render_review_loop_orders_grading_and_snapshots(tmp_path, monkeypatch):
 
     def snapshots(comp, times, out_dir):
         snaps.append((times, out_dir))
+        out_dir.mkdir(parents=True, exist_ok=True)
         return [out_dir / "f.png"]
     monkeypatch.setattr(r, "snapshots", snapshots)
     monkeypatch.setattr(r, "render_final", lambda comp, out, lufs: calls.append("final") or -14.2)
@@ -204,15 +253,57 @@ def test_render_review_loop_orders_grading_and_snapshots(tmp_path, monkeypatch):
     assert covers == [1.0]
     review = json.loads((p.out / "review.json").read_text(encoding="utf-8"))
     assert review == {"issues_restantes": [{"code": "z"}], "lufs": -14.2}
-    assert "Problemas" in agent_calls[0][0][3] and "analysis/review/0/f.png" in agent_calls[0][0][3]
+    task = agent_calls[0][0][3]
+    assert "Problemas" in task and "analysis/review/0/f.png" in task
+    assert "Sempre reescreva timeline.json" in task and "captions.template.html" in task
+
+
+def _failing_review_setup(tmp_path, monkeypatch, agent):
+    ctx = mk_project(tmp_path, "montage-beat", agent=agent)
+    good = {"width": 1080, "height": 1920, "segments": [seg("input/a.clean.mp4", 0, 10.0)]}
+    render_ready(ctx, good)
+    (ctx.project.comp / "compositions/captions.template.html").write_text("bom", encoding="utf-8")
+    r = pipeline.render
+    composed = []
+    monkeypatch.setattr(pipeline, "write_composition", lambda comp, t, *a: composed.append(t.duration))
+    monkeypatch.setattr(r, "apply_grading", lambda *a: None)
+    monkeypatch.setattr(r, "check", lambda *a: [{"code": "x"}])
+    monkeypatch.setattr(r, "snapshots", lambda comp, times, d: d.mkdir(parents=True, exist_ok=True) or [])
+    monkeypatch.setattr(r, "render_final", lambda *a: -14.0)
+    monkeypatch.setattr(r, "make_cover", lambda *a: None)
+    return ctx, good, composed
+
+
+def test_failed_review_restores_timeline_and_compositions_and_still_renders(tmp_path, monkeypatch):
+    def breaking_agent(role, project, recipe, task, output, validate=None, bash=False):
+        output.write_text("{lixo", encoding="utf-8")  # timeline inválido
+        (project.comp / "compositions/captions.template.html").write_text("quebrado", encoding="utf-8")
+        raise RuntimeError("agente falhou")
+    ctx, good, composed = _failing_review_setup(tmp_path, monkeypatch, breaking_agent)
+    p = ctx.project
+    pipeline.do_render(ctx)
+    assert json.loads((p.root / "timeline.json").read_text(encoding="utf-8")) == good
+    assert (p.comp / "compositions/captions.template.html").read_text(encoding="utf-8") == "bom"
+    assert json.loads((p.out / "review.json").read_text(encoding="utf-8")) == {
+        "issues_restantes": [{"code": "x"}], "lufs": -14.0}
+    assert composed == [10.0, 10.0]  # recomposto a partir do timeline restaurado; sem 2ª rodada
+    assert "revisão revertida" in (p.root / "decisions.log").read_text(encoding="utf-8")
+
+
+def test_render_refuses_invalid_timeline_at_start(tmp_path, monkeypatch):
+    ctx, _, composed = _failing_review_setup(tmp_path, monkeypatch, lambda *a, **k: pytest.fail("não chega ao agente"))
+    (ctx.project.root / "timeline.json").write_text(json.dumps(
+        {"width": 1080, "height": 1920, "segments": [seg("input/a.clean.mp4", 0, 1)],
+         "sfx": [{"at": 0, "src": "assets/nao-existe.wav"}]}), encoding="utf-8")
+    with pytest.raises(ValueError, match="inexistentes"):
+        pipeline.do_render(ctx)
+    assert composed == [] and not (ctx.project.out / "review.json").exists()
 
 
 def test_render_clean_check_skips_agent_and_clamps_cover(tmp_path, monkeypatch):
     ctx = mk_project(tmp_path, "montage-beat", agent=lambda *a, **k: pytest.fail("sem issues, sem agente"))
     p = ctx.project
-    (p.root / "timeline.json").write_text(json.dumps(
-        {"width": 1080, "height": 1920, "segments": [seg("input/a.clean.mp4", 0, 0.6)]}), encoding="utf-8")
-    (p.analysis / "words.out.json").write_text("[]", encoding="utf-8")
+    render_ready(ctx, {"width": 1080, "height": 1920, "segments": [seg("input/a.clean.mp4", 0, 0.6)]})
     r = pipeline.render
     monkeypatch.setattr(pipeline, "write_composition", lambda *a: None)
     monkeypatch.setattr(r, "check", lambda *a: [])
@@ -229,9 +320,7 @@ def test_render_without_any_audio_skips_loudness(tmp_path, monkeypatch):
     m = p.manifest()
     m["videos"][0]["has_audio"] = False
     p.save_manifest(m)
-    (p.root / "timeline.json").write_text(json.dumps(
-        {"width": 1080, "height": 1920, "segments": [seg("input/a.clean.mp4", 0, 2)]}), encoding="utf-8")
-    (p.analysis / "words.out.json").write_text("[]", encoding="utf-8")
+    render_ready(ctx, {"width": 1080, "height": 1920, "segments": [seg("input/a.clean.mp4", 0, 2)]})
     r, seen, html = pipeline.render, [], {}
     monkeypatch.setattr(pipeline, "write_composition", lambda *a: html.update(silent=a[3]))
     monkeypatch.setattr(r, "check", lambda *a: [])
@@ -282,7 +371,7 @@ def test_cli_reject_gate1_redoes_only_director(tmp_path, monkeypatch):
 
 def test_cli_reject_gate2_redoes_copywriter_onwards(tmp_path, monkeypatch):
     _, _, root = _reject(tmp_path, monkeypatch, "gate2")
-    for gone in ("edit.json", "timeline.base.json", "style.json", "timeline.json", "out/final.mp4"):
+    for gone in ("edit.json", "timeline.base.json", "style.json", "timeline.json", "out/review.json"):
         assert not (root / gone).exists(), gone
     for kept in ("brief.md", "approvals/gate1.ok", "analysis/summary.json", "input/clean.ok"):
         assert (root / kept).exists(), kept
@@ -303,8 +392,8 @@ def test_cli_gate_error_is_clean_message(tmp_path, monkeypatch, capsys):
 def test_cli_resume_requeues_stale_but_approve_does_not(tmp_path, monkeypatch):
     monkeypatch.setenv("AUTOVIDEO_HOME", str(tmp_path))
     store = JobStore(tmp_path / "jobs.db")
-    mk = lambda: store.create(str(tmp_path / "p"), "talking-head-punchy", True)
-    live, gate, dead = mk(), mk(), mk()
+    mk = lambda n: store.create(str(tmp_path / f"p{n}"), "talking-head-punchy", False)  # um diretório por job
+    live, gate, dead = mk(1), mk(2), mk(3)
     store.set(live, status="in_progress", stage="clean")
     store.set(dead, status="in_progress", stage="clean")
     store.set(gate, status="awaiting_approval", stage="gate1")
@@ -313,7 +402,8 @@ def test_cli_resume_requeues_stale_but_approve_does_not(tmp_path, monkeypatch):
     assert cli.main(["approve", str(gate)]) == 0
     assert store.get(live)["status"] == "in_progress"  # approve não mexe em jobs de outro processo
     assert cli.main(["resume", str(dead)]) == 0
-    assert store.get(dead)["status"] == "completed" and store.get(live)["status"] == "queued"
+    assert store.get(dead)["status"] == "awaiting_approval" and store.get(live)["status"] == "queued"
+    assert (tmp_path / "p2/approvals/gate1.ok").exists() and not (tmp_path / "p1/approvals/gate1.ok").exists()
 
 
 # ---------- doctor ----------

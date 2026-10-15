@@ -22,15 +22,28 @@ def home() -> Path:
     return Path(os.environ.get("AUTOVIDEO_HOME", Path.cwd() / "projects"))
 
 
+def _check_inputs(videos: list[Path], script: Path | None, assets: list[Path]) -> None:
+    if not videos:
+        raise ValueError("nenhum vídeo informado")
+    for f in [*videos, *([script] if script else []), *assets]:
+        if not Path(f).is_file():
+            raise ValueError(f"arquivo não encontrado: {f}")
+    # casefold: no NTFS A.mp4 e a.mp4 são o mesmo arquivo; a.mp4 e a.mov viram o mesmo a.clean.mp4
+    raws = [v.name.casefold() for v in videos]
+    cleans = [f"{v.stem}.clean.mp4".casefold() for v in videos]
+    anames = [a.name.casefold() for a in assets]  # tudo vai flat para composition/assets/<basename>
+    for label, xs in (("vídeos", raws), ("vídeos (mesmo nome após a limpeza)", cleans), ("assets", anames)):
+        if len(set(xs)) != len(xs):
+            raise ValueError(f"nomes repetidos entre {label} (sem diferenciar maiúsculas): {sorted(xs)}")
+    if set(cleans) & set(anames):
+        raise ValueError(f"asset com o mesmo nome de um vídeo limpo: {sorted(set(cleans) & set(anames))}")
+
+
 def new_job(store: JobStore, home_dir: Path, videos: list[Path], script: Path | None, recipe: str,
             auto: bool, assets: list[Path] | None = None) -> int:
     load_recipe(recipe)  # falha cedo com a lista de receitas
     assets = assets or []
-    # tudo vai para composition/assets/<basename> (flat): nomes repetidos ou iguais a um clean se sobrescreveriam
-    names = [v.name for v in videos] + [a.name for a in assets]
-    reserved = {f"{v.stem}.clean.mp4" for v in videos}
-    if len(set(names)) != len(names) or reserved & {a.name for a in assets}:
-        raise ValueError(f"nomes de arquivo repetidos entre vídeos/assets: {sorted(names)}")
+    _check_inputs(videos, script, assets)
     slug = re.sub(r"[^a-z0-9]+", "-", videos[0].stem.lower()).strip("-")[:30] or "video"
     base = f"{time.strftime('%Y%m%d-%H%M%S')}-{slug}"
     home_dir.mkdir(parents=True, exist_ok=True)
@@ -165,8 +178,7 @@ def _validate_timeline(ctx):
 
     def v(path: Path) -> None:
         t = Timeline.load(path)
-        base = Timeline.load(p.root / "timeline.base.json")
-        if r.mode == "speech" and t.segments != base.segments:
+        if r.mode == "speech" and t.segments != Timeline.load(p.root / "timeline.base.json").segments:
             raise ValueError("não altere segments (copie de timeline.base.json)")
         comp = p.comp.resolve()
         media_srcs = [s.src for s in t.segments] + [b.src for b in t.broll] + [s.src for s in t.sfx] + \
@@ -211,24 +223,43 @@ def _review_times(t: Timeline) -> list[float]:
 def do_render(ctx):
     p, r = ctx.project, ctx.recipe
     timeline = p.root / "timeline.json"
+    _validate_timeline(ctx)(timeline)  # job retomado nunca renderiza um timeline inválido
     t = Timeline.load(timeline)
     _compose(p, t)
     issues = render.check(p.comp, r.aspect)
     for n in range(REVIEW_ROUNDS):
         if not issues:
             break
-        pngs = render.snapshots(p.comp, _review_times(t), p.analysis / "review" / str(n))
-        ctx.agent("editor", p, r,
-                  "REVIEW: corrija os problemas abaixo editando timeline.json e/ou composition/compositions/*.html.\n"
-                  f"Problemas: {json.dumps(issues, ensure_ascii=False)}\n"
-                  f"Frames para inspecionar: {[_rel(p, x) for x in pngs]}",
-                  timeline, _validate_timeline(ctx), bash=True)
+        rdir = p.analysis / "review" / str(n)
+        pngs = render.snapshots(p.comp, _review_times(t), rdir)
+        # backup: um review que falha não pode deixar timeline.json/composições inválidos para o render
+        shutil.copy2(timeline, rdir / "timeline.bak.json")
+        shutil.rmtree(rdir / "compositions.bak", ignore_errors=True)
+        shutil.copytree(p.comp / "compositions", rdir / "compositions.bak")
+        try:
+            ctx.agent("editor", p, r,
+                      "REVIEW: corrija os problemas abaixo editando timeline.json e/ou composition/compositions/*.html.\n"
+                      "Correções de legenda vão em composition/compositions/captions.template.html "
+                      "(captions.html é gerado a partir dele a cada recomposição).\n"
+                      "Sempre reescreva timeline.json ao final, mesmo que sem mudanças.\n"
+                      f"Problemas: {json.dumps(issues, ensure_ascii=False)}\n"
+                      f"Frames para inspecionar: {[_rel(p, x) for x in pngs]}",
+                      timeline, _validate_timeline(ctx), bash=True)
+        except Exception as e:  # noqa: BLE001 — revisão é best-effort: restaura e renderiza o que já era válido
+            shutil.copy2(rdir / "timeline.bak.json", timeline)
+            shutil.rmtree(p.comp / "compositions")
+            shutil.copytree(rdir / "compositions.bak", p.comp / "compositions")
+            p.log({"role": "editor", "review_round": n, "is_error": True,
+                   "result": f"revisão revertida: {type(e).__name__}: {e}"[:500]})
+            _compose(p, t)  # index.html/captions.html de volta ao estado do timeline restaurado
+            break
         t = Timeline.load(timeline)
         _compose(p, t)
         issues = render.check(p.comp, r.aspect)
     final = p.out / "final.mp4"
     lufs = render.render_final(p.comp, final, r.audio.lufs if _has_audio(p, t) else None)
     render.make_cover(final, min(1.0, t.duration / 2), p.out / "cover.jpg")
+    # por último: é o artefato da etapa, então uma morte antes dele refaz o render no resume
     _write_json(p.out / "review.json", {"issues_restantes": issues, "lufs": lufs}, indent=2)
 
 
@@ -248,7 +279,7 @@ STAGES = [
     ("plan", "timeline.base.json", plan),
     ("designer", "style.json", designer),
     ("editor", "timeline.json", editor),
-    ("render", "out/final.mp4", do_render),
+    ("render", "out/review.json", do_render),
     ("gate2", "approvals/gate2.ok", None),
     ("post", "out/post.json", post),
 ]

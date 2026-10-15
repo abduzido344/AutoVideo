@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react"
 import { api, type Doctor } from "@/api"
-import { AppSidebar } from "@/components/AppSidebar"
+import { AppSidebar, TopBar } from "@/components/AppSidebar"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { Toaster } from "@/components/ui/sonner"
 import { SoundEffects } from "@/components/ui/sound"
-import { go, useRoute } from "@/lib/route"
+import { go, isNewVideoShortcut, useRoute } from "@/lib/route"
 import { usePoll } from "@/lib/usePoll"
 import { NewVideo } from "@/pages/NewVideo"
 import { Workspace } from "@/pages/Workspace"
 
-const OFFLINE: Doctor = { ok: false, checks: [{ name: "servidor", ok: false, detail: "sem resposta do /api/doctor" }] }
+const OFFLINE: Doctor = { ok: false, checks: [{ name: "resposta do servidor", ok: false, detail: "sem resposta do /api/doctor" }] }
 
 export default function App() {
   const route = useRoute()
@@ -21,7 +21,7 @@ export default function App() {
   useEffect(() => { api.doctor().then(setDoctor, () => setDoctor(OFFLINE)) }, [])
   useEffect(() => {
     const on = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); go({ name: "new" }) }
+      if (isNewVideoShortcut(e)) { e.preventDefault(); go({ name: "new" }) }
     }
     addEventListener("keydown", on)
     return () => removeEventListener("keydown", on)
@@ -32,6 +32,7 @@ export default function App() {
       <SidebarProvider>
         <AppSidebar jobs={jobs.data ?? []} route={route} doctor={doctor} />
         <SidebarInset>
+          <TopBar />
           {jobs.error && <p role="status" className="rounded-t-xl bg-destructive/10 px-4 py-2 text-center text-xs text-destructive">
             Sem conexão com o servidor — tentando de novo…</p>}
           {route.name === "project"

@@ -20,3 +20,12 @@ export function useRoute(): Route {
   }, [])
   return route
 }
+
+export function isNewVideoShortcut(
+  e: Pick<KeyboardEvent, "key" | "ctrlKey" | "metaKey" | "shiftKey" | "altKey" | "defaultPrevented" | "target">,
+): boolean {
+  if (e.defaultPrevented || e.shiftKey || e.altKey || !(e.ctrlKey || e.metaKey)) return false
+  if (e.key.toLowerCase() !== "k") return false
+  const t = e.target as Element | null
+  return !t?.closest?.('input, textarea, select, [contenteditable]:not([contenteditable="false"])')
+}

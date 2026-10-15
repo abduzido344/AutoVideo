@@ -168,6 +168,23 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
     def doctor_status():
         return _doctor()
 
+    @app.get("/api/auth")
+    def auth():
+        # checagem rápida só da conta (o /api/doctor roda tudo); a janela "Conectar o Claude" consulta em loop
+        try:
+            return {"ok": True, "detail": doctor.claude_auth()}
+        except Exception as e:  # noqa: BLE001 — sem claude no PATH também é "não conectado"
+            return {"ok": False, "detail": str(e).splitlines()[0] if str(e) else type(e).__name__}
+
+    @app.post("/api/auth/login")
+    def auth_login():
+        # só abre o terminal com `claude auth login`: o login é do Claude Code, o AutoVideo não implementa login
+        try:
+            doctor.open_login_terminal()
+        except (OSError, doctor.hf.ToolError) as e:
+            raise HTTPException(501, str(e)) from e
+        return {"ok": True}
+
     @app.get("/api/jobs")
     def jobs():
         return store.list()

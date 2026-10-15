@@ -15,9 +15,9 @@ def test_parse_node_major():
 def test_parse_claude_auth(monkeypatch):
     monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
     assert doctor.parse_claude_auth(json.dumps({**OUT, "loggedIn": True, "authMethod": "claude.ai"})) == "logado (claude.ai)"
-    with pytest.raises(ToolError, match=r"rode `claude login` \(uso pessoal\) ou defina ANTHROPIC_API_KEY"):
+    with pytest.raises(ToolError, match=r"rode `claude auth login` \(uso pessoal\) ou defina ANTHROPIC_API_KEY"):
         doctor.parse_claude_auth(json.dumps(OUT))
-    with pytest.raises(ToolError, match="claude login"):
+    with pytest.raises(ToolError, match="claude auth login"):
         doctor.parse_claude_auth("lixo sem json")
     monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-test")
     assert "ANTHROPIC_API_KEY" in doctor.parse_claude_auth(json.dumps(OUT))

@@ -23,6 +23,7 @@ export type RecipeInfo = {
   id: string; title: string; mode: "speech" | "montage"; aspect: string
   captions: { enabled: boolean; component: string }; pacing: { max_gap: number }; audio: { lufs: number }
 }
+export type Auth = { ok: boolean; detail: string }
 export type Doctor = { ok: boolean; checks: { name: string; ok: boolean; detail: string }[] }
 export type JobDetail = Job & {
   rel: string | null
@@ -49,6 +50,8 @@ async function j<T>(path: string, init?: RequestInit): Promise<T> {
 export const api = {
   recipeInfo: () => j<RecipeInfo[]>("/api/recipe-info"),
   doctor: () => j<Doctor>("/api/doctor"),
+  auth: () => j<Auth>("/api/auth"),
+  authLogin: () => j<{ ok: boolean }>("/api/auth/login", { method: "POST" }),
   stages: () => j<string[]>("/api/stages"),
   jobs: () => j<Job[]>("/api/jobs"),
   job: (id: number) => j<JobDetail>(`/api/jobs/${id}`),

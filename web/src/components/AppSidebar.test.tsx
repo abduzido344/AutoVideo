@@ -9,7 +9,7 @@ const job = (id: number, status: string, dir: string, error = ""): Job =>
 
 describe("AppSidebar", () => {
   it("lista os projetos com estado e marca o atual", () => {
-    render(<SidebarProvider><AppSidebar route={{ name: "project", id: 2 }} doctor={null} jobs={[
+    render(<SidebarProvider><AppSidebar auth={null} onAccount={() => {}} route={{ name: "project", id: 2 }} doctor={null} jobs={[
       job(2, "awaiting_approval", "/p/20261015-102328-rengoku"),
       job(1, "failed", "/p/20261014-225146-instagram", "interrompido"),
     ]} /></SidebarProvider>)
@@ -22,7 +22,7 @@ describe("AppSidebar", () => {
     expect(screen.getByText("Verificando o sistema…")).toBeTruthy()
   })
   it("mostra o vazio e a falha do doctor", () => {
-    render(<SidebarProvider><AppSidebar route={{ name: "new" }} jobs={[]}
+    render(<SidebarProvider><AppSidebar auth={null} onAccount={() => {}} route={{ name: "new" }} jobs={[]}
       doctor={{ ok: false, checks: [{ name: "claude auth", ok: false, detail: "" }] }} /></SidebarProvider>)
     expect(screen.getByText("Nenhum vídeo ainda.")).toBeTruthy()
     expect(screen.getByText("Falta: claude auth")).toBeTruthy()
@@ -31,12 +31,12 @@ describe("AppSidebar", () => {
     expect(screen.getByText("Nenhum vídeo ainda.").closest("ul")).toBeNull()
   })
   it("mostra Tudo pronto quando o sistema está ok", () => {
-    render(<SidebarProvider><AppSidebar route={{ name: "new" }} jobs={[]} doctor={{ ok: true, checks: [] }} /></SidebarProvider>)
+    render(<SidebarProvider><AppSidebar auth={null} onAccount={() => {}} route={{ name: "new" }} jobs={[]} doctor={{ ok: true, checks: [] }} /></SidebarProvider>)
     expect(screen.getByText("Tudo pronto")).toBeTruthy()
     expect(screen.queryByText("Corrija e recarregue a página")).toBeNull()
   })
   it("o gatilho do menu vive no conteúdo e abre/fecha o sidebar", () => {
-    render(<SidebarProvider><AppSidebar route={{ name: "new" }} jobs={[]} doctor={null} /><SidebarInset><TopBar /></SidebarInset></SidebarProvider>)
+    render(<SidebarProvider><AppSidebar auth={null} onAccount={() => {}} route={{ name: "new" }} jobs={[]} doctor={null} /><SidebarInset><TopBar /></SidebarInset></SidebarProvider>)
     const t = screen.getByRole("button", { name: "Abrir ou fechar o menu" })
     expect(t.closest("main")).toBeTruthy()
     expect(screen.getAllByRole("button", { name: "Abrir ou fechar o menu" })).toHaveLength(1)

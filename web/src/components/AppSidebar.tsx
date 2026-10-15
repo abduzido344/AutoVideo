@@ -1,5 +1,5 @@
-import { Plus } from "lucide-react"
-import type { Doctor, Job } from "@/api"
+import { Plus, UserRound } from "lucide-react"
+import type { Auth, Doctor, Job } from "@/api"
 import {
   Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupLabel, SidebarHeader,
   SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarTrigger, useSidebar,
@@ -16,7 +16,9 @@ export function TopBar() {
   )
 }
 
-export function AppSidebar({ jobs, route, doctor }: { jobs: Job[]; route: Route; doctor: Doctor | null }) {
+export function AppSidebar({ jobs, route, doctor, auth, onAccount }: {
+  jobs: Job[]; route: Route; doctor: Doctor | null; auth: Auth | null; onAccount: () => void
+}) {
   const sys = doctorText(doctor)
   const { setOpenMobile } = useSidebar()
   return (
@@ -55,6 +57,17 @@ export function AppSidebar({ jobs, route, doctor }: { jobs: Job[]; route: Route;
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton onClick={() => { setOpenMobile(false); onAccount() }}>
+              <UserRound />
+              <span>Conta Claude</span>
+              <span className={cn("ml-auto text-xs", auth?.ok ? "text-success" : auth ? "text-destructive" : "text-muted-foreground")}>
+                {auth === null ? "…" : auth.ok ? "conectada" : "conectar"}
+              </span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
         <div title={sys.text} className="px-2 pb-1 text-xs text-muted-foreground">
           <p className="flex items-center gap-2">
             <span aria-hidden="true" className={cn("size-2 shrink-0 rounded-full",

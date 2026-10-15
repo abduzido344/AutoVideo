@@ -266,3 +266,29 @@ def test_preview_only_after_clean_marker(tmp_path, monkeypatch):
     assert c.get(f"/api/jobs/{jid}").json()["files"]["preview"] is None
     (root / ".stages/clean.ok").write_text("ok")
     assert c.get(f"/api/jobs/{jid}").json()["files"]["preview"] == "input/v.clean.mp4"
+
+
+def test_auth_status_and_login_terminal(tmp_path, monkeypatch):
+    from autovideo import server
+    _, c = _client(tmp_path, monkeypatch)
+    monkeypatch.setattr(server.doctor, "claude_auth", lambda: "logado (claude.ai)")
+    assert c.get("/api/auth").json() == {"ok": True, "detail": "logado (claude.ai)"}
+
+    def fail():
+        raise server.doctor.hf.ToolError("sem autenticação do Claude" + chr(10) + "mais")
+    monkeypatch.setattr(server.doctor, "claude_auth", fail)
+    assert c.get("/api/auth").json() == {"ok": False, "detail": "sem autenticação do Claude"}
+
+    opened = []
+    monkeypatch.setattr(server.doctor, "open_login_terminal", lambda: opened.append(1))
+    assert c.post("/api/auth/login").json() == {"ok": True} and opened == [1]
+    # POST vindo de outra página é barrado pelo Origin
+    assert c.post("/api/auth/login", headers={"origin": "http://evil.example"}).status_code == 403 and opened == [1]
+
+
+def test_open_login_terminal_runs_claude_auth_login(monkeypatch):
+    from autovideo import doctor
+    calls = []
+    monkeypatch.setattr(doctor.subprocess, "Popen", lambda args, **kw: calls.append(args))
+    doctor.open_login_terminal()
+    assert len(calls) == 1 and "claude auth login" in " ".join(calls[0])

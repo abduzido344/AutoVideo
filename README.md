@@ -13,7 +13,7 @@ No Windows não há whisper-cpp: a transcrição usa o modelo Parakeet (ver Setu
 
 ## Autenticação
 O AutoVideo não tem login próprio. Ele usa o Claude Agent SDK, que herda a autenticação do Claude Code da sua máquina:
-- **Uso pessoal:** `claude login` com a sua assinatura.
+- **Uso pessoal:** `claude auth login` com a sua assinatura. Sem login, o painel abre a janela "Conectar o Claude" (também em **Conta Claude**, na barra lateral). O botão dela abre um terminal com esse comando e a janela fecha sozinha quando o login termina. O login é feito pelo Claude Code: o AutoVideo não vê a senha.
 - **Qualquer outro uso:** defina `ANTHROPIC_API_KEY`. A Anthropic não permite que produtos de terceiros ofereçam login claude.ai sem aprovação.
 
 Opcional: `ELEVENLABS_API_KEY` ativa o Voice Isolator para limpar a voz nas receitas com `audio.clean: true`. Sem a chave, a limpeza usa a cadeia de filtros do ffmpeg.
@@ -28,7 +28,7 @@ uv run autovideo doctor
 
 O `doctor` mostra a pasta dos projetos (`AUTOVIDEO_HOME`) e confere ffmpeg, ffprobe, Node 22+, HyperFrames, o modelo Parakeet,
 o Claude CLI, a autenticação do Claude e as skills. Sai com código 1 se algum item falhar.
-- **claude auth:** passa se `claude auth status` disser `loggedIn: true` ou se `ANTHROPIC_API_KEY` estiver definida. Se falhar: rode `claude login` (uso pessoal) ou defina `ANTHROPIC_API_KEY`.
+- **claude auth:** passa se `claude auth status` disser `loggedIn: true` ou se `ANTHROPIC_API_KEY` estiver definida. Se falhar: rode `claude auth login` (uso pessoal) ou defina `ANTHROPIC_API_KEY`.
 - **skills:** confere todas as skills listadas nas receitas em `~/.claude/skills` e, se faltar alguma, mostra o `npx --yes hyperframes@0.8.158 skills update ...` que as instala (o mesmo aviso aparece no job, no designer ou no editor).
 
 ## Uso

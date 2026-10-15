@@ -26,15 +26,18 @@ npx --yes hyperframes@0.8.158 skills update hyperframes hyperframes-core hyperfr
 uv run autovideo doctor
 ```
 
-O `doctor` confere ffmpeg, ffprobe, Node 22+, HyperFrames, o modelo Parakeet, o Claude CLI e as skills. Sai com código 1 se algum item falhar.
-As skills usadas pelas receitas precisam estar em `~/.claude/skills`; se faltar alguma, o job falha no designer ou no editor com o comando de instalação na mensagem.
+O `doctor` mostra a pasta dos projetos (`AUTOVIDEO_HOME`) e confere ffmpeg, ffprobe, Node 22+, HyperFrames, o modelo Parakeet,
+o Claude CLI, a autenticação do Claude e as skills. Sai com código 1 se algum item falhar.
+- **claude auth:** passa se `claude auth status` disser `loggedIn: true` ou se `ANTHROPIC_API_KEY` estiver definida. Se falhar: rode `claude login` (uso pessoal) ou defina `ANTHROPIC_API_KEY`.
+- **skills:** confere todas as skills listadas nas receitas em `~/.claude/skills` e, se faltar alguma, mostra o `npx --yes hyperframes@0.8.158 skills update ...` que as instala (o mesmo aviso aparece no job, no designer ou no editor).
 
 ## Uso
 ```bash
 uv run autovideo edit gravacao.mp4 --script roteiro.md --recipe talking-head-punchy
 uv run autovideo approve <job>           # libera o gate
 uv run autovideo reject <job> "menos zoom, hook mais forte"
-uv run autovideo resume <job>            # retoma job com falha ou travado
+uv run autovideo resume <job>            # retoma um job com falha ou interrompido
+uv run autovideo jobs                    # lista id, status, etapa e pasta de cada job
 uv run autovideo edit tela.mp4 --recipe screen-tutorial --auto
 uv run autovideo edit c1.mp4 c2.mp4 c3.mp4 --assets musica.mp3 --recipe montage-beat --auto
 uv run autovideo serve                   # painel em http://127.0.0.1:8765
@@ -44,13 +47,19 @@ uv run autovideo serve                   # painel em http://127.0.0.1:8765
 - `--recipe` padrão: `talking-head-punchy`. `--auto` pula os gates e roda até o fim.
 - `edit`, `approve`, `reject` e `resume` rodam o pipeline em primeiro plano até o próximo gate ou o fim.
 - Dois gates: `gate1` (depois do brief do diretor) e `gate2` (depois do render). `reject` no gate1 refaz a partir do diretor; no gate2, a partir do copywriter. O feedback é acrescentado a `feedback.md` e vai para os agentes na nova rodada.
-- `resume` re-enfileira **todos** os jobs `in_progress` (processo morto no meio) e roda o job informado a partir de onde parou. Use só quando nenhum outro `autovideo` estiver rodando, porque `serve` faz o mesmo ao iniciar.
+- Job interrompido (processo morto, Ctrl+C, reinício do `serve`) vira `failed` com o erro `interrompido` e **não** roda de novo sozinho. Para continuar, use `autovideo resume <job>` ou o botão **Retomar** do painel (`POST /api/jobs/<job>/resume`, que só aceita jobs `failed`). O job recomeça na etapa que falhou; as etapas concluídas não são refeitas.
+- `resume` também marca como `interrompido` **todos** os jobs que ainda estão `in_progress`. Use só quando nenhum outro `autovideo` estiver rodando, porque o `serve` faz o mesmo ao iniciar.
+- Cada etapa concluída grava `.stages/<etapa>.ok`. Um artefato sem esse marcador (etapa morta no meio) é apagado e refeito. Projetos antigos, sem a pasta `.stages/`, têm os artefatos existentes aceitos como concluídos.
 - `--assets` não tem regra por nome ou extensão: todo arquivo vai para `composition/assets/<nome>` (pasta plana). O editor escolhe o uso (SFX, música ou b-roll) e referencia `assets/<nome>` no `timeline.json`. Nomes devem ser únicos (sem diferenciar maiúsculas) e não podem coincidir com um vídeo limpo (`<video>.clean.mp4`).
 
 ### Saída
-Cada job tem uma pasta `projects/<data-hora>-<slug>/`, impressa ao fim do comando. `AUTOVIDEO_HOME` troca a pasta base `projects/`.
+Cada job tem uma pasta `<data-hora>-<slug>/` dentro da pasta de projetos, impressa ao fim do comando (e por `autovideo jobs`). A pasta de projetos fica fora do repositório e do OneDrive, para que o `CLAUDE.md` de desenvolvimento não seja carregado pelos agentes e as gravações não sincronizem:
+- Windows: `%LOCALAPPDATA%\AutoVideo\projects`
+- Linux/macOS: `~/.local/share/autovideo/projects` (ou `$XDG_DATA_HOME/autovideo/projects`)
+
+`AUTOVIDEO_HOME` troca essa pasta (é onde ficam também o `jobs.db` e os projetos). Projetos criados antes desta versão ficaram em `./projects` no repositório: para continuar usando-os, aponte `AUTOVIDEO_HOME` para lá.
 - `out/final.mp4`, `out/cover.jpg` e `out/post.json`.
-- `out/review.json` é o marcador de "render pronto": `final.mp4` e `cover.jpg` de um render anterior são apagados no início de cada render. O painel só considera o render pronto quando `review.json` e `final.mp4` existem. O arquivo traz o `lufs` medido e os `issues_restantes`.
+- `out/review.json` é o artefato da etapa de render: `final.mp4` e `cover.jpg` de um render anterior são apagados no início de cada render. O painel só considera o render pronto quando a etapa está concluída (`review.json` com o marcador `.stages/render.ok`) e `final.mp4` existe. O arquivo traz o `lufs` medido e os `issues_restantes`.
 - `decisions.log`: uma linha JSON por chamada de agente, com papel, tentativa, custo (`cost_usd`), turnos e resultado ou erro.
 
 ## Receitas
@@ -58,7 +67,7 @@ Cada job tem uma pasta `projects/<data-hora>-<slug>/`, impressa ao fim do comand
 
 - `talking-head-punchy`: talking head 9:16 em ritmo de Reels; corta retakes e tiques de fala, usa zoom punch-in, legenda karaokê e hook nos primeiros segundos.
 - `screen-tutorial`: gravação de tela 16:9; tutorial em passos, com zoom na região da ação e legenda com destaque.
-- `montage-beat`: montagem 9:16 sem fala, cortada no ritmo da música (15–30 s).
+- `montage-beat`: montagem 9:16 sem fala, cortada no ritmo da música (15–30 s). Se houver um áudio em `--assets`, o pipeline detecta os beats (`hyperframes beats`) e grava `analysis/beats.json` para o editor.
 
 ## Painel / UI
 O painel precisa de build antes do `serve`, porque o servidor só serve o painel se `web/dist` existir:
@@ -76,5 +85,10 @@ O painel é React + Vite + Tailwind v4 + shadcn/ui, com componentes do registry 
 ## Testes
 ```bash
 uv run pytest -q
-AV_SLOW=1 uv run pytest -q               # inclui os testes reais de pipeline e render (precisam de rede/modelos)
+AV_SLOW=1 uv run pytest -q               # bash: inclui os testes reais de pipeline e render (precisam de rede/modelos)
+```
+No PowerShell:
+```powershell
+uv run pytest -q
+$env:AV_SLOW=1; uv run pytest -q         # a variável fica definida nesta sessão; Remove-Item Env:AV_SLOW para desligar
 ```

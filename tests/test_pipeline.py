@@ -451,6 +451,7 @@ def _gate_job(tmp_path, monkeypatch, stage="gate1"):
         if f is not None or n != stage:
             (root / rel).parent.mkdir(parents=True, exist_ok=True)
             (root / rel).write_text(n)
+            (root / ".stages" / f"{n}.ok").write_text("ok")
     store.set(jid, status="awaiting_approval", stage=stage)
     return store, jid, root
 
@@ -476,6 +477,8 @@ def test_cli_reject_gate2_redoes_copywriter_onwards(tmp_path, monkeypatch):
     _, _, root = _reject(tmp_path, monkeypatch, "gate2")
     for gone in ("edit.json", "timeline.base.json", "style.json", "timeline.json", "out/review.json"):
         assert not (root / gone).exists(), gone
+    assert sorted(m.stem for m in (root / ".stages").iterdir()) == sorted(
+        ["ingest", "clean", "transcribe", "analyze", "director", "gate1"])
     for kept in ("brief.md", "approvals/gate1.ok", "analysis/summary.json", "input/clean.ok"):
         assert (root / kept).exists(), kept
 

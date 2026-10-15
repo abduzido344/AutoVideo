@@ -108,6 +108,22 @@ def _remove(p: Path) -> None:
         p.unlink()
 
 
+def _marker(root: Path, name: str) -> Path:
+    return root / ".stages" / f"{name}.ok"
+
+
+def _commit(root: Path, name: str) -> None:
+    """Marcador de etapa concluída: gravado só depois que a etapa terminou (artefato sem marcador = parcial)."""
+    m = _marker(root, name)
+    m.parent.mkdir(parents=True, exist_ok=True)
+    m.write_text("ok")
+
+
+def stage_done(root: Path, name: str, rel: str) -> bool:
+    # projeto sem .stages/ = anterior aos marcadores (legado): artefato existente conta como concluído
+    return (root / rel).exists() and (_marker(root, name).exists() or not (root / ".stages").exists())
+
+
 def _gate_index(jid: int, job: dict, stages: list[Stage]) -> int:
     for i, (n, _, f) in enumerate(stages):
         if n == job["stage"] and f is None:
@@ -119,16 +135,20 @@ def run_job(store: JobStore, jid: int, stages: list[Stage], make_ctx: Callable[[
     job = store.get(jid)
     store.set(jid, status="in_progress", error="")
     ctx = make_ctx(job)
+    root = Path(job["project_dir"])
     for name, rel, fn in stages:
         p = _art(job, rel)
-        if p.exists():
+        if stage_done(root, name, rel):
+            _commit(root, name)  # no legado, migra: o próximo run já enxerga o marcador
             continue
+        _remove(p)  # artefato sem marcador = etapa morta no meio (hard kill): refaz do zero
         if fn is None and not job["auto"]:
             store.set(jid, stage=name, status="awaiting_approval")
             return "awaiting_approval"
         store.set(jid, stage=name)
         if fn is None:
             p.parent.mkdir(parents=True, exist_ok=True); p.write_text("auto")
+            _commit(root, name)
             continue
         try:
             fn(ctx)
@@ -138,6 +158,7 @@ def run_job(store: JobStore, jid: int, stages: list[Stage], make_ctx: Callable[[
             if isinstance(e, Exception):
                 return "failed"
             raise
+        _commit(root, name)
     store.set(jid, status="completed")
     return "completed"
 
@@ -145,10 +166,11 @@ def run_job(store: JobStore, jid: int, stages: list[Stage], make_ctx: Callable[[
 def approve(store: JobStore, jid: int, stages: list[Stage]) -> None:
     with store.lock:  # o worker só pode ver "queued" depois do arquivo do gate existir
         job = store.get(jid)
-        rel = stages[_gate_index(jid, job, stages)][1]
+        name, rel, _ = stages[_gate_index(jid, job, stages)]
         if job["status"] != "awaiting_approval":
             raise GateError(f"job {jid} não está aguardando aprovação")
         p = _art(job, rel); p.parent.mkdir(parents=True, exist_ok=True); p.write_text("ok")
+        _commit(Path(job["project_dir"]), name)
         store.set(jid, status="queued")
 
 
@@ -166,7 +188,8 @@ def reject(store: JobStore, jid: int, stages: list[Stage], feedback: str, redo_f
         if job["status"] != "awaiting_approval":
             raise GateError(f"job {jid} não está aguardando aprovação")
         root = Path(job["project_dir"])
-        for _, rel, _ in stages[start: idx + 1]:
+        for name, rel, _ in stages[start: idx + 1]:
+            _remove(_marker(root, name))  # marcador primeiro: kill no meio deixa "artefato sem marcador" = refaz
             _remove(root / rel)
         with (root / "feedback.md").open("a", encoding="utf-8") as fh:
             fh.write(f"\n## Feedback ({job['stage']})\n{feedback}\n")

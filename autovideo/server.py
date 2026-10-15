@@ -12,7 +12,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 from autovideo import pipeline
-from autovideo.jobs import GateError, JobStore, approve, run_job
+from autovideo.jobs import GateError, JobStore, approve, run_job, stage_done
 from autovideo.recipes import list_recipes
 
 DIST = Path(__file__).resolve().parent.parent / "web" / "dist"
@@ -131,8 +131,8 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
         j["files"] = {
             "brief": brief.read_text(encoding="utf-8") if brief.exists() else None,
             "post": _json(post),
-            # review.json é o marcador de "render pronto"; final.mp4 sozinho pode ser de um render anterior
-            "has_final": (root / "out/review.json").exists() and (root / "out/final.mp4").exists(),
+            # etapa render concluída (review.json + marcador); final.mp4 sozinho pode ser de um render anterior
+            "has_final": stage_done(root, "render", "out/review.json") and (root / "out/final.mp4").exists(),
             "decisions": _jsonl(log) if log.exists() else [],
         }
         return j

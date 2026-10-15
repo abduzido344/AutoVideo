@@ -204,3 +204,56 @@ def test_claim_is_atomic_and_run_job_runs_from_in_progress(tmp_path):
     assert c["id"] == jid and store.get(jid)["status"] == "in_progress"
     assert store.claim(jid) is False and store.claim_next() is None
     assert run_job(store, jid, mk_stages(calls), mk) == "awaiting_approval"
+
+
+def test_partial_artifact_without_marker_is_rerun(tmp_path):
+    calls = []
+    store, jid, mk = setup(tmp_path, auto=True)
+    a, b = simple(calls, "a", "a.txt"), simple(calls, "b", "b.txt")
+    assert run_job(store, jid, [a], mk) == "completed"
+    root = Path(store.get(jid)["project_dir"])
+    assert (root / ".stages/a.ok").exists()
+    (root / "b.txt").write_text("meio")  # hard kill no meio de b: artefato sem marcador
+    assert run_job(store, jid, [a, b], mk) == "completed"
+    assert calls == ["a", "b"] and (root / "b.txt").read_text() == "b" and (root / ".stages/b.ok").exists()
+
+
+def test_marker_without_artifact_reruns(tmp_path):
+    calls = []
+    store, jid, mk = setup(tmp_path, auto=True)
+    a = simple(calls, "a", "a.txt")
+    run_job(store, jid, [a], mk)
+    (Path(store.get(jid)["project_dir"]) / "a.txt").unlink()
+    run_job(store, jid, [a], mk)
+    assert calls == ["a", "a"]
+
+
+def test_legacy_project_without_stages_dir_is_skipped_and_migrated(tmp_path):
+    calls = []
+    store, jid, mk = setup(tmp_path, auto=True)
+    root = Path(store.get(jid)["project_dir"])
+    root.mkdir(parents=True)
+    (root / "a.txt").write_text("velho")
+    assert run_job(store, jid, [simple(calls, "a", "a.txt"), simple(calls, "b", "b.txt")], mk) == "completed"
+    assert calls == ["b"] and (root / ".stages/a.ok").exists()  # migrado: o próximo run não refaz "a"
+    run_job(store, jid, [simple(calls, "a", "a.txt"), simple(calls, "b", "b.txt")], mk)
+    assert calls == ["b"]
+
+
+def test_gates_and_reject_keep_markers_consistent(tmp_path):
+    calls = []
+    store, jid, mk = setup(tmp_path)
+    st = mk_stages(calls)
+    run_job(store, jid, st, mk); approve(store, jid, st)
+    root = Path(store.get(jid)["project_dir"])
+    assert (root / ".stages/gate1.ok").exists()
+    run_job(store, jid, st, mk)  # -> gate2
+    assert {m.name for m in (root / ".stages").iterdir()} == {"a.ok", "gate1.ok", "b.ok", "c.ok"}
+    reject(store, jid, st, "refazer")  # sem redo_from: refaz b, c (depois do gate1)
+    assert {m.name for m in (root / ".stages").iterdir()} == {"a.ok", "gate1.ok"}
+
+
+def test_auto_gate_writes_marker(tmp_path):
+    store, jid, mk = setup(tmp_path, auto=True)
+    run_job(store, jid, [("g", "approvals/g.ok", None)], mk)
+    assert (Path(store.get(jid)["project_dir"]) / ".stages/g.ok").exists()

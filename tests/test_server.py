@@ -78,6 +78,8 @@ def test_has_final_only_with_review_marker(tmp_path, monkeypatch):
     out.mkdir(); (out / "final.mp4").write_bytes(b"old")
     assert c.get(f"/api/jobs/{jid}").json()["files"]["has_final"] is False
     (out / "review.json").write_text("{}")
+    assert c.get(f"/api/jobs/{jid}").json()["files"]["has_final"] is False  # sem marcador: render morreu no fim
+    (out.parent / ".stages/render.ok").write_text("ok")
     assert c.get(f"/api/jobs/{jid}").json()["files"]["has_final"] is True
 
 

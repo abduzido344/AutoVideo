@@ -55,6 +55,7 @@ def new_job(store: JobStore, home_dir: Path, videos: list[Path], script: Path | 
         except FileExistsError:
             continue
     (root / "input/raw").mkdir(parents=True)
+    (root / ".stages").mkdir()  # projeto novo nunca é "legado": artefato sem marcador sempre é refeito
     for v in videos:
         shutil.copy2(v, root / "input/raw" / v.name)
     if script:

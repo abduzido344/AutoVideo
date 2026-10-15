@@ -525,3 +525,23 @@ def test_montage_end_to_end_with_fake_agents(media_dir, tmp_path, monkeypatch):
     root = Path(store.get(jid)["project_dir"])
     assert (root / "out/final.mp4").exists() and (root / "out/cover.jpg").exists()
     assert json.loads((root / "out/post.json").read_text(encoding="utf-8"))["title"] == "t"
+
+
+
+def test_kill_while_backing_up_leaves_no_marker_and_resume_keeps_good_state(tmp_path, monkeypatch):
+    ctx, good, composed = _failing_review_setup(tmp_path, monkeypatch, lambda *a, **k: pytest.fail("não chega"))
+    p = ctx.project
+    real = pipeline.shutil.copytree
+    def dies(src, dst, **k):
+        if Path(dst).name == "compositions.bak":
+            raise KeyboardInterrupt  # kill no meio da cópia do backup
+        return real(src, dst, **k)
+    monkeypatch.setattr(pipeline.shutil, "copytree", dies)
+    with pytest.raises(KeyboardInterrupt):
+        pipeline.do_render(ctx)
+    assert not (p.analysis / "review/0/timeline.bak.json").exists()
+    monkeypatch.setattr(pipeline.shutil, "copytree", real)
+    monkeypatch.setattr(pipeline.render, "check", lambda *a: [])
+    pipeline.do_render(ctx)  # resume: nada a restaurar, composições boas intactas
+    assert (p.comp / "compositions/captions.template.html").read_text(encoding="utf-8") == "bom"
+    assert json.loads((p.root / "timeline.json").read_text(encoding="utf-8")) == good

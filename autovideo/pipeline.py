@@ -228,7 +228,7 @@ def _backups(p: Project) -> list[Path]:
 def _restore(p: Project, rdir: Path) -> None:
     shutil.copy2(rdir / "timeline.bak.json", p.root / "timeline.json")
     shutil.rmtree(p.comp / "compositions", ignore_errors=True)
-    shutil.copytree(rdir / "compositions.bak", p.comp / "compositions")
+    shutil.copytree(rdir / "compositions.bak", p.comp / "compositions", dirs_exist_ok=True)
 
 
 def _drop_backup(rdir: Path) -> None:
@@ -258,9 +258,11 @@ def do_render(ctx):
         rdir = p.analysis / "review" / str(n)
         pngs = render.snapshots(p.comp, _review_times(t), rdir)
         # backup: um review que falha não pode deixar timeline.json/composições inválidos para o render
-        shutil.copy2(timeline, rdir / "timeline.bak.json")
+        # timeline.bak.json é o marcador de backup completo: grava por último (kill no meio = sem backup)
         shutil.rmtree(rdir / "compositions.bak", ignore_errors=True)
         shutil.copytree(p.comp / "compositions", rdir / "compositions.bak")
+        shutil.copy2(timeline, rdir / "timeline.bak.part")
+        (rdir / "timeline.bak.part").replace(rdir / "timeline.bak.json")
         try:
             ctx.agent("editor", p, r,
                       "REVIEW: corrija os problemas abaixo editando timeline.json e/ou composition/compositions/*.html.\n"

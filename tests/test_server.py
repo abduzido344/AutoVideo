@@ -173,18 +173,21 @@ def test_recipe_info_lists_display_fields(tmp_path, monkeypatch):
     assert info["montage-beat"]["mode"] == "montage"
 
 
-def test_doctor_is_cached(tmp_path, monkeypatch):
+def test_doctor_caches_success_but_rechecks_failure(tmp_path, monkeypatch):
     from autovideo import server
-    calls = []
-    monkeypatch.setattr(server.doctor, "run_checks",
-                        lambda: calls.append(1) or [("ffmpeg", True, "7.1"), ("claude auth", False, "rode claude login")])
-    server._doctor.cache_clear()
+    calls, logged = [], [False]
+    monkeypatch.setattr(server.doctor, "run_checks", lambda: calls.append(1) or [
+        ("ffmpeg", True, "7.1"), ("claude auth", logged[0], "ok" if logged[0] else "rode claude login")])
+    monkeypatch.setattr(server, "_doctor_ok", None)
     _, c = _client(tmp_path, monkeypatch)
     a, b = c.get("/api/doctor").json(), c.get("/api/doctor").json()
     assert a == b == {"ok": False, "checks": [{"name": "ffmpeg", "ok": True, "detail": "7.1"},
                                              {"name": "claude auth", "ok": False, "detail": "rode claude login"}]}
-    assert len(calls) == 1
-    server._doctor.cache_clear()
+    assert len(calls) == 2  # falha não fica em cache
+    logged[0] = True  # usuário rodou claude login
+    assert c.get("/api/doctor").json()["ok"] is True
+    assert c.get("/api/doctor").json()["ok"] is True
+    assert len(calls) == 3  # sucesso fica em cache
 
 
 def test_job_detail_exposes_preview_transcript_timeline_review(tmp_path, monkeypatch):

@@ -4,7 +4,6 @@ import shutil
 import tempfile
 import threading
 import time
-from functools import lru_cache
 from pathlib import Path, PureWindowsPath
 from urllib.parse import urlsplit
 from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
@@ -86,11 +85,20 @@ def _jsonl(path: Path) -> list[dict]:
     return out
 
 
-@lru_cache(maxsize=1)
+_doctor_ok: dict | None = None
+
+
 def _doctor() -> dict:
-    # ponytail: cache por processo (chama npx/claude, leva segundos); reinicie o serve depois de consertar algo
+    # só o sucesso fica em cache (chama npx/claude, leva segundos); uma falha é rechecada na próxima carga do
+    # painel, para "Falta: claude auth" sumir depois do `claude login` sem reiniciar o serve
+    global _doctor_ok
+    if _doctor_ok:
+        return _doctor_ok
     checks = [{"name": n, "ok": ok, "detail": d} for n, ok, d in doctor.run_checks()]
-    return {"ok": all(c["ok"] for c in checks), "checks": checks}
+    res = {"ok": all(c["ok"] for c in checks), "checks": checks}
+    if res["ok"]:
+        _doctor_ok = res
+    return res
 
 
 def _recipe_info(rid: str) -> dict:

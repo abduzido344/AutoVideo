@@ -11,12 +11,14 @@ export default function App() {
   const [stages, setStages] = useState<string[]>([])
   const [current, setCurrent] = useState<number | null>(null)
   const [detail, setDetail] = useState<JD | null>(null)
+  const [offline, setOffline] = useState(false)
 
   const refresh = useCallback(async () => {
     try {
       setJobs(await api.jobs())
       if (current !== null) setDetail(await api.job(current))
-    } catch { /* servidor fora do ar: tenta de novo no próximo ciclo */ }
+      setOffline(false)
+    } catch { setOffline(true) /* tenta de novo no próximo ciclo */ }
   }, [current])
 
   useEffect(() => { api.stages().then(setStages).catch(() => {}) }, [])
@@ -24,6 +26,7 @@ export default function App() {
 
   return (
     <SoundEffects>
+      {offline && <p role="status" className="p-2 text-center text-xs text-destructive">servidor offline</p>}
       <main className="mx-auto grid max-w-6xl gap-8 p-4 md:grid-cols-[340px_1fr] md:p-10">
         <div className="grid content-start gap-8">
           <NewJobForm onCreated={setCurrent} />
@@ -33,7 +36,7 @@ export default function App() {
           ? <JobDetail key={detail.id} job={detail} stages={stages} onChange={refresh} />
           : <p className="text-sm text-muted-foreground">Selecione ou crie um job.</p>}
       </main>
-      <Toaster />
+      <Toaster theme="dark" />
     </SoundEffects>
   )
 }

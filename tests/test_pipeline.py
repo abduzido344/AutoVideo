@@ -454,7 +454,8 @@ def test_cli_reject_gate1_redoes_only_director(tmp_path, monkeypatch):
     store, jid, root = _reject(tmp_path, monkeypatch, "gate1")
     for kept in ("input/manifest.json", "input/clean.ok", "analysis/words.json", "analysis/summary.json"):
         assert (root / kept).exists(), kept
-    assert not (root / "brief.md").exists() and store.get(jid)["status"] == "queued"
+    # a CLI reivindica o job antes de rodar (run_job está stubado, então fica in_progress)
+    assert not (root / "brief.md").exists() and store.get(jid)["status"] == "in_progress"
 
 
 def test_cli_reject_gate2_redoes_copywriter_onwards(tmp_path, monkeypatch):

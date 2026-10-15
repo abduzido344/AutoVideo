@@ -11,10 +11,14 @@ import { Video } from "@/components/ui/video"
 
 export function JobDetail({ job, stages, onChange }: { job: JD; stages: string[]; onChange: () => void }) {
   const [fb, setFb] = useState("")
+  const [busy, setBusy] = useState(false)
   const idx = job.status === "completed" ? stages.length : Math.max(0, stages.indexOf(job.stage))
   const gate = job.status === "awaiting_approval"
   const cost = job.files.decisions.reduce((s, d) => s + (d.cost_usd ?? 0), 0)
-  const act = (p: Promise<unknown>) => p.then(onChange).catch((e: Error) => toast.error(e.message))
+  const act = (run: () => Promise<unknown>) => {
+    setBusy(true)
+    return run().then(onChange).catch((e: Error) => toast.error(e.message)).finally(() => setBusy(false))
+  }
 
   return (
     <Card>
@@ -33,9 +37,9 @@ export function JobDetail({ job, stages, onChange }: { job: JD; stages: string[]
             <p className="text-sm">Aguardando sua aprovação em <b>{job.stage}</b>.</p>
             <Textarea value={fb} onChange={(e) => setFb(e.target.value)} placeholder="Feedback (para rejeitar)" />
             <div className="flex flex-wrap gap-2">
-              <Button onClick={() => act(api.approve(job.id))}>Aprovar</Button>
-              <Button variant="secondary" disabled={!fb.trim()}
-                onClick={() => act(api.reject(job.id, fb).then(() => setFb("")))}>Rejeitar com feedback</Button>
+              <Button disabled={busy} onClick={() => act(() => api.approve(job.id))}>Aprovar</Button>
+              <Button variant="secondary" disabled={busy || !fb.trim()}
+                onClick={() => act(() => api.reject(job.id, fb).then(() => setFb("")))}>Rejeitar com feedback</Button>
             </div>
           </div>
         )}

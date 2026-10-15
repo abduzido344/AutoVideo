@@ -6,5 +6,11 @@ import { defineConfig } from "vite"
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: { alias: { "@": path.resolve(import.meta.dirname, "./src") } },
-  server: { proxy: { "/api": "http://127.0.0.1:8765", "/projects": "http://127.0.0.1:8765" } },
+  // changeOrigin:false mantém Host=localhost:5173, igual ao Origin; com true o servidor responderia 403 a todo POST
+  server: {
+    proxy: {
+      "/api": { target: "http://127.0.0.1:8765", changeOrigin: false },
+      "/projects": { target: "http://127.0.0.1:8765", changeOrigin: false },
+    },
+  },
 })

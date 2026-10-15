@@ -48,6 +48,8 @@ def main(argv: list[str] | None = None) -> int:
                 approve(store, jid, pipeline.STAGES)
             elif a.cmd == "reject":
                 pipeline.reject_job(store, jid, a.feedback)
+        if not store.claim(jid, ("queued", "failed")):  # failed = resume manual; um servidor vivo pode já ter pego o job
+            raise GateError(f"job {jid} não está executável (já em execução, aguardando aprovação ou concluído)")
         status = run_job(store, jid, pipeline.STAGES, pipeline.make_ctx)
     except (GateError, KeyError, ValueError, FileNotFoundError) as err:
         print(f"erro: {err.args[0] if isinstance(err, KeyError) else err}", file=sys.stderr)

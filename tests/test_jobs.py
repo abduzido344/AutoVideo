@@ -159,3 +159,48 @@ def test_reject_without_redo_from_at_first_gate_clears_from_start(tmp_path):
     assert not (root / "a.txt").exists() and not (root / "x.txt").exists()
     assert run_job(store, jid, st, mk) == "awaiting_approval"
     assert calls == ["a", "x", "a", "x"]
+
+
+def test_worker_cannot_see_queued_before_reject_file_work(tmp_path, monkeypatch):
+    from autovideo import jobs
+    calls = []
+    store, jid, mk = setup(tmp_path)
+    st = mk_stages(calls)
+    run_job(store, jid, st, mk); approve(store, jid, st); run_job(store, jid, st, mk)  # -> gate2
+    seen = []
+    real = jobs._remove
+    def spy(p):
+        # chamado no meio do reject, com o lock seguro: outra thread não pode reivindicar o job
+        import threading
+        t = threading.Thread(target=lambda: seen.append(store.next_queued()))
+        t.start(); t.join(timeout=0.3)
+        assert t.is_alive() or seen == [None]  # bloqueada pelo lock (ou viu nenhum queued)
+        real(p)
+    monkeypatch.setattr(jobs, "_remove", spy)
+    reject(store, jid, st, "x")
+    monkeypatch.undo()
+    assert store.get(jid)["status"] == "queued"
+    assert store.next_queued()["id"] == jid
+    assert all(s is None or s["id"] == jid for s in seen)
+
+
+def test_gate_status_checked_before_file_work(tmp_path):
+    calls = []
+    store, jid, mk = setup(tmp_path)
+    st = mk_stages(calls)
+    run_job(store, jid, st, mk)  # gate1
+    root = Path(store.get(jid)["project_dir"])
+    store.set(jid, status="in_progress")  # worker/CLI já pegou: gate não pode mexer em arquivos
+    for fn in (lambda: approve(store, jid, st), lambda: reject(store, jid, st, "x")):
+        with pytest.raises(GateError):
+            fn()
+    assert not (root / "approvals/gate1.ok").exists() and (root / "a.txt").exists()
+
+
+def test_claim_is_atomic_and_run_job_runs_from_in_progress(tmp_path):
+    calls = []
+    store, jid, mk = setup(tmp_path)
+    c = store.claim_next()
+    assert c["id"] == jid and store.get(jid)["status"] == "in_progress"
+    assert store.claim(jid) is False and store.claim_next() is None
+    assert run_job(store, jid, mk_stages(calls), mk) == "awaiting_approval"

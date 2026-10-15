@@ -25,6 +25,8 @@ Os demais 77 respondem 401 e exigem **Kobra Pro**. O token vai em `KOBRA_TOKEN`,
 ## Estado atual do painel (`web/`)
 Sem `KOBRA_TOKEN` na instalação. Usados: Kobra `video` (player) e `sound` (`<SoundEffects>` no App). Todo o resto é shadcn base (`button card badge select textarea input label progress scroll-area tabs sonner`), com os fallbacks da coluna acima para os itens Pro. Quando houver token: trocar upload por `magnetic-dropzone`, etapas por `task-list`, decisões por `reasoning-steps`, gate por `question-card`.
 
+Nota: o `liquidglass` vai duas vezes no bundle: a lib vendorizada em `src/lib/liquidglass` (importada por `src/lib/glass-controls.ts`, vinda do item `video`) e a cópia interna do `loomix` (chunks `liquidglass-*.js` no build, ~51 kB cada). A deduplicação não é uma troca trivial de import (o `loomix` não exporta a lib), então ficou como está.
+
 ## Mapa: necessidade → componente
 | Necessidade no painel | Kobra | Fallback (shadcn base) |
 |---|---|---|

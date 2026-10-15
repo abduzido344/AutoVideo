@@ -1,4 +1,5 @@
 import json
+import logging
 import shutil
 import tempfile
 import threading
@@ -15,7 +16,8 @@ from autovideo.jobs import GateError, JobStore, approve, run_job
 from autovideo.recipes import list_recipes
 
 DIST = Path(__file__).resolve().parent.parent / "web" / "dist"
-LOCAL_HOSTS = ["127.0.0.1", "localhost", "[::1]", "testserver"]
+LOCAL_HOSTS = ["127.0.0.1", "localhost", "[::1]"]
+log = logging.getLogger("autovideo.server")
 BAD_NAME_CHARS = set('<>:"|?*\x00')
 
 
@@ -23,16 +25,29 @@ class Feedback(BaseModel):
     feedback: str
 
 
+def _run_one(store: JobStore) -> bool:
+    job = store.claim_next()  # atômico: CLI e servidor nunca executam o mesmo job
+    if not job:
+        return False
+    try:
+        run_job(store, job["id"], pipeline.STAGES, pipeline.make_ctx)
+    except Exception as e:  # noqa: BLE001 — um job quebrado não pode matar o worker nem ficar preso em in_progress
+        log.exception("job %s falhou", job["id"])
+        try:
+            store.set(job["id"], status="failed", error=f"{type(e).__name__}: {e}")
+        except Exception:  # noqa: BLE001
+            log.exception("não consegui marcar o job %s como failed", job["id"])
+    return True
+
+
 def _worker(store: JobStore) -> None:
     while True:
-        job = store.next_queued()
-        if not job:
-            time.sleep(2)
-            continue
         try:
-            run_job(store, job["id"], pipeline.STAGES, pipeline.make_ctx)
-        except Exception as e:  # noqa: BLE001 — um job quebrado não pode matar o worker nem ficar preso em in_progress
-            store.set(job["id"], status="failed", error=f"{type(e).__name__}: {e}")
+            if _run_one(store):
+                continue
+        except Exception:  # noqa: BLE001 — o loop nunca morre (ex.: banco travado)
+            log.exception("erro no worker")
+        time.sleep(2)
 
 
 def _gate(fn, *a) -> dict:
@@ -51,6 +66,13 @@ def _clean_name(raw: str | None) -> str:
     if name in ("", ".", "..") or BAD_NAME_CHARS & set(name):
         raise HTTPException(400, f"nome de arquivo inválido: {raw!r}")
     return name
+
+
+def _json(path: Path):
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):  # ausente ou malformado (worker pode estar escrevendo)
+        return None
 
 
 def _jsonl(path: Path) -> list[dict]:
@@ -108,7 +130,7 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
             j["rel"] = None
         j["files"] = {
             "brief": brief.read_text(encoding="utf-8") if brief.exists() else None,
-            "post": json.loads(post.read_text(encoding="utf-8")) if post.exists() else None,
+            "post": _json(post),
             # review.json é o marcador de "render pronto"; final.mp4 sozinho pode ser de um render anterior
             "has_final": (root / "out/review.json").exists() and (root / "out/final.mp4").exists(),
             "decisions": _jsonl(log) if log.exists() else [],

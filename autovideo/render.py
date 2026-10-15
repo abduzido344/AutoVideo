@@ -5,6 +5,7 @@ from autovideo.hf import HF, ToolError, run
 from autovideo.media import integrated_lufs, normalize_final
 from autovideo.project import Project
 from autovideo.timeline import FORMATS, Grading
+from autovideo.transcribe import _last_json
 
 # Com color-grading o shader demora ~40 s para inicializar nesta máquina (Intel Iris): os timeouts padrão de
 # prontidão (3 s check, 5 s snapshot, 45 s render) estouram. São tetos de espera, não atrasos fixos.
@@ -28,6 +29,15 @@ def apply_grading(comp: Path, grading: dict | None) -> None:
         g = Grading.model_validate(grading)  # vira argumento de processo: só números conhecidos passam
         run([*HF, "media-treatment", "--project", str(comp), "--selector", "#cam video",
              "--grading", g.model_dump_json(exclude_none=True), "--apply", "--json"])
+
+
+def beats(comp: Path) -> dict:
+    """`hyperframes beats` na composição (precisa do <audio> da música no index.html):
+    {"audio": "assets/<arquivo>", "bpm": n, "beats": [{"time": s, "strength": 0–1}]}."""
+    out = _last_json(run([*HF, "beats", str(comp), "--json"], timeout=600).stdout)
+    if not isinstance(out, dict) or out.get("ok") is not True or "file" not in out:
+        raise ToolError(f"hyperframes beats sem resultado: {out!r}"[:500])
+    return {**json.loads((comp / out["file"]).read_text(encoding="utf-8")), "bpm": out.get("bpm")}
 
 
 def caption_zone(aspect: str) -> str:

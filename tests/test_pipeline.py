@@ -603,3 +603,62 @@ def test_cli_only_resume_claims_failed_jobs(tmp_path, monkeypatch, capsys):
     assert cli.main(["approve", str(jid)]) == 1  # approve num job failed: erro limpo, nada roda
     assert store.get(jid)["status"] == "failed"
     assert cli.main(["resume", str(jid)]) == 0 and store.get(jid)["status"] == "awaiting_approval"
+
+
+# ---------- designer: prévia da composição ----------
+def _designer_setup(tmp_path, monkeypatch, recipe, music=True):
+    seen = {}
+
+    def agent(role, project, r, task, output, validate=None, bash=False):
+        seen["index"] = (project.comp / "index.html").read_text(encoding="utf-8")
+        seen["beats_at_call"] = (project.analysis / "beats.json").exists()
+        output.write_text(json.dumps({"palette": ["#fff"], "fonts": ["Inter"], "caption_component": "x"}), encoding="utf-8")
+    ctx = mk_project(tmp_path, recipe, agent=agent)
+    p = ctx.project
+    (p.root / "edit.json").write_text(json.dumps({"drop": [], "hook_text": "h", "post":
+                                      {"title": "t", "caption": "c", "hashtags": []}}), encoding="utf-8")
+    pipeline.plan(ctx)
+    (p.input / "a.clean.mp4").write_bytes(b"v")
+    (p.root / "user-assets").mkdir()
+    (p.root / "user-assets/logo.png").write_bytes(b"i")
+    if music:
+        (p.root / "user-assets/my song.mp3").write_bytes(b"a")
+    r = pipeline.render
+
+    def init(project, aspect):
+        (project.comp / "compositions").mkdir(parents=True)
+        (project.comp / "assets").mkdir()
+        (project.comp / "index.html").write_text("<blank/>", encoding="utf-8")
+    monkeypatch.setattr(r, "init_composition", init)
+    calls = []
+
+    def fake_run(args, **k):
+        import subprocess
+        calls.append(args)
+        comp = Path(args[args.index("beats") + 1])
+        (comp / "beats/assets").mkdir(parents=True)
+        (comp / "beats/assets/my song.mp3.json").write_text(json.dumps(
+            {"version": 1, "audio": "assets/my song.mp3", "beats": [{"time": 0.5, "strength": 1}]}), encoding="utf-8")
+        return subprocess.CompletedProcess(args, 0, stdout='log\n{"ok": true, "file": "beats/assets/my song.mp3.json", '
+                                                         '"count": 1, "bpm": 120}\n', stderr="")
+    monkeypatch.setattr(r, "run", fake_run)
+    return ctx, seen, calls
+
+
+def test_designer_composes_preview_with_music_and_beats_for_montage(tmp_path, monkeypatch):
+    ctx, seen, calls = _designer_setup(tmp_path, monkeypatch, "montage-beat")
+    pipeline.designer(ctx)
+    idx = seen["index"]
+    assert '<div id="cam">\n<video id="seg-0"' in idx and 'src="assets/a.clean.mp4"' in idx  # "#cam video" casa
+    assert '<audio id="music"' in idx and 'src="assets/my%20song.mp3"' in idx
+    assert seen["beats_at_call"] and calls[0][-3:] == ["beats", str(ctx.project.comp), "--json"]
+    beats = json.loads((ctx.project.analysis / "beats.json").read_text(encoding="utf-8"))
+    assert beats["bpm"] == 120 and beats["beats"] == [{"time": 0.5, "strength": 1}]
+
+
+def test_designer_preview_for_speech_has_no_captions_and_no_beats(tmp_path, monkeypatch):
+    ctx, seen, calls = _designer_setup(tmp_path, monkeypatch, "talking-head-punchy", music=False)
+    pipeline.designer(ctx)  # sem captions.template.html ainda: a prévia não pode exigir legendas
+    assert '<video id="seg-0"' in seen["index"] and "captions-layer" not in seen["index"]
+    assert '<audio id="music"' not in seen["index"] and calls == []
+    assert not (ctx.project.analysis / "beats.json").exists()

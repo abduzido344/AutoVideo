@@ -9,12 +9,13 @@ from autovideo.compose import write_composition
 from autovideo.jobs import Ctx, JobStore, reject
 from autovideo.project import Project, home  # noqa: F401 — pipeline.home é usado por cli/server
 from autovideo.recipes import load_recipe
-from autovideo.timeline import FORMATS, Timeline, Word, plan_segments, remap_words
+from autovideo.timeline import FORMATS, Music, Timeline, Word, plan_segments, remap_words
 from autovideo.transcribe import filler_candidates, numbered_text, require_speech, transcribe
 
 # gate rejeitado -> primeira etapa a refazer (o resto do que veio antes do gate continua válido)
 REDO = {"gate1": "director", "gate2": "copywriter"}
 REVIEW_ROUNDS = 2
+AUDIO_EXT = {".mp3", ".wav", ".m4a", ".aac", ".ogg", ".flac"}
 
 
 def _check_inputs(videos: list[Path], script: Path | None, assets: list[Path]) -> None:
@@ -173,6 +174,14 @@ def designer(ctx):
     if ua.exists():
         for a in ua.iterdir():
             shutil.copy2(a, assets / a.name)
+    # prévia: index.html de verdade (timeline base + música) para `media-treatment --analyze` e `beats` acharem
+    # <video>/<audio>; sem legendas (o template ainda não existe). O render recompõe a partir do timeline.json.
+    music = next((a.name for a in sorted(ua.iterdir()) if a.suffix.lower() in AUDIO_EXT), None) if ua.exists() else None
+    t = Timeline.load(p.root / "timeline.base.json").model_copy(
+        update={"captions": False, "music": Music(src=f"assets/{music}") if music else None})
+    _compose(p, t)
+    if ctx.recipe.mode == "montage" and music:
+        _write_json(p.analysis / "beats.json", render.beats(p.comp), indent=2)
     ctx.agent("designer", p, ctx.recipe, "Entregue style.json e as composições." + _fb(p),
               p.root / "style.json", validate_model(Style), bash=True)
 

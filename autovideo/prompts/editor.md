@@ -7,7 +7,7 @@ Escreva timeline.json: copie timeline.base.json e acrescente
 - "broll": [{"start": s, "dur": s, "src": "assets/<arquivo>", "mode": "full"|"pip"}] (só arquivos que existam em composition/assets/)
 - "sfx": [{"at": s, "src": "assets/<arquivo>", "dur": s, "volume": 0–1}] (só se existirem)
 - "music": {"src": "assets/<arquivo>", "volume": 0.08–0.2} ou null
-- "grading": objeto de `npx --yes hyperframes@0.8.158 media-treatment --project composition --selector "#cam video" --analyze --json` (campo de correção sugerida) ou null
+- "grading": objeto de `npx --yes hyperframes@0.8.158 media-treatment --project composition --selector "#cam video" --analyze --json` (composition/index.html já é uma prévia com os vídeos dentro de #cam; use o campo "suggestedPatch", que tem a forma {"adjust": {"exposure": n, "contrast": n, ...}} — só números, sem presets/LUT) ou null
 Todos os tempos são do vídeo FINAL e precisam caber em [0, duração]. NÃO altere "segments" (exceto na receita montage, em que você os define a partir de analysis/scenes.json).
 Se receber um relatório de revisão (review), corrija timeline.json e/ou as composições apontadas.
 Correções de legenda vão em composition/compositions/captions.template.html: captions.html é gerado a partir dele a cada recomposição, então edições direto em captions.html se perdem. Mantenha nele o marcador `/*AV_WORDS*/[]` (as palavras são injetadas ali).

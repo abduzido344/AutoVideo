@@ -58,7 +58,7 @@ def test_options_restrict_bash_and_paths(tmp_path):
     assert o.permission_mode == "dontAsk" and o.setting_sources == ["project"]
     hf_rules = [t for t in o.allowed_tools if t.startswith("Bash(npx")]
     assert "Bash(npx --yes hyperframes@0.8.158 *)" not in hf_rules  # nada de render/init/publish/cloud/upgrade...
-    for sub in ("catalog", "add", "lint", "check", "snapshot", "media-treatment", "beats"):
+    for sub in ("catalog", "add", "lint", "check", "snapshot", "media-treatment"):
         assert f"Bash(npx --yes hyperframes@0.8.158 {sub} *)" in hf_rules
     assert "Bash(npx --yes hyperframes@0.8.158 catalog)" in hf_rules
     assert not any(x in t for t in hf_rules for x in ("render", "publish", "cloud", "upgrade", "init", "lambda"))

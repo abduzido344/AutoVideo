@@ -16,10 +16,12 @@ prompts:
   director: |
     Montagem: escolha os melhores momentos (movimento, rostos, ação) e uma narrativa em 3 atos curtos.
   copywriter: |
-    Sem fala: produza 3–6 textos curtos na tela que contem a história e o post.json.
+    Sem fala: produza 3–6 textos curtos na tela que narrem a história e o post.json.
   designer: |
     Tipografia cinética grande, transições no beat.
   editor: |
     Você define os segments (cortes) diretamente a partir de analysis/scenes.json e dos frames.
-    Se houver um arquivo de áudio (.mp3/.wav/.m4a) em composition/assets/, rode `npx --yes hyperframes@0.8.158 beats composition --json` depois de
-    incluí-la e alinhe os cortes aos beats. Duração alvo: 15–30 s.
+    Se o usuário mandou música, ela já está em composition/assets/ e os beats já foram detectados em
+    analysis/beats.json ({"audio": "assets/<arquivo>", "bpm": n, "beats": [{"time": s, "strength": 0–1}]}; a música
+    começa em 0 s do vídeo final). Ponha essa música em "music" e alinhe os cortes e zooms a esses tempos
+    (não rode `beats` você mesmo). Sem analysis/beats.json não há música: corte pelo ritmo das cenas. Duração alvo: 15–30 s.

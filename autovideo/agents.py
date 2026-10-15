@@ -11,8 +11,8 @@ _query = query
 PROMPTS = Path(__file__).parent / "prompts"
 # subcomandos do hyperframes que os prompts/receitas/skills usam (inspeção e edição local); render/init/publish/
 # cloud/upgrade/skills/tts ficam de fora. BARE = os que também aparecem sem argumentos.
-HF_SUBS = ("catalog", "add", "lint", "check", "snapshot", "media-treatment", "beats", "compositions", "info",
-           "docs", "timeline")
+# `beats` não entra: o pipeline já grava analysis/beats.json.
+HF_SUBS = ("catalog", "add", "lint", "check", "snapshot", "media-treatment", "compositions", "info", "docs", "timeline")
 HF_BARE = ("catalog", "docs", "info")
 
 

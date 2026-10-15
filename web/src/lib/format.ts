@@ -58,8 +58,9 @@ export function doctorText(d: Doctor | null): { ok: boolean | null; text: string
   return { ok: false, text: `Falta: ${bad.name}${bad.detail ? ` — ${bad.detail}` : ""}` }
 }
 
+// `!` (important): o Video do Kobra traz `aspect-video w-full` próprios e o Tailwind os emite depois destas classes
 export function playerClass(aspect: string | null): string {
-  if (aspect === "9:16") return "aspect-[9/16] h-[60vh] w-auto"
-  if (aspect === "1:1") return "aspect-square h-[60vh] w-auto"
-  return "aspect-video w-full"
+  if (aspect === "9:16") return "aspect-[9/16]! h-[60vh]! w-auto!"
+  if (aspect === "1:1") return "aspect-square! h-[60vh]! w-auto!"
+  return "aspect-video! w-full!"
 }

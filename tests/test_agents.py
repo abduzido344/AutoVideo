@@ -151,3 +151,10 @@ def test_editor_installs_skills_before_query(tmp_path, monkeypatch):
 def test_bash_prompts_demand_versioned_npx():
     for role in ("designer", "editor"):
         assert "`npx hyperframes` sem versão é negado" in (agents.PROMPTS / f"{role}.md").read_text(encoding="utf-8")
+
+
+@pytest.mark.parametrize("role", ["director", "copywriter", "designer", "editor"])
+def test_every_role_denies_gate_out_and_stage_markers(tmp_path, role):
+    o = agents.options_for(role, Project(tmp_path), load_recipe("talking-head-punchy"), bash=role in ("designer", "editor"))
+    for rule in ("Edit(./.claude/**)", "Edit(./approvals/**)", "Edit(./out/**)", "Edit(./.stages/**)"):
+        assert rule in o.disallowed_tools

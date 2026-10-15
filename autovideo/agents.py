@@ -64,7 +64,9 @@ def options_for(role: str, project: Project, recipe, bash: bool) -> ClaudeAgentO
         tools.append("Bash(ffprobe *)")
     return ClaudeAgentOptions(
         system_prompt=system, cwd=str(project.root), permission_mode="dontAsk",
-        allowed_tools=tools, disallowed_tools=["Edit(./.claude/**)"],
+        allowed_tools=tools,
+        # agentes nunca escrevem aprovação humana, saída final nem marcadores de etapa (nem a config do projeto)
+        disallowed_tools=["Edit(./.claude/**)", "Edit(./approvals/**)", "Edit(./out/**)", "Edit(./.stages/**)"],
         setting_sources=["project"],  # not "user": user hooks (e.g. rtk) would rewrite Bash and break allow rules
         skills=recipe.skills if role in ("designer", "editor") else None,
         max_turns=recipe.budget.max_turns, max_budget_usd=recipe.budget.max_usd)

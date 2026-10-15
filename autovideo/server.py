@@ -9,11 +9,12 @@ from urllib.parse import urlsplit
 from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
 from starlette.middleware.trustedhost import TrustedHostMiddleware
-from autovideo import pipeline
+from autovideo import doctor, pipeline
 from autovideo.jobs import GateError, JobStore, approve, run_job, stage_done
-from autovideo.recipes import list_recipes
+from autovideo.timeline import Timeline
+from autovideo.recipes import list_recipes, load_recipe
 
 DIST = Path(__file__).resolve().parent.parent / "web" / "dist"
 LOCAL_HOSTS = ["127.0.0.1", "localhost", "[::1]"]
@@ -85,6 +86,47 @@ def _jsonl(path: Path) -> list[dict]:
     return out
 
 
+_doctor_ok: dict | None = None
+
+
+def _doctor() -> dict:
+    # só o sucesso fica em cache (chama npx/claude, leva segundos); uma falha é rechecada na próxima carga do
+    # painel, para "Falta: claude auth" sumir depois do `claude login` sem reiniciar o serve
+    global _doctor_ok
+    if _doctor_ok:
+        return _doctor_ok
+    checks = [{"name": n, "ok": ok, "detail": d} for n, ok, d in doctor.run_checks()]
+    res = {"ok": all(c["ok"] for c in checks), "checks": checks}
+    if res["ok"]:
+        _doctor_ok = res
+    return res
+
+
+def _recipe_info(rid: str) -> dict:
+    r = load_recipe(rid)
+    return {"id": r.id, "title": r.title, "mode": r.mode, "aspect": r.aspect,
+            "captions": {"enabled": r.captions.enabled, "component": r.captions.component},
+            "pacing": {"max_gap": r.pacing.max_gap}, "audio": {"lufs": r.audio.lufs}}
+
+
+def _timeline(root: Path) -> dict | None:
+    data = _json(root / "timeline.json")
+    try:
+        Timeline.model_validate(data)
+    except ValidationError:
+        return None
+    return data
+
+
+def _transcript(root: Path) -> dict | None:
+    words = _json(root / "analysis/words.json")
+    if not words:  # ausente, malformado ou montagem (lista vazia)
+        return None
+    summary = _json(root / "analysis/summary.json") or {}
+    return {"words": [{"text": w["text"], "start": w["start"], "end": w["end"]} for w in words],
+            "fillers": summary.get("filler_candidates", [])}
+
+
 def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
     app = FastAPI(title="AutoVideo")
     home = pipeline.home()
@@ -112,6 +154,20 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
     def stages():
         return [name for name, _, _ in pipeline.STAGES]
 
+    @app.get("/api/recipe-info")
+    def recipe_info():
+        out = []
+        for rid in list_recipes():
+            try:
+                out.append(_recipe_info(rid))
+            except Exception as e:  # uma receita quebrada não pode esvaziar a home
+                log.warning("receita %s inválida: %s", rid, e)
+        return out
+
+    @app.get("/api/doctor")
+    def doctor_status():
+        return _doctor()
+
     @app.get("/api/jobs")
     def jobs():
         return store.list()
@@ -128,12 +184,21 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
             j["rel"] = root.resolve().relative_to(home.resolve()).as_posix()
         except ValueError:  # projeto fora do AUTOVIDEO_HOME atual
             j["rel"] = None
+        manifest = _json(root / "input/manifest.json") or {}
+        script = root / "script.md"
         j["files"] = {
             "brief": brief.read_text(encoding="utf-8") if brief.exists() else None,
             "post": _json(post),
             # etapa render concluída (review.json + marcador); final.mp4 sozinho pode ser de um render anterior
             "has_final": stage_done(root, "render", "out/review.json") and (root / "out/final.mp4").exists(),
             "decisions": _jsonl(log) if log.exists() else [],
+            "preview": next((v["clean"] for v in manifest.get("videos", []) if (root / v["clean"]).exists()), None)
+            if stage_done(root, "clean", "input/clean.ok") else None,
+            "aspect": manifest.get("aspect"),
+            "transcript": _transcript(root),
+            "timeline": _timeline(root),
+            "review": _json(root / "out/review.json"),
+            "script": script.read_text(encoding="utf-8") if script.exists() else None,
         }
         return j
 

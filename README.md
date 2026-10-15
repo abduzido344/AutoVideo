@@ -82,6 +82,12 @@ uv run autovideo serve                   # http://127.0.0.1:8765 (outra porta: -
 
 O painel é React + Vite + Tailwind v4 + shadcn/ui, com componentes do registry Kobra (`@kobra`). Componentes Kobra Pro exigem `KOBRA_TOKEN` na instalação (`npx shadcn add`), enviado pelo `web/components.json`. Sem o token, são usados os fallbacks shadcn base. Antes de criar um componente de UI, veja [docs/ui-components.md](docs/ui-components.md).
 
+O painel tem três telas:
+- **Novo vídeo:** anexe as gravações (e roteiro/assets) no compositor, escolha a receita e envie.
+- **Workspace do projeto:** etapas, player, transcrição ou timeline (clicável após o render), brief/revisão/post e a caixa para aprovar ou pedir ajustes.
+- **Sidebar:** lista os projetos com o estado (aprovar, rodando, pronto, falhou).
+`Ctrl K` volta para Novo vídeo.
+
 ## Testes
 ```bash
 uv run pytest -q

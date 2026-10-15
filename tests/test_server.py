@@ -158,3 +158,111 @@ def test_worker_marks_failed_and_survives(tmp_path, monkeypatch):
         real_set(j, **f)
     monkeypatch.setattr(store, "set", bad_set)
     assert server._run_one(store) is True
+
+
+import json
+from pathlib import Path
+
+
+def test_recipe_info_lists_display_fields(tmp_path, monkeypatch):
+    _, c = _client(tmp_path, monkeypatch)
+    info = {r["id"]: r for r in c.get("/api/recipe-info").json()}
+    th = info["talking-head-punchy"]
+    assert th["mode"] == "speech" and th["aspect"] == "9:16" and th["title"]
+    assert set(th["captions"]) == {"enabled", "component"} and "max_gap" in th["pacing"] and "lufs" in th["audio"]
+    assert info["montage-beat"]["mode"] == "montage"
+
+
+def test_doctor_caches_success_but_rechecks_failure(tmp_path, monkeypatch):
+    from autovideo import server
+    calls, logged = [], [False]
+    monkeypatch.setattr(server.doctor, "run_checks", lambda: calls.append(1) or [
+        ("ffmpeg", True, "7.1"), ("claude auth", logged[0], "ok" if logged[0] else "rode claude login")])
+    monkeypatch.setattr(server, "_doctor_ok", None)
+    _, c = _client(tmp_path, monkeypatch)
+    a, b = c.get("/api/doctor").json(), c.get("/api/doctor").json()
+    assert a == b == {"ok": False, "checks": [{"name": "ffmpeg", "ok": True, "detail": "7.1"},
+                                             {"name": "claude auth", "ok": False, "detail": "rode claude login"}]}
+    assert len(calls) == 2  # falha não fica em cache
+    logged[0] = True  # usuário rodou claude login
+    assert c.get("/api/doctor").json()["ok"] is True
+    assert c.get("/api/doctor").json()["ok"] is True
+    assert len(calls) == 3  # sucesso fica em cache
+
+
+def test_job_detail_exposes_preview_transcript_timeline_review(tmp_path, monkeypatch):
+    store, c = _client(tmp_path, monkeypatch)
+    jid = _mk(c, name="meu vídeo #1.mp4").json()["id"]
+    root = Path(store.get(jid)["project_dir"])
+    empty = c.get(f"/api/jobs/{jid}").json()["files"]
+    assert empty["preview"] is None and empty["transcript"] is None and empty["timeline"] is None
+    assert empty["review"] is None and empty["aspect"] is None and empty["script"] == "Olá"
+
+    (root / "input").mkdir(exist_ok=True)
+    (root / "input/meu vídeo #1.clean.mp4").write_bytes(b"x")
+    (root / "input/clean.ok").write_text("ok")
+    (root / ".stages").mkdir(exist_ok=True)
+    (root / ".stages/clean.ok").write_text("ok")
+    (root / "input/manifest.json").write_text(json.dumps({"aspect": "9:16", "videos": [
+        {"raw": "input/raw/x.mp4", "clean": "input/nao-existe.clean.mp4"},
+        {"raw": "input/raw/meu vídeo #1.mp4", "clean": "input/meu vídeo #1.clean.mp4"}]}), encoding="utf-8")
+    (root / "analysis").mkdir(exist_ok=True)
+    (root / "analysis/words.json").write_text(json.dumps([
+        {"text": "Olá", "start": 0.0, "end": 0.4, "src": "s"}, {"text": "é…", "start": 0.5, "end": 0.9, "src": "s"}]),
+        encoding="utf-8")
+    (root / "analysis/summary.json").write_text(json.dumps({"filler_candidates": [1]}), encoding="utf-8")
+    tl = {"width": 1080, "height": 1920, "segments": [{"src": "input/a.mp4", "in": 0, "out": 2}]}
+    (root / "timeline.json").write_text(json.dumps(tl), encoding="utf-8")
+    (root / "out").mkdir(exist_ok=True)
+    (root / "out/review.json").write_text(json.dumps({"issues_restantes": [], "lufs": -14.1}), encoding="utf-8")
+
+    f = c.get(f"/api/jobs/{jid}").json()["files"]
+    assert f["preview"] == "input/meu vídeo #1.clean.mp4" and f["aspect"] == "9:16"
+    assert f["transcript"] == {"words": [{"text": "Olá", "start": 0.0, "end": 0.4},
+                                         {"text": "é…", "start": 0.5, "end": 0.9}], "fillers": [1]}
+    assert f["timeline"] == tl and f["review"] == {"issues_restantes": [], "lufs": -14.1}
+
+
+def test_montage_job_has_no_transcript(tmp_path, monkeypatch):
+    store, c = _client(tmp_path, monkeypatch)
+    jid = _mk(c, recipe="montage-beat").json()["id"]
+    root = Path(store.get(jid)["project_dir"])
+    (root / "analysis").mkdir(exist_ok=True)
+    (root / "analysis/words.json").write_text("[]", encoding="utf-8")
+    assert c.get(f"/api/jobs/{jid}").json()["files"]["transcript"] is None
+
+
+def test_invalid_timeline_is_null(tmp_path, monkeypatch):
+    store, c = _client(tmp_path, monkeypatch)
+    jid = _mk(c).json()["id"]
+    root = Path(store.get(jid)["project_dir"])
+    (root / "timeline.json").write_text(json.dumps({"width": 1080, "height": 1920}), encoding="utf-8")
+    assert c.get(f"/api/jobs/{jid}").json()["files"]["timeline"] is None
+
+
+def test_recipe_info_skips_broken_recipe(tmp_path, monkeypatch):
+    from autovideo import recipes
+    d = tmp_path / "recipes"
+    d.mkdir()
+    for f in recipes.RECIPES_DIR.glob("*.yaml"):
+        (d / f.name).write_bytes(f.read_bytes())
+    (d / "quebrada.yaml").write_text("id: [nope\n  : :", encoding="utf-8")
+    monkeypatch.setattr(recipes, "RECIPES_DIR", d)
+    _, c = _client(tmp_path, monkeypatch)
+    ids = {r["id"] for r in c.get("/api/recipe-info").json()}
+    assert "talking-head-punchy" in ids and "quebrada" not in ids
+
+
+def test_preview_only_after_clean_marker(tmp_path, monkeypatch):
+    store, c = _client(tmp_path, monkeypatch)
+    jid = _mk(c).json()["id"]
+    root = Path(store.get(jid)["project_dir"])
+    (root / "input").mkdir(exist_ok=True)
+    (root / "input/v.clean.mp4").write_bytes(b"x")
+    (root / "input/manifest.json").write_text(json.dumps({"videos": [{"raw": "r", "clean": "input/v.clean.mp4"}]}), encoding="utf-8")
+    assert c.get(f"/api/jobs/{jid}").json()["files"]["preview"] is None
+    (root / "input/clean.ok").write_text("ok")
+    (root / ".stages").mkdir(exist_ok=True)  # projeto com marcadores: precisa do .stages/clean.ok
+    assert c.get(f"/api/jobs/{jid}").json()["files"]["preview"] is None
+    (root / ".stages/clean.ok").write_text("ok")
+    assert c.get(f"/api/jobs/{jid}").json()["files"]["preview"] == "input/v.clean.mp4"

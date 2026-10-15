@@ -17,7 +17,7 @@ export function Workspace({ id, stages, onChange }: { id: number; stages: string
   const f = job.files
   const src = job.rel === null ? null
     : f.has_final ? assetUrl(job.rel, "out/final.mp4", job.updated)
-      : f.preview ? assetUrl(job.rel, f.preview) : null
+      : f.preview ? assetUrl(job.rel, f.preview, job.updated) : null
   const after = () => { refresh(); onChange() }
 
   return (
@@ -37,7 +37,7 @@ export function Workspace({ id, stages, onChange }: { id: number; stages: string
           <div ref={stage} className="flex min-h-[420px] items-center justify-center rounded-2xl bg-muted p-5">
             {src
               ? <Video src={src} className={playerClass(f.aspect)} />
-              : <p className="text-sm text-muted-foreground">A prévia aparece depois da limpeza do áudio.</p>}
+              : <p className="text-sm text-muted-foreground">{job.rel === null ? "Este projeto está fora da pasta de projetos atual (AUTOVIDEO_HOME)." : "A prévia aparece depois da limpeza do áudio."}</p>}
           </div>
           {f.transcript && !f.timeline && <Transcript transcript={f.transcript} />}
         </section>

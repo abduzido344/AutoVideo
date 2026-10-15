@@ -41,8 +41,8 @@ export function ActionBox({ job, onDone }: { job: JobDetail; onDone: () => void 
 
   if (job.status === "failed") return (
     <div className={BOX}>
-      <p className="text-sm">{job.error.includes("interrompido") ? "Interrompido" : "Falhou"} em <b className="font-medium">{STAGE_LABEL[job.stage] ?? job.stage}</b>.</p>
-      {job.error && <p className="line-clamp-4 text-xs text-muted-foreground">{job.error}</p>}
+      <p className="text-sm">{job.error.includes("interrompido") ? "Interrompido" : "Falhou"} em <b className="font-medium">{STAGE_LABEL[job.stage] ?? (job.stage || "uma etapa")}</b>.</p>
+      {job.error && <p title={job.error} className="line-clamp-4 break-words text-xs text-muted-foreground">{job.error}</p>}
       <Button disabled={busy} onClick={() => act(() => api.resume(job.id), "Retomando")}>Retomar</Button>
     </div>
   )

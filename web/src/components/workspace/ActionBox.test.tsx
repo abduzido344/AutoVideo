@@ -56,4 +56,12 @@ describe("ActionBox", () => {
     rerender(<ActionBox job={job({ status: "in_progress", stage: "render" })} onDone={() => {}} />)
     expect(screen.getByRole("status").textContent).toContain("Renderizando")
   })
+
+  it("uma nova key (mudou a etapa) zera o texto", async () => {
+    const user = userEvent.setup()
+    const { rerender } = render(<ActionBox key="gate1-awaiting_approval" job={job()} onDone={() => {}} />)
+    await user.type(screen.getByLabelText("O que mudar"), "algo")
+    rerender(<ActionBox key="gate2-awaiting_approval" job={job({ stage: "gate2" })} onDone={() => {}} />)
+    expect((screen.getByLabelText("O que mudar") as HTMLTextAreaElement).value).toBe("")
+  })
 })

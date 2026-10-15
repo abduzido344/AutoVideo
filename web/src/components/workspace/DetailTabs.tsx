@@ -15,6 +15,9 @@ const MD = {
   p: md("p", "mt-1 leading-relaxed text-[#3A3A3A]"),
   ul: md("ul", "mt-1 list-disc space-y-1 pl-4 text-[#3A3A3A]"),
   ol: md("ol", "mt-1 list-decimal space-y-1 pl-4 text-[#3A3A3A]"),
+  // brief vem de LLM: links abrem fora do painel e imagens remotas nunca são buscadas
+  a: ({ node: _node, ...p }: MdProps & { href?: string }) => <a {...p} target="_blank" rel="noopener noreferrer" className="text-info underline" />,
+  img: () => null,
 }
 
 function Empty({ children }: { children: string }) {
@@ -26,7 +29,7 @@ export function DetailTabs({ job }: { job: JobDetail }) {
   const final = f.has_final
   const issues = f.review?.issues_restantes ?? []
   return (
-    <Tabs defaultValue={final ? "review" : "brief"} className="min-h-0">
+    <Tabs key={final ? "final" : "draft"} defaultValue={final ? "review" : "brief"} className="min-h-0">
       <TabsList className="h-auto w-full justify-start gap-5 rounded-none border-b bg-transparent p-0">
         {final
           ? <><TabsTrigger value="review" className={TAB}>Revisão</TabsTrigger><TabsTrigger value="post" className={TAB}>Post</TabsTrigger></>

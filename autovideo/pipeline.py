@@ -124,8 +124,9 @@ def analyze(ctx):
     for n, v in enumerate(vids):
         src = p.root / v["clean"]
         fs = media.extract_frames(src, p.analysis / "frames" / str(n), every_s=every)
-        # fps=1/every do ffmpeg: o k-ésimo frame (0-based) é o instante k*every do vídeo limpo
-        index += [{"file": _rel(p, f), "src": v["clean"], "t_src": float(k * every)} for k, f in enumerate(fs)]
+        # fps=1/every do ffmpeg: o k-ésimo frame (0-based) é o instante k*every; o último pode ser o flush do fim
+        index += [{"file": _rel(p, f), "src": v["clean"], "t_src": float(min(k * every, v["duration"]))}
+                  for k, f in enumerate(fs)]
         scenes[v["clean"]] = media.detect_scenes(src)
     _write_json(p.analysis / "frames" / "index.json", index, indent=2)
     _write_json(p.analysis / "scenes.json", scenes)

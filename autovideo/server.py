@@ -4,6 +4,7 @@ import shutil
 import tempfile
 import threading
 import time
+from functools import lru_cache
 from pathlib import Path, PureWindowsPath
 from urllib.parse import urlsplit
 from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
@@ -11,9 +12,9 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from starlette.middleware.trustedhost import TrustedHostMiddleware
-from autovideo import pipeline
+from autovideo import doctor, pipeline
 from autovideo.jobs import GateError, JobStore, approve, run_job, stage_done
-from autovideo.recipes import list_recipes
+from autovideo.recipes import list_recipes, load_recipe
 
 DIST = Path(__file__).resolve().parent.parent / "web" / "dist"
 LOCAL_HOSTS = ["127.0.0.1", "localhost", "[::1]"]
@@ -85,6 +86,29 @@ def _jsonl(path: Path) -> list[dict]:
     return out
 
 
+@lru_cache(maxsize=1)
+def _doctor() -> dict:
+    # ponytail: cache por processo (chama npx/claude, leva segundos); reinicie o serve depois de consertar algo
+    checks = [{"name": n, "ok": ok, "detail": d} for n, ok, d in doctor.run_checks()]
+    return {"ok": all(c["ok"] for c in checks), "checks": checks}
+
+
+def _recipe_info(rid: str) -> dict:
+    r = load_recipe(rid)
+    return {"id": r.id, "title": r.title, "mode": r.mode, "aspect": r.aspect,
+            "captions": {"enabled": r.captions.enabled, "component": r.captions.component},
+            "pacing": {"max_gap": r.pacing.max_gap}, "audio": {"lufs": r.audio.lufs}}
+
+
+def _transcript(root: Path) -> dict | None:
+    words = _json(root / "analysis/words.json")
+    if not words:  # ausente, malformado ou montagem (lista vazia)
+        return None
+    summary = _json(root / "analysis/summary.json") or {}
+    return {"words": [{"text": w["text"], "start": w["start"], "end": w["end"]} for w in words],
+            "fillers": summary.get("filler_candidates", [])}
+
+
 def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
     app = FastAPI(title="AutoVideo")
     home = pipeline.home()
@@ -112,6 +136,14 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
     def stages():
         return [name for name, _, _ in pipeline.STAGES]
 
+    @app.get("/api/recipe-info")
+    def recipe_info():
+        return [_recipe_info(rid) for rid in list_recipes()]
+
+    @app.get("/api/doctor")
+    def doctor_status():
+        return _doctor()
+
     @app.get("/api/jobs")
     def jobs():
         return store.list()
@@ -128,12 +160,20 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
             j["rel"] = root.resolve().relative_to(home.resolve()).as_posix()
         except ValueError:  # projeto fora do AUTOVIDEO_HOME atual
             j["rel"] = None
+        manifest = _json(root / "input/manifest.json") or {}
+        script = root / "script.md"
         j["files"] = {
             "brief": brief.read_text(encoding="utf-8") if brief.exists() else None,
             "post": _json(post),
             # etapa render concluída (review.json + marcador); final.mp4 sozinho pode ser de um render anterior
             "has_final": stage_done(root, "render", "out/review.json") and (root / "out/final.mp4").exists(),
             "decisions": _jsonl(log) if log.exists() else [],
+            "preview": next((v["clean"] for v in manifest.get("videos", []) if (root / v["clean"]).exists()), None),
+            "aspect": manifest.get("aspect"),
+            "transcript": _transcript(root),
+            "timeline": _json(root / "timeline.json"),
+            "review": _json(root / "out/review.json"),
+            "script": script.read_text(encoding="utf-8") if script.exists() else None,
         }
         return j
 

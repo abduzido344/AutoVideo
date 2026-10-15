@@ -241,3 +241,40 @@ def test_apply_grading_passes_validated_numbers(monkeypatch):
 def test_timeline_rejects_bad_grading():
     with pytest.raises(ValueError):
         Timeline(width=1, height=1, segments=[Segment(src="a", **{"in": 0}, out=1)], grading={"adjust": {"x": 1}})
+
+
+SWATCH = """<!doctype html>
+<html data-composition-variables='[{"id":"bg","type":"color","label":"Fundo","default":"#00ff00"}]'>
+<head><meta charset="UTF-8" /></head>
+<body><template>
+<style>#root{position:absolute;inset:0} #sw{position:absolute;inset:30%;background:var(--bg)}</style>
+<div id="root" data-composition-id="swatch" data-width="1080" data-height="1080"><div id="sw"></div></div>
+<script>
+window.__timelines = window.__timelines || {};
+window.__timelines["swatch"] = gsap.timeline({ paused: true });
+</script>
+</template></body></html>"""
+
+
+def _center_rgb(png: Path) -> tuple[int, ...]:
+    import subprocess
+    raw = subprocess.run(["ffmpeg", "-v", "error", "-i", str(png), "-vf", "crop=1:1:iw/2:ih/2", "-f", "rawvideo",
+                          "-pix_fmt", "rgb24", "-"], capture_output=True, check=True).stdout
+    return tuple(raw[:3])
+
+
+@needs_ffmpeg
+def test_same_overlay_twice_with_different_vars_renders_each_instance(slow, tmp_path):
+    """T8: dois hosts com o mesmo data-composition-id (= stem do arquivo) e vars diferentes não colidem."""
+    project = Project(tmp_path / "Projeto ç")
+    render.init_composition(project, "1:1")
+    ff("-f", "lavfi", "-i", "color=c=black:size=1080x1080:rate=30", "-t", "3", "-pix_fmt", "yuv420p",
+       "-c:v", "libx264", str(project.comp / "assets" / "clip.mp4"))
+    (project.comp / "compositions" / "swatch.html").write_text(SWATCH, encoding="utf-8")
+    t = Timeline(width=1080, height=1080, captions=False, segments=[Segment(src="input/clip.mp4", **{"in": 0.0}, out=3.0)],
+                 overlays=[{"start": 0, "dur": 1.2, "src": "compositions/swatch.html", "vars": {"bg": "#ff0000"}},
+                           {"start": 1.5, "dur": 1.2, "src": "compositions/swatch.html", "vars": {"bg": "#0000ff"}}])
+    write_composition(project.comp, t, [])
+    assert render.check(project.comp, "1:1") == []
+    red, blue = (_center_rgb(p) for p in render.snapshots(project.comp, [0.6, 2.1], project.root / "snaps"))
+    assert red[0] > 200 and red[2] < 50 and blue[2] > 200 and blue[0] < 50, (red, blue)

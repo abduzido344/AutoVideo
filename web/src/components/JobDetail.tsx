@@ -32,6 +32,12 @@ export function JobDetail({ job, stages, onChange }: { job: JD; stages: string[]
       <CardContent className="grid gap-8">
         {job.files.has_final && job.rel !== null &&
           <Video src={`/projects/${job.rel}/out/final.mp4?t=${job.updated}`} className="aspect-auto [&_video]:max-h-[70vh]" />}
+        {job.status === "failed" && (
+          <div className="flex flex-wrap items-center gap-3 rounded-lg border p-4">
+            <p className="text-sm">Falhou em <b>{job.stage || "-"}</b>. Retomar refaz a partir dessa etapa.</p>
+            <Button disabled={busy} onClick={() => act(() => api.resume(job.id))}>Retomar</Button>
+          </div>
+        )}
         {gate && (
           <div className="grid gap-3 rounded-lg border p-4">
             <p className="text-sm">Aguardando sua aprovação em <b>{job.stage}</b>.</p>

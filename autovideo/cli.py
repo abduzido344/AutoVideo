@@ -43,12 +43,13 @@ def main(argv: list[str] | None = None) -> int:
         else:
             jid = a.job
             if a.cmd == "resume":
-                store.requeue_stale()  # só aqui: num edit/approve/reject um servidor vivo pode ser dono de jobs em andamento
+                store.fail_stale()  # só aqui: num edit/approve/reject um servidor vivo pode ser dono de jobs em andamento
             elif a.cmd == "approve":
                 approve(store, jid, pipeline.STAGES)
             elif a.cmd == "reject":
                 pipeline.reject_job(store, jid, a.feedback)
-        if not store.claim(jid, ("queued", "failed")):  # failed = resume manual; um servidor vivo pode já ter pego o job
+        # só o resume reivindica um job failed; um servidor vivo pode já ter pego o job
+        if not store.claim(jid, ("queued", "failed") if a.cmd == "resume" else ("queued",)):
             raise GateError(f"job {jid} não está executável (já em execução, aguardando aprovação ou concluído)")
         status = run_job(store, jid, pipeline.STAGES, pipeline.make_ctx)
     except (GateError, KeyError, ValueError, FileNotFoundError) as err:

@@ -495,7 +495,7 @@ def test_cli_gate_error_is_clean_message(tmp_path, monkeypatch, capsys):
     assert store.get(jid)["status"] == "in_progress"  # nada foi mexido
 
 
-def test_cli_resume_requeues_stale_but_approve_does_not(tmp_path, monkeypatch):
+def test_cli_resume_fails_stale_and_claims_failed_but_approve_does_not(tmp_path, monkeypatch):
     monkeypatch.setenv("AUTOVIDEO_HOME", str(tmp_path))
     store = JobStore(tmp_path / "jobs.db")
     mk = lambda n: store.create(str(tmp_path / f"p{n}"), "talking-head-punchy", False)  # um diretório por job
@@ -508,7 +508,8 @@ def test_cli_resume_requeues_stale_but_approve_does_not(tmp_path, monkeypatch):
     assert cli.main(["approve", str(gate)]) == 0
     assert store.get(live)["status"] == "in_progress"  # approve não mexe em jobs de outro processo
     assert cli.main(["resume", str(dead)]) == 0
-    assert store.get(dead)["status"] == "awaiting_approval" and store.get(live)["status"] == "queued"
+    assert store.get(dead)["status"] == "awaiting_approval"
+    assert store.get(live)["status"] == "failed" and store.get(live)["error"] == "interrompido"  # não volta à fila
     assert (tmp_path / "p2/approvals/gate1.ok").exists() and not (tmp_path / "p1/approvals/gate1.ok").exists()
 
 
@@ -571,3 +572,15 @@ def test_copywriter_task_says_fillers_are_suggestions(tmp_path):
     pipeline.copywriter(ctx)
     assert "só sugestões" in seen[0] and 'nunca remova o verbo "é"' in seen[0]
     assert 'Nunca remova o verbo "é"' in (pipeline.agents.PROMPTS / "copywriter.md").read_text(encoding="utf-8")
+
+
+def test_cli_only_resume_claims_failed_jobs(tmp_path, monkeypatch, capsys):
+    monkeypatch.setenv("AUTOVIDEO_HOME", str(tmp_path))
+    store = JobStore(tmp_path / "jobs.db")
+    jid = store.create(str(tmp_path / "p"), "talking-head-punchy", False)
+    store.set(jid, status="failed", stage="gate1", error="x")
+    monkeypatch.setattr(pipeline, "STAGES", [("gate1", "approvals/gate1.ok", None)])
+    monkeypatch.setattr(pipeline, "make_ctx", lambda job: Ctx(Project(Path(job["project_dir"])), None, job, None))
+    assert cli.main(["approve", str(jid)]) == 1  # approve num job failed: erro limpo, nada roda
+    assert store.get(jid)["status"] == "failed"
+    assert cli.main(["resume", str(jid)]) == 0 and store.get(jid)["status"] == "awaiting_approval"

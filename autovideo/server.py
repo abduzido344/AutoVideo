@@ -101,7 +101,7 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
         return await call_next(request)
 
     if start_worker:
-        store.requeue_stale()  # antes da thread: nenhum job in_progress sobrevive a um restart
+        store.fail_stale()  # antes da thread: job in_progress de antes do restart vira failed ("interrompido")
         threading.Thread(target=_worker, args=(store,), daemon=True).start()
 
     @app.get("/api/recipes")
@@ -167,6 +167,13 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
     @app.post("/api/jobs/{jid}/reject")
     def do_reject(jid: int, fb: Feedback):
         return _gate(pipeline.reject_job, store, jid, fb.feedback)
+
+    @app.post("/api/jobs/{jid}/resume")
+    def do_resume(jid: int):
+        def go():
+            if not store.resume(jid):
+                raise GateError(f"job {jid} não está failed (só jobs com falha podem ser retomados)")
+        return _gate(go)
 
     app.mount("/projects", StaticFiles(directory=home), name="projects")
     if DIST.exists():

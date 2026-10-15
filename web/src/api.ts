@@ -26,6 +26,7 @@ export const api = {
   job: (id: number) => j<JobDetail>(`/api/jobs/${id}`),
   create: (fd: FormData) => j<{ id: number }>("/api/jobs", { method: "POST", body: fd }),
   approve: (id: number) => j<{ ok: boolean }>(`/api/jobs/${id}/approve`, { method: "POST" }),
+  resume: (id: number) => j<{ ok: boolean }>(`/api/jobs/${id}/resume`, { method: "POST" }),
   reject: (id: number, feedback: string) =>
     j<{ ok: boolean }>(`/api/jobs/${id}/reject`, {
       method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ feedback }),

@@ -93,14 +93,24 @@ def test_stale_approve_after_reject_raises(tmp_path):
     assert not (root / "approvals/gate2.ok").exists()
     assert store.get(jid)["stage"] == ""
 
-def test_requeue_stale_moves_in_progress_to_queued(tmp_path):
+def test_fail_stale_marks_in_progress_failed_interrompido(tmp_path):
     store, jid, _ = setup(tmp_path)
     jid2 = store.create(str(tmp_path / "p 2"), "talking-head-punchy", False)
     store.set(jid, status="in_progress")
     store.set(jid2, status="awaiting_approval")
-    assert store.requeue_stale() == 1
-    assert store.get(jid)["status"] == "queued"
+    assert store.fail_stale() == 1
+    assert store.get(jid)["status"] == "failed" and store.get(jid)["error"] == "interrompido"
     assert store.get(jid2)["status"] == "awaiting_approval"
+
+
+def test_resume_only_requeues_failed(tmp_path):
+    store, jid, _ = setup(tmp_path)
+    assert store.resume(jid) is False  # queued
+    store.set(jid, status="failed", error="interrompido")
+    assert store.resume(jid) is True
+    assert store.get(jid)["status"] == "queued" and store.get(jid)["error"] == ""
+    with pytest.raises(KeyError):
+        store.resume(999)
 
 def test_failed_stage_leaves_no_partial_artifact(tmp_path):
     store, jid, mk = setup(tmp_path, auto=True)

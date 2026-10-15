@@ -88,13 +88,23 @@ class JobStore:
             job = self.next_queued()
             return self.get(job["id"]) if job and self.claim(job["id"]) else None
 
-    def requeue_stale(self) -> int:
-        """Jobs que estavam in_progress (processo morreu no meio) voltam para queued."""
+    def fail_stale(self) -> int:
+        """Jobs in_progress de um processo que morreu viram failed ("interrompido"): só voltam com um resume
+        explícito (Retomar no painel / `autovideo resume`), nunca rodam de novo sozinhos num restart."""
         with self.lock:
-            cur = self.con.execute("update jobs set status='queued', updated=? where status='in_progress'",
-                                   (time.time(),))
+            cur = self.con.execute("update jobs set status='failed', error='interrompido', updated=? "
+                                   "where status='in_progress'", (time.time(),))
             self.con.commit()
             return cur.rowcount
+
+    def resume(self, jid: int) -> bool:
+        """failed -> queued (o worker retoma da etapa que falhou). False se o job não está failed."""
+        with self.lock:
+            self.get(jid)  # KeyError se não existe
+            cur = self.con.execute("update jobs set status='queued', error='', updated=? where id=? and status='failed'",
+                                   (time.time(), jid))
+            self.con.commit()
+            return cur.rowcount == 1
 
 
 def _art(job: dict, rel: str) -> Path:

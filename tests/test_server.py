@@ -101,14 +101,25 @@ def test_blocks_foreign_origin_and_host(tmp_path, monkeypatch):
     assert c.get("/api/recipes", headers={"Host": "evil.example"}).status_code == 400
 
 
-def test_serve_requeues_stale_before_worker(tmp_path, monkeypatch):
+def test_serve_fails_stale_before_worker(tmp_path, monkeypatch):
     monkeypatch.setenv("AUTOVIDEO_HOME", str(tmp_path))
     store = JobStore(tmp_path / "jobs.db")
     jid = store.create(str(tmp_path / "p"), "talking-head-punchy", False)
     store.set(jid, status="in_progress")
     monkeypatch.setattr("autovideo.server.threading.Thread", lambda **kw: type("T", (), {"start": lambda s: None})())
     create_app(store)
+    assert store.get(jid)["status"] == "failed" and store.get(jid)["error"] == "interrompido"  # não reroda sozinho
+
+
+def test_resume_endpoint(tmp_path, monkeypatch):
+    store, c = _client(tmp_path, monkeypatch)
+    jid = _mk(c).json()["id"]
+    assert c.post(f"/api/jobs/{jid}/resume").status_code == 409  # queued
+    store.set(jid, status="failed", error="interrompido")
+    assert c.post(f"/api/jobs/{jid}/resume").status_code == 200
     assert store.get(jid)["status"] == "queued"
+    assert c.post(f"/api/jobs/{jid}/resume").status_code == 409
+    assert c.post("/api/jobs/999/resume").status_code == 404
 
 
 def test_vite_dev_proxy_origin_allowed(tmp_path, monkeypatch):

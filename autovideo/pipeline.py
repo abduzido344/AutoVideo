@@ -220,9 +220,34 @@ def _review_times(t: Timeline) -> list[float]:
     return sorted({round(min(max(x, 0.0), max(t.duration - 0.05, 0.0)), 2) for x in raw})
 
 
+def _backups(p: Project) -> list[Path]:
+    return sorted((d for d in (p.analysis / "review").glob("*/") if (d / "timeline.bak.json").exists()),
+                  key=lambda d: int(d.name) if d.name.isdigit() else -1)
+
+
+def _restore(p: Project, rdir: Path) -> None:
+    shutil.copy2(rdir / "timeline.bak.json", p.root / "timeline.json")
+    shutil.rmtree(p.comp / "compositions", ignore_errors=True)
+    shutil.copytree(rdir / "compositions.bak", p.comp / "compositions")
+
+
+def _drop_backup(rdir: Path) -> None:
+    (rdir / "timeline.bak.json").unlink(missing_ok=True)
+    shutil.rmtree(rdir / "compositions.bak", ignore_errors=True)
+
+
 def do_render(ctx):
     p, r = ctx.project, ctx.recipe
     timeline = p.root / "timeline.json"
+    # Consumidores devem tratar out/review.json como o marcador de "render pronto": final.mp4/cover.jpg velhos
+    # (render anterior, antes de um reject) somem aqui para nunca serem confundidos com a saída desta rodada.
+    (p.out / "final.mp4").unlink(missing_ok=True)
+    (p.out / "cover.jpg").unlink(missing_ok=True)
+    # backup restante = rodada de revisão interrompida (kill): volta ao estado anterior a ela, que era válido
+    leftover = _backups(p)
+    if leftover:
+        _restore(p, leftover[-1])
+        _drop_backup(leftover[-1])
     _validate_timeline(ctx)(timeline)  # job retomado nunca renderiza um timeline inválido
     t = Timeline.load(timeline)
     _compose(p, t)
@@ -240,22 +265,26 @@ def do_render(ctx):
             ctx.agent("editor", p, r,
                       "REVIEW: corrija os problemas abaixo editando timeline.json e/ou composition/compositions/*.html.\n"
                       "Correções de legenda vão em composition/compositions/captions.template.html "
-                      "(captions.html é gerado a partir dele a cada recomposição).\n"
+                      "(captions.html é gerado a partir dele a cada recomposição); mantenha o marcador "
+                      "/*AV_WORDS*/[] nesse arquivo.\n"
                       "Sempre reescreva timeline.json ao final, mesmo que sem mudanças.\n"
                       f"Problemas: {json.dumps(issues, ensure_ascii=False)}\n"
                       f"Frames para inspecionar: {[_rel(p, x) for x in pngs]}",
                       timeline, _validate_timeline(ctx), bash=True)
-        except Exception as e:  # noqa: BLE001 — revisão é best-effort: restaura e renderiza o que já era válido
-            shutil.copy2(rdir / "timeline.bak.json", timeline)
-            shutil.rmtree(p.comp / "compositions")
-            shutil.copytree(rdir / "compositions.bak", p.comp / "compositions")
+            new_t = Timeline.load(timeline)
+            _compose(p, new_t)
+            new_issues = render.check(p.comp, r.aspect)
+        except BaseException as e:  # noqa: BLE001 — revisão é best-effort: restaura e renderiza o que já era válido
+            _restore(p, rdir)
+            _drop_backup(rdir)
             p.log({"role": "editor", "review_round": n, "is_error": True,
                    "result": f"revisão revertida: {type(e).__name__}: {e}"[:500]})
+            if not isinstance(e, Exception):
+                raise  # interrupção: o próximo start recompõe a partir do estado restaurado
             _compose(p, t)  # index.html/captions.html de volta ao estado do timeline restaurado
             break
-        t = Timeline.load(timeline)
-        _compose(p, t)
-        issues = render.check(p.comp, r.aspect)
+        _drop_backup(rdir)
+        t, issues = new_t, new_issues
     final = p.out / "final.mp4"
     lufs = render.render_final(p.comp, final, r.audio.lufs if _has_audio(p, t) else None)
     render.make_cover(final, min(1.0, t.duration / 2), p.out / "cover.jpg")

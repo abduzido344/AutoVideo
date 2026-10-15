@@ -331,6 +331,94 @@ def test_render_without_any_audio_skips_loudness(tmp_path, monkeypatch):
     assert json.loads((p.out / "review.json").read_text(encoding="utf-8"))["lufs"] is None
 
 
+def _real_compose_setup(tmp_path, monkeypatch, agent):
+    """Como _failing_review_setup, mas com o write_composition real (captions=True exige o marcador AV_WORDS)."""
+    ctx, good, _ = _failing_review_setup(tmp_path, monkeypatch, agent)
+    monkeypatch.undo()  # volta o write_composition real; refaz só o resto
+    good = {**good, "captions": True}
+    render_ready(ctx, good)
+    tpl = ctx.project.comp / "compositions/captions.template.html"
+    tpl.write_text("<script>const WORDS = /*AV_WORDS*/[];</script>", encoding="utf-8")
+    r = pipeline.render
+    monkeypatch.setattr(r, "apply_grading", lambda *a: None)
+    monkeypatch.setattr(r, "check", lambda *a: [{"code": "x"}])
+    monkeypatch.setattr(r, "snapshots", lambda comp, times, d: d.mkdir(parents=True, exist_ok=True) or [])
+    monkeypatch.setattr(r, "render_final", lambda *a: -14.0)
+    monkeypatch.setattr(r, "make_cover", lambda *a: None)
+    return ctx, good, tpl
+
+
+def test_review_that_breaks_compose_is_restored(tmp_path, monkeypatch):
+    def agent(role, project, recipe, task, output, validate=None, bash=False):
+        assert "/*AV_WORDS*/[]" in task
+        output.write_text((project.root / "timeline.json").read_text(encoding="utf-8"), encoding="utf-8")  # válido
+        (project.comp / "compositions/captions.template.html").write_text("sem marcador", encoding="utf-8")
+    ctx, good, tpl = _real_compose_setup(tmp_path, monkeypatch, agent)
+    pipeline.do_render(ctx)
+    p = ctx.project
+    assert "/*AV_WORDS*/" in tpl.read_text(encoding="utf-8")
+    assert "const WORDS = [];" in (p.comp / "compositions/captions.html").read_text(encoding="utf-8")  # recomposto
+    assert json.loads((p.root / "timeline.json").read_text(encoding="utf-8")) == good
+    assert (p.out / "review.json").exists()
+    assert "ComposeError" in (p.root / "decisions.log").read_text(encoding="utf-8")
+    assert not list((p.analysis / "review").glob("*/timeline.bak.json"))  # backup consumido
+
+
+def test_interrupted_review_restores_then_reraises(tmp_path, monkeypatch):
+    def agent(role, project, recipe, task, output, validate=None, bash=False):
+        output.write_text("{lixo", encoding="utf-8")
+        raise KeyboardInterrupt
+    ctx, good, composed = _failing_review_setup(tmp_path, monkeypatch, agent)
+    p = ctx.project
+    with pytest.raises(KeyboardInterrupt):
+        pipeline.do_render(ctx)
+    assert json.loads((p.root / "timeline.json").read_text(encoding="utf-8")) == good
+    assert composed == [10.0] and not (p.out / "review.json").exists()  # não recompôs na interrupção
+
+
+def test_resume_restores_leftover_review_backup(tmp_path, monkeypatch):
+    ctx, good, composed = _failing_review_setup(tmp_path, monkeypatch, lambda *a, **k: pytest.fail("sem issues"))
+    monkeypatch.setattr(pipeline.render, "check", lambda *a: [])
+    p = ctx.project
+    rdir = p.analysis / "review" / "0"  # rodada morta no meio: backup bom + timeline/HTML quebrados
+    (rdir / "compositions.bak").mkdir(parents=True)
+    (rdir / "compositions.bak/captions.template.html").write_text("bom", encoding="utf-8")
+    (rdir / "timeline.bak.json").write_text(json.dumps(good), encoding="utf-8")
+    (p.root / "timeline.json").write_text("{lixo", encoding="utf-8")
+    (p.comp / "compositions/captions.template.html").write_text("meio editado", encoding="utf-8")
+    pipeline.do_render(ctx)
+    assert json.loads((p.root / "timeline.json").read_text(encoding="utf-8")) == good
+    assert (p.comp / "compositions/captions.template.html").read_text(encoding="utf-8") == "bom"
+    assert (p.out / "review.json").exists() and not (rdir / "timeline.bak.json").exists()
+
+
+def test_rerender_starts_without_stale_final_and_cover(tmp_path, monkeypatch):
+    ctx, _, _ = _failing_review_setup(tmp_path, monkeypatch, lambda *a, **k: None)
+    p = ctx.project
+    monkeypatch.setattr(pipeline.render, "check", lambda *a: [])
+    p.out.mkdir()
+    (p.out / "final.mp4").write_bytes(b"velho")
+    (p.out / "cover.jpg").write_bytes(b"velho")
+    seen = []
+    monkeypatch.setattr(pipeline.render, "render_final", lambda comp, out, lufs: seen.append(out.exists()) or -14.0)
+    pipeline.do_render(ctx)
+    assert seen == [False] and not (p.out / "cover.jpg").exists()  # make_cover é falso: nada novo, nada velho
+
+
+def test_render_refuses_speech_timeline_with_changed_segments(tmp_path, monkeypatch):
+    ctx = mk_project(tmp_path)
+    p = ctx.project
+    (p.root / "edit.json").write_text(json.dumps({"drop": [], "hook_text": "h", "post":
+                                      {"title": "t", "caption": "c", "hashtags": []}}), encoding="utf-8")
+    pipeline.plan(ctx)
+    (p.comp / "assets").mkdir(parents=True)
+    (p.comp / "assets/a.clean.mp4").write_bytes(b"x")
+    _timeline(ctx, segments=[seg("input/a.clean.mp4", 0, 1)])
+    monkeypatch.setattr(pipeline, "write_composition", lambda *a: pytest.fail("não deve compor"))
+    with pytest.raises(ValueError, match="não altere segments"):
+        pipeline.do_render(ctx)
+
+
 def test_review_times_clamped_and_sorted(tmp_path):
     t = Timeline(width=1, height=1, segments=[seg("a", 0, 0.3)], overlays=[{"start": 0.2, "dur": 0.1, "src": "c/h.html"}])
     assert pipeline._review_times(t) == [0.0, 0.1, 0.25]  # tudo dentro de [0, duração]

@@ -13,6 +13,7 @@ describe("format", () => {
     expect(statusInfo({ status: "failed", error: "AgentOutputError: x" }).label).toBe("falhou")
     expect(statusInfo({ status: "in_progress", error: "" })).toEqual({ label: "rodando", tone: "gray" })
     expect(statusInfo({ status: "completed", error: "" }).tone).toBe("green")
+    expect(statusInfo({ status: "queued", error: "" })).toEqual({ label: "na fila", tone: "gray" })
   })
   it("assetUrl codifica cada segmento (espaço, acento, #)", () => {
     expect(assetUrl("20261015-1-a", "input/meu vídeo #1.clean.mp4"))
@@ -21,6 +22,7 @@ describe("format", () => {
   })
   it("custos, relógio e etapa", () => {
     expect(totalCost([{ cost_usd: 0.2 }, { cost_usd: null }, { cost_usd: 0.35 }])).toBeCloseTo(0.55)
+    expect(totalCost([{ cost_usd: 0.1 }, {}, { cost_usd: undefined }])).toBeCloseTo(0.1)
     expect(money(1.846)).toBe("$1,85")
     expect(clock(41)).toBe("00:41")
     expect(clock(125.6)).toBe("02:05")

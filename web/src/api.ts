@@ -2,8 +2,10 @@ export type Job = {
   id: number; project_dir: string; recipe: string; auto: number; status: string; stage: string; error: string
   created: number; updated: number
 }
+// linhas de decisions.log: agentes (role/cost_usd...), reversão de revisão (review_round), beats_error (stage) e validation_error
 export type Decision = {
-  ts: number; role: string; attempt?: number; cost_usd: number | null; turns?: number | null; is_error?: boolean; result?: string
+  ts: number; role?: string; attempt?: number; cost_usd?: number | null; turns?: number | null; is_error?: boolean; result?: string
+  review_round?: number; stage?: string; beats_error?: string; validation_error?: string
 }
 export type Word = { text: string; start: number; end: number }
 export type TimelineJSON = {

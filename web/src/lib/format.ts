@@ -22,12 +22,13 @@ export function statusInfo(job: { status: string; error: string }): { label: str
   switch (job.status) {
     case "awaiting_approval": return { label: "aprovar", tone: "blue" }
     case "completed": return { label: "pronto", tone: "green" }
+    case "queued": return { label: "na fila", tone: "gray" }
     case "failed": return { label: job.error?.includes("interrompido") ? "interrompido" : "falhou", tone: "red" }
     default: return { label: "rodando", tone: "gray" }
   }
 }
 
-export const totalCost = (ds: { cost_usd: number | null }[]) => ds.reduce((s, d) => s + (d.cost_usd ?? 0), 0)
+export const totalCost = (ds: { cost_usd?: number | null }[]) => ds.reduce((s, d) => s + (d.cost_usd ?? 0), 0)
 export const money = (v: number) => `$${v.toFixed(2).replace(".", ",")}`
 
 export function clock(s: number): string {

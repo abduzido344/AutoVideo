@@ -23,7 +23,7 @@ Os demais 77 respondem 401 e exigem **Kobra Pro**. O token vai em `KOBRA_TOKEN`,
 **Instalar item free sem token:** com `@kobra` no `components.json` o shadcn exige `KOBRA_TOKEN` até para itens free (erro "requires the following environment variables"). Instale pela URL: `npx shadcn@latest add https://kobra.systems/r/<nome>.json`.
 
 ## Estado atual do painel (`web/`)
-Sem KOBRA_TOKEN na instalação. Kobra: video (player) e sound (<SoundEffects>). shadcn base: sidebar (variant inset), switch, dropdown-menu, tabs, button, sonner. Markdown do brief com react-markdown.
+Sem KOBRA_TOKEN na instalação. Kobra: video (player), sound (<SoundEffects>) e toast (`<Toasts />` no App; padrão de notificação do painel: `toast({ message, description?, state })`). O toast depende de `@kobra/alert`, `@kobra/spinner` e `@kobra/button`, que são Pro: `components/toast-marks.tsx` substitui os dois primeiros com ícones do lucide, o `button` é o do shadcn, e `useDirection` (base-ui) virou `document.dir`. shadcn base: sidebar (variant inset), switch, dropdown-menu, tabs, button. Markdown do brief com react-markdown.
 
 Nota: o `liquidglass` vai duas vezes no bundle: a lib vendorizada em `src/lib/liquidglass` (importada por `src/lib/glass-controls.ts`, vinda do item `video`) e a cópia interna do `loomix` (chunks `liquidglass-*.js` no build, ~51 kB cada). A deduplicação não é uma troca trivial de import (o `loomix` não exporta a lib), então ficou como está.
 
@@ -45,7 +45,7 @@ Nota: o `liquidglass` vai duas vezes no bundle: a lib vendorizada em `src/lib/li
 | Gate de aprovação (aprovar/rejeitar) | `question-card` | `card` + `button` |
 | Editar roteiro/brief no painel | `ai-editor` | `textarea` |
 | timeline.json / edit.json | `code-block`, `file-diff` (diff entre versões) | `pre` |
-| Notificações (job concluído/falhou) | `toast` | `sonner` |
+| Notificações (job concluído/falhou) | `toast` (em uso) | — |
 | Navegação / layout | `sidebar`, `tabs`, `resizable`, `scroll-area` | iguais no shadcn |
 | Modais / painéis | `dialog`, `sheet`, `drawer`, `tooltip`, `kbd` | iguais no shadcn |
 | Capas e frames de revisão | `lightbox`, `carousel` (free) | `dialog` + `img` |

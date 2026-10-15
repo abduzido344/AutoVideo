@@ -11,3 +11,5 @@ if (!window.matchMedia) {
     addEventListener: () => {}, removeEventListener: () => {}, dispatchEvent: () => false,
   }) as MediaQueryList
 }
+// jsdom não tem ResizeObserver; o toast do Kobra mede as pílulas com ele
+globalThis.ResizeObserver ??= class { observe() {} unobserve() {} disconnect() {} } as unknown as typeof ResizeObserver

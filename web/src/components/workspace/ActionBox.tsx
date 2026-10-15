@@ -1,6 +1,6 @@
 import { Loader2 } from "lucide-react"
 import { useState } from "react"
-import { toast } from "sonner"
+import { toast } from "@/components/ui/toast"
 import { api, type JobDetail } from "@/api"
 import { Button } from "@/components/ui/button"
 import { appendChip, assetUrl, STAGE_LABEL } from "@/lib/format"
@@ -17,8 +17,8 @@ export function ActionBox({ job, onDone }: { job: JobDetail; onDone: () => void 
   const act = (run: () => Promise<unknown>, ok: string) => {
     setBusy(true)
     // busy só cai no erro: a key do Workspace remonta a caixa quando o status muda
-    run().then(() => { toast.success(ok); setFb(""); onDone() })
-      .catch((e: Error) => { toast.error(e.message); setBusy(false) })
+    run().then(() => { toast({ message: ok, state: "success" }); setFb(""); onDone() })
+      .catch((e: Error) => { toast({ message: "Não deu certo", description: e.message, state: "error" }); setBusy(false) })
   }
 
   if (job.status === "awaiting_approval") return (

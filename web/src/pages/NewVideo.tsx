@@ -1,6 +1,6 @@
 import { ArrowUp, ChevronDown, FileText, Loader2, Paperclip, Play, Plus, X } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
-import { toast } from "sonner"
+import { toast } from "@/components/ui/toast"
 import { api, type Doctor, type RecipeInfo } from "@/api"
 import { StatusPill } from "@/components/StatusPill"
 import { Button } from "@/components/ui/button"
@@ -26,8 +26,8 @@ export function NewVideo({ doctor, onCreated }: { doctor: Doctor | null; onCreat
     if (!fs.length) return
     const { next, skipped } = classify(fs, attRef.current)
     const old = attRef.current.script
-    if (old && next.script && next.script !== old) toast.info(`Roteiro trocado: ${old.name} → ${next.script.name}`)
-    if (skipped.length) toast.info(`Já anexado: ${skipped.join(", ")}`)
+    if (old && next.script && next.script !== old) toast({ message: `Roteiro trocado: ${old.name} → ${next.script.name}`, state: "info" })
+    if (skipped.length) toast({ message: `Já anexado: ${skipped.join(", ")}`, state: "info" })
     put(next)
   }
 
@@ -35,7 +35,7 @@ export function NewVideo({ doctor, onCreated }: { doctor: Doctor | null; onCreat
     api.recipeInfo().then((list) => {
       setRecipes(list)
       setRecipe((cur) => (list.length === 0 || list.some((x) => x.id === cur) ? cur : list[0].id))
-    }, (e: Error) => toast.error(e.message))
+    }, (e: Error) => toast({ message: "Não deu para carregar as receitas", description: e.message, state: "error" }))
   }, [])
 
   // o App já bloqueia a navegação do navegador (soltar arquivo); aqui só anexa
@@ -59,7 +59,7 @@ export function NewVideo({ doctor, onCreated }: { doctor: Doctor | null; onCreat
       setText("")
       onCreated(id)
     } catch (e) {
-      toast.error((e as Error).message)
+      toast({ message: "Não deu para criar o vídeo", description: (e as Error).message, state: "error" })
     } finally { setBusy(false) }
   }
 

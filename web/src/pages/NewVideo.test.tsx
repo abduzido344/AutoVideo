@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { beforeEach, describe, expect, it, vi } from "vitest"
-import { toast } from "sonner"
+import { toast } from "@/components/ui/toast"
 import { api } from "@/api"
 import { NewVideo } from "./NewVideo"
 
@@ -12,7 +12,7 @@ vi.mock("@/api", () => ({
   },
 }))
 
-vi.mock("sonner", () => ({ toast: { error: vi.fn(), info: vi.fn() } }))
+vi.mock("@/components/ui/toast", () => ({ toast: vi.fn() }))
 
 const recipes = [
   { id: "talking-head-punchy", title: "Talking head punchy", mode: "speech", aspect: "9:16",
@@ -25,7 +25,7 @@ describe("NewVideo", () => {
   beforeEach(() => {
     vi.mocked(api.recipeInfo).mockResolvedValue(recipes as never)
     vi.mocked(api.create).mockResolvedValue({ id: 7 })
-    vi.mocked(toast.info).mockClear()
+    vi.mocked(toast).mockClear()
   })
 
   it("só envia com vídeo e navega para o job criado", async () => {
@@ -76,8 +76,8 @@ describe("NewVideo", () => {
     drop(new File(["v"], "a.MOV"), new File(["r"], "novo.md"))
     await screen.findByText("novo.md")
     expect(screen.queryByText("a.MOV")).toBeNull()
-    expect(toast.info).toHaveBeenCalledWith("Já anexado: a.MOV")
-    expect(toast.info).toHaveBeenCalledWith("Roteiro trocado: velho.md → novo.md")
+    expect(toast).toHaveBeenCalledWith({ message: "Já anexado: a.MOV", state: "info" })
+    expect(toast).toHaveBeenCalledWith({ message: "Roteiro trocado: velho.md → novo.md", state: "info" })
   })
 
   it("mostra a dica enquanto não há gravação", async () => {
@@ -105,7 +105,7 @@ describe("NewVideo", () => {
     await user.type(screen.getByLabelText("Roteiro ou pedido"), "meu pedido")
     const send = screen.getByRole("button", { name: "Criar vídeo" })
     await user.click(send)
-    await waitFor(() => expect(toast.error).toHaveBeenCalledWith("falhou"))
+    await waitFor(() => expect(toast).toHaveBeenCalledWith(expect.objectContaining({ description: "falhou", state: "error" })))
     await waitFor(() => expect((send as HTMLButtonElement).disabled).toBe(false))
     expect(onCreated).not.toHaveBeenCalled()
     expect(screen.getByText("a.mp4")).toBeTruthy()

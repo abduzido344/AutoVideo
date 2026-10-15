@@ -48,6 +48,10 @@
     --radius-4xl: calc(var(--radius) * 2.6);
     --color-info: var(--info);
     --color-success: var(--success);
+    --color-error: var(--error);
+    --color-warning: var(--warning);
+    --toast-morph-duration: 300ms;
+    --toast-morph-ease: cubic-bezier(0.32, 0.72, 0, 1);
     --color-shell-fg-muted: var(--shell-fg-muted);
     --color-shell-fg-faint: var(--shell-fg-faint);
 }
@@ -73,6 +77,8 @@
     --ring: #2F6BFF;
     --info: #2F6BFF;
     --success: #22A06B;
+    --error: #C9372C;
+    --warning: #B26B00;
     --chart-1: #2F6BFF;
     --chart-2: #22A06B;
     --chart-3: #6941C6;
@@ -163,3 +169,11 @@
     transition: none;
     }
 }
+/* toast do Kobra (registry @kobra/toast) */
+.toast-pill {
+    box-shadow: 0 1px 2px rgb(0 0 0 / 8%), 0 8px 24px rgb(0 0 0 / 10%), 0 0 0 1px var(--border);
+    transition: padding var(--toast-morph-duration) var(--toast-morph-ease);
+}
+.toast-detail { transition: padding var(--toast-morph-duration) var(--toast-morph-ease); }
+@media (prefers-reduced-motion: reduce) { .toast-pill, .toast-detail { transition: none; } }
+@media (prefers-reduced-transparency: reduce) { .toast-pill { background: var(--popover); backdrop-filter: none; } }

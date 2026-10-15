@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { api, type Doctor } from "@/api"
 import { AppSidebar, TopBar } from "@/components/AppSidebar"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
-import { Toaster } from "@/components/ui/sonner"
+import { Toasts } from "@/components/ui/toast"
 import { SoundEffects } from "@/components/ui/sound"
 import { go, isNewVideoShortcut, useRoute } from "@/lib/route"
 import { usePoll } from "@/lib/usePoll"
@@ -47,7 +47,7 @@ export default function App() {
             : <NewVideo doctor={doctor} onCreated={(id) => { jobs.refresh(); go({ name: "project", id }) }} />}
         </SidebarInset>
       </SidebarProvider>
-      <Toaster theme="light" />
+      <Toasts />
     </SoundEffects>
   )
 }

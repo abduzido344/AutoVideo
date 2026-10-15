@@ -244,9 +244,12 @@ def test_legacy_project_without_stages_dir_is_skipped_and_migrated(tmp_path):
     root = Path(store.get(jid)["project_dir"])
     root.mkdir(parents=True)
     (root / "a.txt").write_text("velho")
-    assert run_job(store, jid, [simple(calls, "a", "a.txt"), simple(calls, "b", "b.txt")], mk) == "completed"
-    assert calls == ["b"] and (root / ".stages/a.ok").exists()  # migrado: o próximo run não refaz "a"
-    run_job(store, jid, [simple(calls, "a", "a.txt"), simple(calls, "b", "b.txt")], mk)
+    (root / "x.txt").write_text("velho")
+    st = [simple(calls, "a", "a.txt"), simple(calls, "x", "x.txt"), simple(calls, "b", "b.txt")]
+    assert run_job(store, jid, st, mk) == "completed"
+    assert calls == ["b"] and (root / ".stages/a.ok").exists()  # migrado: o próximo run não refaz "a" nem "x"
+    assert (root / "x.txt").read_text() == "velho"
+    run_job(store, jid, st, mk)
     assert calls == ["b"]
 
 

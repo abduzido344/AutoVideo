@@ -129,9 +129,10 @@ def _commit(root: Path, name: str) -> None:
     m.write_text("ok")
 
 
-def stage_done(root: Path, name: str, rel: str) -> bool:
+def stage_done(root: Path, name: str, rel: str, legacy: bool | None = None) -> bool:
     # projeto sem .stages/ = anterior aos marcadores (legado): artefato existente conta como concluído
-    return (root / rel).exists() and (_marker(root, name).exists() or not (root / ".stages").exists())
+    legacy = not (root / ".stages").exists() if legacy is None else legacy
+    return (root / rel).exists() and (legacy or _marker(root, name).exists())
 
 
 def _gate_index(jid: int, job: dict, stages: list[Stage]) -> int:
@@ -146,9 +147,10 @@ def run_job(store: JobStore, jid: int, stages: list[Stage], make_ctx: Callable[[
     store.set(jid, status="in_progress", error="")
     ctx = make_ctx(job)
     root = Path(job["project_dir"])
+    legacy = not (root / ".stages").exists()  # decidido uma vez: a migração abaixo cria .stages/ no meio do loop
     for name, rel, fn in stages:
         p = _art(job, rel)
-        if stage_done(root, name, rel):
+        if stage_done(root, name, rel, legacy):
             _commit(root, name)  # no legado, migra: o próximo run já enxerga o marcador
             continue
         _remove(p)  # artefato sem marcador = etapa morta no meio (hard kill): refaz do zero

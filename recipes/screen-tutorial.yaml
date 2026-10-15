@@ -20,5 +20,5 @@ prompts:
   designer: |
     Estilo limpo de produto: fundo escuro, 1 cor de acento, callouts com seta/círculo desenhado.
   editor: |
-    Use os frames em analysis/frames/ para localizar onde está a ação de cada trecho e faça zooms push
+    Use os frames de analysis/frames/index.json para localizar onde está a ação de cada trecho e faça zooms push
     (scale 1.4–1.8) com origin apontando para essa região. Volte ao quadro inteiro entre passos.

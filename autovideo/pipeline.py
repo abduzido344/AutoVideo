@@ -15,6 +15,7 @@ from autovideo.transcribe import filler_candidates, numbered_text, require_speec
 # gate rejeitado -> primeira etapa a refazer (o resto do que veio antes do gate continua válido)
 REDO = {"gate1": "director", "gate2": "copywriter"}
 REVIEW_ROUNDS = 2
+FPS = 30  # todo vídeo limpo e o render final saem a 30 fps
 AUDIO_EXT = {".mp3", ".wav", ".m4a", ".aac", ".ogg", ".flac"}
 
 
@@ -118,18 +119,23 @@ def do_transcribe(ctx):
 def analyze(ctx):
     p, r = ctx.project, ctx.recipe
     vids, words = p.manifest()["videos"], _words(p)
-    scenes = {}
+    scenes, index = {}, []
+    every = 2 if r.mode == "speech" else 1
     for n, v in enumerate(vids):
         src = p.root / v["clean"]
-        media.extract_frames(src, p.analysis / "frames" / str(n), every_s=2 if r.mode == "speech" else 1)
+        fs = media.extract_frames(src, p.analysis / "frames" / str(n), every_s=every)
+        # fps=1/every do ffmpeg: o k-ésimo frame (0-based) é o instante k*every do vídeo limpo
+        index += [{"file": _rel(p, f), "src": v["clean"], "t_src": float(k * every)} for k, f in enumerate(fs)]
         scenes[v["clean"]] = media.detect_scenes(src)
+    _write_json(p.analysis / "frames" / "index.json", index, indent=2)
     _write_json(p.analysis / "scenes.json", scenes)
     (p.analysis / "transcript.txt").write_text(numbered_text(words), encoding="utf-8")
     w, h, _ = FORMATS[r.aspect]
     _write_json(p.analysis / "summary.json", {
         "duration_total": sum(v["duration"] for v in vids), "width": w, "height": h, "aspect": r.aspect,
         "word_count": len(words), "filler_candidates": sorted(filler_candidates(words, r.pacing.fillers)),
-        "sources": [v["clean"] for v in vids]}, indent=2)
+        "sources": [v["clean"] for v in vids], "durations": {v["clean"]: v["duration"] for v in vids},
+        "fps": FPS}, indent=2)
 
 
 def director(ctx):
@@ -155,12 +161,27 @@ def plan(ctx):
         drop = {i for a, b in ed.drop for i in range(a, b + 1)}
         segs = plan_segments(words, drop, {v["clean"]: v["duration"] for v in vids}, r.pacing.max_gap, r.pacing.pad)
         out_words = remap_words(words, drop, segs)
+        _write_json(p.analysis / "onscreen.out.json", _onscreen_out(ed, words, drop, out_words), indent=2)
     else:
         segs = [{"src": v["clean"], "in": 0, "out": v["duration"]} for v in vids]
         out_words = []
     _write_json(p.analysis / "words.out.json", [x.model_dump() for x in out_words])
     Timeline(width=w, height=h, segments=segs,
              captions=r.captions.enabled and r.mode == "speech").dump(p.root / "timeline.base.json")
+
+
+def _onscreen_out(ed: EditDecisions, words: list[Word], drop: set[int], out_words: list[Word]) -> dict:
+    """hook + âncoras de edit.json.onscreen no tempo do vídeo FINAL (o editor usa direto em overlays)."""
+    kept = dict(zip([i for i in range(len(words)) if i not in drop], out_words))
+    res = {"hook": {"text": ed.hook_text, "start": 0.0}, "onscreen": [], "skipped": []}
+    for o in ed.onscreen:
+        w = kept.get(o.word_idx)
+        if w is None:
+            note = "palavra removida (drop)" if o.word_idx in drop else "word_idx fora da transcrição"
+            res["skipped"].append({"word_idx": o.word_idx, "text": o.text, "note": note})
+        else:
+            res["onscreen"].append({"word_idx": o.word_idx, "text": o.text, "start": w.start, "end": w.end})
+    return res
 
 
 def designer(ctx):

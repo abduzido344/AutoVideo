@@ -662,3 +662,56 @@ def test_designer_preview_for_speech_has_no_captions_and_no_beats(tmp_path, monk
     assert '<video id="seg-0"' in seen["index"] and "captions-layer" not in seen["index"]
     assert '<audio id="music"' not in seen["index"] and calls == []
     assert not (ctx.project.analysis / "beats.json").exists()
+
+
+# ---------- contratos de artefatos ----------
+def test_analyze_writes_frames_index_and_summary_contract(tmp_path, monkeypatch):
+    ctx = mk_project(tmp_path)
+    p = ctx.project
+
+    def frames(src, out_dir, every_s):
+        out_dir.mkdir(parents=True, exist_ok=True)
+        fs = [out_dir / f"f_{k:04d}.jpg" for k in (1, 2, 3)]
+        for f in fs:
+            f.write_bytes(b"j")
+        return fs
+    monkeypatch.setattr(pipeline.media, "extract_frames", frames)
+    monkeypatch.setattr(pipeline.media, "detect_scenes", lambda src: [])
+    pipeline.analyze(ctx)
+    idx = json.loads((p.analysis / "frames/index.json").read_text(encoding="utf-8"))
+    assert idx == [{"file": f"analysis/frames/0/f_000{k}.jpg", "src": "input/a.clean.mp4", "t_src": t}
+                   for k, t in ((1, 0.0), (2, 2.0), (3, 4.0))]  # speech: 1 frame a cada 2 s
+    assert all((p.root / f["file"]).is_file() for f in idx)
+    s = json.loads((p.analysis / "summary.json").read_text(encoding="utf-8"))
+    assert s["durations"] == {"input/a.clean.mp4": 10.0} and s["fps"] == 30
+
+
+def test_plan_writes_onscreen_out_in_output_time(tmp_path):
+    ctx = mk_project(tmp_path)
+    p = ctx.project
+    (p.root / "edit.json").write_text(json.dumps({"drop": [[2, 2]], "hook_text": "3 erros", "post":
+                                      {"title": "t", "caption": "c", "hashtags": []},
+                                      "onscreen": [{"word_idx": 3, "text": "HOJE"}, {"word_idx": 2, "text": "X"},
+                                                   {"word_idx": 99, "text": "Y"}]}), encoding="utf-8")
+    pipeline.plan(ctx)
+    words_out = json.loads((p.analysis / "words.out.json").read_text(encoding="utf-8"))
+    o = json.loads((p.analysis / "onscreen.out.json").read_text(encoding="utf-8"))
+    assert o["hook"] == {"text": "3 erros", "start": 0.0}
+    hoje = next(w for w in words_out if w["text"] == "hoje")
+    assert o["onscreen"] == [{"word_idx": 3, "text": "HOJE", "start": hoje["start"], "end": hoje["end"]}]
+    assert [(s["word_idx"], s["text"]) for s in o["skipped"]] == [(2, "X"), (99, "Y")]
+    assert all(s["note"] for s in o["skipped"])
+
+
+def test_plan_montage_writes_no_onscreen_out(tmp_path):
+    ctx = mk_project(tmp_path, "montage-beat")
+    pipeline.plan(ctx)
+    assert not (ctx.project.analysis / "onscreen.out.json").exists()
+
+
+def test_prompts_reference_real_artifacts():
+    pr = pipeline.agents.PROMPTS
+    text = {r: (pr / f"{r}.md").read_text(encoding="utf-8") for r in ("director", "copywriter", "designer", "editor")}
+    assert "analysis/frames/*.jpg" not in "".join(text.values())
+    assert "analysis/frames/index.json" in text["director"] and "analysis/frames/index.json" in text["editor"]
+    assert "analysis/onscreen.out.json" in text["editor"]

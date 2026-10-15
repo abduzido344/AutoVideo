@@ -1,5 +1,7 @@
 Você é o EDITOR. Leia brief.md, edit.json, style.json, analysis/summary.json, analysis/words.out.json
-(palavras já no tempo do vídeo final), timeline.base.json, analysis/frames/*.jpg, as composições em
+(palavras já no tempo do vídeo final), timeline.base.json, analysis/frames/index.json (amostras [{file, src, t_src}]: t_src é o tempo no vídeo de
+origem; converta para o tempo final pelos segments), analysis/onscreen.out.json (receitas com fala: hook e textos de edit.json.onscreen
+já com start/end no tempo do vídeo final: use esses tempos nos overlays), as composições em
 composition/compositions/ e feedback.md.
 Escreva timeline.json: copie timeline.base.json e acrescente
 - "zooms": [{"at": s, "dur": s, "scale": 1.0–2.0, "kind": "punch"|"push", "origin": "X% Y%"}]

@@ -55,7 +55,8 @@ def _elevenlabs_isolate(src: Path, mp3_out: Path) -> None:
 
 def clean(src: Path, dst: Path, clean_audio: bool, lufs: float = -14) -> None:
     dst.parent.mkdir(parents=True, exist_ok=True)
-    vargs = ["-vf", "fps=30,format=yuv420p", "-c:v", "libx264", "-crf", "18", "-preset", "veryfast"]
+    vargs = ["-vf", "fps=30,format=yuv420p", "-c:v", "libx264", "-crf", "18", "-preset", "veryfast",
+             "-g", "30", "-keyint_min", "30", "-movflags", "+faststart"]  # keyframe a cada 1 s: seek do HyperFrames
     aargs = ["-c:a", "aac", "-b:a", "192k", "-ar", "48000"]
     if not probe(src)["has_audio"]:
         run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(src), *vargs, "-an", str(dst)])

@@ -78,8 +78,9 @@ def snapshots(comp: Path, times: list[float], out_dir: Path) -> list[Path]:
     return sorted(out_dir.glob("*.png"))
 
 
-def render_final(comp: Path, out: Path, lufs: float) -> float:
-    """Renderiza em <out>.part.mp4 e só move para `out` depois de medido/normalizado: `out` nunca fica parcial."""
+def render_final(comp: Path, out: Path, lufs: float | None) -> float | None:
+    """lufs=None: composição sem nenhuma faixa de áudio, nada a medir (devolve None).
+    Renderiza em <out>.part.mp4 e só move para `out` depois de medido/normalizado: `out` nunca fica parcial."""
     out.parent.mkdir(parents=True, exist_ok=True)
     part = out.with_name(out.stem + ".part.mp4")
     part.unlink(missing_ok=True)
@@ -89,6 +90,9 @@ def render_final(comp: Path, out: Path, lufs: float) -> float:
              "--player-ready-timeout", READY_MS], timeout=7200)
         if not part.exists():
             raise ToolError(f"hyperframes render saiu com 0 mas não gerou {part.name}")
+        if lufs is None:
+            part.replace(out)
+            return None
         measured = integrated_lufs(part)
         if abs(measured - lufs) > 1.5:
             normalize_final(part, lufs)

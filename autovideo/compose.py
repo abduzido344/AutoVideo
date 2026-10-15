@@ -31,13 +31,14 @@ def _asset(src: str) -> str:
     return _attr(f"assets/{quote(Path(src).name)}")
 
 
-def build_html(t: Timeline, words: list[Word]) -> str:
+def build_html(t: Timeline, words: list[Word], silent: frozenset[str] = frozenset()) -> str:
+    # silent: basenames de segmentos sem faixa de áudio (data-has-audio="true" num vídeo mudo derruba o render)
     w, h, d = t.width, t.height, t.duration
     segs, off = [], 0.0
     for i, s in enumerate(t.segments):
         segs.append(f'<video id="seg-{i}" class="clip fill" src="{_asset(s.src)}" playsinline '
                     f'data-start="{_n(off)}" data-duration="{_n(s.dur)}" data-media-start="{_n(s.in_)}" '
-                    f'data-has-audio="true" data-fade-in="0.03" data-fade-out="0.03" data-track-index="{i % 2}"></video>')
+                    f'data-has-audio="{"false" if Path(s.src).name in silent else "true"}" data-fade-in="0.03" data-fade-out="0.03" data-track-index="{i % 2}"></video>')
         off += s.dur
     broll = [f'<video id="broll-{i}" class="clip {b.mode}" src="{_asset(b.src)}" muted playsinline data-start="{_n(b.start)}" '
              f'data-duration="{_n(b.dur)}" data-media-start="0" style="z-index:10"></video>' for i, b in enumerate(t.broll)]
@@ -101,7 +102,7 @@ tl.seek(0);
 """
 
 
-def write_composition(comp_dir: Path, t: Timeline, words: list[Word]) -> Path:
+def write_composition(comp_dir: Path, t: Timeline, words: list[Word], silent: frozenset[str] = frozenset()) -> Path:
     if t.captions:
         tpl = comp_dir / "compositions" / "captions.template.html"
         if not tpl.exists():
@@ -112,5 +113,5 @@ def write_composition(comp_dir: Path, t: Timeline, words: list[Word]) -> Path:
         data = _js([{"text": x.text, "start": x.start, "end": x.end} for x in words])
         (comp_dir / "compositions" / "captions.html").write_text(src.replace(MARK, data), encoding="utf-8")
     out = comp_dir / "index.html"
-    out.write_text(build_html(t, words), encoding="utf-8")
+    out.write_text(build_html(t, words, silent), encoding="utf-8")
     return out

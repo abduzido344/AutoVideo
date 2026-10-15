@@ -121,3 +121,11 @@ def test_broll_music_sfx_attributes():
     assert s["src"] == "assets/s.wav" and (s["data-start"], s["data-duration"], s["data-volume"]) == ("0.5", "0.8", "0.4")
     m = by_id["music"]
     assert m["src"] == "assets/m.mp3" and (m["data-start"], m["data-duration"], m["data-volume"], m["data-fade-out"]) == ("0", "3.5", "0.12", "1.5")
+
+
+def test_silent_segment_declares_no_audio():
+    t = T.model_copy(update={"segments": [Segment(src="input/a.clean.mp4", **{"in": 0}, out=1)]})
+    v = next(a for tg, a in tags(build_html(t, [], frozenset({"a.clean.mp4"}))) if tg == "video")
+    assert v["data-has-audio"] == "false"
+    v = next(a for tg, a in tags(build_html(t, [])) if tg == "video")
+    assert v["data-has-audio"] == "true"

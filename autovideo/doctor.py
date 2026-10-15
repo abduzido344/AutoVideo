@@ -1,3 +1,4 @@
+import json
 import re
 from pathlib import Path
 from autovideo import hf
@@ -5,6 +6,16 @@ from autovideo import hf
 
 def parse_node_major(version: str) -> int:
     return int(re.match(r"v?(\d+)", version.strip()).group(1))
+
+
+def parakeet() -> str:
+    # Windows não tem whisper-cpp: sem o modelo Parakeet o `hyperframes transcribe` não funciona
+    lines = hf.run([*hf.HF, "models", "list", "--json"], timeout=600).stdout.strip().splitlines()
+    models = json.loads(lines[-1]).get("models", [])
+    found = next((m for m in models if m.get("engine") == "parakeet" and m.get("installed")), None)
+    if not found:
+        raise hf.ToolError(f"modelo Parakeet ausente — rode: {' '.join(hf.HF)} models install parakeet")
+    return found["model"]
 
 
 def run_checks() -> list[tuple[str, bool, str]]:
@@ -27,6 +38,7 @@ def run_checks() -> list[tuple[str, bool, str]]:
 
     check("node>=22", node)
     check("hyperframes", lambda: hf.run([*hf.HF, "--version"], timeout=600).stdout.strip())
+    check("parakeet model", parakeet)
     check("claude CLI", lambda: hf.run(["claude", "--version"]).stdout.strip())
 
     def skills():

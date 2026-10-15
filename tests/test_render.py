@@ -116,6 +116,11 @@ def test_render_final_within_tolerance_skips_normalize(monkeypatch, tmp_path):
     assert _parts(out) == [out]  # a .part virou o arquivo final
 
 
+def test_render_final_lufs_none_skips_measurement(monkeypatch, tmp_path):
+    out, calls = _render_final(monkeypatch, tmp_path, [])  # integrated_lufs falso levantaria StopIteration
+    assert render.render_final(tmp_path, out, None) is None and calls == [] and _parts(out) == [out]
+
+
 def test_render_final_exact_boundary_does_not_normalize(monkeypatch, tmp_path):
     out, calls = _render_final(monkeypatch, tmp_path, [-15.5])
     assert render.render_final(tmp_path, out, -14) == -15.5 and calls == []

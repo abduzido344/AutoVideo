@@ -1,0 +1,7 @@
+projects/
+.venv/
+__pycache__/
+node_modules/
+*.egg-info/
+web/node_modules/
+web/dist/

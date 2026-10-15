@@ -21,5 +21,5 @@ prompts:
     Tipografia cinética grande, transições no beat.
   editor: |
     Você define os segments (cortes) diretamente a partir de analysis/scenes.json e dos frames.
-    Se houver música em assets/music.*, rode `npx --yes hyperframes@0.8.158 beats composition --json` depois de
+    Se houver um arquivo de áudio (.mp3/.wav/.m4a) em composition/assets/, rode `npx --yes hyperframes@0.8.158 beats composition --json` depois de
     incluí-la e alinhe os cortes aos beats. Duração alvo: 15–30 s.

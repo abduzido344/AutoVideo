@@ -270,3 +270,16 @@ def test_auto_gate_writes_marker(tmp_path):
     store, jid, mk = setup(tmp_path, auto=True)
     run_job(store, jid, [("g", "approvals/g.ok", None)], mk)
     assert (Path(store.get(jid)["project_dir"]) / ".stages/g.ok").exists()
+
+
+def test_approve_legacy_project_parked_at_gate_does_not_rerun(tmp_path):
+    # projeto de antes dos marcadores, parado no gate1: aprovar não pode apagar/refazer "a"
+    calls = []
+    store, jid, mk = setup(tmp_path)
+    root = Path(store.get(jid)["project_dir"]); root.mkdir(parents=True)
+    (root / "a.txt").write_text("a")
+    store.set(jid, status="awaiting_approval", stage="gate1")
+    st = mk_stages(calls)
+    approve(store, jid, st)
+    assert run_job(store, jid, st, mk) == "awaiting_approval"
+    assert calls == ["b", "c"] and (root / "a.txt").read_text() == "a"

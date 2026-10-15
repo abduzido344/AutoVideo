@@ -4,6 +4,7 @@ import shutil
 import time
 from pathlib import Path
 from autovideo import agents, media, render
+from autovideo.hf import ToolError
 from autovideo.agents import EditDecisions, Style, validate_model
 from autovideo.compose import write_composition
 from autovideo.jobs import Ctx, JobStore, reject
@@ -198,12 +199,17 @@ def designer(ctx):
             shutil.copy2(a, assets / a.name)
     # prévia: index.html de verdade (timeline base + música) para `media-treatment --analyze` e `beats` acharem
     # <video>/<audio>; sem legendas (o template ainda não existe). O render recompõe a partir do timeline.json.
-    music = next((a.name for a in sorted(ua.iterdir()) if a.suffix.lower() in AUDIO_EXT), None) if ua.exists() else None
+    # ponytail: maior arquivo de áudio = trilha (sfx são curtos); trocar por duração via ffprobe se errar
+    auds = [a for a in ua.iterdir() if a.suffix.lower() in AUDIO_EXT] if ua.exists() else []
+    music = max(auds, key=lambda a: a.stat().st_size).name if auds else None
     t = Timeline.load(p.root / "timeline.base.json").model_copy(
         update={"captions": False, "music": Music(src=f"assets/{music}") if music else None})
     _compose(p, t)
     if ctx.recipe.mode == "montage" and music:
-        _write_json(p.analysis / "beats.json", render.beats(p.comp), indent=2)
+        try:  # beats é ajuda ao editor, não pode derrubar a etapa
+            _write_json(p.analysis / "beats.json", render.beats(p.comp), indent=2)
+        except ToolError as e:
+            p.log({"stage": "designer", "beats_error": str(e)[:500]})
     ctx.agent("designer", p, ctx.recipe, "Entregue style.json e as composições." + _fb(p),
               p.root / "style.json", validate_model(Style), bash=True)
 

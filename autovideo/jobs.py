@@ -182,7 +182,8 @@ def approve(store: JobStore, jid: int, stages: list[Stage]) -> None:
         if job["status"] != "awaiting_approval":
             raise GateError(f"job {jid} não está aguardando aprovação")
         p = _art(job, rel); p.parent.mkdir(parents=True, exist_ok=True); p.write_text("ok")
-        _commit(Path(job["project_dir"]), name)
+        if (Path(job["project_dir"]) / ".stages").exists():  # projeto legado: a regra legado aceita o gate.ok
+            _commit(Path(job["project_dir"]), name)
         store.set(jid, status="queued")
 
 

@@ -7,7 +7,7 @@ from pathlib import Path
 from autovideo import agents, media, render
 from autovideo.agents import EditDecisions, Style, validate_model
 from autovideo.compose import write_composition
-from autovideo.jobs import Ctx, JobStore
+from autovideo.jobs import Ctx, JobStore, reject
 from autovideo.project import Project
 from autovideo.recipes import load_recipe
 from autovideo.timeline import FORMATS, Timeline, Word, plan_segments, remap_words
@@ -64,6 +64,11 @@ def new_job(store: JobStore, home_dir: Path, videos: list[Path], script: Path | 
         for a in assets:
             shutil.copy2(a, root / "user-assets" / a.name)
     return store.create(str(root), recipe, auto)
+
+
+def reject_job(store: JobStore, jid: int, feedback: str) -> None:
+    """Rejeita o gate em que o job está parado, refazendo a partir da etapa certa (REDO)."""
+    reject(store, jid, STAGES, feedback, redo_from=REDO.get(store.get(jid)["stage"]))
 
 
 def make_ctx(job: dict) -> Ctx:

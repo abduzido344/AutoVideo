@@ -13,6 +13,8 @@ def main(argv: list[str] | None = None) -> int:
     e.add_argument("--recipe", default="talking-head-punchy")
     e.add_argument("--assets", nargs="*", type=Path, default=[])
     e.add_argument("--auto", action="store_true")
+    sv = sub.add_parser("serve")
+    sv.add_argument("--port", type=int, default=8765)
     for name in ("approve", "reject", "resume"):
         s = sub.add_parser(name)
         s.add_argument("job", type=int)
@@ -26,7 +28,14 @@ def main(argv: list[str] | None = None) -> int:
             print(f"{'OK ' if ok else 'ERR'} {name}: {info}")
         return 0 if all(ok for _, ok, _ in results) else 1
     from autovideo import pipeline
-    from autovideo.jobs import GateError, JobStore, approve, reject, run_job
+    if a.cmd == "serve":
+        import uvicorn
+        from autovideo.jobs import JobStore
+        from autovideo.server import create_app
+        app = create_app(JobStore(pipeline.home() / "jobs.db"))
+        uvicorn.run(app, host="127.0.0.1", port=a.port)  # local-only: nunca 0.0.0.0
+        return 0
+    from autovideo.jobs import GateError, JobStore, approve, run_job
     store = JobStore(pipeline.home() / "jobs.db")
     try:
         if a.cmd == "edit":
@@ -38,7 +47,7 @@ def main(argv: list[str] | None = None) -> int:
             elif a.cmd == "approve":
                 approve(store, jid, pipeline.STAGES)
             elif a.cmd == "reject":
-                reject(store, jid, pipeline.STAGES, a.feedback, redo_from=pipeline.REDO.get(store.get(jid)["stage"]))
+                pipeline.reject_job(store, jid, a.feedback)
         status = run_job(store, jid, pipeline.STAGES, pipeline.make_ctx)
     except (GateError, KeyError, ValueError, FileNotFoundError) as err:
         print(f"erro: {err.args[0] if isinstance(err, KeyError) else err}", file=sys.stderr)

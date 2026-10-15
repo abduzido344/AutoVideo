@@ -1,7 +1,7 @@
 export type Attachments = { videos: File[]; script: File | null; assets: File[] }
 export const EMPTY: Attachments = { videos: [], script: null, assets: [] }
 
-const VIDEO_EXT = /\.(mp4|mov|m4v|webm|mkv|avi)$/i
+const VIDEO_EXT = /\.(mp4|mov|m4v|webm|mkv|avi|mts|m2ts|3gp|mpg)$/i
 const SCRIPT_EXT = /\.(md|txt)$/i
 
 const isVideo = (f: File) => f.type.startsWith("video/") || VIDEO_EXT.test(f.name)

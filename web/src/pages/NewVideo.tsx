@@ -38,13 +38,11 @@ export function NewVideo({ doctor, onCreated }: { doctor: Doctor | null; onCreat
     }, (e: Error) => toast.error(e.message))
   }, [])
 
-  // soltar um arquivo fora do cartão faria o navegador abrir o arquivo e perder o rascunho
+  // o App já bloqueia a navegação do navegador (soltar arquivo); aqui só anexa
   useEffect(() => {
-    const over = (e: DragEvent) => e.preventDefault()
-    const drop = (e: DragEvent) => { e.preventDefault(); add([...(e.dataTransfer?.files ?? [])]) }
-    window.addEventListener("dragover", over)
+    const drop = (e: DragEvent) => { if (e.dataTransfer?.types.includes("Files")) add([...e.dataTransfer.files]) }
     window.addEventListener("drop", drop)
-    return () => { window.removeEventListener("dragover", over); window.removeEventListener("drop", drop) }
+    return () => window.removeEventListener("drop", drop)
   }, [])
   const r = recipes.find((x) => x.id === recipe)
   const files = [

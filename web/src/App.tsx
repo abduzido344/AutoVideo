@@ -19,6 +19,13 @@ export default function App() {
 
   useEffect(() => { api.stages().then(setStages).catch(() => {}) }, [])
   useEffect(() => { api.doctor().then(setDoctor, () => setDoctor(OFFLINE)) }, [])
+  // soltar um arquivo fora de uma tela que o aceite faria o navegador abri-lo e perder a página; texto em textarea segue livre
+  useEffect(() => {
+    const block = (e: DragEvent) => { if (e.dataTransfer?.types.includes("Files")) e.preventDefault() }
+    addEventListener("dragover", block)
+    addEventListener("drop", block)
+    return () => { removeEventListener("dragover", block); removeEventListener("drop", block) }
+  }, [])
   useEffect(() => {
     const on = (e: KeyboardEvent) => {
       if (isNewVideoShortcut(e)) { e.preventDefault(); go({ name: "new" }) }

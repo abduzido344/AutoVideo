@@ -3,7 +3,7 @@ import { useState } from "react"
 import { toast } from "sonner"
 import { api, type JobDetail } from "@/api"
 import { Button } from "@/components/ui/button"
-import { appendChip, STAGE_LABEL } from "@/lib/format"
+import { appendChip, assetUrl, STAGE_LABEL } from "@/lib/format"
 
 const CHIPS: Record<string, string[]> = {
   gate1: ["hook mais forte", "mais curto", "menos zoom", "tom mais calmo"],
@@ -16,8 +16,9 @@ export function ActionBox({ job, onDone }: { job: JobDetail; onDone: () => void 
   const [busy, setBusy] = useState(false)
   const act = (run: () => Promise<unknown>, ok: string) => {
     setBusy(true)
+    // busy só cai no erro: a key do Workspace remonta a caixa quando o status muda
     run().then(() => { toast.success(ok); setFb(""); onDone() })
-      .catch((e: Error) => toast.error(e.message)).finally(() => setBusy(false))
+      .catch((e: Error) => { toast.error(e.message); setBusy(false) })
   }
 
   if (job.status === "awaiting_approval") return (
@@ -48,8 +49,14 @@ export function ActionBox({ job, onDone }: { job: JobDetail; onDone: () => void 
   )
 
   if (job.status === "completed") return (
-    <p className="rounded-2xl border p-3 text-sm">Pronto. Vídeo, capa e post estão na pasta <code>out/</code> do projeto.</p>
+    <div className={BOX}>
+      <p className="text-sm">Pronto. Vídeo, capa e post estão na pasta <code>out/</code> do projeto.</p>
+      {job.rel !== null && job.files.has_final &&
+        <Button variant="outline" asChild><a href={assetUrl(job.rel, "out/final.mp4", job.updated)} download>Baixar vídeo</a></Button>}
+    </div>
   )
+
+  if (job.status === "queued") return <p role="status" className="rounded-2xl border p-3 text-sm text-muted-foreground">Na fila</p>
 
   return (
     <p role="status" className="flex items-center gap-2 rounded-2xl border p-3 text-sm text-muted-foreground">

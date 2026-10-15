@@ -2,7 +2,7 @@ import { Plus } from "lucide-react"
 import type { Doctor, Job } from "@/api"
 import {
   Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupLabel, SidebarHeader,
-  SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarTrigger,
+  SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarTrigger, useSidebar,
 } from "@/components/ui/sidebar"
 import { doctorText, projectName, statusInfo, TONE_TEXT } from "@/lib/format"
 import type { Route } from "@/lib/route"
@@ -18,6 +18,7 @@ export function TopBar() {
 
 export function AppSidebar({ jobs, route, doctor }: { jobs: Job[]; route: Route; doctor: Doctor | null }) {
   const sys = doctorText(doctor)
+  const { setOpenMobile } = useSidebar()
   return (
     <Sidebar variant="inset">
       <SidebarHeader>
@@ -42,7 +43,7 @@ export function AppSidebar({ jobs, route, doctor }: { jobs: Job[]; route: Route;
               return (
                 <SidebarMenuItem key={j.id}>
                   <SidebarMenuButton asChild isActive={route.name === "project" && route.id === j.id}>
-                    <a href={`#/p/${j.id}`} aria-current={route.name === "project" && route.id === j.id ? "page" : undefined}>
+                    <a href={`#/p/${j.id}`} onClick={() => setOpenMobile(false)} aria-current={route.name === "project" && route.id === j.id ? "page" : undefined}>
                       <span className="truncate">{projectName(j.project_dir)}</span>
                       <span className={cn("ml-auto shrink-0 text-xs", TONE_TEXT[s.tone])}>{s.label}</span>
                     </a>

@@ -45,16 +45,27 @@ describe("ActionBox", () => {
 
   it("aprovar chama a API; falha mostra Retomar; rodando mostra a etapa", async () => {
     const user = userEvent.setup()
-    const { rerender } = render(<ActionBox job={job({ stage: "gate2" })} onDone={() => {}} />)
+    const { rerender } = render(<ActionBox key="a" job={job({ stage: "gate2" })} onDone={() => {}} />)
     expect(screen.getByRole("button", { name: "legenda maior" })).toBeTruthy()
     await user.click(screen.getByRole("button", { name: "Aprovar" }))
     await waitFor(() => expect(api.approve).toHaveBeenCalledWith(3))
-    rerender(<ActionBox job={job({ status: "failed", stage: "director", error: "interrompido" })} onDone={() => {}} />)
+    rerender(<ActionBox key="b" job={job({ status: "failed", stage: "director", error: "interrompido" })} onDone={() => {}} />)
     expect(screen.getByText(/Interrompido em/)).toBeTruthy()
     await user.click(screen.getByRole("button", { name: "Retomar" }))
     await waitFor(() => expect(api.resume).toHaveBeenCalledWith(3))
-    rerender(<ActionBox job={job({ status: "in_progress", stage: "render" })} onDone={() => {}} />)
+    rerender(<ActionBox key="c" job={job({ status: "in_progress", stage: "render" })} onDone={() => {}} />)
     expect(screen.getByRole("status").textContent).toContain("Renderizando")
+  })
+
+  it("na fila mostra só 'Na fila', sem o nome do gate nem spinner", () => {
+    const { container } = render(<ActionBox job={job({ status: "queued", stage: "gate1" })} onDone={() => {}} />)
+    expect(screen.getByRole("status").textContent).toBe("Na fila")
+    expect(container.querySelector("svg")).toBeNull()
+  })
+
+  it("concluído oferece baixar o vídeo com cache-bust", () => {
+    render(<ActionBox job={job({ status: "completed", stage: "post", files: { ...job().files, has_final: true } })} onDone={() => {}} />)
+    expect(screen.getByRole("link", { name: "Baixar vídeo" }).getAttribute("href")).toBe("/projects/x/out/final.mp4?t=1")
   })
 
   it("uma nova key (mudou a etapa) zera o texto", async () => {

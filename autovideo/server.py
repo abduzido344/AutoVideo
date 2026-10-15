@@ -9,10 +9,11 @@ from urllib.parse import urlsplit
 from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 from autovideo import doctor, pipeline
 from autovideo.jobs import GateError, JobStore, approve, run_job, stage_done
+from autovideo.timeline import Timeline
 from autovideo.recipes import list_recipes, load_recipe
 
 DIST = Path(__file__).resolve().parent.parent / "web" / "dist"
@@ -108,6 +109,15 @@ def _recipe_info(rid: str) -> dict:
             "pacing": {"max_gap": r.pacing.max_gap}, "audio": {"lufs": r.audio.lufs}}
 
 
+def _timeline(root: Path) -> dict | None:
+    data = _json(root / "timeline.json")
+    try:
+        Timeline.model_validate(data)
+    except ValidationError:
+        return None
+    return data
+
+
 def _transcript(root: Path) -> dict | None:
     words = _json(root / "analysis/words.json")
     if not words:  # ausente, malformado ou montagem (lista vazia)
@@ -146,7 +156,13 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
 
     @app.get("/api/recipe-info")
     def recipe_info():
-        return [_recipe_info(rid) for rid in list_recipes()]
+        out = []
+        for rid in list_recipes():
+            try:
+                out.append(_recipe_info(rid))
+            except Exception as e:  # uma receita quebrada não pode esvaziar a home
+                log.warning("receita %s inválida: %s", rid, e)
+        return out
 
     @app.get("/api/doctor")
     def doctor_status():
@@ -176,10 +192,11 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
             # etapa render concluída (review.json + marcador); final.mp4 sozinho pode ser de um render anterior
             "has_final": stage_done(root, "render", "out/review.json") and (root / "out/final.mp4").exists(),
             "decisions": _jsonl(log) if log.exists() else [],
-            "preview": next((v["clean"] for v in manifest.get("videos", []) if (root / v["clean"]).exists()), None),
+            "preview": next((v["clean"] for v in manifest.get("videos", []) if (root / v["clean"]).exists()), None)
+            if stage_done(root, "clean", "input/clean.ok") else None,
             "aspect": manifest.get("aspect"),
             "transcript": _transcript(root),
-            "timeline": _json(root / "timeline.json"),
+            "timeline": _timeline(root),
             "review": _json(root / "out/review.json"),
             "script": script.read_text(encoding="utf-8") if script.exists() else None,
         }

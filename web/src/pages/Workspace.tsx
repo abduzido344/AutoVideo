@@ -32,7 +32,7 @@ export function Workspace({ id, stages, onChange }: { id: number; stages: string
         </div>
         <span className="flex-1" />
         {f.has_final && job.rel !== null &&
-          <Button variant="outline" asChild><a href={assetUrl(job.rel, "out/final.mp4")} download>Baixar</a></Button>}
+          <Button variant="outline" asChild><a href={assetUrl(job.rel, "out/final.mp4", job.updated)} download={`${projectName(job.project_dir)}.mp4`}>Baixar</a></Button>}
       </header>
       <StageBar job={job} stages={stages} />
       <div className="flex flex-wrap gap-4">

@@ -12,6 +12,9 @@ describe("compose-form", () => {
     expect(a.assets.map((x) => x.name)).toEqual(["trilha.mp3"])
     expect(cl([f("d.mp4", "video/mp4")], a).videos).toHaveLength(3)
   })
+  it("classify reconhece mts, m2ts, 3gp e mpg como vídeo", () => {
+    expect(cl([f("a.MTS"), f("b.m2ts"), f("c.3gp"), f("d.mpg")], EMPTY).videos).toHaveLength(4)
+  })
   it("classify pula duplicados por nome ou por nome-base de vídeo", () => {
     const a = cl([f("a.mp4", "video/mp4"), f("trilha.mp3")], EMPTY)
     const r = classify([f("A.MP4", "video/mp4"), f("a.MOV"), f("TRILHA.mp3"), f("b.mp4", "video/mp4"), f("b.mov")], a)

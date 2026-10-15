@@ -60,18 +60,17 @@ describe("NewVideo", () => {
     expect(screen.queryByText("a.mp4")).toBeNull()
   })
 
-  it("soltar na janela anexa e bloqueia a navegação do navegador", async () => {
+  it("soltar um arquivo na janela anexa; soltar texto não anexa", async () => {
     render(<NewVideo doctor={null} onCreated={() => {}} />)
     const file = new File(["v"], "solto.mp4", { type: "video/mp4" })
-    const notPrevented = fireEvent.drop(window, { dataTransfer: { files: [file] } })
-    expect(notPrevented).toBe(false)
+    fireEvent.drop(window, { dataTransfer: { types: ["text/plain"], files: [] } })
+    fireEvent.drop(window, { dataTransfer: { types: ["Files"], files: [file] } })
     expect(await screen.findByText("solto.mp4")).toBeTruthy()
-    expect(fireEvent.dragOver(window)).toBe(false)
   })
 
   it("avisa de duplicado e de roteiro trocado", async () => {
     render(<NewVideo doctor={null} onCreated={() => {}} />)
-    const drop = (...files: File[]) => fireEvent.drop(window, { dataTransfer: { files } })
+    const drop = (...files: File[]) => fireEvent.drop(window, { dataTransfer: { types: ["Files"], files } })
     drop(new File(["v"], "a.mp4", { type: "video/mp4" }), new File(["r"], "velho.md"))
     await screen.findByText("a.mp4")
     drop(new File(["v"], "a.MOV"), new File(["r"], "novo.md"))

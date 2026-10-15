@@ -200,6 +200,9 @@ def test_job_detail_exposes_preview_transcript_timeline_review(tmp_path, monkeyp
 
     (root / "input").mkdir(exist_ok=True)
     (root / "input/meu vídeo #1.clean.mp4").write_bytes(b"x")
+    (root / "input/clean.ok").write_text("ok")
+    (root / ".stages").mkdir(exist_ok=True)
+    (root / ".stages/clean.ok").write_text("ok")
     (root / "input/manifest.json").write_text(json.dumps({"aspect": "9:16", "videos": [
         {"raw": "input/raw/x.mp4", "clean": "input/nao-existe.clean.mp4"},
         {"raw": "input/raw/meu vídeo #1.mp4", "clean": "input/meu vídeo #1.clean.mp4"}]}), encoding="utf-8")
@@ -227,3 +230,39 @@ def test_montage_job_has_no_transcript(tmp_path, monkeypatch):
     (root / "analysis").mkdir(exist_ok=True)
     (root / "analysis/words.json").write_text("[]", encoding="utf-8")
     assert c.get(f"/api/jobs/{jid}").json()["files"]["transcript"] is None
+
+
+def test_invalid_timeline_is_null(tmp_path, monkeypatch):
+    store, c = _client(tmp_path, monkeypatch)
+    jid = _mk(c).json()["id"]
+    root = Path(store.get(jid)["project_dir"])
+    (root / "timeline.json").write_text(json.dumps({"width": 1080, "height": 1920}), encoding="utf-8")
+    assert c.get(f"/api/jobs/{jid}").json()["files"]["timeline"] is None
+
+
+def test_recipe_info_skips_broken_recipe(tmp_path, monkeypatch):
+    from autovideo import recipes
+    d = tmp_path / "recipes"
+    d.mkdir()
+    for f in recipes.RECIPES_DIR.glob("*.yaml"):
+        (d / f.name).write_bytes(f.read_bytes())
+    (d / "quebrada.yaml").write_text("id: [nope\n  : :", encoding="utf-8")
+    monkeypatch.setattr(recipes, "RECIPES_DIR", d)
+    _, c = _client(tmp_path, monkeypatch)
+    ids = {r["id"] for r in c.get("/api/recipe-info").json()}
+    assert "talking-head-punchy" in ids and "quebrada" not in ids
+
+
+def test_preview_only_after_clean_marker(tmp_path, monkeypatch):
+    store, c = _client(tmp_path, monkeypatch)
+    jid = _mk(c).json()["id"]
+    root = Path(store.get(jid)["project_dir"])
+    (root / "input").mkdir(exist_ok=True)
+    (root / "input/v.clean.mp4").write_bytes(b"x")
+    (root / "input/manifest.json").write_text(json.dumps({"videos": [{"raw": "r", "clean": "input/v.clean.mp4"}]}), encoding="utf-8")
+    assert c.get(f"/api/jobs/{jid}").json()["files"]["preview"] is None
+    (root / "input/clean.ok").write_text("ok")
+    (root / ".stages").mkdir(exist_ok=True)  # projeto com marcadores: precisa do .stages/clean.ok
+    assert c.get(f"/api/jobs/{jid}").json()["files"]["preview"] is None
+    (root / ".stages/clean.ok").write_text("ok")
+    assert c.get(f"/api/jobs/{jid}").json()["files"]["preview"] == "input/v.clean.mp4"

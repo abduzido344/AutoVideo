@@ -12,6 +12,11 @@ describe("StageBar", () => {
     expect(screen.getByText("Aprovar o brief")).toBeTruthy()
     expect(container.textContent).toContain("Etapa 4 de 5")
   })
+  it("na fila não mostra o nome do gate", () => {
+    const { container } = render(<StageBar stages={stages} job={{ status: "queued", stage: "gate1" }} />)
+    expect(screen.getByText("Na fila")).toBeTruthy()
+    expect(container.textContent).not.toContain("Aprovar o brief")
+  })
   it("concluído", () => {
     render(<StageBar stages={stages} job={{ status: "completed", stage: "post" }} />)
     expect(screen.getByText("Concluído")).toBeTruthy()

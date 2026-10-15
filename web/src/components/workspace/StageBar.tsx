@@ -15,7 +15,7 @@ export function StageBar({ job, stages }: { job: { status: string; stage: string
       </div>
       <p className="text-[13px] text-muted-foreground">
         {done ? <b className="font-medium text-foreground">Concluído</b>
-          : <>Etapa {i + 1} de {stages.length} · <b className="font-medium text-foreground">{STAGE_LABEL[job.stage] ?? (job.stage || "Na fila")}</b></>}
+          : <>Etapa {i + 1} de {stages.length} · <b className="font-medium text-foreground">{job.status === "queued" ? "Na fila" : STAGE_LABEL[job.stage] ?? (job.stage || "Na fila")}</b></>}
       </p>
     </div>
   )

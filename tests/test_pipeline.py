@@ -715,3 +715,16 @@ def test_prompts_reference_real_artifacts():
     assert "analysis/frames/*.jpg" not in "".join(text.values())
     assert "analysis/frames/index.json" in text["director"] and "analysis/frames/index.json" in text["editor"]
     assert "analysis/onscreen.out.json" in text["editor"]
+
+
+def test_cli_jobs_lists_id_status_stage_rel(tmp_path, monkeypatch, capsys):
+    monkeypatch.setenv("AUTOVIDEO_HOME", str(tmp_path))
+    store = JobStore(tmp_path / "jobs.db")
+    a = store.create(str(tmp_path / "proj a"), "talking-head-punchy", False)
+    b = store.create(str(tmp_path.parent / "fora"), "montage-beat", True)
+    store.set(a, status="failed", stage="clean", error="interrompido")
+    assert cli.main(["jobs"]) == 0
+    lines = capsys.readouterr().out.splitlines()
+    assert lines[1].split("\t") == [str(b), "queued", "-", str(tmp_path.parent / "fora")]  # fora do home: caminho
+    assert lines[2].split("\t") == [str(a), "failed", "clean", "proj a"]
+    assert lines[0].split("\t") == ["id", "status", "etapa", "projeto"]

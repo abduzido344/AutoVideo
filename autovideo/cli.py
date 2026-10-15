@@ -7,6 +7,7 @@ def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="autovideo")
     sub = p.add_subparsers(dest="cmd", required=True)
     sub.add_parser("doctor")
+    sub.add_parser("jobs")
     e = sub.add_parser("edit")
     e.add_argument("videos", nargs="+", type=Path)
     e.add_argument("--script", type=Path)
@@ -27,6 +28,15 @@ def main(argv: list[str] | None = None) -> int:
         for name, ok, info in results:
             print(f"{'OK ' if ok else 'ERR'} {name}: {info}")
         return 0 if all(ok for _, ok, _ in results) else 1
+    if a.cmd == "jobs":
+        from autovideo.jobs import JobStore
+        from autovideo.project import home
+        print("id\tstatus\tetapa\tprojeto")
+        for j in JobStore(home() / "jobs.db").list():
+            root = Path(j["project_dir"])
+            rel = root.relative_to(home()).as_posix() if root.is_relative_to(home()) else str(root)
+            print(f"{j['id']}\t{j['status']}\t{j['stage'] or '-'}\t{rel}")
+        return 0
     from autovideo import pipeline
     if a.cmd == "serve":
         import uvicorn

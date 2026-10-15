@@ -4,7 +4,7 @@ from pathlib import Path
 from autovideo.hf import HF, ToolError, run
 from autovideo.media import integrated_lufs, normalize_final
 from autovideo.project import Project
-from autovideo.timeline import FORMATS
+from autovideo.timeline import FORMATS, Grading
 
 # Com color-grading o shader demora ~40 s para inicializar nesta máquina (Intel Iris): os timeouts padrão de
 # prontidão (3 s check, 5 s snapshot, 45 s render) estouram. São tetos de espera, não atrasos fixos.
@@ -25,8 +25,9 @@ def init_composition(project: Project, aspect: str) -> None:
 def apply_grading(comp: Path, grading: dict | None) -> None:
     # grava data-color-grading no index.html: chamar DEPOIS de compose.write_composition (que regenera o arquivo)
     if grading:
+        g = Grading.model_validate(grading)  # vira argumento de processo: só números conhecidos passam
         run([*HF, "media-treatment", "--project", str(comp), "--selector", "#cam video",
-             "--grading", json.dumps(grading), "--apply", "--json"])
+             "--grading", g.model_dump_json(exclude_none=True), "--apply", "--json"])
 
 
 def caption_zone(aspect: str) -> str:

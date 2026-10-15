@@ -216,7 +216,7 @@ def _has_audio(p: Project, t: Timeline) -> bool:
 
 def _compose(p: Project, t: Timeline) -> None:
     write_composition(p.comp, t, _words(p, "words.out.json"), _silent(p))
-    render.apply_grading(p.comp, t.grading)  # write_composition regenera o index.html: sempre depois dele
+    render.apply_grading(p.comp, t.grading and t.grading.model_dump(exclude_none=True))  # write_composition regenera o index.html: sempre depois dele
 
 
 def _review_times(t: Timeline) -> list[float]:

@@ -73,6 +73,31 @@ class Music(BaseModel):
     volume: float = 0.12
 
 
+def _num(lim: float):
+    return Field(None, ge=-lim, le=lim, strict=True)  # strict: só número JSON (nem "0.1", nem true)
+
+
+class Adjust(BaseModel):
+    """Família `correction` do `hyperframes media-treatment` (0.8.158), com os limites que ele declara."""
+    model_config = STRICT
+    exposure: float | None = _num(2)
+    contrast: float | None = _num(1)
+    highlights: float | None = _num(1)
+    shadows: float | None = _num(1)
+    whites: float | None = _num(1)
+    blacks: float | None = _num(1)
+    temperature: float | None = _num(1)
+    tint: float | None = _num(1)
+    vibrance: float | None = _num(1)
+    saturation: float | None = _num(1)
+
+
+class Grading(BaseModel):
+    """O `suggestedPatch` do `media-treatment --analyze`: só correção numérica (sem preset/LUT/strings)."""
+    model_config = STRICT
+    adjust: Adjust
+
+
 class Timeline(BaseModel):
     model_config = STRICT
     width: int
@@ -85,7 +110,7 @@ class Timeline(BaseModel):
     sfx: list[Sfx] = []
     music: Music | None = None
     captions: bool = True
-    grading: dict | None = None
+    grading: Grading | None = None
 
     @property
     def duration(self) -> float:

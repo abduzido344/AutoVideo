@@ -221,3 +221,23 @@ def test_real_pipeline_smoke(slow, tmp_path):
     measured = render.render_final(project.comp, final, -14)
     assert abs(measured - (-14)) <= 1.5 and abs(integrated_lufs(final) - measured) < 0.01
     print(f"LUFS medido: {measured}")
+
+
+@pytest.mark.parametrize("bad", [{"adjust": {"exposure": "0.1&calc"}}, {"adjust": {"exposure": 5}},
+                                 {"adjust": {"nope": 0.1}}, {"lut": "x.cube"}, {"adjust": {"exposure": True}}])
+def test_apply_grading_rejects_non_numeric_or_unknown(monkeypatch, bad):
+    monkeypatch.setattr(render, "run", lambda *a, **k: pytest.fail("não deve rodar"))
+    with pytest.raises(ValueError):
+        render.apply_grading(Path("c"), bad)
+
+
+def test_apply_grading_passes_validated_numbers(monkeypatch):
+    seen = []
+    monkeypatch.setattr(render, "run", lambda args, **k: seen.append(args))
+    render.apply_grading(Path("c"), {"adjust": {"exposure": 0.1, "contrast": 0}})
+    assert json.loads(seen[0][seen[0].index("--grading") + 1]) == {"adjust": {"exposure": 0.1, "contrast": 0}}
+
+
+def test_timeline_rejects_bad_grading():
+    with pytest.raises(ValueError):
+        Timeline(width=1, height=1, segments=[Segment(src="a", **{"in": 0}, out=1)], grading={"adjust": {"x": 1}})

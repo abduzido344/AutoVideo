@@ -1,42 +1,45 @@
-import { useCallback, useEffect, useState } from "react"
-import { api, type Job, type JobDetail as JD } from "@/api"
-import { JobDetail } from "@/components/JobDetail"
-import { JobList } from "@/components/JobList"
-import { NewJobForm } from "@/components/NewJobForm"
-import { SoundEffects } from "@/components/ui/sound"
+import { useEffect, useState } from "react"
+import { api, type Doctor } from "@/api"
+import { AppSidebar } from "@/components/AppSidebar"
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { Toaster } from "@/components/ui/sonner"
+import { SoundEffects } from "@/components/ui/sound"
+import { go, useRoute } from "@/lib/route"
+import { usePoll } from "@/lib/usePoll"
+import { NewVideo } from "@/pages/NewVideo"
+import { Workspace } from "@/pages/Workspace"
+
+const OFFLINE: Doctor = { ok: false, checks: [{ name: "servidor", ok: false, detail: "sem resposta do /api/doctor" }] }
 
 export default function App() {
-  const [jobs, setJobs] = useState<Job[]>([])
+  const route = useRoute()
+  const jobs = usePoll(api.jobs)
   const [stages, setStages] = useState<string[]>([])
-  const [current, setCurrent] = useState<number | null>(null)
-  const [detail, setDetail] = useState<JD | null>(null)
-  const [offline, setOffline] = useState(false)
-
-  const refresh = useCallback(async () => {
-    try {
-      setJobs(await api.jobs())
-      if (current !== null) setDetail(await api.job(current))
-      setOffline(false)
-    } catch { setOffline(true) /* tenta de novo no próximo ciclo */ }
-  }, [current])
+  const [doctor, setDoctor] = useState<Doctor | null>(null)
 
   useEffect(() => { api.stages().then(setStages).catch(() => {}) }, [])
-  useEffect(() => { refresh(); const t = setInterval(refresh, 3000); return () => clearInterval(t) }, [refresh])
+  useEffect(() => { api.doctor().then(setDoctor, () => setDoctor(OFFLINE)) }, [])
+  useEffect(() => {
+    const on = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); go({ name: "new" }) }
+    }
+    addEventListener("keydown", on)
+    return () => removeEventListener("keydown", on)
+  }, [])
 
   return (
     <SoundEffects>
-      {offline && <p role="status" className="p-2 text-center text-xs text-destructive">servidor offline</p>}
-      <main className="mx-auto grid max-w-6xl gap-8 p-4 md:grid-cols-[340px_1fr] md:p-10">
-        <div className="grid content-start gap-8">
-          <NewJobForm onCreated={setCurrent} />
-          <JobList jobs={jobs} current={current} onSelect={setCurrent} />
-        </div>
-        {detail && detail.id === current
-          ? <JobDetail key={detail.id} job={detail} stages={stages} onChange={refresh} />
-          : <p className="text-sm text-muted-foreground">Selecione ou crie um job.</p>}
-      </main>
-      <Toaster theme="dark" />
+      <SidebarProvider>
+        <AppSidebar jobs={jobs.data ?? []} route={route} doctor={doctor} />
+        <SidebarInset>
+          {jobs.error && <p role="status" className="rounded-t-xl bg-destructive/10 px-4 py-2 text-center text-xs text-destructive">
+            Sem conexão com o servidor — tentando de novo…</p>}
+          {route.name === "project"
+            ? <Workspace key={route.id} id={route.id} stages={stages} onChange={jobs.refresh} />
+            : <NewVideo doctor={doctor} onCreated={(id) => { jobs.refresh(); go({ name: "project", id }) }} />}
+        </SidebarInset>
+      </SidebarProvider>
+      <Toaster theme="light" />
     </SoundEffects>
   )
 }

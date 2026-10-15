@@ -41,3 +41,26 @@ def test_transcribe_reads_transcript_file_named_in_stdout(tmp_path, monkeypatch)
     monkeypatch.setattr(T, "run", fake_run)
     ws = T.transcribe(tmp_path / "a.mp4", "a.mp4", wd)
     assert [w.text for w in ws] == ["Olá"] and ws[0].src == "a.mp4"
+
+
+def _fake(monkeypatch, wd, summary, write=True):
+    def fake_run(args, cwd=None, timeout=0):
+        wd.mkdir(parents=True, exist_ok=True)
+        if write:
+            (wd / "transcript.json").write_text(json.dumps([{"id": "w0", **RAW[0]}]), encoding="utf-8")
+        return subprocess.CompletedProcess(args, 0, stdout=json.dumps(summary) + "\n", stderr="")
+    monkeypatch.setattr(T, "run", fake_run)
+
+
+def test_transcribe_summary_ok_false_is_tool_error_not_no_speech(tmp_path, monkeypatch):
+    from autovideo.hf import ToolError
+    _fake(monkeypatch, tmp_path / "w", {"ok": False, "error": "whisper_unavailable"}, write=False)
+    with pytest.raises(ToolError, match="whisper_unavailable"):
+        T.transcribe(tmp_path / "a.mp4", "a.mp4", tmp_path / "w")
+
+
+def test_transcribe_relative_transcript_path_resolves_against_workdir(tmp_path, monkeypatch):
+    wd = tmp_path / "w ç"
+    _fake(monkeypatch, wd, {"ok": True, "transcriptPath": "transcript.json"})
+    monkeypatch.chdir(tmp_path)  # cwd do processo != workdir
+    assert [w.text for w in T.transcribe(tmp_path / "a.mp4", "a.mp4", wd)] == ["Olá"]

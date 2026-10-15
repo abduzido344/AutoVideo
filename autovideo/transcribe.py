@@ -1,7 +1,7 @@
 import json
 import re
 from pathlib import Path
-from autovideo.hf import HF, run
+from autovideo.hf import HF, ToolError, run
 from autovideo.timeline import Word
 
 
@@ -44,8 +44,10 @@ def transcribe(media: Path, src: str, workdir: Path, language: str = "pt", model
              "--model", model, "--json"], cwd=workdir, timeout=7200)
     out = _last_json(p.stdout)
     # 0.8.158: o stdout é só um resumo {ok, engine, transcriptPath, ...}; as palavras ficam no arquivo
+    if isinstance(out, dict) and out.get("ok") is False:  # falha com código 0: não é "sem fala"
+        raise ToolError(f"hyperframes transcribe falhou: {json.dumps(out, ensure_ascii=False)[:500]}")
     if isinstance(out, dict) and "transcriptPath" in out:
-        out = json.loads(Path(out["transcriptPath"]).read_text(encoding="utf-8"))
+        out = json.loads((workdir / out["transcriptPath"]).read_text(encoding="utf-8"))  # relativo = ao workdir
     return parse_transcript(out, src)
 
 

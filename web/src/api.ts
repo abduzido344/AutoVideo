@@ -2,10 +2,35 @@ export type Job = {
   id: number; project_dir: string; recipe: string; auto: number; status: string; stage: string; error: string
   created: number; updated: number
 }
-export type Decision = { ts: number; role: string; attempt: number; cost_usd: number | null; turns: number | null; is_error: boolean; result: string }
+export type Decision = {
+  ts: number; role: string; attempt?: number; cost_usd: number | null; turns?: number | null; is_error?: boolean; result?: string
+}
+export type Word = { text: string; start: number; end: number }
+export type TimelineJSON = {
+  width: number; height: number; fps?: number
+  segments: { src: string; in: number; out: number }[]
+  zooms?: { at: number; dur: number; scale?: number; kind?: string }[]
+  overlays?: { start: number; dur: number; src: string }[]
+  broll?: { start: number; dur: number; src: string }[]
+  sfx?: { at: number; src: string; dur?: number }[]
+  music?: { src: string; volume?: number } | null
+  captions?: boolean
+}
+export type Review = { issues_restantes: { code?: string | null; message?: string | null }[]; lufs: number | null }
+export type RecipeInfo = {
+  id: string; title: string; mode: "speech" | "montage"; aspect: string
+  captions: { enabled: boolean; component: string }; pacing: { max_gap: number }; audio: { lufs: number }
+}
+export type Doctor = { ok: boolean; checks: { name: string; ok: boolean; detail: string }[] }
 export type JobDetail = Job & {
   rel: string | null
-  files: { brief: string | null; post: { title: string; caption: string; hashtags: string[] } | null; has_final: boolean; decisions: Decision[] }
+  files: {
+    brief: string | null; post: { title: string; caption: string; hashtags: string[] } | null
+    has_final: boolean; decisions: Decision[]
+    preview: string | null; aspect: string | null
+    transcript: { words: Word[]; fillers: number[] } | null
+    timeline: TimelineJSON | null; review: Review | null; script: string | null
+  }
 }
 
 async function j<T>(path: string, init?: RequestInit): Promise<T> {
@@ -20,7 +45,8 @@ async function j<T>(path: string, init?: RequestInit): Promise<T> {
 }
 
 export const api = {
-  recipes: () => j<string[]>("/api/recipes"),
+  recipeInfo: () => j<RecipeInfo[]>("/api/recipe-info"),
+  doctor: () => j<Doctor>("/api/doctor"),
   stages: () => j<string[]>("/api/stages"),
   jobs: () => j<Job[]>("/api/jobs"),
   job: (id: number) => j<JobDetail>(`/api/jobs/${id}`),

@@ -1,4 +1,5 @@
 import json
+import os
 import re
 from pathlib import Path
 from autovideo import hf
@@ -17,6 +18,22 @@ def parakeet() -> str:
     if not found:
         raise hf.ToolError(f"modelo Parakeet ausente — rode: {' '.join(hf.HF)} models install parakeet")
     return found["model"]
+
+
+AUTH_HINT = "rode `claude login` (uso pessoal) ou defina ANTHROPIC_API_KEY"
+
+
+def parse_claude_auth(stdout: str) -> str:
+    """`claude auth status` (JSON). Passa com login local ou ANTHROPIC_API_KEY (o AutoVideo não faz login)."""
+    try:
+        data = json.loads(stdout)
+    except ValueError:
+        data = {}
+    if isinstance(data, dict) and data.get("loggedIn") is True:
+        return f"logado ({data.get('authMethod', '?')})"
+    if os.environ.get("ANTHROPIC_API_KEY"):
+        return "ANTHROPIC_API_KEY definida"
+    raise hf.ToolError(f"sem autenticação do Claude — {AUTH_HINT}")
 
 
 def run_checks() -> list[tuple[str, bool, str]]:
@@ -42,6 +59,8 @@ def run_checks() -> list[tuple[str, bool, str]]:
     check("hyperframes", lambda: hf.run([*hf.HF, "--version"], timeout=600).stdout.strip())
     check("parakeet model", parakeet)
     check("claude CLI", lambda: hf.run(["claude", "--version"]).stdout.strip())
+    # sai com 1 quando não está logado, ainda com o JSON no stdout
+    check("claude auth", lambda: parse_claude_auth(hf.run(["claude", "auth", "status", "--json"], ok_codes=(0, 1)).stdout))
 
     def skills():
         p = Path.home() / ".claude" / "skills" / "hyperframes"

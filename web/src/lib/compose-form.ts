@@ -4,14 +4,22 @@ export const EMPTY: Attachments = { videos: [], script: null, assets: [] }
 const VIDEO_EXT = /\.(mp4|mov|m4v|webm|mkv|avi)$/i
 const SCRIPT_EXT = /\.(md|txt)$/i
 
-export function classify(files: File[], prev: Attachments): Attachments {
-  const out: Attachments = { videos: [...prev.videos], script: prev.script, assets: [...prev.assets] }
+const isVideo = (f: File) => f.type.startsWith("video/") || VIDEO_EXT.test(f.name)
+// um vídeo também "ocupa" o nome sem extensão: a.mp4 e a.MOV colidem no servidor
+const keys = (f: File) => [f.name.toLowerCase(), ...(isVideo(f) ? [f.name.replace(/\.[^.]*$/, "").toLowerCase()] : [])]
+
+export function classify(files: File[], prev: Attachments): { next: Attachments; skipped: string[] } {
+  const next: Attachments = { videos: [...prev.videos], script: prev.script, assets: [...prev.assets] }
+  const taken = new Set([...next.videos, ...next.assets, ...(next.script ? [next.script] : [])].flatMap(keys))
+  const skipped: string[] = []
   for (const f of files) {
-    if (f.type.startsWith("video/") || VIDEO_EXT.test(f.name)) out.videos.push(f)
-    else if (SCRIPT_EXT.test(f.name)) out.script = f
-    else out.assets.push(f)
+    if (keys(f).some((k) => taken.has(k))) { skipped.push(f.name); continue }
+    keys(f).forEach((k) => taken.add(k))
+    if (isVideo(f)) next.videos.push(f)
+    else if (SCRIPT_EXT.test(f.name)) next.script = f
+    else next.assets.push(f)
   }
-  return out
+  return { next, skipped }
 }
 
 export function removeFile(a: Attachments, f: File): Attachments {

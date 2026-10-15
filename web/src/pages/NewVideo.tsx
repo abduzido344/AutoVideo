@@ -1,4 +1,4 @@
-import { ArrowUp, ChevronDown, FileText, Paperclip, Play, Plus, X } from "lucide-react"
+import { ArrowUp, ChevronDown, FileText, Loader2, Paperclip, Play, Plus, X } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import { toast } from "sonner"
 import { api, type Doctor, type RecipeInfo } from "@/api"
@@ -19,8 +19,33 @@ export function NewVideo({ doctor, onCreated }: { doctor: Doctor | null; onCreat
   const [approve, setApprove] = useState(true)
   const [busy, setBusy] = useState(false)
   const input = useRef<HTMLInputElement>(null)
+  const attRef = useRef(att)
 
-  useEffect(() => { api.recipeInfo().then(setRecipes, (e: Error) => toast.error(e.message)) }, [])
+  const put = (a: Attachments) => { attRef.current = a; setAtt(a) }
+  function add(fs: File[]) {
+    if (!fs.length) return
+    const { next, skipped } = classify(fs, attRef.current)
+    const old = attRef.current.script
+    if (old && next.script && next.script !== old) toast.info(`Roteiro trocado: ${old.name} → ${next.script.name}`)
+    if (skipped.length) toast.info(`Já anexado: ${skipped.join(", ")}`)
+    put(next)
+  }
+
+  useEffect(() => {
+    api.recipeInfo().then((list) => {
+      setRecipes(list)
+      setRecipe((cur) => (list.length === 0 || list.some((x) => x.id === cur) ? cur : list[0].id))
+    }, (e: Error) => toast.error(e.message))
+  }, [])
+
+  // soltar um arquivo fora do cartão faria o navegador abrir o arquivo e perder o rascunho
+  useEffect(() => {
+    const over = (e: DragEvent) => e.preventDefault()
+    const drop = (e: DragEvent) => { e.preventDefault(); add([...(e.dataTransfer?.files ?? [])]) }
+    window.addEventListener("dragover", over)
+    window.addEventListener("drop", drop)
+    return () => { window.removeEventListener("dragover", over); window.removeEventListener("drop", drop) }
+  }, [])
   const r = recipes.find((x) => x.id === recipe)
   const files = [
     ...att.videos.map((f) => ({ f, kind: "video" as const })),
@@ -32,7 +57,7 @@ export function NewVideo({ doctor, onCreated }: { doctor: Doctor | null; onCreat
     setBusy(true)
     try {
       const { id } = await api.create(await buildForm(att, text, recipe, approve))
-      setAtt(EMPTY)
+      put(EMPTY)
       setText("")
       onCreated(id)
     } catch (e) {
@@ -47,9 +72,7 @@ export function NewVideo({ doctor, onCreated }: { doctor: Doctor | null; onCreat
         <h1 className="text-center text-5xl font-extrabold tracking-[-0.04em] md:text-6xl">AUTOVIDEO</h1>
 
         <div>
-          <div className="relative z-10 grid gap-3 rounded-[22px] border border-input bg-background p-3.5 shadow-[0_6px_24px_rgba(0,0,0,0.06)]"
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={(e) => { e.preventDefault(); setAtt((a) => classify([...e.dataTransfer.files], a)) }}>
+          <div aria-busy={busy} className="relative z-10 grid gap-3 rounded-[22px] border border-input bg-background p-3.5 shadow-[0_6px_24px_rgba(0,0,0,0.06)]">
             {files.length > 0 && (
               <ul aria-label="Anexos" className="flex flex-wrap gap-2">
                 {files.map(({ f, kind }, i) => (
@@ -62,7 +85,7 @@ export function NewVideo({ doctor, onCreated }: { doctor: Doctor | null; onCreat
                       <span className="text-xs text-muted-foreground">{KIND[kind]}</span>
                     </span>
                     <Button type="button" variant="ghost" size="icon" aria-label={`Remover ${f.name}`}
-                      onClick={() => setAtt((a) => removeFile(a, f))}><X className="size-3" /></Button>
+                      onClick={() => put(removeFile(attRef.current, f))}><X className="size-3" /></Button>
                   </li>
                 ))}
               </ul>
@@ -73,7 +96,7 @@ export function NewVideo({ doctor, onCreated }: { doctor: Doctor | null; onCreat
               className="w-full resize-none bg-transparent px-1 text-[15px] leading-relaxed outline-none placeholder:text-muted-foreground" />
             <div className="flex flex-wrap items-center gap-1.5">
               <input ref={input} type="file" multiple hidden
-                onChange={(e) => { const fs = [...(e.target.files ?? [])]; setAtt((a) => classify(fs, a)); e.target.value = "" }} />
+                onChange={(e) => { add([...(e.target.files ?? [])]); e.target.value = "" }} />
               <Button type="button" variant="ghost" size="icon" aria-label="Adicionar gravações, roteiro ou assets"
                 onClick={() => input.current?.click()}><Plus className="size-5" /></Button>
               <DropdownMenu>
@@ -96,8 +119,13 @@ export function NewVideo({ doctor, onCreated }: { doctor: Doctor | null; onCreat
                 Aprovar etapas <Switch checked={approve} onCheckedChange={setApprove} />
               </label>
               <Button type="button" size="icon" className="ml-1.5 rounded-full" aria-label="Criar vídeo"
-                disabled={busy || att.videos.length === 0} onClick={send}><ArrowUp className="size-4" /></Button>
+                disabled={busy || att.videos.length === 0} onClick={send}>
+                {busy ? <Loader2 className="size-4 animate-spin" /> : <ArrowUp className="size-4" />}
+              </Button>
             </div>
+            {att.videos.length === 0 && (
+              <p className="px-1 text-xs text-muted-foreground">Adicione ao menos uma gravação (mp4, mov…)</p>
+            )}
           </div>
           {r && (
             <div className="mx-4 -mt-2.5 flex flex-wrap gap-5 rounded-b-2xl bg-muted px-4 pb-2.5 pt-5 text-[13px] text-muted-foreground">

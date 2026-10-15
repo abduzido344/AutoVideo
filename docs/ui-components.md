@@ -20,6 +20,11 @@ O registry tem 87 itens. Sem token, só estes baixam: `video`, `sound`, `convers
 \* Funcionam só com Pro, porque dependem de `alert`/`button`/`spinner` e de `streaming-text`/`orb`/`text-shimmer`, que são Pro.
 Os demais 77 respondem 401 e exigem **Kobra Pro**. O token vai em `KOBRA_TOKEN`, que o `components.json` passa como header. Sem o token, use o equivalente shadcn base da coluna "Fallback".
 
+**Instalar item free sem token:** com `@kobra` no `components.json` o shadcn exige `KOBRA_TOKEN` até para itens free (erro "requires the following environment variables"). Instale pela URL: `npx shadcn@latest add https://kobra.systems/r/<nome>.json`.
+
+## Estado atual do painel (`web/`)
+Sem `KOBRA_TOKEN` na instalação. Usados: Kobra `video` (player) e `sound` (`<SoundEffects>` no App). Todo o resto é shadcn base (`button card badge select textarea input label progress scroll-area tabs sonner`), com os fallbacks da coluna acima para os itens Pro. Quando houver token: trocar upload por `magnetic-dropzone`, etapas por `task-list`, decisões por `reasoning-steps`, gate por `question-card`.
+
 ## Mapa: necessidade → componente
 | Necessidade no painel | Kobra | Fallback (shadcn base) |
 |---|---|---|

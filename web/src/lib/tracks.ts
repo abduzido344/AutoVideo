@@ -5,12 +5,16 @@ export type Track = { key: "video" | "zoom" | "overlay" | "captions" | "music" |
 
 const MIN_W = 0.6 // % mínimo para um item curto continuar clicável
 
-export const duration = (t: TimelineJSON) => t.segments.reduce((s, x) => s + (x.out - x.in), 0)
-const stem = (p: string) => (p.split("/").pop() ?? p).replace(/\.[^.]+$/, "")
+const finite = (n: number) => (Number.isFinite(n) ? n : 0)
+const segLen = (s: { in: number; out: number }) => { const d = s.out - s.in; return Number.isFinite(d) && d > 0 ? d : 0 }
+export const duration = (t: TimelineJSON) => t.segments.reduce((s, x) => s + segLen(x), 0)
+// src ausente (overlay/música/sfx sem arquivo) não pode derrubar a página
+const stem = (p: string | undefined) => (String(p ?? "").split("/").pop() ?? "").replace(/\.[^.]+$/, "")
 
 export function timelineTracks(t: TimelineJSON): Track[] {
   const T = duration(t) || 1
-  const clip = (start: number, dur: number, label: string): Clip => {
+  const clip = (start0: number, dur0: number, label: string): Clip => {
+    const start = finite(start0), dur = finite(dur0)
     const a = Math.min(Math.max(start, 0), T)
     const b = Math.min(Math.max(start + dur, a), T)
     // multiplica antes de dividir: (4/10)*100 dá 40.00000000000001, (4*100)/10 dá 40
@@ -18,7 +22,7 @@ export function timelineTracks(t: TimelineJSON): Track[] {
     return { left: Math.min((a * 100) / T, 100 - width), width, label, at: a }
   }
   let off = 0
-  const video = t.segments.map((s) => { const c = clip(off, s.out - s.in, ""); off += s.out - s.in; return c })
+  const video = t.segments.map((s) => { const c = clip(off, segLen(s), ""); off += segLen(s); return c })
   return [
     { key: "video", name: "Vídeo", clips: video },
     { key: "zoom", name: "Zoom", clips: (t.zooms ?? []).map((z) =>

@@ -30,6 +30,21 @@ describe("timelineTracks", () => {
     expect(t[4].clips[0].label).toBe("trilha boa")
     expect(t[5].clips[0]).toMatchObject({ label: "whoosh", at: 4 })
   })
+  it("overlay, música ou sfx sem src não quebram a página", () => {
+    const t = timelineTracks({ ...base, overlays: [{ start: 0, dur: 1 }], music: {}, sfx: [{ at: 1 }] } as unknown as TimelineJSON)
+    expect(t[2].clips[0].label).toBe("")
+    expect(t[4].clips[0].label).toBe("")
+    expect(t[5].clips[0].label).toBe("")
+  })
+  it("NaN em segmento ou item não gera left/width inválidos", () => {
+    const t = timelineTracks({ ...base, segments: [{ src: "a", in: 0, out: NaN }, { src: "a", in: 0, out: 4 }],
+      overlays: [{ start: NaN, dur: NaN, src: "compositions/x.html" }] })
+    expect(duration({ ...base, segments: [{ src: "a", in: 0, out: NaN }, { src: "a", in: 0, out: 4 }] })).toBe(4)
+    for (const track of t) for (const c of track.clips) {
+      expect(Number.isFinite(c.left)).toBe(true)
+      expect(Number.isFinite(c.width)).toBe(true)
+    }
+  })
   it("itens além do fim ficam dentro de 0–100%", () => {
     const t = timelineTracks({ ...base, overlays: [{ start: 9.9, dur: 5, src: "compositions/x.html" }],
       sfx: [{ at: 50, src: "assets/s.wav", dur: 1 }] })

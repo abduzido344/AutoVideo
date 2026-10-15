@@ -13,13 +13,17 @@ const STYLE: Record<Track["key"], string> = {
   sfx: "border-[#FFD2BF] bg-[#FFEDE5] text-[#B5451B]",
 }
 
-export function Timeline({ timeline, onSeek }: { timeline: TimelineJSON; onSeek: (t: number) => void }) {
+// onSeek só existe quando o player mostra o vídeo final: o eixo da timeline é o de saída, não o da fonte
+export function Timeline({ timeline, onSeek }: { timeline: TimelineJSON; onSeek?: (t: number) => void }) {
   const T = duration(timeline)
   return (
     <section aria-label="Timeline" className="grid gap-2 rounded-2xl border p-3.5">
       <div className="flex items-center gap-3">
-        <h2 className="text-sm font-semibold">Timeline</h2>
-        <span className="text-xs text-muted-foreground">clique num item para pular até ele</span>
+        <div className="grid gap-0.5">
+          <h2 className="text-sm font-semibold">Timeline</h2>
+          {!onSeek && <p className="text-xs text-muted-foreground">Prévia sem cortes — a timeline fica clicável depois do render.</p>}
+        </div>
+        {onSeek && <span className="text-xs text-muted-foreground">clique num item para pular até ele</span>}
         <span className="flex-1" />
         <span className="font-mono text-xs text-muted-foreground">{clock(T)}</span>
       </div>
@@ -28,12 +32,15 @@ export function Timeline({ timeline, onSeek }: { timeline: TimelineJSON; onSeek:
           <Fragment key={t.key}>
             <span className="text-xs text-muted-foreground">{t.name}</span>
             <div className="relative h-5 rounded-md bg-muted">
-              {t.clips.map((c, i) => (
-                <button key={i} type="button" onClick={() => onSeek(c.at)}
-                  aria-label={`${t.name}${c.label ? ` ${c.label}` : ""} em ${clock(c.at)}`}
-                  className={cn("absolute inset-y-0.5 overflow-hidden whitespace-nowrap rounded border px-1 text-left text-[10px] font-medium", STYLE[t.key])}
-                  style={{ left: `${c.left}%`, width: `${c.width}%` }}>{c.label}</button>
-              ))}
+              {t.clips.map((c, i) => {
+                const name = `${t.name}${c.label ? ` ${c.label}` : ""} em ${clock(c.at)}`
+                const base = cn("absolute inset-y-0.5 overflow-hidden whitespace-nowrap rounded border px-1 text-left text-[10px] font-medium", STYLE[t.key])
+                const style = { left: `${c.left}%`, width: `${c.width}%` }
+                return onSeek
+                  ? <button key={i} type="button" onClick={() => onSeek(c.at)} aria-label={name}
+                      className={cn(base, "focus-visible:z-10")} style={style}>{c.label}</button>
+                  : <div key={i} title={name} className={base} style={style}>{c.label}</div>
+              })}
             </div>
           </Fragment>
         ))}

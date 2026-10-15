@@ -21,7 +21,7 @@ export function Workspace({ id, stages, onChange }: { id: number; stages: string
       : f.preview ? assetUrl(job.rel, f.preview, job.updated) : null
   const after = () => { refresh(); onChange() }
   // o Video da Kobra não expõe o elemento: acha o <video> dentro do palco
-  const seek = (t: number) => { const v = stage.current?.querySelector("video"); if (v) v.currentTime = t }
+  const seek = (t: number) => { if (!Number.isFinite(t)) return; const v = stage.current?.querySelector("video"); if (v) v.currentTime = t }
 
   return (
     <div className="flex flex-col gap-4 p-5 md:p-6">
@@ -42,7 +42,7 @@ export function Workspace({ id, stages, onChange }: { id: number; stages: string
               ? <Video src={src} className={playerClass(f.aspect)} />
               : <p className="text-sm text-muted-foreground">{job.rel === null ? "Este projeto está fora da pasta de projetos atual (AUTOVIDEO_HOME)." : "A prévia aparece depois da limpeza do áudio."}</p>}
           </div>
-          {f.timeline ? <Timeline timeline={f.timeline} onSeek={seek} />
+          {f.timeline ? <Timeline timeline={f.timeline} onSeek={f.has_final ? seek : undefined} />
             : f.transcript && <Transcript transcript={f.transcript} />}
         </section>
         <aside aria-label="Detalhes e aprovação" className="flex min-w-0 flex-[1_1_320px] flex-col gap-4 md:max-w-[360px]">

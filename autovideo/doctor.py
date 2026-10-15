@@ -3,7 +3,9 @@ import os
 import re
 from pathlib import Path
 from autovideo import hf
+from autovideo.agents import missing_skills
 from autovideo.project import home
+from autovideo.recipes import list_recipes, load_recipe
 
 
 def parse_node_major(version: str) -> int:
@@ -36,6 +38,13 @@ def parse_claude_auth(stdout: str) -> str:
     raise hf.ToolError(f"sem autenticação do Claude — {AUTH_HINT}")
 
 
+def skills() -> str:
+    names = sorted({s for rid in list_recipes() for s in load_recipe(rid).skills})
+    if err := missing_skills(names):
+        raise hf.ToolError(err)
+    return f"{len(names)} skills das receitas em {Path.home() / '.claude' / 'skills'}"
+
+
 def run_checks() -> list[tuple[str, bool, str]]:
     out = []
 
@@ -61,12 +70,6 @@ def run_checks() -> list[tuple[str, bool, str]]:
     check("claude CLI", lambda: hf.run(["claude", "--version"]).stdout.strip())
     # sai com 1 quando não está logado, ainda com o JSON no stdout
     check("claude auth", lambda: parse_claude_auth(hf.run(["claude", "auth", "status", "--json"], ok_codes=(0, 1)).stdout))
-
-    def skills():
-        p = Path.home() / ".claude" / "skills" / "hyperframes"
-        if not p.exists():
-            raise hf.ToolError("skills ausentes — rode: npx hyperframes skills update talking-head-recut embedded-captions music-to-video")
-        return str(p)
 
     check("hyperframes skills", skills)
     return out

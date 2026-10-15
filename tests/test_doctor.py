@@ -21,3 +21,18 @@ def test_parse_claude_auth(monkeypatch):
         doctor.parse_claude_auth("lixo sem json")
     monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-test")
     assert "ANTHROPIC_API_KEY" in doctor.parse_claude_auth(json.dumps(OUT))
+
+
+def test_doctor_skills_checks_union_of_recipe_skills(tmp_path, monkeypatch):
+    from pathlib import Path
+    from autovideo.recipes import list_recipes, load_recipe
+    names = sorted({s for r in list_recipes() for s in load_recipe(r).skills})
+    assert {"music-to-video", "talking-head-recut", "embedded-captions"} <= set(names)
+    monkeypatch.setattr(Path, "home", lambda: tmp_path)
+    for n in names:
+        if n != "music-to-video":
+            (tmp_path / ".claude" / "skills" / n).mkdir(parents=True)
+    with pytest.raises(ToolError, match=r"music-to-video\. Rode: npx --yes hyperframes@0\.8\.158 skills update music-to-video$"):
+        doctor.skills()
+    (tmp_path / ".claude" / "skills" / "music-to-video").mkdir()
+    assert str(len(names)) in doctor.skills()

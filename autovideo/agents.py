@@ -72,12 +72,19 @@ def options_for(role: str, project: Project, recipe, bash: bool) -> ClaudeAgentO
         max_turns=recipe.budget.max_turns, max_budget_usd=recipe.budget.max_usd)
 
 
+def missing_skills(names: list[str]) -> str | None:
+    """Mensagem com as skills ausentes de ~/.claude/skills e o comando que as instala (None se nada falta)."""
+    src = Path.home() / ".claude" / "skills"
+    missing = [n for n in names if not (src / n).is_dir()]
+    if missing:
+        return f"skills não instaladas: {', '.join(missing)}. Rode: {' '.join(HF)} skills update {' '.join(missing)}"
+    return None
+
+
 def install_skills(project: Project, recipe) -> None:
     src = Path.home() / ".claude" / "skills"
-    missing = [n for n in recipe.skills if not (src / n).is_dir()]
-    if missing:
-        raise AgentOutputError(f"skills não instaladas: {', '.join(missing)}. "
-                               f"Rode: {' '.join(HF)} skills update {' '.join(missing)}")
+    if err := missing_skills(recipe.skills):
+        raise AgentOutputError(err)
     for n in recipe.skills:
         shutil.copytree(src / n, project.root / ".claude" / "skills" / n, dirs_exist_ok=True)
 

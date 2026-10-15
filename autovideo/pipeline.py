@@ -141,7 +141,9 @@ def director(ctx):
 
 
 def copywriter(ctx):
-    ctx.agent("copywriter", ctx.project, ctx.recipe, "Escreva edit.json." + _fb(ctx.project),
+    ctx.agent("copywriter", ctx.project, ctx.recipe,
+              "Escreva edit.json. Os filler_candidates de analysis/summary.json são só sugestões: só sai do vídeo "
+              "o que você puser em drop. Ponha lá as hesitações reais e nunca remova o verbo \"é\"." + _fb(ctx.project),
               ctx.project.root / "edit.json", validate_model(EditDecisions))
 
 
@@ -152,7 +154,8 @@ def plan(ctx):
     if r.mode == "speech":
         words = _words(p)
         ed = EditDecisions.model_validate_json((p.root / "edit.json").read_text(encoding="utf-8"))
-        drop = {i for a, b in ed.drop for i in range(a, b + 1)} | filler_candidates(words, r.pacing.fillers)
+        # só o drop do copywriter: filler_candidates são sugestões ("é" também é o verbo "ser")
+        drop = {i for a, b in ed.drop for i in range(a, b + 1)}
         segs = plan_segments(words, drop, {v["clean"]: v["duration"] for v in vids}, r.pacing.max_gap, r.pacing.pad)
         out_words = remap_words(words, drop, segs)
     else:

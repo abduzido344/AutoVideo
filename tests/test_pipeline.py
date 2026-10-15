@@ -151,8 +151,22 @@ def test_plan_speech_drops_edit_ranges_and_fillers(tmp_path):
     assert (t.width, t.height, t.captions) == (1080, 1920, True)
     assert {s.src for s in t.segments} == {"input/a.clean.mp4"} and len(t.segments) == 3
     words_out = json.loads((p.analysis / "words.out.json").read_text(encoding="utf-8"))
-    assert [w["text"] for w in words_out] == ["oi", "pessoal", "hoje", "lá"]  # "ahn" (filler) e "vamos" (edit) caíram
+    # só o drop do copywriter cai: "ahn" (filler_candidate) fica, quem decide é o copywriter
+    assert [w["text"] for w in words_out] == ["oi", "pessoal", "ahn", "hoje", "lá"]
     assert all(w["src"] == "out" for w in words_out) and words_out[-1]["end"] <= t.duration + 0.01
+
+
+def test_plan_keeps_verb_e_not_in_drop(tmp_path):
+    ctx = mk_project(tmp_path)
+    p = ctx.project
+    words = json.loads((p.analysis / "words.json").read_text(encoding="utf-8"))
+    words[2]["text"] = "é"  # "oi pessoal é hoje": verbo, não hesitação
+    (p.analysis / "words.json").write_text(json.dumps(words), encoding="utf-8")
+    (p.root / "edit.json").write_text(json.dumps({"drop": [], "hook_text": "h", "post":
+                                      {"title": "t", "caption": "c", "hashtags": []}}), encoding="utf-8")
+    pipeline.plan(ctx)
+    words_out = json.loads((p.analysis / "words.out.json").read_text(encoding="utf-8"))
+    assert "é" in [w["text"] for w in words_out]
 
 
 def test_plan_montage_one_full_segment_per_clean(tmp_path):
@@ -546,3 +560,11 @@ def test_kill_while_backing_up_leaves_no_marker_and_resume_keeps_good_state(tmp_
     pipeline.do_render(ctx)  # resume: nada a restaurar, composições boas intactas
     assert (p.comp / "compositions/captions.template.html").read_text(encoding="utf-8") == "bom"
     assert json.loads((p.root / "timeline.json").read_text(encoding="utf-8")) == good
+
+
+def test_copywriter_task_says_fillers_are_suggestions(tmp_path):
+    seen = []
+    ctx = mk_project(tmp_path, agent=lambda role, p, r, task, *a, **k: seen.append(task))
+    pipeline.copywriter(ctx)
+    assert "só sugestões" in seen[0] and 'nunca remova o verbo "é"' in seen[0]
+    assert 'Nunca remova o verbo "é"' in (pipeline.agents.PROMPTS / "copywriter.md").read_text(encoding="utf-8")

@@ -1,7 +1,7 @@
 # UI — Componentes do painel AutoVideo
 
 **Stack:** React + Vite + Tailwind v4 + shadcn/ui + registry Kobra (`@kobra`).
-**Design:** minimalista, com fundo neutro escuro, 1 cor de acento, muito espaço em branco, tipografia limpa e motion sutil.
+**Design:** claro e limpo no estilo Kimi (shell #F7F7F7, cartão branco, Inter, preto para ação, azul #2F6BFF só para estado); tokens em web/src/index.css. Spec: docs/superpowers/specs/2026-10-15-painel-v2-design.md.
 
 ## Regra: procure componente pronto antes de escrever
 Antes de criar qualquer elemento de UI, procure nesta ordem e use o primeiro que servir:
@@ -23,7 +23,7 @@ Os demais 77 respondem 401 e exigem **Kobra Pro**. O token vai em `KOBRA_TOKEN`,
 **Instalar item free sem token:** com `@kobra` no `components.json` o shadcn exige `KOBRA_TOKEN` até para itens free (erro "requires the following environment variables"). Instale pela URL: `npx shadcn@latest add https://kobra.systems/r/<nome>.json`.
 
 ## Estado atual do painel (`web/`)
-Sem `KOBRA_TOKEN` na instalação. Usados: Kobra `video` (player) e `sound` (`<SoundEffects>` no App). Todo o resto é shadcn base (`button card badge select textarea input label progress scroll-area tabs sonner`), com os fallbacks da coluna acima para os itens Pro. Quando houver token: trocar upload por `magnetic-dropzone`, etapas por `task-list`, decisões por `reasoning-steps`, gate por `question-card`.
+Sem KOBRA_TOKEN na instalação. Kobra: video (player) e sound (<SoundEffects>). shadcn base: sidebar (variant inset), switch, dropdown-menu, tabs, button, sonner. Markdown do brief com react-markdown.
 
 Nota: o `liquidglass` vai duas vezes no bundle: a lib vendorizada em `src/lib/liquidglass` (importada por `src/lib/glass-controls.ts`, vinda do item `video`) e a cópia interna do `loomix` (chunks `liquidglass-*.js` no build, ~51 kB cada). A deduplicação não é uma troca trivial de import (o `loomix` não exporta a lib), então ficou como está.
 
@@ -53,4 +53,10 @@ Nota: o `liquidglass` vai duas vezes no bundle: a lib vendorizada em `src/lib/li
 ## Componentes escritos à mão
 | Componente | Motivo |
 |---|---|
-| — | — |
+| `components/workspace/Timeline.tsx` | Faixas do timeline.json (vídeo/zoom/overlays/legendas/música/sfx); clicáveis só depois do render final (antes é só leitura, com dica); não há timeline de vídeo em Kobra, shadcn nem nos registries do índice |
+| `components/workspace/StageBar.tsx` | Barra segmentada das 13 etapas do pipeline; Kobra `task-list` é Pro e o `progress` do shadcn é uma barra contínua só |
+| `components/workspace/Transcript.tsx` | Transcrição com fillers/pausas riscados; texto corrido, sem componente equivalente |
+| `components/workspace/ActionBox.tsx` | Caixa de aprovar/pedir ajustes com chips de feedback; Kobra `question-card` é Pro |
+| `components/workspace/DetailTabs.tsx` | Composição (não é primitivo novo): `tabs` do shadcn + `react-markdown` para brief, revisão e post |
+| `components/AppSidebar.tsx` | Composição da `sidebar` do shadcn (variant inset) com a lista de projetos e estado; inclui o `TopBar` (`SidebarTrigger`) |
+| `components/StatusPill.tsx` | Pílula de status do doctor; `badge` do shadcn não tem o estado "verificando" com ponto |

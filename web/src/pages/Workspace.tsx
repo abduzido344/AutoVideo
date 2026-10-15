@@ -3,6 +3,7 @@ import { api } from "@/api"
 import { ActionBox } from "@/components/workspace/ActionBox"
 import { DetailTabs } from "@/components/workspace/DetailTabs"
 import { StageBar } from "@/components/workspace/StageBar"
+import { Timeline } from "@/components/workspace/Timeline"
 import { Transcript } from "@/components/workspace/Transcript"
 import { Button } from "@/components/ui/button"
 import { Video } from "@/components/ui/video"
@@ -19,6 +20,8 @@ export function Workspace({ id, stages, onChange }: { id: number; stages: string
     : f.has_final ? assetUrl(job.rel, "out/final.mp4", job.updated)
       : f.preview ? assetUrl(job.rel, f.preview, job.updated) : null
   const after = () => { refresh(); onChange() }
+  // o Video da Kobra não expõe o elemento: acha o <video> dentro do palco
+  const seek = (t: number) => { const v = stage.current?.querySelector("video"); if (v) v.currentTime = t }
 
   return (
     <div className="flex flex-col gap-4 p-5 md:p-6">
@@ -39,7 +42,8 @@ export function Workspace({ id, stages, onChange }: { id: number; stages: string
               ? <Video src={src} className={playerClass(f.aspect)} />
               : <p className="text-sm text-muted-foreground">{job.rel === null ? "Este projeto está fora da pasta de projetos atual (AUTOVIDEO_HOME)." : "A prévia aparece depois da limpeza do áudio."}</p>}
           </div>
-          {f.transcript && !f.timeline && <Transcript transcript={f.transcript} />}
+          {f.timeline ? <Timeline timeline={f.timeline} onSeek={seek} />
+            : f.transcript && <Transcript transcript={f.transcript} />}
         </section>
         <aside aria-label="Detalhes e aprovação" className="flex min-w-0 flex-[1_1_320px] flex-col gap-4 md:max-w-[360px]">
           <DetailTabs job={job} />

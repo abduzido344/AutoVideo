@@ -12,3 +12,4 @@ Todos os tempos são do vídeo FINAL e precisam caber em [0, duração]. NÃO al
 Se receber um relatório de revisão (review), corrija timeline.json e/ou as composições apontadas.
 Correções de legenda vão em composition/compositions/captions.template.html: captions.html é gerado a partir dele a cada recomposição, então edições direto em captions.html se perdem. Mantenha nele o marcador `/*AV_WORDS*/[]` (as palavras são injetadas ali).
 Sempre reescreva timeline.json ao final (mesmo que sem mudanças), senão a revisão é considerada sem saída.
+No Bash, sempre use a forma `npx --yes hyperframes@0.8.158 ...`; `npx hyperframes` sem versão é negado.

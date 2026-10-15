@@ -56,7 +56,13 @@ def test_options_restrict_bash_and_paths(tmp_path):
     r = load_recipe("talking-head-punchy")
     o = agents.options_for("editor", Project(tmp_path), r, bash=True)
     assert o.permission_mode == "dontAsk" and o.setting_sources == ["project"]
-    assert "Bash(npx --yes hyperframes@0.8.158 *)" in o.allowed_tools and "Bash(ffprobe *)" in o.allowed_tools
+    hf_rules = [t for t in o.allowed_tools if t.startswith("Bash(npx")]
+    assert "Bash(npx --yes hyperframes@0.8.158 *)" not in hf_rules  # nada de render/init/publish/cloud/upgrade...
+    for sub in ("catalog", "add", "lint", "check", "snapshot", "media-treatment", "beats"):
+        assert f"Bash(npx --yes hyperframes@0.8.158 {sub} *)" in hf_rules
+    assert "Bash(npx --yes hyperframes@0.8.158 catalog)" in hf_rules
+    assert not any(x in t for t in hf_rules for x in ("render", "publish", "cloud", "upgrade", "init", "lambda"))
+    assert "Bash(ffprobe *)" in o.allowed_tools
     assert not any(t == "Bash" for t in o.allowed_tools)
     assert "Read(./**)" in o.allowed_tools and "Edit(./**)" in o.allowed_tools
     assert not any("skills" in t or "~" in t for t in o.allowed_tools)
@@ -140,3 +146,8 @@ def test_editor_installs_skills_before_query(tmp_path, monkeypatch):
     monkeypatch.setattr(agents, "_query", fake_query_factory([lambda: w(out, "{}")], seen))
     run_role("editor", proj, r, "x", out)
     assert (proj.root / ".claude" / "skills" / "a-skill").is_dir()
+
+
+def test_bash_prompts_demand_versioned_npx():
+    for role in ("designer", "editor"):
+        assert "`npx hyperframes` sem versão é negado" in (agents.PROMPTS / f"{role}.md").read_text(encoding="utf-8")

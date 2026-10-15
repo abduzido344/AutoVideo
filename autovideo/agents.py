@@ -9,6 +9,11 @@ from autovideo.project import Project
 
 _query = query
 PROMPTS = Path(__file__).parent / "prompts"
+# subcomandos do hyperframes que os prompts/receitas/skills usam (inspeção e edição local); render/init/publish/
+# cloud/upgrade/skills/tts ficam de fora. BARE = os que também aparecem sem argumentos.
+HF_SUBS = ("catalog", "add", "lint", "check", "snapshot", "media-treatment", "beats", "compositions", "info",
+           "docs", "timeline")
+HF_BARE = ("catalog", "docs", "info")
 
 
 class AgentOutputError(RuntimeError):
@@ -54,7 +59,9 @@ def options_for(role: str, project: Project, recipe, bash: bool) -> ClaudeAgentO
     # Grep/Glob included), so Write/Glob/Grep are listed bare and scoped via Read/Edit rules + cwd.
     tools = ["Read(./**)", "Edit(./**)", "Glob", "Grep"]
     if bash:
-        tools += [f"Bash({' '.join(HF)} *)", "Bash(ffprobe *)"]
+        hf = " ".join(HF)
+        tools += [f"Bash({hf} {sub} *)" for sub in HF_SUBS] + [f"Bash({hf} {sub})" for sub in HF_BARE]
+        tools.append("Bash(ffprobe *)")
     return ClaudeAgentOptions(
         system_prompt=system, cwd=str(project.root), permission_mode="dontAsk",
         allowed_tools=tools, disallowed_tools=["Edit(./.claude/**)"],

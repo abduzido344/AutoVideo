@@ -13,3 +13,4 @@ Entregue:
 Regras de sub-composição: todo <style> e <script> fica DENTRO do <template> (o runtime descarta o que estiver fora);
 a raiz de captions.template.html usa data-composition-id="captions" e data-track-kind="captions".
 Não crie nem edite composition/index.html (ele é gerado). Rode `npx --yes hyperframes@0.8.158 lint composition` ao final e corrija erros.
+No Bash, sempre use a forma `npx --yes hyperframes@0.8.158 ...`; `npx hyperframes` sem versão é negado.

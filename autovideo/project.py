@@ -1,6 +1,18 @@
 import json
+import os
+import sys
 import time
 from pathlib import Path
+
+
+def home() -> Path:
+    """Onde ficam projetos e jobs.db. Fora do repo (o CLAUDE.md de dev não pode carregar nos agentes) e fora do
+    OneDrive (não sincroniza gravações). AUTOVIDEO_HOME tem precedência."""
+    if os.environ.get("AUTOVIDEO_HOME"):
+        return Path(os.environ["AUTOVIDEO_HOME"])
+    if sys.platform == "win32":
+        return Path(os.environ.get("LOCALAPPDATA") or Path.home() / "AppData" / "Local") / "AutoVideo" / "projects"
+    return Path(os.environ.get("XDG_DATA_HOME") or Path.home() / ".local" / "share") / "autovideo" / "projects"
 
 
 class Project:

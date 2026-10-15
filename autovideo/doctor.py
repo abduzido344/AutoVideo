@@ -2,6 +2,7 @@ import json
 import re
 from pathlib import Path
 from autovideo import hf
+from autovideo.project import home
 
 
 def parse_node_major(version: str) -> int:
@@ -27,6 +28,7 @@ def run_checks() -> list[tuple[str, bool, str]]:
         except Exception as e:  # noqa: BLE001 — doctor reporta qualquer falha
             out.append((name, False, str(e).splitlines()[0]))
 
+    check("AUTOVIDEO_HOME", lambda: str(home()))
     check("ffmpeg", lambda: hf.run(["ffmpeg", "-version"]).stdout.split("\n")[0])
     check("ffprobe", lambda: hf.run(["ffprobe", "-version"]).stdout.split("\n")[0])
 

@@ -1,5 +1,4 @@
 import json
-import os
 import re
 import shutil
 import time
@@ -8,7 +7,7 @@ from autovideo import agents, media, render
 from autovideo.agents import EditDecisions, Style, validate_model
 from autovideo.compose import write_composition
 from autovideo.jobs import Ctx, JobStore, reject
-from autovideo.project import Project
+from autovideo.project import Project, home  # noqa: F401 — pipeline.home é usado por cli/server
 from autovideo.recipes import load_recipe
 from autovideo.timeline import FORMATS, Timeline, Word, plan_segments, remap_words
 from autovideo.transcribe import filler_candidates, numbered_text, require_speech, transcribe
@@ -16,10 +15,6 @@ from autovideo.transcribe import filler_candidates, numbered_text, require_speec
 # gate rejeitado -> primeira etapa a refazer (o resto do que veio antes do gate continua válido)
 REDO = {"gate1": "director", "gate2": "copywriter"}
 REVIEW_ROUNDS = 2
-
-
-def home() -> Path:
-    return Path(os.environ.get("AUTOVIDEO_HOME", Path.cwd() / "projects"))
 
 
 def _check_inputs(videos: list[Path], script: Path | None, assets: list[Path]) -> None:

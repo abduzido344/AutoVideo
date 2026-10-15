@@ -71,6 +71,25 @@ def test_home_from_env(monkeypatch, tmp_path):
     assert pipeline.home() == tmp_path / "h"
 
 
+def test_home_default_is_outside_repo_and_onedrive(monkeypatch, tmp_path):
+    import sys
+    monkeypatch.delenv("AUTOVIDEO_HOME", raising=False)
+    monkeypatch.setenv("LOCALAPPDATA", str(tmp_path / "lad"))
+    monkeypatch.setattr(sys, "platform", "win32")
+    assert pipeline.home() == tmp_path / "lad" / "AutoVideo" / "projects"
+    monkeypatch.setattr(sys, "platform", "linux")
+    monkeypatch.delenv("XDG_DATA_HOME", raising=False)
+    monkeypatch.setattr(Path, "home", lambda: tmp_path / "u")
+    assert pipeline.home() == tmp_path / "u" / ".local" / "share" / "autovideo" / "projects"
+
+
+def test_doctor_prints_home(monkeypatch, tmp_path):
+    monkeypatch.setenv("AUTOVIDEO_HOME", str(tmp_path / "h"))
+    monkeypatch.setattr(hf, "run", lambda *a, **k: (_ for _ in ()).throw(ToolError("x")))
+    res = {n: (ok, info) for n, ok, info in doctor.run_checks()}
+    assert res["AUTOVIDEO_HOME"] == (True, str(tmp_path / "h"))
+
+
 # ---------- new_job ----------
 def test_new_job_unique_dir_same_second(tmp_path, monkeypatch):
     monkeypatch.setattr(pipeline.time, "strftime", lambda fmt: "20261014-101010")

@@ -93,3 +93,26 @@ def test_clean_passes_silent_audio_through(tmp_path, clean_audio, monkeypatch):
     dst = tmp_path / "out.mp4"
     media.clean(src, dst, clean_audio=clean_audio)
     assert media.probe(dst)["has_audio"]
+
+
+@needs_ffmpeg
+@pytest.mark.parametrize("trc", ["arib-std-b67", "smpte2084"])
+def test_clean_tonemaps_hdr_to_sdr_bt709(tmp_path, trc):
+    import json
+    import subprocess
+    from conftest import ff
+    src = tmp_path / f"hdr {trc}.mp4"  # HLG/PQ 10-bit com as tags nos frames (setparams), como sai de celular
+    ff("-f", "lavfi", "-i", "testsrc2=size=320x180:rate=30", "-t", "1", "-vf",
+       f"setparams=color_primaries=bt2020:color_trc={trc}:colorspace=bt2020nc,format=yuv420p10le",
+       "-c:v", "libx264", str(src))
+    assert media.probe(src)["color_transfer"] == trc
+    dst = tmp_path / "sdr.clean.mp4"
+    media.clean(src, dst, clean_audio=False)
+    v = json.loads(subprocess.run(["ffprobe", "-v", "error", "-print_format", "json", "-show_streams", str(dst)],
+                                  capture_output=True, text=True, check=True).stdout)["streams"][0]
+    assert (v["pix_fmt"], v["color_transfer"], v["color_primaries"]) == ("yuv420p", "bt709", "bt709")
+
+
+@needs_ffmpeg
+def test_probe_sdr_color_transfer_is_not_hdr(media_dir):
+    assert media.probe(media_dir / "talk.mp4")["color_transfer"] not in media.HDR_TRC

@@ -10,6 +10,11 @@ from autovideo.hf import run, ToolError
 
 PRE_CHAIN = "highpass=f=80,afftdn=nf=-25,acompressor=threshold=-18dB:ratio=3:attack=5:release=60"
 LN = "loudnorm=I={lufs}:TP=-1.5:LRA=20"
+HDR_TRC = ("arib-std-b67", "smpte2084")  # HLG, PQ
+# HDR -> SDR bt709 (hable). ponytail: assume primárias/matriz bt2020 (todo HDR de câmera/celular); ler do probe
+# se aparecer HDR com outras primárias.
+TONEMAP = ("zscale=tin={trc}:pin=bt2020:min=bt2020nc:t=linear:npl=100,format=gbrpf32le,zscale=p=bt709,"
+           "tonemap=tonemap=hable:desat=0,zscale=t=bt709:m=bt709:r=tv")
 
 
 def probe(path: Path) -> dict:
@@ -26,7 +31,8 @@ def probe(path: Path) -> dict:
     num, den = v.get("avg_frame_rate", "0/1").split("/")
     return {"duration": float(data["format"]["duration"]), "width": w, "height": h,
             "fps": float(num) / float(den or 1) if float(den or 1) else 0.0,
-            "has_audio": any(s["codec_type"] == "audio" for s in data["streams"]), "rotation": rot}
+            "has_audio": any(s["codec_type"] == "audio" for s in data["streams"]), "rotation": rot,
+            "color_transfer": v.get("color_transfer", "")}
 
 
 def _loudnorm(src: Path, lufs: float, prefilter: str = "") -> str:
@@ -55,10 +61,15 @@ def _elevenlabs_isolate(src: Path, mp3_out: Path) -> None:
 
 def clean(src: Path, dst: Path, clean_audio: bool, lufs: float = -14) -> None:
     dst.parent.mkdir(parents=True, exist_ok=True)
-    vargs = ["-vf", "fps=30,format=yuv420p", "-c:v", "libx264", "-crf", "18", "-preset", "veryfast",
+    info = probe(src)
+    trc = info["color_transfer"]
+    vf = f"fps=30,{TONEMAP.format(trc=trc)},format=yuv420p" if trc in HDR_TRC else "fps=30,format=yuv420p"
+    vargs = ["-vf", vf, "-c:v", "libx264", "-crf", "18", "-preset", "veryfast",
              "-g", "30", "-keyint_min", "30", "-movflags", "+faststart"]  # keyframe a cada 1 s: seek do HyperFrames
+    if trc in HDR_TRC:
+        vargs += ["-color_primaries", "bt709", "-color_trc", "bt709", "-colorspace", "bt709"]
     aargs = ["-c:a", "aac", "-b:a", "192k", "-ar", "48000"]
-    if not probe(src)["has_audio"]:
+    if not info["has_audio"]:
         run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(src), *vargs, "-an", str(dst)])
         return
     if clean_audio and os.environ.get("ELEVENLABS_API_KEY"):

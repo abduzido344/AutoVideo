@@ -142,6 +142,14 @@ def _gate_index(jid: int, job: dict, stages: list[Stage]) -> int:
     raise GateError(f"job {jid} não está em um gate (stage={job['stage']!r})")
 
 
+def invalidate_from(root: Path, stages: list[Stage], start: str) -> None:
+    """Apaga marcador e artefato de `start` até o fim (o próximo run_job refaz dali em diante)."""
+    names = [n for n, _, _ in stages]
+    for name, rel, _ in stages[names.index(start):]:
+        _remove(_marker(root, name))  # marcador primeiro: kill no meio deixa "artefato sem marcador" = refaz
+        _remove(root / rel)
+
+
 def run_job(store: JobStore, jid: int, stages: list[Stage], make_ctx: Callable[[dict], Ctx]) -> str:
     job = store.get(jid)
     store.set(jid, status="in_progress", error="")
@@ -201,9 +209,7 @@ def reject(store: JobStore, jid: int, stages: list[Stage], feedback: str, redo_f
         if job["status"] != "awaiting_approval":
             raise GateError(f"job {jid} não está aguardando aprovação")
         root = Path(job["project_dir"])
-        for name, rel, _ in stages[start: idx + 1]:
-            _remove(_marker(root, name))  # marcador primeiro: kill no meio deixa "artefato sem marcador" = refaz
-            _remove(root / rel)
+        invalidate_from(root, stages, stages[start][0])
         with (root / "feedback.md").open("a", encoding="utf-8") as fh:
             fh.write(f"\n## Feedback ({job['stage']})\n{feedback}\n")
         store.set(jid, status="queued", stage="")

@@ -88,7 +88,7 @@ def test_vozes_errors(monkeypatch):
     with pytest.raises(eleven.MissingKey):
         eleven.vozes(client=client(lambda r: httpx.Response(200)))
     monkeypatch.setenv("ELEVENLABS_API_KEY", "k")
-    with pytest.raises(RuntimeError, match="inválida"):
+    with pytest.raises(RuntimeError, match="recusada"):
         eleven.vozes(client=client(lambda r: httpx.Response(401, text="no")))
 
 
@@ -98,3 +98,10 @@ def test_key_id_instead_of_key_has_clear_message(monkeypatch):
     c = httpx.Client(transport=httpx.MockTransport(lambda q: httpx.Response(400, json=body)))
     with pytest.raises(RuntimeError, match="começa com sk_"):
         eleven.vozes(client=c)
+
+
+def test_tts_missing_permission_explains(monkeypatch, tmp_path):
+    monkeypatch.setenv("ELEVENLABS_API_KEY", "k")
+    body = {"detail": {"status": "missing_permissions", "message": "The API key you used is missing the permission text_to_speech"}}
+    with pytest.raises(RuntimeError, match="Text to Speech.*missing the permission text_to_speech"):
+        eleven._post("/text-to-speech/v", {}, tmp_path / "a.mp3", client(lambda r: httpx.Response(401, json=body)))

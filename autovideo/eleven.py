@@ -11,11 +11,22 @@ class MissingKey(RuntimeError):
     pass
 
 
+def _detalhe(r: httpx.Response) -> str:
+    try:
+        d = r.json().get("detail")
+        return (d.get("message") if isinstance(d, dict) else d) or r.text[:300]
+    except (ValueError, AttributeError):
+        return r.text[:300]
+
+
 def _erro(r: httpx.Response) -> str:
     if "api_key_id_used_as_api_key" in r.text:
         return "a chave da ElevenLabs salva é o ID da chave: cole a chave que começa com sk_ (Configurações → Chaves API)"
+    if "missing_permissions" in r.text:  # chave restrita: lista vozes, mas não narra
+        return ("a chave da ElevenLabs não tem permissão para esta ação: no elevenlabs.io, edite a chave e libere "
+                f"Text to Speech e Voices (ou crie uma sem restrição). Detalhe: {_detalhe(r)}")
     if r.status_code == 401:
-        return "chave da ElevenLabs inválida (Configurações → Chaves API)"
+        return f"chave da ElevenLabs recusada (Configurações → Chaves API). Detalhe: {_detalhe(r)}"
     return f"ElevenLabs {r.status_code}: {r.text[:300]}"
 
 

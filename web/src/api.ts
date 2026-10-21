@@ -65,6 +65,16 @@ export type Episodio = {
   final: string | null; capa: string | null // URLs /projects/...
 }
 
+export type Cena = {
+  id: string; kind: string; narration: string; prompt: string; camera: string; sfx: string
+  imagem: string | null; audio: string | null; dur: number | null // URLs /projects/...
+}
+export type SerieDetalhe = {
+  serie: Serie; perfil: string; custo_usd: number
+  episodios: { n: number; titulo: string; sinopse: string; job: number | null; status: string | null; stage: string | null
+    aprovado: boolean; custo_usd: number; capa: string | null }[]
+}
+
 export class ApiError extends Error {
   readonly status: number
   constructor(message: string, status: number) { super(message); this.status = status }
@@ -119,6 +129,8 @@ export const api = {
   pausarSerie: (path_rel: string, paused: boolean) => send<Ok>("POST", "/api/series/pausar", { path_rel, paused }),
 
   episodio: (jid: number) => j<Episodio>(`/api/episodios/${jid}`),
+  artefatos: (jid: number) => j<{ cenas: Cena[] }>(`/api/episodios/${jid}/artefatos`),
+  serieDetalhe: (path_rel: string) => j<SerieDetalhe>(`/api/series/detalhe?path_rel=${e(path_rel)}`),
   aprovar: (jid: number) => send<Ok>("POST", `/api/episodios/${jid}/aprovar`),
   ajustar: (jid: number, texto: string) => send<Ok>("POST", `/api/episodios/${jid}/ajustar`, { texto }),
   descartar: (jid: number) => send<Ok>("POST", `/api/episodios/${jid}/descartar`),

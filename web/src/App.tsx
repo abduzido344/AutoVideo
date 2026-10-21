@@ -11,7 +11,9 @@ import { Onboarding } from "@/pages/Onboarding"
 import { Estilos, EstiloPagina, NovoEstilo } from "@/pages/Estilos"
 import { Perfil } from "@/pages/Perfil"
 import { NovoPerfil, Perfis } from "@/pages/Perfis"
+import { Peca } from "@/pages/Peca"
 import { Producao } from "@/pages/Producao"
+import { Serie } from "@/pages/Serie"
 
 const OFFLINE: Doctor = { ok: false, checks: [{ name: "resposta do servidor", ok: false, detail: "sem resposta do /api/doctor" }] }
 
@@ -65,6 +67,8 @@ export default function App() {
             : route.name === "estilos" ? <Estilos onNovo={() => setNovoEstilo(true)} />
             : route.name === "estilo" ? <EstiloPagina key={route.slug} slug={route.slug} />
             : route.name === "onboarding" ? <Onboarding key={route.slug} slug={route.slug} />
+            : route.name === "serie" ? <Serie key={route.path_rel} path_rel={route.path_rel} />
+            : route.name === "episodio" ? <Peca key={route.jid} jid={route.jid} />
             : <Producao jid={route.jid} perfis={lista} />}
         </SidebarInset>
       </SidebarProvider>

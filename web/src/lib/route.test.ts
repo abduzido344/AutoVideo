@@ -11,6 +11,8 @@ describe("rotas", () => {
     ["#/estilo/meu-estilo", { name: "estilo", slug: "meu-estilo" }],
     ["#/producao", { name: "producao" }],
     ["#/producao/7", { name: "producao", jid: 7 }],
+    ["#/serie/benji%2Fseries%2F01-x", { name: "serie", path_rel: "benji/series/01-x" }],
+    ["#/episodio/7", { name: "episodio", jid: 7 }],
     ["#/config", { name: "config" }],
     ["#/config/conexoes", { name: "config", aba: "conexoes" }],
   ]
@@ -27,6 +29,7 @@ describe("rotas", () => {
     for (const h of ["", "#/", "#/xyz", "#/perfil", "#/onboarding"]) expect(parseHash(h)).toEqual({ name: "perfis" })
     expect(parseHash("#/estilo")).toEqual({ name: "estilos" })
     expect(parseHash("#/producao/abc")).toEqual({ name: "producao" })
+    for (const h of ["#/episodio/abc", "#/episodio", "#/serie"]) expect(parseHash(h)).toEqual({ name: "perfis" })
   })
   it("codifica o slug", () => {
     expect(formatHash({ name: "perfil", slug: "a b" })).toBe("#/perfil/a%20b")

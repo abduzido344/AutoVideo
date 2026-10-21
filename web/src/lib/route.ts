@@ -7,6 +7,8 @@ export type Route =
   | { name: "estilos" }
   | { name: "estilo"; slug: string }
   | { name: "producao"; jid?: number }
+  | { name: "serie"; path_rel: string }
+  | { name: "episodio"; jid: number }
   | { name: "config"; aba?: string }
 
 const dec = (s: string) => { try { return decodeURIComponent(s) } catch { return s } }
@@ -23,6 +25,8 @@ export function parseHash(hash: string): Route {
     // Fila e Revisão viraram Produção
     case "fila": return { name: "producao" }
     case "revisao": return jid(a)
+    case "serie": return a ? { name: "serie", path_rel: a } : { name: "perfis" }
+    case "episodio": return /^\d+$/.test(a ?? "") ? { name: "episodio", jid: Number(a) } : { name: "perfis" }
     case "config": return a ? { name: "config", aba: a } : { name: "config" }
     default: return { name: "perfis" }
   }
@@ -35,6 +39,8 @@ export function formatHash(r: Route): string {
     case "onboarding": return `#/onboarding/${e(r.slug)}`
     case "estilo": return `#/estilo/${e(r.slug)}`
     case "producao": return r.jid === undefined ? "#/producao" : `#/producao/${r.jid}`
+    case "serie": return `#/serie/${e(r.path_rel)}`
+    case "episodio": return `#/episodio/${r.jid}`
     case "config": return r.aba ? `#/config/${e(r.aba)}` : "#/config"
     default: return `#/${r.name}`
   }

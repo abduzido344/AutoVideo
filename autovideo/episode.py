@@ -234,6 +234,9 @@ STAGES: list[Stage] = [
 
 
 def _write_ajuste(ep: Path, origem: str, body: str) -> None:
+    # o invalidate_from apaga cenas.json: sem a cópia o diretor_arte refaz tudo do zero, muda todo prompt e perde o cache de imagens
+    if (ep / "cenas.json").exists():
+        shutil.copy2(ep / "cenas.json", ep / "cenas.anterior.json")
     with (ep / "ajustes.md").open("a", encoding="utf-8") as f:
         f.write(f"\n## Ajuste ({origem})\n{body}\n")
 

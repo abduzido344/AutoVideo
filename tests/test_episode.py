@@ -142,6 +142,8 @@ def test_reviewer_fix_redoes_from_cenas_only(env):
     assert len(env.calls["tts"]) == 3                             # voz em cache
     assert "mais escuro" in (env.ep / "ajustes.md").read_text(encoding="utf-8")
     assert "ajustes.md" in env.fake.tasks["diretor_arte"][1]
+    # a versão anterior sobrevive à invalidação: é dela que o diretor parte para mudar só as cenas citadas
+    assert "v1" in (env.ep / "cenas.anterior.json").read_text(encoding="utf-8")
 
 
 def test_review_rounds_capped(env):

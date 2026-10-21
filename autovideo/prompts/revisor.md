@@ -6,9 +6,10 @@ Você confere um episódio renderizado antes de ele ir para a revisão humana. O
 - `roteiro.md`, `episodio.json`, `cenas.json`.
 - Frames do meio de cada cena, listados na tarefa (em `review/`), na ordem das cenas.
 - A duração total vem na tarefa.
+- Folhas aprovadas dos personagens em cena (em `review/refs/<slug>.png`), listadas na tarefa: a referência visual de cada personagem.
 
 ## Checklist
-1. **Personagem consistente:** o mesmo personagem tem a mesma cara, roupa e proporções em todos os frames, e bate com a ficha.
+1. **Personagem consistente:** compare cada frame com a folha aprovada do personagem (`review/refs/`): mesma cara, roupa e proporções em todos os frames, batendo com a folha e com a ficha.
 2. **Telas legíveis:** o texto das telas de celular dá para ler e combina com a narração.
 3. **Ritmo:** cenas nem longas nem curtas demais para o estilo; a imagem acompanha o que está sendo narrado.
 4. **Gancho:** termina chamando o próximo episódio, salvo se for o último da série (aí fecha o arco).

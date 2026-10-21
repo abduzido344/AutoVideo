@@ -31,6 +31,16 @@ def _asset(ep: Path, comp: Path, rel: str, dest: str | None = None) -> tuple[Pat
     return out, html.escape(f"assets/{quote(rel_out)}", quote=True)
 
 
+def timeline(voz: Voz) -> list[tuple[float, float]]:
+    """(início, duração) de cada cena: a voz mais o respiro, em sequência."""
+    out, t = [], 0.0
+    for v in voz.cenas:
+        d = round(v.dur + RESPIRO, 3)
+        out.append((t, d))
+        t = round(t + d, 3)
+    return out
+
+
 def build(ep: Path, cenas: Cenas, voz: Voz, imgs: dict[str, str], sfx: dict[str, str], ambiente: str | None,
           legenda: bool = False) -> None:
     if [c.id for c in cenas.cenas] != [v.id for v in voz.cenas]:
@@ -40,8 +50,7 @@ def build(ep: Path, cenas: Cenas, voz: Voz, imgs: dict[str, str], sfx: dict[str,
         shutil.rmtree(comp / d, ignore_errors=True)
         (comp / d).mkdir(parents=True)
     clips, audio, tweens, t = [], [], [], 0.0
-    for c, v in zip(cenas.cenas, voz.cenas):
-        dur = round(v.dur + RESPIRO, 3)
+    for c, v, (t, dur) in zip(cenas.cenas, voz.cenas, timeline(voz)):
         at = f'data-start="{_n(t)}" data-duration="{_n(dur)}"'
         if c.kind == "image":
             if c.id not in imgs:
@@ -66,7 +75,7 @@ def build(ep: Path, cenas: Cenas, voz: Voz, imgs: dict[str, str], sfx: dict[str,
         if c.id in sfx:
             audio.append(f'<audio id="sfx-{c.id}" src="{_asset(ep, comp, sfx[c.id])[1]}" {at} '
                          f'data-volume="0.6" data-track-index="3"></audio>')
-        t = round(t + dur, 3)
+    t = round(t + dur, 3) if voz.cenas else 0.0  # duração total
     if ambiente:
         # o mixer não repete áudio: o ffmpeg emenda o ambiente em loop até a duração total
         out, url = _asset(ep, comp, ambiente, "ambiente.mp3")

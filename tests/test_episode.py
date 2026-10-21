@@ -1,4 +1,5 @@
 import json
+import re
 import sys
 import types
 from pathlib import Path
@@ -118,6 +119,8 @@ def test_full_run_stops_at_approval(env):
     imgs, sfx, amb, leg = env.calls["build"]
     assert set(imgs) == {"s01", "s02"} and set(sfx) == {"s01"} and amb and leg is False
     assert env.calls["lufs"] == -14
+    assert (env.ep / "review/refs/benji.png").read_bytes() == b"png"   # folha aprovada ao alcance do revisor
+    assert "review/refs/benji.png" in env.fake.tasks["revisor"][0]
     assert env.calls["snaps"] == [1.125, 3.375, 5.625]          # meio de cada cena (2 s + respiro)
     assert env.calls["gen"][0][1] == [env.ch / "folha.png"]      # folha do personagem como referência
     assert env.calls["gen"][0][0].startswith("2D cartoon")       # prefixo do estilo
@@ -142,6 +145,7 @@ def test_review_rounds_capped(env):
     env.fake.reviews = [{"ok": False, "fixes": [{"role": "diretor_arte", "scene": "s01", "note": "x"}]}]
     assert episode.produce(env.store, env.jid) == "awaiting_approval"
     assert env.fake.calls["diretor_arte"] == 3
+    assert len(re.findall(r"^## Ajuste \(revisor", (env.ep / "ajustes.md").read_text(encoding="utf-8"), re.M)) == 2
     assert not json.loads((env.ep / "revisao.json").read_text(encoding="utf-8"))["ok"]  # fixes visíveis
 
 
@@ -236,3 +240,8 @@ def test_last_episode_has_no_hook_instruction(env):
 def test_make_ctx_derives_from_dir(env):
     ctx = episode.make_ctx(env.store.get(env.jid))
     assert ctx.recipe == {"perfil": env.perfil, "serie": env.serie, "n": 1}
+
+
+def test_new_episode_job_rejects_unknown_episode(env):
+    with pytest.raises(ValueError, match="episódio 7"):
+        episode.new_episode_job(env.store, env.serie, 7)

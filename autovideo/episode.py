@@ -36,10 +36,8 @@ def _read(p: Path) -> str:
 
 
 def _sha(*parts: str | bytes) -> str:
-    h = hashlib.sha256()
-    for x in parts:
-        h.update(x.encode() if isinstance(x, str) else x)
-    return h.hexdigest()
+    # separador \0: ("ab", "c") e ("a", "bc") não colidem
+    return hashlib.sha256(b"\0".join(x.encode() if isinstance(x, str) else x for x in parts)).hexdigest()
 
 
 def _cache(p: Path) -> dict:
@@ -65,7 +63,7 @@ def roteiro(ctx: Ctx) -> None:
     if r["n"] >= total:
         fim = "Este é o último episódio da série: feche o arco, sem gancho."
     else:
-        fim = f'Termine com o gancho do estilo: "{_estilo(r["perfil"]).gancho.format(n=r["n"] + 1)}".'
+        fim = f'Termine com o gancho do estilo: "{_estilo(r["perfil"]).gancho.replace("{n}", str(r["n"] + 1))}".'
     task = (f"Escreva o roteiro da Parte {r['n']} de {total}. A sinopse está em sinopse.md. {fim}\n"
             "Grave roteiro.md e episodio.json." + _ajustes(ep))
     agents.run_role(agents.ROLES["roteirista"], ep, task, ep / "episodio.json", agents.validate_model(EpisodioOut),
@@ -184,13 +182,11 @@ def montagem(ctx: Ctx) -> None:
 
 
 def _tempos(ep: Path) -> list[tuple[str, float, float]]:
-    """(kind, início, duração) de cada cena, como a montagem calcula."""
-    out, t = [], 0.0
-    for c, v in zip(_cenas(ep).cenas, _voz(ep).cenas):
-        d = round(v.dur + montage.RESPIRO, 3)
-        out.append((c.kind, t, d))
-        t = round(t + d, 3)
-    return out
+    """(kind, início, duração) de cada cena, pelo mesmo cálculo da montagem."""
+    ts = [(c.kind, t, d) for c, (t, d) in zip(_cenas(ep).cenas, montage.timeline(_voz(ep)))]
+    if not ts:
+        raise ValueError("cenas.json sem cenas")
+    return ts
 
 
 def render_ep(ctx: Ctx) -> None:
@@ -206,10 +202,18 @@ def revisar(ctx: Ctx) -> None:
     ep = ctx.project.root
     ts = _tempos(ep)
     frames = render.snapshots(ep / "composition", [round(t + d / 2, 3) for _, t, d in ts], ep / "review")
-    total = ts[-1][1] + ts[-1][2] if ts else 0
+    # o agente só lê dentro do episódio: as folhas aprovadas dos personagens em cena vêm copiadas para review/refs
+    refs, base = ep / "review" / "refs", data.perfis_dir() / ctx.recipe["perfil"] / "personagens"
+    shutil.rmtree(refs, ignore_errors=True)
+    refs.mkdir(parents=True)
+    for p in sorted({p for c in _cenas(ep).cenas for p in c.characters}):
+        shutil.copyfile(base / p / "folha.png", refs / f"{p}.png")
+    total = ts[-1][1] + ts[-1][2]
     lista = ", ".join(f.relative_to(ep).as_posix() for f in frames) or "nenhum"
+    folhas = ", ".join(f.relative_to(ep).as_posix() for f in sorted(refs.glob("*.png"))) or "nenhuma"
     task = (f"Revise o episódio. Duração total: {total:.1f} s. Leia roteiro.md, episodio.json e cenas.json; "
-            f"frames do meio de cada cena, na ordem: {lista}. Grave revisao.json.")
+            f"frames do meio de cada cena, na ordem: {lista}. Folhas aprovadas dos personagens em cena: {folhas}. "
+            "Grave revisao.json.")
     agents.run_role(agents.ROLES["revisor"], ep, task, ep / "revisao.json", agents.validate_model(Revisao),
                     context=data.context_for(ctx.recipe["perfil"]))
 
@@ -256,10 +260,14 @@ def produce(store: JobStore, jid: int) -> str:
         k = len(_ROUND.findall(_read(ep / "ajustes.md"))) if (ep / "ajustes.md").exists() else 0
         if rev.ok or not rev.fixes or k >= REVIEW_ROUNDS:
             return status  # rodadas esgotadas: vai para a revisão humana com os fixes visíveis em revisao.json
-        _write_ajuste(ep, f"revisor, rodada {k + 1}",
-                      "\n".join(f"- [{f.role}{' ' + f.scene if f.scene else ''}] {f.note}" for f in rev.fixes))
-        jobs.invalidate_from(ep, STAGES, _earliest(f.role for f in rev.fixes))
-        store.set(jid, status="queued", stage="")
+        with store.lock:  # como no adjust: só mexe nos arquivos se o job ainda está parado no gate
+            job = store.get(jid)
+            if (job["status"], job["stage"]) != ("awaiting_approval", "aprovacao"):
+                return job["status"]
+            _write_ajuste(ep, f"revisor, rodada {k + 1}",
+                          "\n".join(f"- [{f.role}{' ' + f.scene if f.scene else ''}] {f.note}" for f in rev.fixes))
+            jobs.invalidate_from(ep, STAGES, _earliest(f.role for f in rev.fixes))
+            store.set(jid, status="queued", stage="")
         Project(ep).log({"review_round": k + 1})
 
 
@@ -305,9 +313,12 @@ def discard(store: JobStore, jid: int) -> None:
 
 def new_episode_job(store: JobStore, serie_path: Path, n: int) -> int:
     ep = data.ep_dir(serie_path, n)
+    s = _serie(serie_path)
+    ref = next((e for e in s.episodios if e.n == n), None)
+    if ref is None:
+        raise ValueError(f"a série {s.slug} não tem o episódio {n}")
     (ep / ".stages").mkdir(parents=True, exist_ok=True)  # idem
     jid = store.create(str(ep), "episodio", False)
-    s = _serie(serie_path)
-    next(e for e in s.episodios if e.n == n).job = jid
+    ref.job = jid
     data.save_serie(serie_path, s)
     return jid

@@ -140,11 +140,13 @@ def test_episode_detail_urls_and_postado():
     d = c.get(f"/api/episodios/{jid}").json()
     assert d["final"].startswith("/projects/benji/") and d["n"] == 1 and d["titulo"] == "t1"
     assert c.get(d["final"]).content == b"x"
+    assert c.get(f"/api/episodios/{jid}").json()["aprovado"] is False
     r = c.post(f"/api/episodios/{jid}/postado", json={"rede": "tiktok"})
     assert r.status_code == 409 and "aprovado" in r.json()["detail"]      # só depois de aprovar
     for f in ("approvals/aprovado.ok", ".stages/aprovacao.ok"):
         (ep / f).parent.mkdir(parents=True, exist_ok=True)
         (ep / f).write_text("ok")
+    assert c.get(f"/api/episodios/{jid}").json()["aprovado"] is True
     assert c.post(f"/api/episodios/{jid}/postado", json={"rede": "tiktok"}).json()["postado"] == ["tiktok"]
     assert c.post(f"/api/episodios/{jid}/postado", json={"rede": "orkut"}).status_code == 422
     assert c.get(f"/api/episodios/{jid}").json()["postado"] == ["tiktok"]
@@ -242,10 +244,15 @@ def test_gerar_conflicts(monkeypatch):
     assert c.post(f"/api/perfis/{p.slug}/gerar").status_code == 200 and fila._take_forced() == [p.slug]
 
 
-def test_fila_lists_estilo_jobs():
-    jid = server.STORE.create(str(data.home() / "estilos" / "x" / ".analise"), "estilo", False)
-    jobs = _client().get("/api/fila").json()["jobs"]
-    assert [(j["id"], j["recipe"]) for j in jobs] == [(jid, "estilo")]
+def test_fila_lists_estilo_jobs_and_resumes_them(monkeypatch):
+    monkeypatch.setenv("APIFY_TOKEN", "t")
+    c = _client()
+    jid = c.post("/api/estilos/analisar", json={"handle": "@abc"}).json()["job"]
+    jobs = c.get("/api/fila").json()["jobs"]
+    assert [(j["id"], j["recipe"], j["titulo"]) for j in jobs] == [(jid, "estilo", "@abc")]
+    server.STORE.set(jid, status="failed", error="x")
+    assert c.post(f"/api/episodios/{jid}/retomar").status_code == 200
+    assert server.STORE.get(jid)["status"] == "queued"
 
 
 @pytest.mark.parametrize("err,code", [(agents.UsageLimit("limit"), 429), (agents.AgentOutputError("ruim"), 502)])

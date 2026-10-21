@@ -41,4 +41,13 @@ describe("Fila", () => {
     await userEvent.click(screen.getByRole("button", { name: "Retomar" }))
     expect(api.retomar).toHaveBeenCalledWith(2)
   })
+  it("análise de estilo aparece com o @ e Retomar funciona", async () => {
+    vi.mocked(api.fila).mockResolvedValue(fila({ jobs: [
+      job({ id: 9, recipe: "estilo", status: "failed", stage: "analise", error: "Apify caiu", perfil: null, serie: null, n: null, titulo: "@abc" }),
+    ] }))
+    render(<Fila />)
+    expect(await screen.findByText("Análise de estilo — @abc")).toBeTruthy()
+    await userEvent.click(screen.getByRole("button", { name: "Retomar" }))
+    expect(api.retomar).toHaveBeenCalledWith(9)
+  })
 })

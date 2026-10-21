@@ -13,7 +13,7 @@ const ep = {
   job: { id: 5, status: "awaiting_approval" }, perfil: "benji", serie: "s", n: 2, titulo: "Ep Dois", roteiro: "Era uma vez",
   episodio: { titulo: "Ep Dois", resumo: "", post: { caption: "Legenda boa", hashtags: ["#a", "#b"] } },
   revisao: { ok: false, fixes: [{ role: "diretor_arte", scene: "s04", note: "rosto torto" }] },
-  final: "/projects/x/out/final.mp4", capa: "/projects/x/out/capa.jpg",
+  final: "/projects/x/out/final.mp4", capa: "/projects/x/out/capa.jpg", aprovado: false,
 } as unknown as Episodio
 
 beforeEach(() => {
@@ -72,7 +72,7 @@ describe("Revisao", () => {
     await waitFor(() => expect(toast).toHaveBeenLastCalledWith(expect.objectContaining({ description: "negado" })))
   })
   it("redes já postadas vêm do servidor e ficam desabilitadas", async () => {
-    vi.mocked(api.episodio).mockResolvedValue({ ...ep, postado: ["tiktok"] } as Episodio)
+    vi.mocked(api.episodio).mockResolvedValue({ ...ep, aprovado: true, postado: ["tiktok"] } as Episodio)
     render(<Revisao jid={5} />)
     const b = await screen.findByRole("button", { name: "Postado no TikTok" })
     expect((b as HTMLButtonElement).disabled).toBe(true)
@@ -84,8 +84,14 @@ describe("Revisao", () => {
   })
   it("Marcar como postado registra a rede", async () => {
     vi.mocked(api.postado).mockResolvedValue({ ok: true, postado: ["tiktok"] })
+    vi.mocked(api.episodio).mockResolvedValue({ ...ep, aprovado: true } as Episodio)
     render(<Revisao jid={5} />)
     await userEvent.click(await screen.findByRole("button", { name: "Marcar como postado no TikTok" }))
     expect(api.postado).toHaveBeenCalledWith(5, "tiktok")
+  })
+  it("antes de aprovar não há Marcar como postado, só Exportar", async () => {
+    render(<Revisao jid={5} />)
+    await screen.findByRole("link", { name: /Exportar/ })
+    expect(screen.queryByRole("button", { name: /Marcar como postado/ })).toBeNull()
   })
 })

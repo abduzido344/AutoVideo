@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { beforeEach, describe, expect, it, vi } from "vitest"
-import { api, type PerfilDetalhe } from "@/api"
+import { api, ApiError, type PerfilDetalhe } from "@/api"
 import { toast } from "@/components/ui/toast"
 import { Perfil } from "./Perfil"
 
@@ -113,5 +113,25 @@ describe("Perfil", () => {
     await userEvent.type(t, "!")
     await userEvent.click(screen.getByRole("button", { name: "Salvar mundo" }))
     expect(api.salvarMundo).toHaveBeenCalledWith("benji", "Mundo velho!")
+  })
+
+  it("Agenda: switch Ativo envia PUT {ativo} e mostra o 409 do servidor", async () => {
+    vi.mocked(api.perfil).mockResolvedValue({ ...det(), perfil: { ...det().perfil, ativo: false } })
+    vi.mocked(api.salvarPerfil).mockRejectedValue(new ApiError("perfil ainda não pode ser ativado: crie ao menos um personagem", 409))
+    render(<Perfil slug="benji" aba="agenda" />)
+    const sw = await screen.findByRole("switch", { name: "Ativo" })
+    expect(sw.getAttribute("aria-checked")).toBe("false")
+    await userEvent.click(sw)
+    expect(api.salvarPerfil).toHaveBeenCalledWith("benji", { ativo: true })
+    await waitFor(() => expect(toast).toHaveBeenCalledWith(expect.objectContaining({
+      state: "error", description: "perfil ainda não pode ser ativado: crie ao menos um personagem" })))
+    expect(sw.getAttribute("aria-checked")).toBe("false")
+  })
+
+  it("Gerar: recusa do servidor vira toast com o motivo", async () => {
+    vi.mocked(api.gerar).mockRejectedValue(new ApiError("a fila está pausada", 409))
+    render(<Perfil slug="benji" aba="series" />)
+    await userEvent.click(await screen.findByRole("button", { name: "Gerar próximo episódio" }))
+    await waitFor(() => expect(toast).toHaveBeenCalledWith(expect.objectContaining({ state: "error", description: "a fila está pausada" })))
   })
 })

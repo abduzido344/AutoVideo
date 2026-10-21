@@ -115,6 +115,10 @@ def _where(job: dict) -> dict:
     # perfis/<perfil>/series/<NN>-<serie>/ep<NN>; campos None se a pasta sumiu
     ep = Path(job["project_dir"])
     out = {"perfil": fila._perfil(job), "serie": None, "n": None, "titulo": None}
+    if job["recipe"] == "estilo":  # estilos/<slug>/.analise/perfil.txt: o @ do Instagram analisado
+        h = _read(ep / "perfil.txt").strip()
+        out["titulo"] = f"@{h}" if h else None
+        return out
     try:
         out["n"] = int(ep.name[2:])
         s = data.Serie.model_validate_json(_read(ep.parent / "serie.json"))
@@ -365,7 +369,8 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
             postado = next(e.postado for e in data.Serie.model_validate_json(_read(ep.parent / "serie.json")).episodios if e.n == w["n"])
         except (ValueError, StopIteration):
             pass  # sem série/episódio: nada postado
-        return {"job": job, **w, "postado": postado, "roteiro": _read(ep / "roteiro.md"), "episodio": _json(ep / "episodio.json"),
+        aprovado = w["n"] is not None and fila._approved(ep.parent, w["n"])
+        return {"job": job, **w, "postado": postado, "aprovado": aprovado, "roteiro": _read(ep / "roteiro.md"), "episodio": _json(ep / "episodio.json"),
                 "cenas": _json(ep / "cenas.json"), "revisao": _json(ep / "revisao.json"),
                 "ajustes": _read(ep / "ajustes.md"), "decisions": decisions,
                 "final": _url(ep / "out" / "final.mp4"), "capa": _url(ep / "out" / "capa.jpg")}

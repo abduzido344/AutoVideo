@@ -6,6 +6,7 @@ import { FolhaPersonagem } from "@/components/FolhaPersonagem"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/toast"
@@ -102,6 +103,22 @@ function Universo({ slug, d, refresh }: { slug: string; d: PerfilDetalhe; refres
   )
 }
 
+function Ativo({ slug, d, refresh }: { slug: string; d: PerfilDetalhe; refresh: () => void }) {
+  const [busy, setBusy] = useState(false)
+  // o servidor recusa (409) ativar perfil sem estilo válido ou com folha de personagem não aprovada
+  const mudar = (ativo: boolean) => {
+    setBusy(true)
+    api.salvarPerfil(slug, { ativo }).then(refresh, erro(ativo ? "Não consegui ativar o perfil" : "Não consegui pausar o perfil"))
+      .finally(() => setBusy(false))
+  }
+  return (
+    <label className="mb-6 flex w-fit items-center gap-3 text-sm">
+      <Switch checked={d.perfil.ativo} disabled={busy} onCheckedChange={mudar} aria-label="Ativo" />
+      Ativo: gera episódios sozinho nos horários da agenda
+    </label>
+  )
+}
+
 function AgendaForm({ slug, d }: { slug: string; d: PerfilDetalhe }) {
   const p = d.perfil
   const { data: estilos } = usePoll(api.estilos, 60000)
@@ -131,7 +148,6 @@ function AgendaForm({ slug, d }: { slug: string; d: PerfilDetalhe }) {
       {/* ponytail: select nativo; trocar pelo Select do shadcn se precisar de busca */}
       <label className="grid gap-1 text-sm">Estilo
         <select className="h-10 w-full rounded-control border bg-background px-3 text-sm" value={estilo} onChange={(e) => setEstilo(e.target.value)}>
-          <option value="">Sem estilo</option>
           {estilo && !lista.some((s) => s.slug === estilo) && <option value={estilo}>{estilo}</option>}
           {lista.map((s) => <option key={s.slug} value={s.slug}>{s.titulo}</option>)}
         </select>
@@ -173,7 +189,7 @@ export function Perfil({ slug, aba }: { slug: string; aba?: string }) {
             <TabsContent value="series"><Series slug={slug} d={data} refresh={refresh} /></TabsContent>
             <TabsContent value="ideias"><Ideias slug={slug} d={data} refresh={refresh} /></TabsContent>
             <TabsContent value="universo"><Universo slug={slug} d={data} refresh={refresh} /></TabsContent>
-            <TabsContent value="agenda"><AgendaForm slug={slug} d={data} /></TabsContent>
+            <TabsContent value="agenda"><Ativo slug={slug} d={data} refresh={refresh} /><AgendaForm slug={slug} d={data} /></TabsContent>
             <TabsContent value="contas"><Contas d={data} /></TabsContent>
           </>
         ) : <p className="text-sm text-muted-foreground">Carregando…</p>}

@@ -53,6 +53,7 @@ export type Episodio = {
   roteiro: string; episodio: unknown; cenas: unknown; revisao: unknown; ajustes: string
   decisions: Decision[]
   postado: Rede[]
+  aprovado: boolean
   final: string | null; capa: string | null // URLs /projects/...
 }
 

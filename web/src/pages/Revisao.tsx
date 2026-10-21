@@ -94,16 +94,19 @@ function Detalhe({ jid }: { jid: number }) {
           <Button variant="outline" disabled={busy || !ajuste.trim()} onClick={() => acao(api.ajustar(jid, ajuste.trim()), "Ajuste pedido", "Não consegui pedir o ajuste")}>Pedir ajuste</Button>
         </div>
       )}
-      <Secao>Postagem manual</Secao>
-      <p className="mb-2 text-sm text-muted-foreground">Só registra que você postou. Nada é publicado daqui.</p>
-      <div className="flex flex-wrap gap-2">
-        {REDES.map(([r, nome]) => (
-          <Button key={r} variant="outline" size="sm" disabled={feitos.has(r) || marcando !== null}
-            onClick={() => { setMarcando(r); api.postado(jid, r).then((x) => setPostado(x.postado), erro("Não consegui marcar como postado")).finally(() => setMarcando(null)) }}>
-            {feitos.has(r) ? `Postado no ${nome}` : `Marcar como postado no ${nome}`}
-          </Button>
-        ))}
-      </div>
+      {/* o servidor só aceita marcar postado depois de aprovado (409) */}
+      {ep.aprovado && <>
+        <Secao>Postagem manual</Secao>
+        <p className="mb-2 text-sm text-muted-foreground">Só registra que você postou. Nada é publicado daqui.</p>
+        <div className="flex flex-wrap gap-2">
+          {REDES.map(([r, nome]) => (
+            <Button key={r} variant="outline" size="sm" disabled={feitos.has(r) || marcando !== null}
+              onClick={() => { setMarcando(r); api.postado(jid, r).then((x) => setPostado(x.postado), erro("Não consegui marcar como postado")).finally(() => setMarcando(null)) }}>
+              {feitos.has(r) ? `Postado no ${nome}` : `Marcar como postado no ${nome}`}
+            </Button>
+          ))}
+        </div>
+      </>}
     </Pagina>
   )
 }

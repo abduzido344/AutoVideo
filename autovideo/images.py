@@ -34,6 +34,9 @@ def generate(prompt: str, refs: list[Path], out: Path, aspect: str = "9:16",
     c = client or httpx.Client(timeout=180)
     try:
         r = c.post(URL, json=body, headers={"Authorization": f"Bearer {key}"})
+        # modelos só de imagem (Seedream, Flux, Recraft...) recusam ["image", "text"] com 404, sem cobrar
+        if r.status_code == 404 and "output modalities" in r.text.lower():
+            r = c.post(URL, json={**body, "modalities": ["image"]}, headers={"Authorization": f"Bearer {key}"})
     finally:
         if own:
             c.close()

@@ -50,6 +50,19 @@ def test_writes_png_and_cost(tmp_path):
     assert r == {"provider": "openrouter", "model": "google/gemini-2.5-flash-image", "cost_usd": 0.04}
 
 
+def test_image_only_model_retries_with_image_modality(tmp_path):
+    sent = []
+
+    def h(req):
+        sent.append(json.loads(req.content)["modalities"])
+        if sent[-1] == ["image", "text"]:
+            return httpx.Response(404, json={"error": {"message": "No endpoints found that support the requested output modalities: image, text"}})
+        return reply()
+
+    images.generate("gato", [], tmp_path / "o.png", client=client(h))
+    assert sent == [["image", "text"], ["image"]] and (tmp_path / "o.png").read_bytes() == PNG
+
+
 def test_no_image_in_response(tmp_path):
     with pytest.raises(images.ImageError, match="sem imagem"):
         images.generate("gato", [], tmp_path / "o.png", client=client(lambda q: reply(images_=False)))

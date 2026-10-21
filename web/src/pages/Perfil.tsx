@@ -3,7 +3,7 @@ import { Trash2 } from "lucide-react"
 import ReactMarkdown from "react-markdown"
 import { api, type Agenda, type PerfilDetalhe } from "@/api"
 import { FolhaPersonagem } from "@/components/FolhaPersonagem"
-import { ABAS_PERFIL, COR, ICONE } from "@/components/secoes"
+import { ABAS_PERFIL, COR } from "@/components/secoes"
 import { SeletorVoz } from "@/components/SeletorVoz"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -11,9 +11,8 @@ import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/toast"
-import { go } from "@/lib/route"
 import { usePoll } from "@/lib/usePoll"
-import { Abas, Pagina, Secao } from "@/pages/Pagina"
+import { Pagina, Secao } from "@/pages/Pagina"
 
 const STATUS: Record<string, string> = {
   queued: "Na fila", in_progress: "Em andamento", awaiting_approval: "Aguardando aprovação", completed: "Concluído", failed: "Falhou",
@@ -160,11 +159,13 @@ function AgendaForm({ slug, d, refresh }: { slug: string; d: PerfilDetalhe; refr
 
 export function Perfil({ slug, aba }: { slug: string; aba?: string }) {
   const { data, refresh } = usePoll(() => api.perfil(slug), 5000)
-  const atual = ABAS_PERFIL.some((a) => a.aba === aba) ? aba! : "series"
+  const sec = ABAS_PERFIL.find((a) => a.aba === aba) ?? ABAS_PERFIL[0]
+  const atual = sec.aba
+  // as seções já estão na sidebar: o título é a seção, e o perfil vai no subtítulo
+  const sub = data && [data.perfil.nome, data.perfil.assunto].filter(Boolean).join(" · ")
   return (
-    <Pagina titulo={data?.perfil.nome ?? "Perfil"} icone={ICONE.perfil} cor={COR.perfil.caixa} sub={data?.perfil.assunto || undefined}
-      acoes={data && <><Ativo slug={slug} d={data} refresh={refresh} /><Gerar slug={slug} /></>}
-      abas={<Abas label="Seções do perfil" valor={atual} itens={ABAS_PERFIL} onChange={(v) => go({ name: "perfil", slug, aba: v })} />}>
+    <Pagina titulo={sec.label} icone={sec.icon} cor={COR.perfil.caixa} sub={sub || undefined}
+      acoes={data && <><Ativo slug={slug} d={data} refresh={refresh} /><Gerar slug={slug} /></>}>
       {!data ? <p className="text-sm text-muted-foreground">Carregando…</p>
         : atual === "series" ? <Series d={data} refresh={refresh} />
         : atual === "ideias" ? <Ideias slug={slug} d={data} refresh={refresh} />

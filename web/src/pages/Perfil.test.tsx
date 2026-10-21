@@ -3,7 +3,6 @@ import userEvent from "@testing-library/user-event"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { api, ApiError, type PerfilDetalhe } from "@/api"
 import { toast } from "@/components/ui/toast"
-import { go } from "@/lib/route"
 import { Perfil } from "./Perfil"
 
 vi.mock("@/api", async (orig) => ({ ...(await orig<typeof import("@/api")>()), api: {
@@ -114,23 +113,21 @@ describe("Perfil", () => {
     expect(screen.queryByLabelText("Voz (voice_id)")).toBeNull()
   })
 
-  it("cabeçalho: nome, abas Séries | Ideias | Universo | Agenda e voz e só a seção escolhida", async () => {
+  it("cabeçalho: título é a seção, perfil no subtítulo, sem abas e só a seção escolhida", async () => {
     const { container } = render(<Perfil slug="benji" aba="ideias" />)
-    expect(await screen.findByRole("heading", { name: "Benji" })).toBeTruthy()
-    expect(screen.getAllByRole("tab").map((t) => t.textContent)).toEqual(["Séries", "Ideias", "Universo", "Agenda e voz"])
-    expect(screen.getByRole("tab", { name: "Ideias" }).getAttribute("aria-selected")).toBe("true")
+    expect(await screen.findByRole("heading", { name: "Ideias" })).toBeTruthy()
+    expect(screen.getByText("Benji")).toBeTruthy()
+    expect(screen.queryAllByRole("tab")).toEqual([])
     await screen.findByText("Um gato astronauta")
     expect(screen.queryByText("Gato no espaço")).toBeNull()
     expect(screen.getByRole("button", { name: "Gerar próximo episódio" })).toBeTruthy()
     expect(screen.getByRole("switch", { name: "Ativo" })).toBeTruthy()
-    await userEvent.click(screen.getByRole("tab", { name: "Universo" }))
-    expect(go).toHaveBeenCalledWith({ name: "perfil", slug: "benji", aba: "universo" })
     expect(container.textContent).not.toMatch(/opcional/i)
   })
   it("a aba Contas saiu: cai em Séries", async () => {
     render(<Perfil slug="benji" aba="contas" />)
     expect(await screen.findByText("Gato no espaço")).toBeTruthy()
-    expect(screen.queryByRole("tab", { name: "Contas" })).toBeNull()
+    expect(screen.getByRole("heading", { name: "Séries" })).toBeTruthy()
   })
 
   it("Universo: salva o mundo", async () => {

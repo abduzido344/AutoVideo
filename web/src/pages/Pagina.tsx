@@ -15,7 +15,7 @@ export function Pagina({ titulo, icone: I, cor, extra, acoes, abas, sub, largo, 
   const fechada = sb !== null && (sb.isMobile || sb.state === "collapsed")
   return (
     <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
-      <header className="shrink-0 space-y-3 px-4 pt-4 pb-4 md:px-8 md:pt-6">
+      <header className={cn("mx-auto w-full shrink-0 space-y-3 px-4 pt-4 pb-4 md:px-8 md:pt-6", !largo && "max-w-[calc(48rem+4rem)]")}>
         <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
           {fechada && <SidebarTrigger aria-label="Abrir o menu" className="-ml-1" />}
           {I && <span aria-hidden="true" className={cn("grid size-7 shrink-0 place-items-center rounded-md", cor)}><I className="size-4" /></span>}
@@ -26,8 +26,9 @@ export function Pagina({ titulo, icone: I, cor, extra, acoes, abas, sub, largo, 
         {abas}
         {sub && <p className="text-sm text-muted-foreground">{sub}</p>}
       </header>
-      <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-8 md:px-8">
-        {largo ? children : <div className="max-w-3xl">{children}</div>}
+      {/* pt-1: o ring dos cards fica fora da caixa e o overflow cortaria a borda de cima */}
+      <div className="min-h-0 flex-1 overflow-y-auto px-4 pt-1 pb-8 md:px-8">
+        {largo ? children : <div className="mx-auto max-w-3xl">{children}</div>}
       </div>
     </div>
   )

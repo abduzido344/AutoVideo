@@ -23,7 +23,19 @@ Os demais 77 respondem 401 e exigem **Kobra Pro**. O token vai em `KOBRA_TOKEN`,
 **Instalar item free sem token:** com `@kobra` no `components.json` o shadcn exige `KOBRA_TOKEN` até para itens free (erro "requires the following environment variables"). Instale pela URL: `npx shadcn@latest add https://kobra.systems/r/<nome>.json`.
 
 ## Estado atual do painel (`web/`)
-Sem KOBRA_TOKEN na instalação. Kobra: video (player), sound (<SoundEffects>) e toast (`<Toasts />` no App; padrão de notificação do painel: `toast({ message, description?, state })`). O toast depende de `@kobra/alert`, `@kobra/spinner` e `@kobra/button`, que são Pro: `components/toast-marks.tsx` substitui os dois primeiros com ícones do lucide, o `button` é o do shadcn, e `useDirection` (base-ui) virou `document.dir`. shadcn base: sidebar (variant inset), switch, dropdown-menu, tabs, button, dialog, card, input, label, select, sheet, table, textarea, toggle-group, tooltip, progress, badge, scroll-area, separator, skeleton. Telas: Perfis, Onboarding, Perfil, Estilos, Fila, Revisão e Configurações. Markdown do brief com react-markdown.
+Sem KOBRA_TOKEN na instalação. Kobra: video (player), sound (<SoundEffects>) e toast (`<Toasts />` no App; padrão de notificação do painel: `toast({ message, description?, state })`). O toast depende de `@kobra/alert`, `@kobra/spinner` e `@kobra/button`, que são Pro: `components/toast-marks.tsx` substitui os dois primeiros com ícones do lucide, o `button` é o do shadcn, e `useDirection` (base-ui) virou `document.dir`. shadcn base: sidebar (variant inset), switch, dropdown-menu, tabs, button, dialog, card, input, label, select, sheet, table, textarea, toggle-group, tooltip, progress, badge, scroll-area, separator, skeleton. Markdown do brief com react-markdown. O `sidebar.tsx` exporta também o `SidebarContext`, para o cabeçalho de página saber se a sidebar está fechada sem quebrar fora do provider.
+
+### Mapa de telas
+O app tem sempre a altura da tela (`h-svh overflow-hidden` no wrapper): só a sidebar (`SidebarContent`) e o corpo de cada página rolam. Toda página usa o cabeçalho de `pages/Pagina.tsx`: ícone colorido da seção (tokens `--sec-*` no `index.css`), título, ações globais; abas; subtítulo.
+
+| Rota | Tela | Cor |
+|---|---|---|
+| `#/perfis` (home) | Perfis: cards + Novo perfil | perfil (azul) |
+| `#/perfil/<slug>/<aba>` | Perfil: abas Séries, Ideias, Universo, Agenda e voz (as mesmas da sidebar); ações Ativo e Gerar próximo episódio | perfil (azul) |
+| `#/onboarding/<slug>` | Onboarding: chat + etapas | perfil (azul) |
+| `#/producao[/<jid>]` | Produção: esteira kanban (Na fila, Produzindo, Para revisar, Prontos), filtro por perfil, Pausar/Retomar fila; `jid` abre a revisão num `sheet` à direita. `#/fila` e `#/revisao[/jid]` redirecionam para cá | produção (magenta) |
+| `#/estilos`, `#/estilo/<slug>` | Estilos: lista + análise de @; conversa do estilo | estilos (violeta) |
+| `#/config/<aba>` | Configurações: Chaves API, Conexões (Claude, Codex, redes de cada perfil), Imagens | config (grafite) |
 
 Nota: o `liquidglass` vai duas vezes no bundle: a lib vendorizada em `src/lib/liquidglass` (importada por `src/lib/glass-controls.ts`, vinda do item `video`) e a cópia interna do `loomix` (chunks `liquidglass-*.js` no build, ~51 kB cada). A deduplicação não é uma troca trivial de import (o `loomix` não exporta a lib), então ficou como está.
 
@@ -53,14 +65,15 @@ Nota: o `liquidglass` vai duas vezes no bundle: a lib vendorizada em `src/lib/li
 ## Componentes escritos à mão
 | Componente | Motivo |
 |---|---|
-| `components/AppSidebar.tsx` | Composição da `sidebar` do shadcn (variant inset, 252px) com wordmark, `select` de perfil, `dropdown-menu` do botão Criar, links Fila/Revisão (contagem)/Estilos/Configurações; inclui o `TopBar` (`SidebarTrigger`) |
-| `pages/Pagina.tsx` | Casca de página do Lum (header sticky, título 22px, label de seção 11px); layout puro, sem componente equivalente |
+| `components/AppSidebar.tsx` | Composição da `sidebar` do shadcn (variant inset, 252px): wordmark + `SidebarTrigger`, `select` de perfil, `dropdown-menu` do botão Criar, grupo do perfil (Séries, Ideias, Universo, Agenda e voz, ou Continuar onboarding) e grupo geral (Produção com contagem, Estilos, Configurações) |
+| `components/secoes.ts` | Cores, ícones lucide e abas do perfil compartilhados entre a sidebar e os cabeçalhos; não é componente |
+| `pages/Pagina.tsx` | Casca de página do Lum: cabeçalho fixo (ícone colorido 28px, título 22px, ações; abas `tabs` ligadas à rota; subtítulo), corpo que rola sozinho, `SidebarTrigger` para reabrir quando a sidebar está fechada ou no mobile; label de seção 11px |
 | `components/ConnectClaude.tsx` | Composição do `dialog` do shadcn: janela "Conectar o Claude" (status da conta, botão que abre o terminal com `claude auth login`, comando para copiar); Kobra não tem modal grátis |
 | `components/Chat.tsx` | Conversa com o agente: `conversation`/`chat-input` da Kobra dependem de Pro (sem token); fallback do mapa: `card` + `textarea` com bolhas simples |
 | `components/FolhaPersonagem.tsx` | Card do personagem (ficha, imagem da folha, gerar/aprovar); composição de `card` + `button`, sem equivalente pronto |
 | `pages/Perfis.tsx`, `pages/Onboarding.tsx` | Telas: cards de perfil + `dialog` de Novo perfil; chat + painel de etapas |
 | `components/StatusPill.tsx` | Pílula de status do doctor; `badge` do shadcn não tem o estado "verificando" com ponto |
 | `pages/Perfil.tsx`, `pages/Estilos.tsx` | Telas: `tabs` + `card` + `input`/`textarea`; `<select>` nativo na Agenda (estilo); dialog "Novo estilo" abre a conversa (`Chat` kind estilo) |
-| `pages/Fila.tsx`, `pages/Revisao.tsx` | Telas: Fila = `card` por status + barra de etapas à mão (Kobra `task-list`/`grouped-table` exigem Pro); Revisão = Kobra `video` + `card` + `textarea`, confirmação de Descartar inline |
-| `pages/Configuracoes.tsx` | Tela: `card` + `input` para as chaves (ElevenLabs, OpenRouter, Apify) e o status do Claude; sem componente equivalente pronto |
+| `pages/Producao.tsx` | Tela: esteira kanban à mão (colunas = `section` com rolagem própria, cartões `card`, barra curta de etapas; Kobra `task-list`/`grouped-table` exigem Pro); erro truncado em 2 linhas + `dialog` "ver detalhes"; revisão (Kobra `video` + `card` + `textarea`) num `sheet` do shadcn |
+| `pages/Configuracoes.tsx` | Tela com `tabs` (Chaves API, Conexões, Imagens): `input` para as chaves, `card` de Claude/Codex e de contas de cada perfil, `select` de provedor; Salvar por aba |
 | `components/toast-marks.tsx` | Substitui `@kobra/alert` e `@kobra/spinner` (Pro) no toast, com ícones do lucide |

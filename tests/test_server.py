@@ -162,3 +162,32 @@ def test_detail_survives_corrupt_artifacts_and_postado_guards():
     assert d["episodio"] is None and d["decisions"] == [{"a": 1}]
     (serie / "serie.json").unlink()
     assert c.post(f"/api/episodios/{jid}/postado", json={"rede": "tiktok"}).status_code == 404
+
+
+def test_character_sheet_endpoints(monkeypatch):
+    from autovideo import images
+    c = _client()
+    slug = c.post("/api/perfis", json={"nome": "Benji"}).json()["slug"]
+    d = data.perfis_dir() / slug / "personagens" / "ze"
+    d.mkdir(parents=True)
+    (d / "ficha.md").write_text("x", encoding="utf-8")
+    base = f"/api/perfis/{slug}/personagens"
+    assert c.post(f"{base}/nope/folha").status_code == 404 and c.post(f"{base}/nope/aprovar").status_code == 404
+    assert c.post(f"{base}/ze/aprovar").status_code == 409            # sem folha
+    monkeypatch.setattr(images, "generate", lambda p, r, out, aspect="9:16", client=None: out.write_bytes(b"png"))
+    assert c.post(f"{base}/ze/folha").status_code == 200
+    assert c.post(f"{base}/ze/aprovar").status_code == 200 and (d / "aprovada").exists()
+    monkeypatch.setattr(images, "generate", lambda *a, **k: (_ for _ in ()).throw(server.MissingKey("falta OPENROUTER_API_KEY")))
+    r = c.post(f"{base}/ze/folha")
+    assert r.status_code == 400 and "OPENROUTER" in r.json()["detail"]
+
+
+def test_analisar_endpoint(monkeypatch):
+    monkeypatch.delenv("APIFY_TOKEN", raising=False)
+    monkeypatch.setattr(server.config, "load", lambda: {})
+    c = _client()
+    assert "APIFY_TOKEN" in c.post("/api/estilos/analisar", json={"handle": "abc"}).json()["detail"]
+    monkeypatch.setenv("APIFY_TOKEN", "t")
+    assert c.post("/api/estilos/analisar", json={"handle": "../x"}).status_code == 422
+    jid = c.post("/api/estilos/analisar", json={"handle": "@abc"}).json()["job"]
+    assert server.STORE.get(jid)["recipe"] == "estilo"

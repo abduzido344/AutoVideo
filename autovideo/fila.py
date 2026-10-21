@@ -6,7 +6,7 @@ import threading
 import time
 from datetime import datetime
 from pathlib import Path
-from autovideo import agents, data, episode, jobs, showrunner
+from autovideo import agents, analise, data, episode, jobs, showrunner
 from autovideo.jobs import JobStore
 from autovideo.project import home
 
@@ -160,8 +160,17 @@ def run_next(store: JobStore, now: float) -> bool:
     if is_paused(now):
         return False
     for j in store.queued():
+        if j["recipe"] == "estilo":
+            if not store.claim(j["id"]):
+                continue
+            try:
+                analise.run_job(store, j["id"])
+            except agents.UsageLimit as e:  # run_job já devolveu o job para a fila
+                _limit(e, now)
+                return False
+            return True
         if j["recipe"] != "episodio":
-            continue  # "estilo" (analise.run_job) entra na Task 12; até lá fica na fila
+            continue
         try:
             paused = _serie(Path(j["project_dir"]).parent).paused
         except (OSError, ValueError) as e:  # série sumiu ou serie.json corrompido: não trava a cabeça da fila

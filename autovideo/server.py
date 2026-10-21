@@ -8,7 +8,9 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, ValidationError
 from starlette.middleware.trustedhost import TrustedHostMiddleware
-from autovideo import agents, chat, config, data, doctor, episode, fila
+from autovideo import agents, analise, chat, config, data, doctor, episode, fila, personagem
+from autovideo.eleven import MissingKey
+from autovideo.images import ImageError
 from autovideo.jobs import GateError, JobStore
 
 DIST = Path(__file__).resolve().parent.parent / "web" / "dist"
@@ -49,6 +51,10 @@ class Nome(BaseModel):
 class SeriePausa(BaseModel):
     path_rel: str
     paused: bool
+
+
+class Handle(BaseModel):
+    handle: str
 
 
 class Postado(BaseModel):
@@ -172,6 +178,15 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
     def estilos():
         return data.list_estilos()
 
+    @app.post("/api/estilos/analisar")
+    def analisar(body: Handle):
+        if not config.get_key("APIFY_TOKEN"):
+            raise HTTPException(400, "falta APIFY_TOKEN (salve em Configurações)")
+        try:
+            return {"job": analise.criar_job(store, body.handle)}
+        except ValueError as e:
+            raise HTTPException(422, str(e)) from e
+
     @app.get("/api/estilos/{slug}")
     def estilo(slug: str):
         if slug not in {e["slug"] for e in data.list_estilos()}:
@@ -214,6 +229,31 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
             raise HTTPException(422, str(e)) from e
         data.save_perfil(p)
         return p
+
+    def _personagem(slug: str, p: str) -> None:
+        _slug(slug)
+        if p not in {c["slug"] for c in data.personagens(slug)}:
+            raise HTTPException(404, "personagem não existe")
+
+    @app.post("/api/perfis/{slug}/personagens/{p}/folha")
+    def folha(slug: str, p: str):
+        _personagem(slug, p)
+        try:
+            personagem.gerar_folha(slug, p)
+        except MissingKey as e:
+            raise HTTPException(400, str(e)) from e
+        except (ImageError, OSError) as e:
+            raise HTTPException(502, f"não consegui gerar a folha: {e}") from e
+        return {"ok": True}
+
+    @app.post("/api/perfis/{slug}/personagens/{p}/aprovar")
+    def aprovar_personagem(slug: str, p: str):
+        _personagem(slug, p)
+        try:
+            personagem.aprovar_folha(slug, p)
+        except ValueError as e:
+            raise HTTPException(409, str(e)) from e
+        return {"ok": True}
 
     @app.put("/api/perfis/{slug}/universo/mundo")
     def put_mundo(slug: str, body: Texto):

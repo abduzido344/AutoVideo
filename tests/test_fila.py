@@ -4,7 +4,7 @@ import sys
 from datetime import date, datetime, time as dtime, timedelta
 from pathlib import Path
 import pytest
-from autovideo import agents, data, episode, fila, showrunner
+from autovideo import agents, analise, data, episode, fila, showrunner
 from autovideo.jobs import JobStore
 
 EPS = [("t1", "s1"), ("t2", "s2"), ("t3", "s3")]
@@ -151,11 +151,28 @@ def test_paused_series_skipped(env, monkeypatch):
     assert env.store.get(j1)["status"] == "queued"
 
 
-def test_other_kinds_stay_queued(env, monkeypatch):
-    jid = env.store.create("estilos/x", "estilo", False)
+def test_unknown_kinds_stay_queued(env, monkeypatch):
+    jid = env.store.create("x", "outro", False)
     monkeypatch.setattr(episode, "produce", lambda store, j: pytest.fail("não é episódio"))
     assert fila.run_next(env.store, 0.0) is False
     assert env.store.get(jid)["status"] == "queued"
+
+
+def test_estilo_job_dispatched_and_limit_pauses(env, monkeypatch):
+    jid = env.store.create("estilos/x/.analise", "estilo", False)
+    ran = []
+    monkeypatch.setattr(analise, "run_job", lambda store, j: ran.append(j) or store.set(j, status="completed"))
+    assert fila.run_next(env.store, 0.0) is True and ran == [jid]
+    assert env.store.get(jid)["status"] == "completed"
+
+    def limit(store, j):
+        store.set(j, status="queued")
+        raise agents.UsageLimit("usage limit", retry_at=900.0)
+
+    j2 = env.store.create("estilos/y/.analise", "estilo", False)
+    monkeypatch.setattr(analise, "run_job", limit)
+    assert fila.run_next(env.store, 100.0) is False
+    assert env.store.get(j2)["status"] == "queued" and fila.state()["paused_until"] == 900.0
 
 
 def test_force_ignores_hour_and_quota(env):

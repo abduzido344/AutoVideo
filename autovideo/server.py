@@ -105,7 +105,10 @@ def _where(job: dict) -> dict:
 
 
 def _url(p: Path) -> str | None:
-    return "/projects/" + p.relative_to(data.perfis_dir()).as_posix() if p.exists() else None
+    try:
+        return "/projects/" + p.relative_to(data.perfis_dir()).as_posix() if p.exists() else None
+    except ValueError:
+        return None
 
 
 def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
@@ -255,7 +258,8 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
         job = _job(store, jid)
         ep = Path(job["project_dir"])
         decisions = []
-        for ln in _read(ep / "decisions.log").splitlines():
+        raw = (ep / "decisions.log").read_bytes().decode("utf-8", "replace") if (ep / "decisions.log").exists() else ""
+        for ln in raw.splitlines():
             try:
                 decisions.append(json.loads(ln))
             except ValueError:

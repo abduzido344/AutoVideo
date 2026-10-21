@@ -106,7 +106,7 @@ def test_profile_crud_and_bad_slug():
     iid = c.post(f"/api/perfis/{slug}/ideias", json={"texto": "oi"}).json()["id"]
     assert c.delete(f"/api/perfis/{slug}/ideias/{iid}").status_code == 200
     assert c.get(f"/api/perfis/{slug}").json()["ideias"] == []
-    assert c.get("/api/perfis/%2e%2e%2fx").status_code == 404
+    assert c.get("/api/perfis/..%5Cx").status_code == 404 and c.get("/api/perfis/..").status_code == 404
     assert c.get("/api/perfis/nao-existe").status_code == 404
     assert c.post("/api/perfis/nao-existe/gerar").status_code == 404
 
@@ -157,7 +157,7 @@ def test_detail_survives_corrupt_artifacts_and_postado_guards():
     jid = episode.new_episode_job(server.STORE, serie, 1)
     ep = data.ep_dir(serie, 1)
     (ep / "episodio.json").write_text("{x", encoding="utf-8")
-    (ep / "decisions.log").write_text('{"a": 1}' + chr(10) + '{trunc', encoding="utf-8")
+    (ep / "decisions.log").write_bytes(b'{"a": 1}' + bytes([10]) + b'{"t": "' + "é".encode()[:1])
     d = c.get(f"/api/episodios/{jid}").json()
     assert d["episodio"] is None and d["decisions"] == [{"a": 1}]
     (serie / "serie.json").unlink()

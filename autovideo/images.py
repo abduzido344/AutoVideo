@@ -40,6 +40,8 @@ def generate(prompt: str, refs: list[Path], out: Path, aspect: str = "9:16",
     finally:
         if own:
             c.close()
+    if r.status_code == 402:
+        raise ImageError("sem saldo no OpenRouter: adicione créditos (mínimo US$ 1) em openrouter.ai/settings/credits")
     if not r.is_success:
         raise ImageError(f"OpenRouter {r.status_code}: {r.text[:300]}")
     try:

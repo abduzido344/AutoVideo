@@ -63,6 +63,11 @@ def test_image_only_model_retries_with_image_modality(tmp_path):
     assert sent == [["image", "text"], ["image"]] and (tmp_path / "o.png").read_bytes() == PNG
 
 
+def test_no_credits_message(tmp_path):
+    with pytest.raises(images.ImageError, match="sem saldo no OpenRouter"):
+        images.generate("gato", [], tmp_path / "o.png", client=client(lambda q: httpx.Response(402, json={})))
+
+
 def test_no_image_in_response(tmp_path):
     with pytest.raises(images.ImageError, match="sem imagem"):
         images.generate("gato", [], tmp_path / "o.png", client=client(lambda q: reply(images_=False)))

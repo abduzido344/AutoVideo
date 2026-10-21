@@ -142,7 +142,8 @@ def invalidate_from(root: Path, stages: list[Stage], start: str) -> None:
         _remove(root / rel)
 
 
-def run_job(store: JobStore, jid: int, stages: list[Stage], make_ctx: Callable[[dict], Ctx]) -> str:
+def run_job(store: JobStore, jid: int, stages: list[Stage], make_ctx: Callable[[dict], Ctx],
+            stop: Callable[[], bool] | None = None) -> str:
     job = store.get(jid)
     store.set(jid, status="in_progress", error="")
     ctx = make_ctx(job)
@@ -153,6 +154,9 @@ def run_job(store: JobStore, jid: int, stages: list[Stage], make_ctx: Callable[[
         if stage_done(root, name, rel, legacy):
             _commit(root, name)  # no legado, migra: o próximo run já enxerga o marcador
             continue
+        if fn is not None and stop and stop():  # pausa pedida: não começa a próxima etapa; volta para a fila e retoma daqui
+            store.set(jid, status="queued")
+            return "paused"
         _remove(p)  # artefato sem marcador = etapa morta no meio (hard kill): refaz do zero
         if fn is None and not job["auto"]:
             store.set(jid, stage=name, status="awaiting_approval")

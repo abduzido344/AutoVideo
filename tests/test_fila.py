@@ -305,3 +305,14 @@ def test_unready_profile_skipped_even_forced(env, monkeypatch):
     (env.ch / "aprovada").write_text("ok")
     p = data.load_perfil(env.perfil); p.estilo = "sumiu"; data.save_perfil(p)
     assert fila.tick(env.store, at(10, 0), force=env.perfil) is None and env.store.list() == []
+
+
+def test_pausado_covers_queue_and_series(env):
+    jid = episode.new_episode_job(env.store, env.serie, 1)
+    job = env.store.get(jid)
+    assert episode._pausado(job) is False
+    fila.pause()
+    assert episode._pausado(job) is True
+    fila.resume()
+    fila.set_series_paused(env.serie, True)
+    assert episode._pausado(job) is True

@@ -178,3 +178,21 @@ def test_approve_legacy_project_parked_at_gate_does_not_rerun(tmp_path):
     approve(store, jid, st)
     assert run_job(store, jid, st, mk) == "awaiting_approval"
     assert calls == ["b", "c"] and (root / "a.txt").read_text() == "a"
+
+def test_stop_pauses_at_next_stage_boundary_and_resumes(tmp_path):
+    calls = []
+    store, jid, mk = setup(tmp_path, auto=True)
+    st = mk_stages(calls)
+    stop = [False]
+
+    def a_then_stop(ctx):  # o pedido de parada chega durante a etapa "a": ela termina, a seguinte não começa
+        st_a(ctx)
+        stop[0] = True
+    st_a = st[0][2]
+    st[0] = ("a", st[0][1], a_then_stop)
+    assert run_job(store, jid, st, mk, lambda: stop[0]) == "paused"
+    job = store.get(jid)
+    assert job["status"] == "queued" and calls == ["a"]
+    stop[0] = False
+    assert run_job(store, jid, st, mk, lambda: stop[0]) == "completed"
+    assert calls == ["a", "b", "c"]          # "a" não reexecuta ao continuar

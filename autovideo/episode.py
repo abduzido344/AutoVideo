@@ -4,6 +4,7 @@ import hashlib
 import json
 import re
 import shutil
+import time
 from pathlib import Path
 from autovideo import agents, config, data, eleven, images, jobs, montage, render
 from autovideo.artefatos import Cenas, EpisodioOut, Fix, Revisao, Voz
@@ -242,6 +243,15 @@ def _earliest(roles) -> str:
     return min((REDO[r] for r in roles), key=names.index)
 
 
+def _pausado(job: dict) -> bool:
+    """Fila ou série pausada: o episódio em andamento para na próxima fronteira de etapa."""
+    from autovideo import fila  # import tardio evita ciclo (fila importa episode)
+    try:
+        return fila.is_paused(time.time()) or fila._serie(Path(job["project_dir"]).parent).paused
+    except (OSError, ValueError):  # série sumiu: o run_next já trata, aqui não para o episódio
+        return False
+
+
 def produce(store: JobStore, jid: int) -> str:
     hit: list[agents.UsageLimit] = []
 
@@ -256,10 +266,12 @@ def produce(store: JobStore, jid: int) -> str:
 
     stages = [(n, r, fn and guard(fn)) for n, r, fn in STAGES]
     while True:
-        status = jobs.run_job(store, jid, stages, make_ctx)
+        status = jobs.run_job(store, jid, stages, make_ctx, lambda: _pausado(store.get(jid)))
         if hit:  # limite de uso não é falha: volta para a fila na mesma etapa e a fila pausa
             store.set(jid, status="queued", error="")
             raise hit[0]
+        if status == "paused":
+            return status
         ep = Path(store.get(jid)["project_dir"])
         if status != "awaiting_approval":
             return status

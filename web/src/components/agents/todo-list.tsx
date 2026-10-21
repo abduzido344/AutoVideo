@@ -47,10 +47,10 @@ export interface TodoListProps {
 }
 
 function statusLabel(status: TodoItemStatus) {
-  if (status === "in-progress") return "In progress";
-  if (status === "completed") return "Completed";
-  if (status === "cancelled") return "Cancelled";
-  return "Pending";
+  if (status === "in-progress") return "Em andamento";
+  if (status === "completed") return "Concluída";
+  if (status === "cancelled") return "Cancelada";
+  return "Pendente";
 }
 
 function TodoHeaderIcon({ complete }: { complete: boolean }) {
@@ -200,7 +200,7 @@ function TodoStatusIcon({
 
 export function TodoList({
   items,
-  title = "To-dos",
+  title = "Tarefas",
   open,
   defaultOpen = true,
   onOpenChange,
@@ -258,7 +258,7 @@ export function TodoList({
 
   return (
     <section
-      aria-label="Agent task list"
+      aria-label="Lista de etapas"
       className={cn(
         "w-full overflow-hidden rounded-2xl border border-border/70",
         className,
@@ -283,7 +283,7 @@ export function TodoList({
           )}
         >
           <span className="sr-only">
-            {completed} of {items.length} tasks completed
+            {completed} de {items.length} concluídas
           </span>
           <span aria-hidden="true" className="inline-flex">
             <ActionSwapRollText value={String(completed)}>

@@ -7,7 +7,7 @@ import { go } from "@/lib/route"
 import { Perfil } from "./Perfil"
 
 vi.mock("@/api", async (orig) => ({ ...(await orig<typeof import("@/api")>()), api: {
-  perfil: vi.fn(), estilos: vi.fn(), salvarPerfil: vi.fn(), addIdeia: vi.fn(), delIdeia: vi.fn(), gerar: vi.fn(), pausarSerie: vi.fn(), salvarMundo: vi.fn(),
+  perfil: vi.fn(), estilos: vi.fn(), vozes: vi.fn(), salvarPerfil: vi.fn(), addIdeia: vi.fn(), delIdeia: vi.fn(), gerar: vi.fn(), pausarSerie: vi.fn(), salvarMundo: vi.fn(),
 } }))
 vi.mock("@/components/ui/toast", () => ({ toast: vi.fn(), Toasts: () => null }))
 vi.mock("@/lib/route", () => ({ go: vi.fn() }))
@@ -26,6 +26,7 @@ const det = (): PerfilDetalhe => ({
 beforeEach(() => {
   vi.clearAllMocks()
   vi.mocked(api.perfil).mockResolvedValue(det())
+  vi.mocked(api.vozes).mockResolvedValue([{ voice_id: "v1", nome: "Ana", preview_url: "http://p/a.mp3", descricao: "paulista" }, { voice_id: "v2", nome: "Beto", preview_url: null, descricao: "" }])
   vi.mocked(api.estilos).mockResolvedValue([{ slug: "fabula", origem: "fabrica", titulo: "Fábula" }])
 })
 
@@ -85,7 +86,7 @@ describe("Perfil", () => {
     fim()
   })
 
-  it("Agenda envia o PUT com agenda inteira, voz e estilo", async () => {
+  it("Agenda envia o PUT com agenda inteira e estilo (a voz salva à parte)", async () => {
     vi.mocked(api.salvarPerfil).mockResolvedValue(det().perfil)
     render(<Perfil slug="benji" aba="agenda" />)
     const campo = await screen.findByLabelText("Episódios por série")
@@ -93,8 +94,24 @@ describe("Perfil", () => {
     await userEvent.type(campo, "5")
     await userEvent.click(screen.getByRole("button", { name: "Salvar agenda" }))
     await waitFor(() => expect(api.salvarPerfil).toHaveBeenCalledWith("benji", {
-      agenda: { gerar_as: "03:00", por_dia: 1, postar_as: ["09:00"], episodios_por_serie: 5 }, voz_id: "v1", estilo: "fabula",
+      agenda: { gerar_as: "03:00", por_dia: 1, postar_as: ["09:00"], episodios_por_serie: 5 }, estilo: "fabula",
     }))
+  })
+
+  it("escolher a voz salva voz_id na hora", async () => {
+    vi.mocked(api.salvarPerfil).mockResolvedValue(det().perfil)
+    render(<Perfil slug="benji" aba="agenda" />)
+    await screen.findByLabelText("Ouvir a voz")
+    await userEvent.click(screen.getByRole("combobox", { name: "Voz" }))
+    await userEvent.click(await screen.findByRole("option", { name: "Beto" }))
+    await waitFor(() => expect(api.salvarPerfil).toHaveBeenCalledWith("benji", { voz_id: "v2" }))
+  })
+  it("sem a chave da ElevenLabs mostra o aviso com link", async () => {
+    vi.mocked(api.vozes).mockRejectedValue(new ApiError("salve a chave da ElevenLabs em Configurações", 400))
+    render(<Perfil slug="benji" aba="agenda" />)
+    const link = await screen.findByRole("link", { name: /Configurações → Chaves API/ })
+    expect(link.getAttribute("href")).toBe("#/config/chaves")
+    expect(screen.queryByLabelText("Voz (voice_id)")).toBeNull()
   })
 
   it("cabeçalho: nome, abas Séries | Ideias | Universo | Agenda e voz e só a seção escolhida", async () => {

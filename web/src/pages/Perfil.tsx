@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown"
 import { api, type Agenda, type PerfilDetalhe } from "@/api"
 import { FolhaPersonagem } from "@/components/FolhaPersonagem"
 import { ABAS_PERFIL, COR, ICONE } from "@/components/secoes"
+import { SeletorVoz } from "@/components/SeletorVoz"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -120,11 +121,10 @@ function Ativo({ slug, d, refresh }: { slug: string; d: PerfilDetalhe; refresh: 
   )
 }
 
-function AgendaForm({ slug, d }: { slug: string; d: PerfilDetalhe }) {
+function AgendaForm({ slug, d, refresh }: { slug: string; d: PerfilDetalhe; refresh: () => void }) {
   const p = d.perfil
   const { data: estilos } = usePoll(api.estilos, 60000)
   const [a, setA] = useState({ gerar_as: p.agenda.gerar_as, por_dia: String(p.agenda.por_dia), postar_as: p.agenda.postar_as.join(", "), eps: String(p.agenda.episodios_por_serie) })
-  const [voz, setVoz] = useState(p.voz_id)
   const [estilo, setEstilo] = useState(p.estilo)
   const set = (k: keyof typeof a) => (e: { target: { value: string } }) => setA((v) => ({ ...v, [k]: e.target.value }))
 
@@ -136,7 +136,7 @@ function AgendaForm({ slug, d }: { slug: string; d: PerfilDetalhe }) {
     if (!HORA.test(a.gerar_as)) return toast({ message: "Horário de gerar inválido", description: "Use HH:MM, por exemplo 03:00.", state: "error" })
     if (postar.length === 0 || !postar.every((h) => HORA.test(h))) return toast({ message: "Horários de postar inválidos", description: "Informe ao menos um, em HH:MM, separados por vírgula.", state: "error" })
     const agenda: Agenda = { gerar_as: a.gerar_as, por_dia: porDia, postar_as: postar, episodios_por_serie: eps }
-    api.salvarPerfil(slug, { agenda, voz_id: voz, estilo }).then(() => toast({ message: "Agenda salva", state: "success" }), erro("Não consegui salvar a agenda"))
+    api.salvarPerfil(slug, { agenda, estilo }).then(() => toast({ message: "Agenda salva", state: "success" }), erro("Não consegui salvar a agenda"))
   }
   const lista = estilos ?? []
   return (
@@ -145,7 +145,7 @@ function AgendaForm({ slug, d }: { slug: string; d: PerfilDetalhe }) {
       <label className="grid gap-1 text-sm">Episódios por dia<Input type="number" min={1} max={5} value={a.por_dia} onChange={set("por_dia")} /></label>
       <label className="grid gap-1 text-sm">Postar às (horários separados por vírgula)<Input placeholder="09:00, 18:00" value={a.postar_as} onChange={set("postar_as")} /></label>
       <label className="grid gap-1 text-sm">Episódios por série<Input type="number" min={1} max={10} value={a.eps} onChange={set("eps")} /></label>
-      <label className="grid gap-1 text-sm">Voz (voice_id)<Input value={voz} onChange={(e) => setVoz(e.target.value)} /></label>
+      <SeletorVoz slug={slug} vozId={p.voz_id} onSaved={refresh} />
       {/* ponytail: select nativo; trocar pelo Select do shadcn se precisar de busca */}
       <label className="grid gap-1 text-sm">Estilo
         <select className="h-10 w-full rounded-control border bg-background px-3 text-sm" value={estilo} onChange={(e) => setEstilo(e.target.value)}>
@@ -169,7 +169,7 @@ export function Perfil({ slug, aba }: { slug: string; aba?: string }) {
         : atual === "series" ? <Series d={data} refresh={refresh} />
         : atual === "ideias" ? <Ideias slug={slug} d={data} refresh={refresh} />
         : atual === "universo" ? <Universo slug={slug} d={data} refresh={refresh} />
-        : <AgendaForm slug={slug} d={data} />}
+        : <AgendaForm slug={slug} d={data} refresh={refresh} />}
     </Pagina>
   )
 }

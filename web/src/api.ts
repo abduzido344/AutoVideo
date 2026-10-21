@@ -32,6 +32,8 @@ export type ChatKind = "onboarding" | "estilo"
 export type ChatMsg = { autor: "voce" | "claude"; texto: string }
 export type ChatReply = { resposta: string; historico: ChatMsg[]; etapa: number }
 
+export type Voz = { voice_id: string; nome: string; preview_url: string | null; descricao: string }
+
 export type Config = {
   keys: { ELEVENLABS_API_KEY: boolean; OPENROUTER_API_KEY: boolean; HIGGSFIELD_API_KEY: boolean; OPENAI_API_KEY: boolean; APIFY_TOKEN: boolean }
   image_provider: string; image_model: string; higgsfield_model: string; openai_model: string; max_imagens: number
@@ -106,6 +108,8 @@ export const api = {
 
   chat: (kind: ChatKind, slug: string) => j<ChatMsg[]>(`/api/chat/${kind}/${e(slug)}`),
   chatSend: (kind: ChatKind, slug: string, mensagem: string) => send<ChatReply>("POST", `/api/chat/${kind}/${e(slug)}`, { mensagem }),
+
+  vozes: () => j<Voz[]>("/api/vozes"),
 
   fila: () => j<Fila>("/api/fila"),
   pausarFila: () => send<Ok>("POST", "/api/fila/pausar"),

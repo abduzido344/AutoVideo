@@ -23,6 +23,15 @@ def test_parse_claude_auth(monkeypatch):
     assert "ANTHROPIC_API_KEY" in doctor.parse_claude_auth(json.dumps(OUT))
 
 
+def test_doctor_key(tmp_path, monkeypatch):
+    monkeypatch.setenv("AUTOVIDEO_HOME", str(tmp_path))
+    monkeypatch.delenv("ELEVENLABS_API_KEY", raising=False)
+    with pytest.raises(ToolError, match="ELEVENLABS_API_KEY"):
+        doctor.key("ELEVENLABS_API_KEY")
+    monkeypatch.setenv("ELEVENLABS_API_KEY", "x")
+    assert doctor.key("ELEVENLABS_API_KEY") == "definida"
+
+
 def test_doctor_skills_checks_required_skills(tmp_path, monkeypatch):
     from pathlib import Path
     monkeypatch.setattr(Path, "home", lambda: tmp_path)

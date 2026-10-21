@@ -1,0 +1,10 @@
+{
+  "titulo": "Benji — terror narrado",
+  "duracao_alvo_s": [150, 180],
+  "segundos_por_cena": 3.5,
+  "legenda": false,
+  "paleta": ["#0E2A33", "#1C4A57", "#F2B45A", "#D7263D"],
+  "telas": ["chat", "alerta", "bateria", "bloqueio", "notificacao"],
+  "imagem_prefixo": "2D cartoon illustration, big-headed character with dot eyes, dark teal night palette, warm light only from candles and windows, red only on alerts, rainy atmosphere, vertical 9:16",
+  "gancho": "Segue pra ver a Parte {n}"
+}

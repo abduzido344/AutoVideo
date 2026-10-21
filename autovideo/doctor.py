@@ -6,6 +6,7 @@ import subprocess
 import sys
 from pathlib import Path
 from autovideo import hf
+from autovideo import config
 from autovideo.agents import missing_skills
 from autovideo.project import home
 
@@ -66,6 +67,12 @@ def skills() -> str:
     return f"{len(SKILLS)} skills em {Path.home() / '.claude' / 'skills'}"
 
 
+def key(name: str) -> str:
+    if not config.get_key(name):
+        raise hf.ToolError(f"{name} ausente — defina a variável de ambiente ou salve nas configurações")
+    return "definida"
+
+
 def run_checks() -> list[tuple[str, bool, str]]:
     out = []
 
@@ -92,5 +99,6 @@ def run_checks() -> list[tuple[str, bool, str]]:
     check("claude auth", claude_auth)
 
     check("hyperframes skills", skills)
-    # TODO(Task 2): ELEVENLABS_API_KEY e OPENROUTER_API_KEY, passam se config.get_key achar a chave
+    for k in ("ELEVENLABS_API_KEY", "OPENROUTER_API_KEY"):
+        check(k, lambda k=k: key(k))
     return out

@@ -1,4 +1,7 @@
-import { render, screen } from "@testing-library/react"
+import { render, screen, waitFor } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
+import { api } from "@/api"
+import { toast } from "@/components/ui/toast"
 import { describe, expect, it, vi } from "vitest"
 import { FolhaPersonagem } from "./FolhaPersonagem"
 
@@ -24,5 +27,26 @@ describe("FolhaPersonagem", () => {
     render(<FolhaPersonagem perfil="benji" personagem={p({ folha: true, aprovada: true })} onChange={() => {}} />)
     expect(screen.queryByRole("button", { name: "Aprovar" })).toBeNull()
     expect(screen.getByText("aprovada")).toBeTruthy()
+  })
+  it("Gerar de novo chama a API e troca o src com ?v=", async () => {
+    vi.mocked(api.gerarFolha).mockResolvedValue({ ok: true })
+    const onChange = vi.fn()
+    render(<FolhaPersonagem perfil="benji" personagem={p({ folha: true })} onChange={onChange} />)
+    await userEvent.click(screen.getByRole("button", { name: "Gerar de novo" }))
+    await waitFor(() => expect(screen.getByRole("img").getAttribute("src")).toMatch(/folha\.png\?v=\d+/))
+    expect(api.gerarFolha).toHaveBeenCalledWith("benji", "ana")
+    expect(onChange).toHaveBeenCalled()
+  })
+  it("Aprovar chama a API", async () => {
+    vi.mocked(api.aprovarPersonagem).mockResolvedValue({ ok: true })
+    render(<FolhaPersonagem perfil="benji" personagem={p({ folha: true })} onChange={() => {}} />)
+    await userEvent.click(screen.getByRole("button", { name: "Aprovar" }))
+    await waitFor(() => expect(api.aprovarPersonagem).toHaveBeenCalledWith("benji", "ana"))
+  })
+  it("falha vira toast", async () => {
+    vi.mocked(api.gerarFolha).mockRejectedValue(new Error("sem imagem"))
+    render(<FolhaPersonagem perfil="benji" personagem={p({})} onChange={() => {}} />)
+    await userEvent.click(screen.getByRole("button", { name: "Gerar folha" }))
+    await waitFor(() => expect(toast).toHaveBeenCalledWith(expect.objectContaining({ message: "Não consegui gerar a folha" })))
   })
 })

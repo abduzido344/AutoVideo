@@ -28,7 +28,7 @@ export function Onboarding({ slug }: { slug: string }) {
   return (
     <Pagina titulo={perfil?.nome ?? "Novo perfil"} sub="Converse com o Claude para montar o perfil, etapa por etapa.">
       <div className="grid gap-6 lg:grid-cols-[1fr_20rem]">
-        <Chat kind="onboarding" slug={slug} onReply={refresh} className="h-[32rem]" />
+        <Chat kind="onboarding" slug={slug} onReply={() => refresh()} className="h-[32rem]" />
         <div>
           <Secao>Etapas</Secao>
           <ol className="space-y-2">

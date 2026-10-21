@@ -30,7 +30,7 @@ export function Configuracoes() {
     const n = Number(limite)
     if (!Number.isInteger(n) || n < 1) return toast({ message: "O limite de imagens deve ser um inteiro maior que zero", state: "error" })
     if (!modelo.trim()) return toast({ message: "O modelo de imagem não pode ficar vazio", state: "error" })
-    const patch: ConfigPatch = { image_model: modelo, max_imagens: n }
+    const patch: ConfigPatch = { image_model: modelo.trim(), max_imagens: n }
     for (const { id } of CHAVES) if (novas[id]?.trim()) patch[id] = novas[id].trim()
     setSalvando(true)
     try {

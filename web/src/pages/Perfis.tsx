@@ -45,7 +45,7 @@ export function Perfis({ perfis, onNovo }: { perfis: Perfil[] | null; onNovo: ()
       {perfis && perfis.length === 0 && <p className="mt-6 text-sm text-muted-foreground">Nenhum perfil ainda. Crie o primeiro.</p>}
       <div className="mt-6 grid gap-3 sm:grid-cols-2">
         {(perfis ?? []).map((p) => (
-          <a key={p.slug} href={!p.ativo && p.onboarding < 6 ? `#/onboarding/${p.slug}` : `#/perfil/${p.slug}`}>
+          <a key={p.slug} href={!p.ativo && p.onboarding < 6 ? `#/onboarding/${encodeURIComponent(p.slug)}` : `#/perfil/${encodeURIComponent(p.slug)}`}>
             <Card className="gap-1 p-4 hover:bg-muted/50">
               <div className="flex items-center justify-between">
                 <h3 className="font-medium">{p.nome}</h3>

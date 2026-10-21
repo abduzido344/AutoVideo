@@ -12,6 +12,7 @@ export function Chat({ kind, slug, onReply, className }: { kind: ChatKind; slug:
   const [texto, setTexto] = useState("")
   const [enviando, setEnviando] = useState(false)
   const fim = useRef<HTMLDivElement>(null)
+  const campo = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
     let vivo = true
@@ -35,7 +36,7 @@ export function Chat({ kind, slug, onReply, className }: { kind: ChatKind; slug:
       else toast({ message: "O Claude não respondeu", description: (e as Error).message, state: "error" })
       setMsgs((h) => h.slice(0, -1)) // o servidor não gravou este turno
       setTexto(m)
-    } finally { setEnviando(false) }
+    } finally { setEnviando(false); setTimeout(() => campo.current?.focus()) }
   }
 
   return (
@@ -50,7 +51,7 @@ export function Chat({ kind, slug, onReply, className }: { kind: ChatKind; slug:
         <div ref={fim} />
       </div>
       <form className="flex items-end gap-2" onSubmit={(e) => { e.preventDefault(); void enviar() }}>
-        <Textarea aria-label="Mensagem" value={texto} disabled={enviando} rows={2} className="min-h-10 flex-1"
+        <Textarea ref={campo} aria-label="Mensagem" value={texto} disabled={enviando} rows={2} className="min-h-10 flex-1"
           placeholder="Escreva para o Claude"
           onChange={(e) => setTexto(e.target.value)}
           onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); void enviar() } }} />

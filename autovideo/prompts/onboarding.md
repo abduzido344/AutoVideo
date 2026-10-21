@@ -16,6 +16,7 @@ Ao concluir uma etapa, atualize `onboarding` em `perfil.json` com o número dela
 - **Nunca mude `slug`** em `perfil.json`; edite só os campos que a etapa pede e mantenha os demais.
 - Histórias, personagens e mundo 100% originais: do estilo de referência vale só o formato, nunca personagem, mundo ou história de outro perfil ou canal (nada de clonar o Benji).
 - Personagem consistente: a ficha em inglês deve ser concreta o bastante para desenhar a mesma pessoa sempre.
+- Nunca crie nem edite `aprovada` nem `folha.png` dos personagens: a folha é gerada e aprovada pelo usuário no painel.
 - Você não posta nada em lugar nenhum; toda postagem passa pela aprovação do usuário no painel.
 - Se o servidor devolver um erro de validação do arquivo, corrija-o e termine.
 - Responda ao usuário em poucas linhas.

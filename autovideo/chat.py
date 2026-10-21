@@ -2,6 +2,7 @@
 <cwd>/.chat/<kind>.json; cada envio é um turno que retoma a sessão do SDK."""
 import asyncio
 import json
+import threading
 from pathlib import Path
 from typing import Literal
 from autovideo import agents, data
@@ -62,10 +63,18 @@ async def _turn(prompt: str, opts) -> tuple[str, object]:
     return text, res
 
 
+_locks: dict[tuple, threading.Lock] = {}
+
+
 def send(kind: Kind, slug: str, mensagem: str) -> dict:
-    role = agents.ROLES[ROLE[kind]]
     if kind == "estilo":
         slug = data.slugify(slug)
+    with _locks.setdefault((kind, slug), threading.Lock()):  # um turno por vez na mesma conversa
+        return _send(kind, slug, mensagem)
+
+
+def _send(kind: Kind, slug: str, mensagem: str) -> dict:
+    role = agents.ROLES[ROLE[kind]]
     cwd = _cwd(kind, slug)
     project = Project(cwd)  # cria a pasta do estilo no 1º envio
     st = _state(cwd, kind)

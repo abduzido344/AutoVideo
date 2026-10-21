@@ -128,3 +128,18 @@ def test_usage_limit_is_429(monkeypatch):
     c = TestClient(server.create_app(server.STORE, start_worker=False), base_url="http://127.0.0.1")
     r = c.post(f"/api/chat/onboarding/{p.slug}", json={"mensagem": "a"})
     assert r.status_code == 429 and r.json()["detail"] == "Limite de uso do Claude atingido"
+    assert chat.history("onboarding", p.slug) == [] and chat._state(chat._cwd("onboarding", p.slug), "onboarding")["session_id"] is None
+
+
+def test_estilo_slug_traversal_stays_inside(monkeypatch):
+    fake(monkeypatch, [lambda: "oi"])
+    chat.send("estilo", "../x", "a")
+    assert (data.home() / "estilos" / "x" / ".chat" / "estilo.json").exists()
+    assert chat._cwd("estilo", "../../etc").parent == data.home() / "estilos"
+
+
+def test_options_block_human_files():
+    o = agents.options_for(agents.ROLES["onboarding"], data.home())
+    for r in ("Edit(./personagens/**/aprovada)", "Edit(./personagens/**/folha.png)", "Edit(./.chat/**)"):
+        assert r in o.disallowed_tools
+

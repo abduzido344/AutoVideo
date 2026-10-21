@@ -64,7 +64,9 @@ def options_for(role: Role, cwd: Path, context: str = "") -> ClaudeAgentOptions:
         system_prompt=system, model=role.model, cwd=str(cwd), permission_mode="dontAsk",
         allowed_tools=tools,
         # agentes nunca escrevem aprovação humana, saída final nem marcadores de etapa (nem a config do projeto)
-        disallowed_tools=["Edit(./.claude/**)", "Edit(./approvals/**)", "Edit(./out/**)", "Edit(./.stages/**)"],
+        disallowed_tools=["Edit(./.claude/**)", "Edit(./approvals/**)", "Edit(./out/**)", "Edit(./.stages/**)",
+                          # aprovação da folha é humana (painel); o histórico do chat é do servidor
+                          "Edit(./personagens/**/aprovada)", "Edit(./personagens/**/folha.png)", "Edit(./.chat/**)"],
         setting_sources=["project"],  # not "user": user hooks (e.g. rtk) would rewrite Bash and break allow rules
         skills=list(role.skills) or None,
         max_turns=role.max_turns, max_budget_usd=role.max_usd)

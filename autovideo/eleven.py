@@ -15,7 +15,13 @@ def _post(path: str, body: dict, out: Path, client: httpx.Client | None) -> None
     key = config.get_key("ELEVENLABS_API_KEY")
     if not key:
         raise MissingKey("falta ELEVENLABS_API_KEY (defina a variável ou salve em Configurações)")
-    r = (client or httpx.Client(timeout=120)).post(BASE + path, json=body, headers={"xi-api-key": key})
+    own = client is None
+    c = client or httpx.Client(timeout=120)
+    try:
+        r = c.post(BASE + path, json=body, headers={"xi-api-key": key})
+    finally:
+        if own:
+            c.close()
     if not r.is_success:
         raise RuntimeError(f"ElevenLabs {r.status_code}: {r.text[:300]}")
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -30,8 +36,12 @@ def tts(text: str, voice_id: str, out: Path, previous_text: str = "", next_text:
           {"text": text, "model_id": "eleven_multilingual_v2",
            "previous_text": previous_text, "next_text": next_text}, out, client)
     # media.probe exige trilha de vídeo; mp3 não tem, então lê só a duração do container
-    o = run(["ffprobe", "-v", "error", "-print_format", "json", "-show_format", str(out)]).stdout
-    return float(json.loads(o)["format"]["duration"])
+    try:
+        o = run(["ffprobe", "-v", "error", "-print_format", "json", "-show_format", str(out)]).stdout
+        return float(json.loads(o)["format"]["duration"])
+    except Exception as e:  # corpo que não é áudio: não deixa lixo em out
+        out.unlink(missing_ok=True)
+        raise RuntimeError(f"ElevenLabs devolveu áudio inválido: {str(e)[:300]}") from e
 
 
 def sfx(prompt: str, seconds: float, out: Path, client: httpx.Client | None = None) -> None:

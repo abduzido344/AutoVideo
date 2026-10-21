@@ -65,3 +65,16 @@ def test_missing_key(monkeypatch, tmp_path):
     monkeypatch.delenv("OPENROUTER_API_KEY")
     with pytest.raises(eleven.MissingKey, match="OPENROUTER_API_KEY"):
         images.generate("gato", [], tmp_path / "o.png")
+
+
+def test_200_without_choices(tmp_path):
+    with pytest.raises(images.ImageError, match="rate limited"):
+        images.generate("g", [], tmp_path / "o.png",
+                        client=client(lambda q: httpx.Response(200, json={"error": "rate limited"})))
+
+
+def test_https_url_rejected(tmp_path):
+    bad = httpx.Response(200, json={"choices": [{"message": {"images": [{"image_url": {"url": "https://x/y.png"}}]}}]})
+    with pytest.raises(images.ImageError, match="data URI"):
+        images.generate("g", [], tmp_path / "o.png", client=client(lambda q: bad))
+    assert not (tmp_path / "o.png").exists()

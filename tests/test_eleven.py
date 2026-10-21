@@ -57,3 +57,12 @@ def test_http_error_no_partial(monkeypatch, tmp_path):
     with pytest.raises(RuntimeError, match="500"):
         eleven.sfx("boom", 1, out, client=client(lambda r: httpx.Response(500, text="falhou")))
     assert not out.exists() and not out.with_name("s.mp3.part").exists()
+
+
+@needs_ffmpeg
+def test_tts_bad_audio_no_leftover(monkeypatch, tmp_path):
+    monkeypatch.setenv("ELEVENLABS_API_KEY", "k")
+    out = tmp_path / "v.mp3"
+    with pytest.raises(RuntimeError, match="inválido"):
+        eleven.tts("oi", "V", out, client=client(lambda r: httpx.Response(200, content=b"nao e audio")))
+    assert not out.exists()

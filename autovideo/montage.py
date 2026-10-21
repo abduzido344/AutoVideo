@@ -5,7 +5,6 @@ from pathlib import Path
 from urllib.parse import quote
 from autovideo.artefatos import Cenas, Voz
 from autovideo.blocks import GSAP_URL, render_block
-from autovideo.hf import run
 
 RESPIRO = 0.25
 W, H = 1080, 1920
@@ -41,8 +40,7 @@ def timeline(voz: Voz) -> list[tuple[float, float]]:
     return out
 
 
-def build(ep: Path, cenas: Cenas, voz: Voz, imgs: dict[str, str], sfx: dict[str, str], ambiente: str | None,
-          legenda: bool = False) -> None:
+def build(ep: Path, cenas: Cenas, voz: Voz, imgs: dict[str, str], legenda: bool = False) -> None:
     if [c.id for c in cenas.cenas] != [v.id for v in voz.cenas]:
         raise ValueError("voz.json não corresponde às cenas (ids/ordem diferentes)")
     comp = ep / "composition"
@@ -72,17 +70,7 @@ def build(ep: Path, cenas: Cenas, voz: Voz, imgs: dict[str, str], sfx: dict[str,
                          f'<p data-layout-allow-caption-zone>{html.escape(c.narration)}</p></div>')
         audio.append(f'<audio id="voz-{c.id}" src="{_asset(ep, comp, v.file)[1]}" data-start="{_n(t)}" '
                      f'data-duration="{_n(v.dur)}" data-volume="1" data-track-index="2"></audio>')
-        if c.id in sfx:
-            audio.append(f'<audio id="sfx-{c.id}" src="{_asset(ep, comp, sfx[c.id])[1]}" {at} '
-                         f'data-volume="0.6" data-track-index="3"></audio>')
     t = round(t + dur, 3) if voz.cenas else 0.0  # duração total
-    if ambiente:
-        # o mixer não repete áudio: o ffmpeg emenda o ambiente em loop até a duração total
-        out, url = _asset(ep, comp, ambiente, "ambiente.mp3")
-        run(["ffmpeg", "-y", "-loglevel", "error", "-stream_loop", "-1", "-i", str((ep / ambiente).resolve()),
-             "-t", _n(t), "-c:a", "libmp3lame", "-q:a", "4", str(out)])
-        audio.append(f'<audio id="ambiente" src="{url}" data-start="0" data-duration="{_n(t)}" '
-                     f'data-volume="0.15" data-track-index="4"></audio>')
     nl = "\n"
     (comp / "index.html").write_text(f"""<!doctype html>
 <html lang="pt-BR">

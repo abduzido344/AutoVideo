@@ -12,7 +12,6 @@ from autovideo.project import Project
 
 REDO = {"roteirista": "roteiro", "diretor_arte": "cenas"}
 REVIEW_ROUNDS = 2
-AMBIENTE_S = 22  # o ElevenLabs gera no máximo 22 s; a montagem emenda em loop
 _ROUND = re.compile(r"^## Ajuste \(revisor", re.M)
 
 
@@ -161,28 +160,11 @@ def imagens(ctx: Ctx) -> None:
     _save(ep / "img" / "manifest.json", manifest)
 
 
-def sons(ctx: Ctx) -> None:
-    ep = ctx.project.root
-    cs, durs = _cenas(ep), {v.id: v.dur for v in _voz(ep).cenas}
-    cp = ep / "sfx" / "cache.json"
-    cache, manifest = _cache(cp), {"cenas": {}, "ambiente": None}
-    for c in cs.cenas:
-        if c.sfx:
-            s = min(durs[c.id], AMBIENTE_S)
-            manifest["cenas"][c.id] = _cached(ep, cp, cache, _sha(c.sfx, f"{s:.2f}"), "mp3",
-                                              lambda out, c=c, s=s: eleven.sfx(c.sfx, s, out))
-    if cs.ambiente:
-        manifest["ambiente"] = _cached(ep, cp, cache, _sha(cs.ambiente, str(AMBIENTE_S)), "mp3",
-                                       lambda out: eleven.sfx(cs.ambiente, AMBIENTE_S, out))
-    _save(ep / "sfx" / "manifest.json", manifest)
-
-
 def montagem(ctx: Ctx) -> None:
     ep = ctx.project.root
-    sfx = json.loads(_read(ep / "sfx" / "manifest.json"))
     render.init_composition(ctx.project, "9:16")
-    montage.build(ep, _cenas(ep), _voz(ep), json.loads(_read(ep / "img" / "manifest.json")), sfx["cenas"],
-                  sfx["ambiente"], legenda=_estilo(ctx.recipe["perfil"]).legenda)
+    montage.build(ep, _cenas(ep), _voz(ep), json.loads(_read(ep / "img" / "manifest.json")),
+                  legenda=_estilo(ctx.recipe["perfil"]).legenda)
 
 
 def _tempos(ep: Path) -> list[tuple[str, float, float]]:
@@ -227,7 +209,7 @@ def revisar(ctx: Ctx) -> None:
 
 STAGES: list[Stage] = [
     ("roteiro", "episodio.json", roteiro), ("cenas", "cenas.json", cenas), ("voz", "voz.json", voz),
-    ("imagens", "img/manifest.json", imagens), ("sfx", "sfx/manifest.json", sons),
+    ("imagens", "img/manifest.json", imagens),
     ("montagem", "composition/index.html", montagem), ("render", "out/final.mp4", render_ep),
     ("revisao", "revisao.json", revisar), ("aprovacao", "approvals/aprovado.ok", None)]
 

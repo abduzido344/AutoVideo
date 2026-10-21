@@ -54,9 +54,6 @@ def tts(text: str, voice_id: str, out: Path, previous_text: str = "", next_text:
         raise RuntimeError(f"ElevenLabs devolveu áudio inválido: {str(e)[:300]}") from e
 
 
-def sfx(prompt: str, seconds: float, out: Path, client: httpx.Client | None = None) -> None:
-    _post("/sound-generation", {"text": prompt, "duration_seconds": min(max(seconds, 0.5), 22)}, out, client)
-
 
 def vozes(client: httpx.Client | None = None) -> list[dict]:
     key = config.get_key("ELEVENLABS_API_KEY")

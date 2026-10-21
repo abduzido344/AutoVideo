@@ -39,7 +39,7 @@ def _index(ep):
 
 def test_scene_starts_are_cumulative(tmp_path):
     ep, cenas, voz, imgs = _ep(tmp_path, [2.0, 3.0])
-    montage.build(ep, cenas, voz, imgs, {}, None)
+    montage.build(ep, cenas, voz, imgs)
     s = _index(ep)
     assert re.findall(r'<img id="img-s\d+"[^>]*data-start="([\d.]+)"', s) == ["0", "2.25"]
     assert re.search(r'data-composition-id="main"[^>]*data-duration="5.5"', s)
@@ -48,7 +48,7 @@ def test_scene_starts_are_cumulative(tmp_path):
 
 def test_screen_scene_uses_subcomposition(tmp_path):
     ep, cenas, voz, imgs = _ep(tmp_path, [2.0, 3.0], ["image", "screen"])
-    montage.build(ep, cenas, voz, imgs, {}, None)
+    montage.build(ep, cenas, voz, imgs)
     sub = (ep / "composition/compositions/screen-s02.html").read_text(encoding="utf-8")
     assert 'data-composition-id="screen-s02"' in sub
     assert re.search(r'data-composition-id="screen-s02" data-composition-src="compositions/screen-s02.html" '
@@ -57,25 +57,20 @@ def test_screen_scene_uses_subcomposition(tmp_path):
 
 def test_no_captions_when_style_says_no(tmp_path):
     ep, cenas, voz, imgs = _ep(tmp_path, [2.0])
-    montage.build(ep, cenas, voz, imgs, {}, None)
+    montage.build(ep, cenas, voz, imgs)
     assert 'id="legenda-' not in _index(ep) and "fala 1" not in _index(ep)
-    montage.build(ep, cenas, voz, imgs, {}, None, legenda=True)
+    montage.build(ep, cenas, voz, imgs, legenda=True)
     assert 'id="legenda-s01"' in _index(ep) and "fala 1" in _index(ep)
 
 
 def test_assets_copied_with_safe_names(tmp_path):
     ep, cenas, voz, imgs = _ep(tmp_path, [2.0], img_name="foto {n} & cia.png")
-    sfx = {"s01": "sfx/s01.mp3"}
-    (ep / "sfx").mkdir()
-    (ep / "sfx/s01.mp3").write_bytes(b"sfx")
-    montage.build(ep, cenas, voz, imgs, sfx, None)
+    montage.build(ep, cenas, voz, imgs)
     assets = ep / "composition/assets"
     assert (assets / "img/foto 01 & cia.png").read_bytes() == b"png"
-    # voz/s01.mp3 e sfx/s01.mp3 não colidem
-    assert (assets / "voz/s01.mp3").read_bytes() == b"mp3" and (assets / "sfx/s01.mp3").read_bytes() == b"sfx"
+    assert (assets / "voz/s01.mp3").read_bytes() == b"mp3"
     s = _index(ep)
     assert 'src="assets/img/foto%2001%20%26%20cia.png"' in s
-    assert re.search(r'<audio id="sfx-s01" src="assets/sfx/s01.mp3" data-start="0" [^>]*data-volume="0.6"', s)
     assert re.search(r'<audio id="voz-s01" src="assets/voz/s01.mp3" data-start="0" data-duration="2" '
                      r'data-volume="1"', s)
 
@@ -84,18 +79,18 @@ def test_rejects_paths_outside_episode(tmp_path):
     ep, cenas, voz, imgs = _ep(tmp_path, [2.0])
     (tmp_path / "fora.png").write_bytes(b"x")
     with pytest.raises(ValueError, match="fora"):
-        montage.build(ep, cenas, voz, {"s01": "../fora.png"}, {}, None)
+        montage.build(ep, cenas, voz, {"s01": "../fora.png"})
     with pytest.raises(ValueError, match="fora"):
-        montage.build(ep, cenas, voz, {"s01": str((tmp_path / "fora.png").resolve())}, {}, None)
+        montage.build(ep, cenas, voz, {"s01": str((tmp_path / "fora.png").resolve())})
 
 
 def test_rebuild_drops_stale_files(tmp_path):
     ep, cenas, voz, imgs = _ep(tmp_path, [2.0, 3.0], ["image", "screen"])
-    montage.build(ep, cenas, voz, imgs, {}, None)
+    montage.build(ep, cenas, voz, imgs)
     (ep / "composition/hyperframes.json").write_text("{}")
     cenas.cenas[1] = Cena(id="s02", kind="image", narration="x", prompt="y")
     (ep / "img/s02.png").write_bytes(b"png")
-    montage.build(ep, cenas, voz, {**imgs, "s02": "img/s02.png"}, {}, None)
+    montage.build(ep, cenas, voz, {**imgs, "s02": "img/s02.png"})
     assert not (ep / "composition/compositions/screen-s02.html").exists()
     assert (ep / "composition/hyperframes.json").exists()
 
@@ -104,14 +99,14 @@ def test_voice_must_match_scenes(tmp_path):
     ep, cenas, voz, imgs = _ep(tmp_path, [2.0, 3.0])
     voz.cenas.reverse()
     with pytest.raises(ValueError, match="voz"):
-        montage.build(ep, cenas, voz, imgs, {}, None)
+        montage.build(ep, cenas, voz, imgs)
 
 
 def test_camera_tweens(tmp_path):
     ep, cenas, voz, imgs = _ep(tmp_path, [2.0, 3.0, 1.0])
     cenas.cenas[1].camera = "pan-left"
     cenas.cenas[2].camera = "static"
-    montage.build(ep, cenas, voz, imgs, {}, None)
+    montage.build(ep, cenas, voz, imgs)
     s = _index(ep)
     assert 'tl.fromTo("#img-s01", { scale: 1, xPercent: 0 }, { scale: 1.12, xPercent: 0, duration: 2.25, ease: "none" }, 0);' in s
     assert 'tl.fromTo("#img-s02", { scale: 1.12, xPercent: 3 }, { scale: 1.12, xPercent: -3, duration: 3.25, ease: "none" }, 2.25);' in s
@@ -133,26 +128,21 @@ def test_cena_schema():
 @needs_ffmpeg
 def test_montage_renders(slow, tmp_path):
     ep = tmp_path / "ep ç"
-    for d in ("img", "voz", "sfx"):
+    for d in ("img", "voz"):
         (ep / d).mkdir(parents=True)
     ff("-f", "lavfi", "-i", "testsrc2=size=1080x1920", "-frames:v", "1", str(ep / "img/s01.png"))
     ff("-f", "lavfi", "-i", "color=c=navy:size=1080x1920", "-frames:v", "1", str(ep / "img/s 02.png"))
     for i in (1, 2, 3):
         ff("-f", "lavfi", "-i", f"sine=frequency={300 + 100 * i}:duration=1", "-c:a", "libmp3lame",
            str(ep / f"voz/s0{i}.mp3"))
-    ff("-f", "lavfi", "-i", "sine=frequency=900:duration=0.3", "-c:a", "libmp3lame", str(ep / "sfx/s02.mp3"))
-    ff("-f", "lavfi", "-i", "anoisesrc=color=pink:amplitude=0.1:duration=1.5", "-c:a", "libmp3lame",
-       str(ep / "sfx/amb.mp3"))
     cenas = Cenas(cenas=[
         Cena(id="s01", kind="image", narration="Era uma noite comum.", prompt="x", camera="zoom-in"),
-        Cena(id="s02", kind="image", narration="Até que o céu ficou vermelho.", prompt="y", camera="pan-right",
-             sfx="boom"),
+        Cena(id="s02", kind="image", narration="Até que o céu ficou vermelho.", prompt="y", camera="pan-right"),
         Cena(id="s03", kind="screen", narration="Chegou o alerta.", screen={"type": "alerta", "data": ALERTA})])
     voz = Voz(cenas=[{"id": f"s0{i}", "file": f"voz/s0{i}.mp3", "dur": 1.0, "sha": "x"} for i in (1, 2, 3)])
     p = Project(ep)
     render.init_composition(p, "9:16")
-    montage.build(ep, cenas, voz, {"s01": "img/s01.png", "s02": "img/s 02.png"}, {"s02": "sfx/s02.mp3"},
-                  "sfx/amb.mp3", legenda=True)
+    montage.build(ep, cenas, voz, {"s01": "img/s01.png", "s02": "img/s 02.png"}, legenda=True)
     assert render.check(p.comp, "9:16") == []
     out = ep / "out/final.mp4"
     render.render_final(p.comp, out, -14)

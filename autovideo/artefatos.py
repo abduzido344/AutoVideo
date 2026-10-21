@@ -34,7 +34,6 @@ class Cena(BaseModel):
     prompt: str = ""  # obrigatório se kind=image (em inglês, sem o prefixo do estilo)
     camera: Literal["zoom-in", "zoom-out", "pan-left", "pan-right", "static"] = "zoom-in"
     screen: Screen | None = None  # obrigatório se kind=screen
-    sfx: str = ""  # descrição em inglês do efeito; "" = sem efeito
     characters: list[str] = []  # slugs de personagens do perfil presentes na imagem
 
     @model_validator(mode="after")
@@ -48,7 +47,6 @@ class Cena(BaseModel):
 
 class Cenas(BaseModel):
     cenas: list[Cena]
-    ambiente: str = ""  # prompt de som de fundo
 
 
 class VozCena(BaseModel):

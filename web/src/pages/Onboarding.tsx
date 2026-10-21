@@ -14,7 +14,9 @@ const ETAPAS = ["Nome, assunto e público", "Estilo", "Personagens", "Mundo e re
 export function Onboarding({ slug }: { slug: string }) {
   const { data, refresh } = usePoll(() => api.perfil(slug), 5000)
   const perfil = data?.perfil
-  const pode = Boolean(perfil?.estilo) && (data?.personagens ?? []).some((p) => p.aprovada)
+  // mesma regra do servidor (data.ready): estilo e todas as folhas aprovadas
+  const ps = data?.personagens ?? []
+  const pode = Boolean(perfil?.estilo) && ps.length > 0 && ps.every((p) => p.folha && p.aprovada)
 
   async function ativar() {
     try {
@@ -50,7 +52,7 @@ export function Onboarding({ slug }: { slug: string }) {
             {data && data.personagens.length === 0 && <p className="text-sm text-muted-foreground">Os personagens aparecem aqui quando o Claude os criar.</p>}
           </div>
           <Button className="mt-6 w-full" disabled={!pode} onClick={ativar}>Ativar perfil</Button>
-          {!pode && <p className="mt-2 text-xs text-muted-foreground">Precisa de um estilo e de ao menos uma folha aprovada.</p>}
+          {!pode && <p className="mt-2 text-xs text-muted-foreground">Precisa de um estilo e de todas as folhas de personagem aprovadas.</p>}
         </div>
       </div>
     </Pagina>

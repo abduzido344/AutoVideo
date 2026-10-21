@@ -31,4 +31,11 @@ describe("Onboarding", () => {
     await screen.findByText("aprovada")
     expect((screen.getByRole("button", { name: "Ativar perfil" }) as HTMLButtonElement).disabled).toBe(true)
   })
+  it("uma folha ainda não aprovada mantém desabilitado (o servidor exige todas)", async () => {
+    const d = det("benji", true)
+    vi.mocked(api.perfil).mockResolvedValue({ ...d, personagens: [...d.personagens, { slug: "zeca", ficha: "y", folha: true, aprovada: false }] })
+    render(<Onboarding slug="benji" />)
+    await screen.findByText("zeca")
+    expect((screen.getByRole("button", { name: "Ativar perfil" }) as HTMLButtonElement).disabled).toBe(true)
+  })
 })

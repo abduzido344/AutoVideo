@@ -2,7 +2,8 @@ import json
 import os
 from autovideo.project import home
 
-DEFAULTS = {"image_provider": "openrouter", "image_model": "google/gemini-2.5-flash-image", "max_imagens": 40}
+DEFAULTS = {"image_provider": "openrouter", "image_model": "google/gemini-2.5-flash-image",
+            "higgsfield_model": "xai/grok-imagine-image-2.0", "max_imagens": 40}
 
 
 def load() -> dict:

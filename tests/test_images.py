@@ -73,10 +73,73 @@ def test_no_image_in_response(tmp_path):
         images.generate("gato", [], tmp_path / "o.png", client=client(lambda q: reply(images_=False)))
 
 
-def test_higgsfield_not_implemented(tmp_path):
+def hf_env(monkeypatch):
     config.save({"image_provider": "higgsfield"})
-    with pytest.raises(images.ImageError, match="higgsfield"):
-        images.generate("gato", [], tmp_path / "o.png")
+    monkeypatch.setenv("HIGGSFIELD_API_KEY", "id:segredo")
+    monkeypatch.setattr(images, "_sleep", lambda s: None)
+
+
+def test_higgsfield_uploads_refs_submits_polls_and_downloads(monkeypatch, tmp_path):
+    hf_env(monkeypatch)
+    ref = tmp_path / "folha.png"
+    ref.write_bytes(PNG)
+    seen = []
+
+    def h(req):
+        seen.append((req.method, str(req.url), req.headers.get("authorization"), req.content))
+        u = str(req.url)
+        if u.endswith("/files/generate-upload-url"):
+            return httpx.Response(200, json={"upload_url": "https://store.test/put", "public_url": "https://cdn.test/folha.png",
+                                             "upload_headers": {"Content-Type": "image/png"}})
+        if u == "https://store.test/put":
+            return httpx.Response(200)
+        if u.endswith("/xai/grok-imagine-image-2.0"):
+            return httpx.Response(200, json={"status": "queued", "request_id": "r1", "status_url": "https://api.higgsfield.ai/requests/r1/status"})
+        if u.endswith("/requests/r1/status"):
+            polls = sum(1 for s in seen if s[1].endswith("/status"))
+            if polls == 1:
+                return httpx.Response(200, json={"status": "in_progress", "request_id": "r1"})
+            return httpx.Response(200, json={"status": "completed", "request_id": "r1", "images": [{"url": "https://cdn.test/out.png"}]})
+        if u == "https://cdn.test/out.png":
+            return httpx.Response(200, content=PNG)
+        raise AssertionError(u)
+
+    out = tmp_path / "o.png"
+    r = images.generate("gato", [ref], out, client=client(h))
+    assert out.read_bytes() == PNG and r == {"provider": "higgsfield", "model": "xai/grok-imagine-image-2.0", "cost_usd": None}
+    sub = next(s for s in seen if s[1].endswith("grok-imagine-image-2.0"))
+    assert sub[2] == "Key id:segredo"
+    assert json.loads(sub[3]) == {"prompt": "gato", "aspect_ratio": "9:16", "image_urls": ["https://cdn.test/folha.png"]}
+    assert next(s for s in seen if s[1] == "https://store.test/put")[2] is None   # credencial não vai para o storage
+    assert sum(1 for s in seen if s[1].endswith("/status")) == 2
+
+
+@pytest.mark.parametrize("status,match", [("nsfw", "nsfw"), ("failed", "Generation failed")])
+def test_higgsfield_terminal_failure(monkeypatch, tmp_path, status, match):
+    hf_env(monkeypatch)
+
+    def h(req):
+        if str(req.url).endswith("/status"):
+            return httpx.Response(200, json={"status": status, "request_id": "r1", "error": "Generation failed"})
+        return httpx.Response(200, json={"status": "queued", "request_id": "r1", "status_url": "https://api.higgsfield.ai/requests/r1/status"})
+
+    with pytest.raises(images.ImageError, match=match):
+        images.generate("gato", [], tmp_path / "o.png", client=client(h))
+    assert not (tmp_path / "o.png").exists()
+
+
+@pytest.mark.parametrize("code,match", [(403, "sem créditos"), (401, "KEY_ID:KEY_SECRET")])
+def test_higgsfield_submit_errors(monkeypatch, tmp_path, code, match):
+    hf_env(monkeypatch)
+    with pytest.raises(images.ImageError, match=match):
+        images.generate("gato", [], tmp_path / "o.png", client=client(lambda q: httpx.Response(code, json={"detail": "x"})))
+
+
+def test_higgsfield_key_format(monkeypatch, tmp_path):
+    hf_env(monkeypatch)
+    monkeypatch.setenv("HIGGSFIELD_API_KEY", "so-um-pedaco")
+    with pytest.raises(images.ImageError, match="KEY_ID:KEY_SECRET"):
+        images.generate("gato", [], tmp_path / "o.png", client=client(lambda q: httpx.Response(500)))
 
 
 def test_missing_key(monkeypatch, tmp_path):

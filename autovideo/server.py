@@ -16,8 +16,8 @@ from autovideo.jobs import GateError, JobStore
 
 DIST = Path(__file__).resolve().parent.parent / "web" / "dist"
 LOCAL_HOSTS = ["127.0.0.1", "localhost", "[::1]"]
-SECRETS = ("ELEVENLABS_API_KEY", "OPENROUTER_API_KEY", "APIFY_TOKEN")
-SETTINGS = ("image_provider", "image_model", "max_imagens")
+SECRETS = ("ELEVENLABS_API_KEY", "OPENROUTER_API_KEY", "HIGGSFIELD_API_KEY", "APIFY_TOKEN")
+SETTINGS = ("image_provider", "image_model", "higgsfield_model", "max_imagens")
 log = logging.getLogger("autovideo.server")
 
 
@@ -182,6 +182,8 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
         for k, v in body.items():
             if k == "max_imagens":
                 ok = type(v) is int and v >= 1
+            elif k == "image_provider":
+                ok = v in ("openrouter", "higgsfield")
             else:
                 ok = isinstance(v, str)
             if not ok:

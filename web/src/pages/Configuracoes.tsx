@@ -10,17 +10,19 @@ import { Pagina, Secao } from "@/pages/Pagina"
 const CHAVES = [
   { id: "ELEVENLABS_API_KEY", label: "ElevenLabs", dica: "Narração das cenas" },
   { id: "OPENROUTER_API_KEY", label: "OpenRouter", dica: "Imagens das cenas" },
+  { id: "HIGGSFIELD_API_KEY", label: "Higgsfield", dica: "Imagens das cenas · formato KEY_ID:KEY_SECRET" },
   { id: "APIFY_TOKEN", label: "Apify", dica: "Análise de perfis do Instagram" },
 ] as const
 
 export function Configuracoes() {
   const [cfg, setCfg] = useState<Config | null>(null)
   const [novas, setNovas] = useState<Record<string, string>>({})
-  const [modelo, setModelo] = useState("")
+  const [provedor, setProvedor] = useState("openrouter")
+  const [modelos, setModelos] = useState({ openrouter: "", higgsfield: "" })
   const [limite, setLimite] = useState("")
   const [salvando, setSalvando] = useState(false)
 
-  const aplica = (c: Config) => { setCfg(c); setModelo(c.image_model); setLimite(String(c.max_imagens)) }
+  const aplica = (c: Config) => { setCfg(c); setProvedor(c.image_provider); setModelos({ openrouter: c.image_model, higgsfield: c.higgsfield_model }); setLimite(String(c.max_imagens)) }
   useEffect(() => {
     api.config().then(aplica, (e: Error) => toast({ message: "Não consegui ler as configurações", description: e.message, state: "error" }))
   }, [])
@@ -29,8 +31,8 @@ export function Configuracoes() {
     if (!cfg) return
     const n = Number(limite)
     if (!Number.isInteger(n) || n < 1) return toast({ message: "O limite de imagens deve ser um inteiro maior que zero", state: "error" })
-    if (!modelo.trim()) return toast({ message: "O modelo de imagem não pode ficar vazio", state: "error" })
-    const patch: ConfigPatch = { image_model: modelo.trim(), max_imagens: n }
+    if (!modelos.openrouter.trim() || !modelos.higgsfield.trim()) return toast({ message: "O modelo de imagem não pode ficar vazio", state: "error" })
+    const patch: ConfigPatch = { image_provider: provedor, image_model: modelos.openrouter.trim(), higgsfield_model: modelos.higgsfield.trim(), max_imagens: n }
     for (const { id } of CHAVES) if (novas[id]?.trim()) patch[id] = novas[id].trim()
     setSalvando(true)
     try {
@@ -66,17 +68,21 @@ export function Configuracoes() {
       <div className="space-y-4">
         <div className="space-y-1.5">
           <Label>Provedor</Label>
-          <Select value={cfg?.image_provider ?? "openrouter"} onValueChange={() => {}}>
+          <Select value={provedor} onValueChange={setProvedor}>
             <SelectTrigger aria-label="Provedor de imagem" className="w-full"><SelectValue /></SelectTrigger>
             <SelectContent>
               <SelectItem value="openrouter">OpenRouter</SelectItem>
-              <SelectItem value="higgsfield" disabled>Higgsfield (em breve)</SelectItem>
+              <SelectItem value="higgsfield">Higgsfield</SelectItem>
             </SelectContent>
           </Select>
         </div>
         <div className="space-y-1.5">
           <Label htmlFor="image_model">Modelo</Label>
-          <Input id="image_model" value={modelo} onChange={(e) => setModelo(e.target.value)} />
+          <Input id="image_model" value={modelos[provedor as keyof typeof modelos] ?? ""}
+            onChange={(e) => setModelos({ ...modelos, [provedor]: e.target.value })} />
+          <p className="text-xs text-muted-foreground">
+            {provedor === "higgsfield" ? "ID do endpoint no console.higgsfield.ai (ex.: xai/grok-imagine-image-2.0)" : "ID do modelo no openrouter.ai (ex.: google/gemini-2.5-flash-image)"}
+          </p>
         </div>
         <div className="space-y-1.5">
           <Label htmlFor="max_imagens">Limite de imagens por episódio</Label>

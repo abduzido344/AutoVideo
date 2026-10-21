@@ -1,3 +1,6 @@
+import os
+import subprocess
+import sys
 from datetime import date, datetime, time as dtime, timedelta
 from pathlib import Path
 import pytest
@@ -14,6 +17,8 @@ def at(h, m, days=0):
 @pytest.fixture
 def env(tmp_path, monkeypatch):
     monkeypatch.setenv("AUTOVIDEO_HOME", str(tmp_path / "home"))
+    monkeypatch.setattr(fila, "_cooldown", {})
+    monkeypatch.setattr(fila, "_producer", None)
     p = data.create_perfil("Benji")
     p.ativo = True
     data.save_perfil(p)
@@ -26,7 +31,9 @@ def env(tmp_path, monkeypatch):
         return path
 
     monkeypatch.setattr(showrunner, "plan_series", plan)
-    return type("Env", (), dict(store=JobStore(tmp_path / "jobs.db"), perfil=p.slug, serie=serie, planned=planned))
+    yield type("Env", (), dict(store=JobStore(tmp_path / "jobs.db"), perfil=p.slug, serie=serie, planned=planned))
+    if fila._producer is not None:
+        fila._producer.close()
 
 
 def approve(store, jid, when: datetime | None = None):
@@ -98,7 +105,7 @@ def test_usage_limit_pauses_queue(env, monkeypatch):
 
     monkeypatch.setattr(agents, "run_role", limit)
     jid = episode.new_episode_job(env.store, env.serie, 1)
-    assert fila.run_next(env.store, T - 100) is True
+    assert fila.run_next(env.store, T - 100) is False                   # o loop dorme
     job = env.store.get(jid)
     assert (job["status"], job["stage"]) == ("queued", "roteiro")
     assert fila.state()["reason"] == "limite de uso"
@@ -161,10 +168,11 @@ def test_force_ignores_hour_and_quota(env):
 
 
 def test_loop_survives_errors(env, monkeypatch):
-    jid = env.store.create("x", "episodio", False)
-    env.store.set(jid, status="in_progress", stage="voz")
+    jid = env.store.create("estilos/x", "estilo", False)
+    env.store.set(jid, status="in_progress", stage="analise")
     monkeypatch.setattr(fila, "tick", lambda *a, **k: (_ for _ in ()).throw(RuntimeError("boom")))
-    sleeps = []
+    runs, sleeps = [], []
+    monkeypatch.setattr(fila, "run_next", lambda store, now: runs.append(now) or False)
 
     def sleep(s):
         sleeps.append(s)
@@ -174,4 +182,72 @@ def test_loop_survives_errors(env, monkeypatch):
     monkeypatch.setattr(fila.time, "sleep", sleep)
     with pytest.raises(SystemExit):
         fila.loop(env.store)
-    assert sleeps == [30, 30] and env.store.get(jid)["status"] == "queued"
+    assert sleeps == [30, 30] and len(runs) == 2                         # tick quebrado não impede a fila
+    assert env.store.get(jid)["status"] == "queued" and fila._producer is not None
+
+
+def test_plan_failure_cools_down_and_others_run(env, monkeypatch):
+    for n in (1, 2, 3):
+        approve(env.store, episode.new_episode_job(env.store, env.serie, n), at(10, 0, days=-3))
+    calls = []
+    monkeypatch.setattr(showrunner, "plan_series", lambda perfil: calls.append(perfil) or 1 / 0)
+    outro = data.create_perfil("Outro")
+    s2 = data.create_serie(outro.slug, "X", "log", EPS)
+    j = episode.new_episode_job(env.store, s2, 1)
+    ran = []
+    monkeypatch.setattr(episode, "produce", lambda store, jid: ran.append(jid) or "awaiting_approval")
+    assert fila.tick(env.store, at(10, 0)) is None
+    assert fila.tick(env.store, at(10, 30)) is None and calls == [env.perfil]   # cooldown de 1 h
+    assert fila.run_next(env.store, 0.0) is True and ran == [j]
+    fila.tick(env.store, at(11, 1))
+    assert len(calls) == 2
+
+
+def test_plan_usage_limit_pauses(env, monkeypatch):
+    for n in (1, 2, 3):
+        approve(env.store, episode.new_episode_job(env.store, env.serie, n), at(10, 0, days=-3))
+
+    def plan(perfil):
+        raise agents.UsageLimit("usage limit", retry_at=at(12, 0).timestamp())
+
+    monkeypatch.setattr(showrunner, "plan_series", plan)
+    assert fila.tick(env.store, at(10, 0)) is None
+    assert fila.state() == {"paused": True, "paused_until": at(12, 0).timestamp(), "reason": "limite de uso"}
+
+
+def test_tick_respects_queue_pause(env, monkeypatch):
+    monkeypatch.setattr(fila, "next_episode", lambda perfil: pytest.fail("pausado não chama agentes"))
+    fila.pause()
+    assert fila.tick(env.store, at(10, 0)) is None
+    assert fila.tick(env.store, at(10, 0), force=env.perfil) is None and env.store.list() == []
+
+
+def test_usage_limit_in_the_past_waits_a_minute(env, monkeypatch):
+    def produce(store, jid):
+        store.set(jid, status="queued")
+        raise agents.UsageLimit("usage limit", retry_at=100.0)
+
+    monkeypatch.setattr(episode, "produce", produce)
+    episode.new_episode_job(env.store, env.serie, 1)
+    assert fila.run_next(env.store, 500.0) is False
+    assert fila.state()["paused_until"] == 560.0
+
+
+def test_broken_series_fails_job_and_queue_moves_on(env, monkeypatch):
+    other = data.create_serie(env.perfil, "Outra", "log", EPS)
+    j1 = episode.new_episode_job(env.store, env.serie, 1)
+    j2 = episode.new_episode_job(env.store, other, 1)
+    (env.serie / "serie.json").write_text("{corrompido", encoding="utf-8")
+    ran = []
+    monkeypatch.setattr(episode, "produce", lambda store, jid: ran.append(jid) or "awaiting_approval")
+    assert fila.run_next(env.store, 0.0) is True and ran == [j2]
+    job = env.store.get(j1)
+    assert job["status"] == "failed" and "série do episódio" in job["error"]
+
+
+def test_single_producer(env):
+    assert fila.acquire_producer() and fila.acquire_producer()            # o mesmo processo já é o dono
+    code = "from autovideo import fila; print(fila.acquire_producer())"
+    out = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, check=True,
+                         env={**os.environ}).stdout.strip()
+    assert out == "False"

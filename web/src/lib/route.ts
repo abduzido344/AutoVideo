@@ -6,11 +6,11 @@ export type Route =
   | { name: "onboarding"; slug: string }
   | { name: "estilos" }
   | { name: "estilo"; slug: string }
-  | { name: "fila" }
-  | { name: "revisao"; jid?: number }
-  | { name: "config" }
+  | { name: "producao"; jid?: number }
+  | { name: "config"; aba?: string }
 
 const dec = (s: string) => { try { return decodeURIComponent(s) } catch { return s } }
+const jid = (a?: string): Route => /^\d+$/.test(a ?? "") ? { name: "producao", jid: Number(a) } : { name: "producao" }
 
 export function parseHash(hash: string): Route {
   const [head, a, b] = hash.replace(/^#\/?/, "").split("/").map(dec)
@@ -19,9 +19,11 @@ export function parseHash(hash: string): Route {
     case "onboarding": return a ? { name: "onboarding", slug: a } : { name: "perfis" }
     case "estilos": return { name: "estilos" }
     case "estilo": return a ? { name: "estilo", slug: a } : { name: "estilos" }
-    case "fila": return { name: "fila" }
-    case "revisao": return /^\d+$/.test(a ?? "") ? { name: "revisao", jid: Number(a) } : { name: "revisao" }
-    case "config": return { name: "config" }
+    case "producao": return jid(a)
+    // Fila e Revisão viraram Produção
+    case "fila": return { name: "producao" }
+    case "revisao": return jid(a)
+    case "config": return a ? { name: "config", aba: a } : { name: "config" }
     default: return { name: "perfis" }
   }
 }
@@ -32,7 +34,8 @@ export function formatHash(r: Route): string {
     case "perfil": return `#/perfil/${e(r.slug)}${r.aba ? `/${e(r.aba)}` : ""}`
     case "onboarding": return `#/onboarding/${e(r.slug)}`
     case "estilo": return `#/estilo/${e(r.slug)}`
-    case "revisao": return r.jid === undefined ? "#/revisao" : `#/revisao/${r.jid}`
+    case "producao": return r.jid === undefined ? "#/producao" : `#/producao/${r.jid}`
+    case "config": return r.aba ? `#/config/${e(r.aba)}` : "#/config"
     default: return `#/${r.name}`
   }
 }
@@ -41,10 +44,17 @@ export function go(r: Route): void {
   location.hash = formatHash(r)
 }
 
+// #/fila e #/revisao[/jid] trocam a URL por #/producao[/jid] sem criar entrada no histórico
+function ler(): Route {
+  const r = parseHash(location.hash)
+  if (/^#\/?(fila|revisao)(\/|$)/.test(location.hash)) history.replaceState(null, "", formatHash(r))
+  return r
+}
+
 export function useRoute(): Route {
-  const [route, setRoute] = useState(() => parseHash(location.hash))
+  const [route, setRoute] = useState(ler)
   useEffect(() => {
-    const on = () => setRoute(parseHash(location.hash))
+    const on = () => setRoute(ler())
     addEventListener("hashchange", on)
     return () => removeEventListener("hashchange", on)
   }, [])

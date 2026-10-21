@@ -2,6 +2,7 @@ import { useState } from "react"
 import { api, type Perfil } from "@/api"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import { COR, ICONE } from "@/components/secoes"
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/toast"
@@ -40,10 +41,10 @@ const proximo = (p: Perfil) => (p.ativo ? `Gera às ${p.agenda.gerar_as}${p.agen
 
 export function Perfis({ perfis, onNovo }: { perfis: Perfil[] | null; onNovo: () => void }) {
   return (
-    <Pagina titulo="Perfis" sub="Cada perfil é uma conta de conteúdo com assunto, estilo e personagens.">
-      <Button onClick={onNovo}>Novo perfil</Button>
-      {perfis && perfis.length === 0 && <p className="mt-6 text-sm text-muted-foreground">Nenhum perfil ainda. Crie o primeiro.</p>}
-      <div className="mt-6 grid gap-3 sm:grid-cols-2">
+    <Pagina titulo="Perfis" icone={ICONE.perfis} cor={COR.perfil.caixa} largo acoes={<Button onClick={onNovo}>Novo perfil</Button>}
+      sub="Cada perfil é uma conta de conteúdo com assunto, estilo e personagens.">
+      {perfis && perfis.length === 0 && <p className="text-sm text-muted-foreground">Nenhum perfil ainda. Crie o primeiro.</p>}
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
         {(perfis ?? []).map((p) => (
           <a key={p.slug} href={!p.ativo && p.onboarding < 6 ? `#/onboarding/${encodeURIComponent(p.slug)}` : `#/perfil/${encodeURIComponent(p.slug)}`}>
             <Card className="gap-1 p-4 hover:bg-muted/50">

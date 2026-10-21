@@ -1,20 +1,36 @@
-import { ChevronsUpDown, ClipboardCheck, ListVideo, Palette, Plus, Settings, UserRound } from "lucide-react"
+import { ChevronsUpDown, Plus, UserRound, type LucideIcon } from "lucide-react"
 import type { Auth, Doctor, Perfil } from "@/api"
+import { ABAS_PERFIL, COR, ICONE } from "@/components/secoes"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
-  Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader,
+  Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupLabel, SidebarHeader,
   SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarTrigger, useSidebar,
 } from "@/components/ui/sidebar"
 import { doctorText } from "@/lib/format"
-import { type Route } from "@/lib/route"
+import { formatHash, type Route } from "@/lib/route"
 import { cn } from "@/lib/utils"
 
-export function TopBar() {
+type Item = { to: Route; icon: LucideIcon; label: string; cor: string; active: boolean; badge?: number }
+
+function Links({ itens }: { itens: Item[] }) {
+  const { setOpenMobile } = useSidebar()
   return (
-    <header className="flex h-11 items-center gap-2 px-3">
-      <SidebarTrigger aria-label="Abrir ou fechar o menu" />
-    </header>
+    <SidebarMenu>
+      {itens.map(({ to, icon: Icon, label, cor, active, badge }) => (
+        <SidebarMenuItem key={label}>
+          <SidebarMenuButton asChild isActive={active}>
+            <a href={formatHash(to)} onClick={() => setOpenMobile(false)} aria-current={active ? "page" : undefined}>
+              <Icon className={cor} />
+              <span>{label}</span>
+              {badge ? (
+                <span aria-label={`${badge} aguardando`} className="ml-auto rounded-full bg-pink px-1.5 font-mono text-[11px] leading-5 text-white">{badge}</span>
+              ) : null}
+            </a>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      ))}
+    </SidebarMenu>
   )
 }
 
@@ -24,18 +40,29 @@ export function AppSidebar({ perfis, perfilSlug, onPerfil, aguardando, route, do
 }) {
   const sys = doctorText(doctor)
   const { setOpenMobile } = useSidebar()
-  const links = [
-    { to: { name: "fila" } as Route, icon: ListVideo, label: "Fila" },
-    { to: { name: "revisao" } as Route, icon: ClipboardCheck, label: "Revisão", badge: aguardando },
-    { to: { name: "estilos" } as Route, icon: Palette, label: "Estilos" },
-    { to: { name: "config" } as Route, icon: Settings, label: "Configurações" },
+  const perfil = perfis.find((p) => p.slug === perfilSlug)
+  const doPerfil: Item[] = !perfil ? []
+    : perfil.onboarding < 6
+      ? [{ to: { name: "onboarding", slug: perfil.slug }, icon: ICONE.onboarding, label: "Continuar onboarding", cor: COR.perfil.icone,
+        active: route.name === "onboarding" && route.slug === perfil.slug }]
+      : ABAS_PERFIL.map(({ aba, label, icon }) => ({
+        to: { name: "perfil", slug: perfil.slug, aba }, icon, label, cor: COR.perfil.icone,
+        active: route.name === "perfil" && route.slug === perfil.slug && (route.aba ?? "series") === aba,
+      }))
+  const geral: Item[] = [
+    { to: { name: "producao" }, icon: ICONE.producao, label: "Produção", cor: COR.producao.icone, active: route.name === "producao", badge: aguardando },
+    { to: { name: "estilos" }, icon: ICONE.estilos, label: "Estilos", cor: COR.estilos.icone, active: route.name === "estilos" || route.name === "estilo" },
+    { to: { name: "config" }, icon: ICONE.config, label: "Configurações", cor: COR.config.icone, active: route.name === "config" },
   ]
   return (
     <Sidebar variant="inset">
       <SidebarHeader>
-        <a href="#/perfis" aria-label="AutoVideo" className="px-2 pt-1 font-serif text-2xl font-semibold tracking-tight">
-          autovideo<span className="text-pink">.</span>
-        </a>
+        <div className="flex items-center justify-between gap-2">
+          <a href="#/perfis" aria-label="AutoVideo" className="px-2 pt-1 font-serif text-2xl font-semibold tracking-tight">
+            autovideo<span className="text-pink">.</span>
+          </a>
+          <SidebarTrigger aria-label="Fechar o menu" />
+        </div>
         <Select value={perfilSlug ?? undefined} onValueChange={onPerfil} disabled={perfis.length === 0}>
           <SelectTrigger aria-label="Perfil" className="mt-2 w-full bg-background">
             <SelectValue placeholder={perfis.length ? "Escolha um perfil" : "Nenhum perfil"} />
@@ -55,25 +82,15 @@ export function AppSidebar({ perfis, perfilSlug, onPerfil, aguardando, route, do
         </DropdownMenu>
       </SidebarHeader>
       <SidebarContent>
+        {perfil && (
+          <SidebarGroup>
+            <SidebarGroupLabel>{perfil.nome}</SidebarGroupLabel>
+            <Links itens={doPerfil} />
+          </SidebarGroup>
+        )}
         <SidebarGroup>
-          <SidebarMenu>
-            {links.map(({ to, icon: Icon, label, badge }) => {
-              const active = route.name === to.name || (to.name === "estilos" && route.name === "estilo")
-              return (
-                <SidebarMenuItem key={label}>
-                  <SidebarMenuButton asChild isActive={active}>
-                    <a href={`#/${to.name}`} onClick={() => setOpenMobile(false)} aria-current={active ? "page" : undefined}>
-                      <Icon />
-                      <span>{label}</span>
-                      {badge ? (
-                        <span aria-label={`${badge} aguardando`} className="ml-auto rounded-full bg-pink px-1.5 font-mono text-[11px] leading-5 text-white">{badge}</span>
-                      ) : null}
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              )
-            })}
-          </SidebarMenu>
+          <SidebarGroupLabel>Geral</SidebarGroupLabel>
+          <Links itens={geral} />
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>

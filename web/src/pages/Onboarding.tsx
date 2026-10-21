@@ -2,6 +2,7 @@ import { Check } from "lucide-react"
 import { api } from "@/api"
 import { Chat } from "@/components/Chat"
 import { FolhaPersonagem } from "@/components/FolhaPersonagem"
+import { COR, ICONE } from "@/components/secoes"
 import { Button } from "@/components/ui/button"
 import { toast } from "@/components/ui/toast"
 import { go } from "@/lib/route"
@@ -28,11 +29,13 @@ export function Onboarding({ slug }: { slug: string }) {
   }
 
   return (
-    <Pagina titulo={perfil?.nome ?? "Novo perfil"} sub="Converse com o Claude para montar o perfil, etapa por etapa.">
-      <div className="grid gap-6 lg:grid-cols-[1fr_20rem]">
-        <Chat kind="onboarding" slug={slug} onReply={() => refresh()} className="h-[32rem]" />
-        <div>
-          <Secao>Etapas</Secao>
+    <Pagina titulo={perfil?.nome ?? "Novo perfil"} icone={ICONE.onboarding} cor={COR.perfil.caixa} largo
+      sub="Converse com o Claude para montar o perfil, etapa por etapa.">
+      {/* no desktop o chat ocupa a altura do corpo e a coluna das etapas rola sozinha */}
+      <div className="grid gap-6 lg:h-full lg:grid-cols-[minmax(0,1fr)_20rem]">
+        <Chat kind="onboarding" slug={slug} onReply={() => refresh()} className="h-[32rem] lg:h-full" />
+        <div className="lg:min-h-0 lg:overflow-y-auto">
+          <h2 className="mb-3 text-[11px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">Etapas</h2>
           <ol className="space-y-2">
             {ETAPAS.map((t, i) => {
               const feita = (perfil?.onboarding ?? 0) > i

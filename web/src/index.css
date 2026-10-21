@@ -10,6 +10,10 @@
     --font-serif: 'Cormorant Garamond', 'Cormorant', serif;
     --font-mono: 'Geist Mono', ui-monospace, monospace;
     --color-pink: var(--pink);
+    --color-sec-producao: var(--sec-producao);
+    --color-sec-perfil: var(--sec-perfil);
+    --color-sec-estilos: var(--sec-estilos);
+    --color-sec-config: var(--sec-config);
     --radius-control: 10px;
     --radius-panel: 12px;
     --color-sidebar-ring: var(--sidebar-ring);
@@ -77,6 +81,11 @@
     --accent: #ECEEF1;
     --accent-foreground: #0A0A0A;
     --pink: #FF4081;
+    /* cor do ícone de cada seção (sidebar e cabeçalho de página) */
+    --sec-producao: #FF4081;
+    --sec-perfil: #2F6BFF;
+    --sec-estilos: #6941C6;
+    --sec-config: #4B5563;
     --destructive: #B84A4F;
     --border: #E5E7EB;
     --input: #E5E7EB;

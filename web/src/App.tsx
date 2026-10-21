@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { api, type Auth, type Doctor } from "@/api"
-import { AppSidebar, TopBar } from "@/components/AppSidebar"
+import { AppSidebar } from "@/components/AppSidebar"
 import { ConnectClaude } from "@/components/ConnectClaude"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { toast, Toasts } from "@/components/ui/toast"
@@ -12,8 +12,7 @@ import { Onboarding } from "@/pages/Onboarding"
 import { Estilos, EstiloPagina, NovoEstilo } from "@/pages/Estilos"
 import { Perfil } from "@/pages/Perfil"
 import { NovoPerfil, Perfis } from "@/pages/Perfis"
-import { Fila } from "@/pages/Fila"
-import { Revisao } from "@/pages/Revisao"
+import { Producao } from "@/pages/Producao"
 
 const OFFLINE: Doctor = { ok: false, checks: [{ name: "resposta do servidor", ok: false, detail: "sem resposta do /api/doctor" }] }
 
@@ -55,20 +54,19 @@ export default function App() {
 
   return (
     <SoundEffects>
-      <SidebarProvider>
+      {/* o app tem sempre o tamanho da tela: só a sidebar e o corpo das páginas rolam */}
+      <SidebarProvider className="h-svh overflow-hidden">
         <AppSidebar perfis={lista} perfilSlug={perfilSlug} aguardando={aguardando} route={route}
           onPerfil={(slug) => { setEscolhido(slug); go({ name: "perfil", slug }) }}
           doctor={doctor} auth={auth} onAccount={() => setConnect(true)} onNovoPerfil={() => setNovo(true)} onNovoEstilo={() => setNovoEstilo(true)} />
-        <SidebarInset>
-          <TopBar />
-          {route.name === "config" ? <Configuracoes />
+        <SidebarInset className="min-h-0 min-w-0 overflow-hidden">
+          {route.name === "config" ? <Configuracoes aba={route.aba} perfis={lista} auth={auth} onClaude={() => setConnect(true)} />
             : route.name === "perfis" ? <Perfis perfis={perfis.data} onNovo={() => setNovo(true)} />
             : route.name === "perfil" ? <Perfil key={route.slug} slug={route.slug} aba={route.aba} />
             : route.name === "estilos" ? <Estilos onNovo={() => setNovoEstilo(true)} />
             : route.name === "estilo" ? <EstiloPagina key={route.slug} slug={route.slug} />
             : route.name === "onboarding" ? <Onboarding key={route.slug} slug={route.slug} />
-            : route.name === "fila" ? <Fila />
-            : <Revisao jid={route.jid} />}
+            : <Producao jid={route.jid} perfis={lista} />}
         </SidebarInset>
       </SidebarProvider>
       <NovoEstilo open={novoEstilo} onOpenChange={setNovoEstilo} />

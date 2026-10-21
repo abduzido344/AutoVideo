@@ -1,7 +1,7 @@
 # UI — Componentes do painel AutoVideo
 
 **Stack:** React + Vite + Tailwind v4 + shadcn/ui + registry Kobra (`@kobra`).
-**Design:** claro e limpo no estilo Kimi (shell #F7F7F7, cartão branco, Inter, preto para ação, azul #2F6BFF só para estado); tokens em web/src/index.css. Spec: docs/superpowers/specs/2026-10-15-painel-v2-design.md.
+**Design alvo:** visual do Lum Studio (claro, sidebar `#F3F4F6`, painel branco inset, ação preta, acento magenta `#FF4081`, Cormorant só no display). Os tokens e as telas estão em docs/superpowers/specs/2026-10-21-autovideo-series-design.md. O `web/src/index.css` atual ainda tem os tokens do painel v2 (estilo Kimi) até a migração.
 
 ## Regra: procure componente pronto antes de escrever
 Antes de criar qualquer elemento de UI, procure nesta ordem e use o primeiro que servir:
@@ -35,16 +35,16 @@ Nota: o `liquidglass` vai duas vezes no bundle: a lib vendorizada em `src/lib/li
 | Feedback ao agente / histórico de iterações | `conversation` (free), `message`, `chat-input` | `textarea` + `card` |
 | Ações rápidas (novo job, aprovar, ir para job) | `command-menu` (free) | `command` |
 | Fundo/estado vazio com textura | `halftone-dots` (free), `empty` | `card` |
-| Upload de gravações, roteiro e assets | `magnetic-dropzone`, `attachment` | `input type=file` |
-| Escolha de receita e formato | `select`, `toggle-group`, `filter-chips` | `select`, `toggle-group` |
-| Lista de jobs | `grouped-table` (por status), `table`, `item` | `table` |
-| Status do job | `badge`, `spinner`, `progress` | `badge`, `progress` |
-| Etapas do pipeline (ingest → post) | `task-list` | `progress` + lista |
-| Log de decisões dos agentes (`decisions.log`) | `reasoning-steps` | `scroll-area` + lista |
-| Brief do diretor / post | `plan-card`, `streaming-text` | `card` |
-| Gate de aprovação (aprovar/rejeitar) | `question-card` | `card` + `button` |
-| Editar roteiro/brief no painel | `ai-editor` | `textarea` |
-| timeline.json / edit.json | `code-block`, `file-diff` (diff entre versões) | `pre` |
+| Conversa de onboarding / criar estilo | `conversation`, `message`, `chat-input` | `textarea` + `card` |
+| Seletor de perfil, estilo e provedor | `select`, `toggle-group`, `filter-chips` | `select`, `toggle-group` |
+| Fila de geração / séries / banco de ideias | `grouped-table` (por status), `table`, `item` | `table` |
+| Status do episódio | `badge`, `spinner`, `progress` | `badge`, `progress` |
+| Etapas do episódio (roteiro → render) | `task-list` | `progress` + lista |
+| Log das chamadas de agentes (custo/tokens) | `reasoning-steps` | `scroll-area` + lista |
+| Roteiro / sinopse / legenda do post | `plan-card`, `streaming-text` | `card` |
+| Revisão (aprovar/ajustar/descartar) | `question-card` | `card` + `button` |
+| Editar roteiro, Universo, estilo | `ai-editor` | `textarea` |
+| Folha de personagem / cenas do episódio | `carousel`, `lightbox` | `dialog` + `img` |
 | Notificações (job concluído/falhou) | `toast` (em uso) | — |
 | Navegação / layout | `sidebar`, `tabs`, `resizable`, `scroll-area` | iguais no shadcn |
 | Modais / painéis | `dialog`, `sheet`, `drawer`, `tooltip`, `kbd` | iguais no shadcn |

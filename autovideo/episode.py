@@ -299,7 +299,8 @@ def adjust(store: JobStore, jid: int, texto: str) -> None:
 
 
 def discard(store: JobStore, jid: int) -> None:
-    from autovideo import showrunner  # Task 8; import tardio evita ciclo e deixa o teste trocar o módulo
+    import importlib  # import tardio evita ciclo; import_module respeita sys.modules (o teste troca o módulo)
+    showrunner = importlib.import_module("autovideo.showrunner")
     ctx = make_ctx(_awaiting(store, jid, ("awaiting_approval", "failed")))
     showrunner.rewrite_synopsis(ctx.recipe["serie"], ctx.recipe["n"])
     with store.lock:

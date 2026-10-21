@@ -6,8 +6,8 @@ import { Onboarding } from "./Onboarding"
 vi.mock("@/api", async (orig) => ({ ...(await orig<typeof import("@/api")>()), api: { perfil: vi.fn(), chat: vi.fn().mockResolvedValue([]), chatSend: vi.fn(), salvarPerfil: vi.fn() } }))
 vi.mock("@/components/ui/toast", () => ({ toast: vi.fn(), Toasts: () => null }))
 
-const det = (estilo: string, aprovada: boolean): PerfilDetalhe => ({
-  perfil: { slug: "benji", nome: "Benji", estilo, onboarding: 2 } as PerfilDetalhe["perfil"],
+const det = (estilo: string, aprovada: boolean, onboarding = 6): PerfilDetalhe => ({
+  perfil: { slug: "benji", nome: "Benji", estilo, onboarding } as PerfilDetalhe["perfil"],
   ideias: [], series: [], universo: { mundo: "", historico: "" },
   personagens: [{ slug: "ana", ficha: "x", folha: true, aprovada }],
 })
@@ -24,6 +24,12 @@ describe("Onboarding", () => {
     render(<Onboarding slug="benji" />)
     await screen.findByText("aprovada")
     expect((screen.getByRole("button", { name: "Ativar perfil" }) as HTMLButtonElement).disabled).toBe(false)
+  })
+  it("onboarding incompleto mantém desabilitado mesmo com a folha aprovada", async () => {
+    vi.mocked(api.perfil).mockResolvedValue(det("benji", true, 3))
+    render(<Onboarding slug="benji" />)
+    await screen.findByText("aprovada")
+    expect((screen.getByRole("button", { name: "Ativar perfil" }) as HTMLButtonElement).disabled).toBe(true)
   })
   it("sem estilo continua desabilitado", async () => {
     vi.mocked(api.perfil).mockResolvedValue(det("", true))

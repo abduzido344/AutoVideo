@@ -211,6 +211,9 @@ def test_folha_without_ficha_is_409_without_paths():
 
 
 def _ready(slug):
+    p = data.load_perfil(slug)
+    p.onboarding = 6
+    data.save_perfil(p)
     d = data.perfis_dir() / slug / "personagens" / "ze"
     d.mkdir(parents=True)
     (d / "folha.png").write_bytes(b"png")
@@ -221,7 +224,7 @@ def test_activate_requires_ready_profile():
     c = _client()
     slug = c.post("/api/perfis", json={"nome": "Benji"}).json()["slug"]
     r = c.put(f"/api/perfis/{slug}", json={"ativo": True})
-    assert r.status_code == 409 and "personagem" in r.json()["detail"]
+    assert r.status_code == 409 and "onboarding" in r.json()["detail"]
     assert c.put(f"/api/perfis/{slug}", json={"estilo": "nao-existe"}).status_code == 400
     _ready(slug)
     assert c.put(f"/api/perfis/{slug}", json={"ativo": True}).json()["ativo"] is True
@@ -233,7 +236,7 @@ def test_gerar_conflicts(monkeypatch):
     p, serie = _ep()
     c = _client()
     r = c.post(f"/api/perfis/{p.slug}/gerar")
-    assert r.status_code == 409 and "personagem" in r.json()["detail"]
+    assert r.status_code == 409 and "onboarding" in r.json()["detail"]
     _ready(p.slug)
     fila.pause()
     assert "pausada" in c.post(f"/api/perfis/{p.slug}/gerar").json()["detail"]

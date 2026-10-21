@@ -195,6 +195,8 @@ def ready(slug: str, estilo: str | None = None) -> str | None:
         load_estilo(estilo or load_perfil(slug).estilo)
     except (KeyError, ValueError, OSError):
         return "o estilo do perfil não existe ou está inválido"
+    if (feito := load_perfil(slug).onboarding) < 6:
+        return f"termine o onboarding (etapa {feito} de 6 concluída)"
     cs = personagens(slug)
     if not cs:
         return "crie ao menos um personagem"

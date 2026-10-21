@@ -113,6 +113,12 @@ def _char(slug, nome, folha=True, aprovada=True):
 
 def test_ready_requires_estilo_and_approved_characters():
     p = data.create_perfil("Canal")
+    assert "etapa 0 de 6" in data.ready(p.slug)
+    p.onboarding = 5
+    data.save_perfil(p)
+    assert "etapa 5 de 6" in data.ready(p.slug)
+    p.onboarding = 6
+    data.save_perfil(p)
     assert "personagem" in data.ready(p.slug)
     _char(p.slug, "ana")
     assert data.ready(p.slug) is None

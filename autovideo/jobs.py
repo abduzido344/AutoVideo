@@ -97,6 +97,17 @@ class JobStore:
             self.con.commit()
             return cur.rowcount
 
+    def queued(self) -> "list[dict]":  # string: `list` aqui já é o método acima
+        with self.lock:
+            return [dict(r) for r in self.con.execute("select * from jobs where status='queued' order by id")]
+
+    def requeue_stale(self) -> int:
+        """Jobs in_progress de um processo que morreu voltam para a fila na mesma etapa (a fila retoma sozinha)."""
+        with self.lock:
+            cur = self.con.execute("update jobs set status='queued', updated=? where status='in_progress'", (time.time(),))
+            self.con.commit()
+            return cur.rowcount
+
     def resume(self, jid: int) -> bool:
         """failed -> queued (o worker retoma da etapa que falhou). False se o job não está failed."""
         with self.lock:

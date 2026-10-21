@@ -23,16 +23,18 @@ Você divide o roteiro de um episódio em cenas para um vídeo vertical (9:16). 
   Não descreva o rosto, a roupa nem as cores dos personagens: a aparência fixa de cada um (da ficha) e a folha de referência são somadas automaticamente, na ordem de `characters`. Não repita o prefixo visual do estilo, ele também é somado depois.
 - `kind: "screen"`: tela de celular em motion. Use só tipos de `telas` do estilo. Prefira tela quando a narração lê uma mensagem, alerta ou notificação.
 - `characters`: slugs dos personagens do perfil (as fichas do contexto) que aparecem na imagem. Nunca invente personagem.
+- `sfx`: efeito sonoro curto em inglês, só onde ajuda; "" para nenhum. `ambiente`: som de fundo do episódio em inglês.
 - Poucas imagens custam menos: não passe do limite de imagens por episódio.
 
 ## Saída: `cenas.json`
 ```json
 {"cenas": [
   {"id": "s01", "kind": "image", "narration": "trecho do roteiro", "prompt": "wide shot of ...",
-   "camera": "zoom-in", "characters": ["slug"]},
+   "camera": "zoom-in", "sfx": "distant thunder", "characters": ["slug"]},
   {"id": "s02", "kind": "screen", "narration": "trecho do roteiro",
    "screen": {"type": "alerta", "data": {"titulo": "...", "orgao": "...", "texto": "...", "hora": "03:47"}}}
- ]}
+ ],
+ "ambiente": "heavy rain on windows, low wind"}
 ```
 - `id`: `s01`, `s02`... em sequência.
 - `camera`: `zoom-in`, `zoom-out`, `pan-left`, `pan-right` ou `static`.

@@ -56,7 +56,7 @@ describe("Produção: esteira", () => {
   it("4 colunas, cada job na sua; falhou fica na etapa em que parou", async () => {
     vi.mocked(api.fila).mockResolvedValue(fila({ jobs: [
       job({ id: 1, status: "queued", titulo: "Esperando" }),
-      job({ id: 2, status: "in_progress", stage: "imagens", titulo: "Rodando agora" }),
+      job({ id: 2, status: "in_progress", stage: "sfx", titulo: "Rodando agora" }),
       job({ id: 3, status: "awaiting_approval", stage: "aprovacao", titulo: "Pronto pra ver" }),
       job({ id: 4, status: "completed", titulo: "Aprovado" }),
       job({ id: 6, status: "failed", stage: "voz", error: "ElevenLabs caiu", titulo: "Quebrado" }),
@@ -79,11 +79,11 @@ describe("Produção: esteira", () => {
   it("job atual mostra a etapa legível; failed mostra erro, ver detalhes e Retomar", async () => {
     const longo = "Traceback\n" + "linha do hyperframes ".repeat(200)
     vi.mocked(api.fila).mockResolvedValue(fila({ jobs: [
-      job({ id: 1, status: "in_progress", stage: "imagens", titulo: "Rodando" }),
+      job({ id: 1, status: "in_progress", stage: "sfx", titulo: "Rodando" }),
       job({ id: 2, status: "failed", stage: "voz", error: longo, titulo: "Quebrado" }),
     ] }))
     render(<Producao />)
-    expect((await screen.findAllByText("Imagens")).length).toBeGreaterThan(0)
+    expect((await screen.findAllByText("Sons")).length).toBeGreaterThan(0)
     expect(screen.getByText(/^Traceback/).className).toContain("line-clamp-2")
     await userEvent.click(screen.getByRole("button", { name: "ver detalhes" }))
     expect(within(await screen.findByRole("dialog")).getByText(/^Traceback/)).toBeTruthy()

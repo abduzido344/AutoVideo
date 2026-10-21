@@ -17,7 +17,7 @@ import { Pagina, Secao } from "@/pages/Pagina"
 
 // mesma ordem do episode.STAGES do servidor
 const ETAPAS: [string, string][] = [
-  ["roteiro", "Roteiro"], ["cenas", "Cenas"], ["voz", "Voz"], ["imagens", "Imagens"],
+  ["roteiro", "Roteiro"], ["cenas", "Cenas"], ["voz", "Voz"], ["imagens", "Imagens"], ["sfx", "Sons"],
   ["montagem", "Montagem"], ["render", "Render"], ["revisao", "Revisão"], ["aprovacao", "Aprovação"],
 ]
 const etapa = (s: string) => ETAPAS.find(([k]) => k === s)?.[1] ?? s
@@ -248,7 +248,7 @@ export function Producao({ jid, perfis = [] }: { jid?: number; perfis?: { slug: 
               <h2 className="flex items-center justify-between px-3 pt-3 pb-2 text-[11px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">
                 {titulo}<span className="font-mono tracking-normal">{lista.length}</span>
               </h2>
-              <div className="min-h-0 flex-1 space-y-2 overflow-y-auto px-2 pt-1 pb-2">
+              <div className="min-h-0 flex-1 space-y-2 overflow-y-auto px-2 pb-2">
                 {lista.map((j) => (
                   <Cartao key={j.id} j={j} nomePerfil={nomePerfil} busy={busy} onRetomar={() => act(() => api.retomar(j.id), "Não consegui retomar")} />
                 ))}

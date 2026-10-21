@@ -35,14 +35,27 @@ def test_tts_sends_context_and_key(monkeypatch, tmp_path):
 
 def test_missing_key_message(tmp_path):
     with pytest.raises(eleven.MissingKey, match="ELEVENLABS_API_KEY"):
-        eleven._post("/x", {}, tmp_path / "s.mp3", client(lambda r: httpx.Response(200)))
+        eleven.sfx("boom", 1, tmp_path / "s.mp3", client=client(lambda r: httpx.Response(200)))
+
+
+def test_sfx_clamps_duration(monkeypatch, tmp_path):
+    monkeypatch.setenv("ELEVENLABS_API_KEY", "k")
+    seen = {}
+
+    def h(req):
+        seen["body"] = json.loads(req.content)
+        return httpx.Response(200, content=b"x")
+
+    out = tmp_path / "s.mp3"
+    eleven.sfx("boom", 40, out, client=client(h))
+    assert seen["body"]["duration_seconds"] == 22 and out.read_bytes() == b"x"
 
 
 def test_http_error_no_partial(monkeypatch, tmp_path):
     monkeypatch.setenv("ELEVENLABS_API_KEY", "k")
     out = tmp_path / "s.mp3"
     with pytest.raises(RuntimeError, match="500"):
-        eleven._post("/x", {}, out, client(lambda r: httpx.Response(500, text="falhou")))
+        eleven.sfx("boom", 1, out, client=client(lambda r: httpx.Response(500, text="falhou")))
     assert not out.exists() and not out.with_name("s.mp3.part").exists()
 
 

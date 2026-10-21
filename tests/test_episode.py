@@ -29,13 +29,13 @@ class Fake:
             out = {"titulo": "Apagão", "resumo": "A luz caiu no prédio.", "post": {"caption": "c", "hashtags": ["#x"]}}
         elif role.name == "diretor_arte":
             cenas = [{"id": "s01", "kind": "image", "narration": "Às 3h47, a luz cai.", "prompt": "dark building",
-                      "characters": ["benji"]},
+                      "characters": ["benji"], "sfx": "thunder"},
                      {"id": "s02", "kind": "image", "narration": "Você acorda no escuro.", "prompt": f"bedroom v{k}"},
                      {"id": "s03", "kind": "screen", "narration": "O celular grita.",
                       "screen": {"type": "alerta", "data": ALERTA}}]
             if self.images == 3:
                 cenas[2] = {"id": "s03", "kind": "image", "narration": "O celular grita.", "prompt": "phone"}
-            out = {"cenas": cenas}
+            out = {"cenas": cenas, "ambiente": "rain"}
         elif role.name == "revisor":
             out = self.reviews[min(k, len(self.reviews)) - 1]
         else:
@@ -59,20 +59,24 @@ def env(tmp_path, monkeypatch):
     serie = data.create_serie(p.slug, "Apagão", "log", [("t1", "sinopse 1"), ("t2", "sinopse 2"), ("t3", "sinopse 3")])
     fake = Fake()
     monkeypatch.setattr(agents, "run_role", fake)
-    calls = {"tts": [], "gen": []}
+    calls = {"tts": [], "gen": [], "sfx": []}
 
     def tts(text, voice_id, out, previous_text="", next_text="", client=None):
         calls["tts"].append(text)
         out.parent.mkdir(parents=True, exist_ok=True); out.write_bytes(b"mp3")
         return 2.0
 
+    def sfx(prompt, seconds, out, client=None):
+        calls["sfx"].append(prompt)
+        out.parent.mkdir(parents=True, exist_ok=True); out.write_bytes(b"mp3")
+
     def gen(prompt, refs, out, aspect="9:16", client=None):
         calls["gen"].append((prompt, refs))
         out.parent.mkdir(parents=True, exist_ok=True); out.write_bytes(b"png")
         return {"provider": "fake", "model": "m", "cost_usd": 0.01}
 
-    def build(ep, cenas, voz, imgs, legenda=False):
-        calls["build"] = (imgs, legenda)
+    def build(ep, cenas, voz, imgs, sfx, ambiente, legenda=False):
+        calls["build"] = (imgs, sfx, ambiente, legenda)
         (ep / "composition" / "index.html").write_text("<html>", encoding="utf-8")
 
     def final(comp, out, lufs):
@@ -88,6 +92,7 @@ def env(tmp_path, monkeypatch):
         return []
 
     monkeypatch.setattr(eleven, "tts", tts)
+    monkeypatch.setattr(eleven, "sfx", sfx)
     monkeypatch.setattr(images, "generate", gen)
     monkeypatch.setattr(montage, "build", build)
     monkeypatch.setattr(render, "init_composition", lambda project, aspect: (project.root / "composition").mkdir(exist_ok=True))
@@ -111,8 +116,8 @@ def test_full_run_stops_at_approval(env):
     for name, rel, fn in episode.STAGES:
         assert done(env.ep, name, rel) == (fn is not None), name
     assert (env.ep / "out/capa.jpg").exists()
-    imgs, leg = env.calls["build"]
-    assert set(imgs) == {"s01", "s02"} and leg is False
+    imgs, sfx, amb, leg = env.calls["build"]
+    assert set(imgs) == {"s01", "s02"} and set(sfx) == {"s01"} and amb and leg is False
     assert env.calls["lufs"] == -14 and env.calls["check"] == ["9:16"]
     assert "150 e 180 s" in env.fake.tasks["revisor"][0]          # alvo de duração vem do estilo
     assert (env.ep / "review/refs/benji.png").read_bytes() == b"png"   # folha aprovada ao alcance do revisor

@@ -79,7 +79,7 @@ O **Diretor** é o orquestrador. Ele dispara subagentes, cada um com uma funçã
 | Diretor de arte | roteiro, estilo, folhas de personagem | lista de cenas: tipo (imagem ou tela em motion), prompt, trecho da narração, movimento de câmera, onomatopeia |
 | Gerador de imagens | lista de cenas + referências do personagem | uma imagem por cena de imagem |
 | Motion | cenas do tipo tela (chat, alerta, bateria etc.) | blocos HyperFrames dessas telas |
-| Voz | roteiro, estilo | narração (TTS) com tempos por palavra; sem efeitos sonoros nem trilha (removidos em 2026-10-21) |
+| Voz e som | roteiro, estilo | narração (TTS) com tempos por palavra + efeitos sonoros e trilha |
 | Montador | tudo acima | composição HyperFrames 9:16 renderizada (`final.mp4`, capa) |
 | Revisor | roteiro, cenas, frames do render | veredito + correções endereçadas |
 
@@ -95,6 +95,7 @@ O **Diretor** é o orquestrador. Ele dispara subagentes, cada um com uma funçã
 
 ## Voz, som e motion
 - **TTS:** ElevenLabs, com voz escolhida por perfil **(decisão do Claude)**. Os tempos por palavra para sincronizar os cortes vêm da API de TTS ou de `hyperframes transcribe` sobre o áudio gerado.
+- **SFX e trilha:** pela skill `media-use` / catálogo HyperFrames antes de qualquer coisa feita à mão.
 - **Telas de celular:** blocos HyperFrames reutilizáveis (chat de grupo, alerta de emergência, bateria/relógio, notificação), parametrizados por texto. Antes de criar um bloco, procurar no catálogo (`hyperframes catalog`).
 - **Legenda queimada:** definida pelo estilo. O estilo Benji não tem.
 

@@ -1,10 +1,19 @@
+import pytest
 from fastapi.testclient import TestClient
-from autovideo import server
+from autovideo import data, episode, server
+from autovideo.jobs import JobStore
 from autovideo.server import create_app
 
 
+@pytest.fixture(autouse=True)
+def store(tmp_path, monkeypatch):
+    monkeypatch.setenv("AUTOVIDEO_HOME", str(tmp_path / "home"))
+    monkeypatch.setattr(server, "STORE", JobStore(tmp_path / "jobs.db"), raising=False)
+    return server.STORE
+
+
 def _client():
-    return TestClient(create_app(), base_url="http://127.0.0.1")
+    return TestClient(create_app(server.STORE, start_worker=False), base_url="http://127.0.0.1")
 
 
 def test_blocks_foreign_origin_and_host(monkeypatch):
@@ -66,3 +75,72 @@ def test_open_login_terminal_runs_claude_auth_login(monkeypatch):
     monkeypatch.setattr(doctor.subprocess, "Popen", lambda args, **kw: calls.append(args))
     doctor.open_login_terminal()
     assert len(calls) == 1 and "claude auth login" in " ".join(calls[0])
+
+
+def _ep():
+    p = data.create_perfil("Benji")
+    serie = data.create_serie(p.slug, "Apagão", "log", [("t1", "s1"), ("t2", "s2")])
+    return p, serie
+
+
+def test_config_never_returns_secret(monkeypatch):
+    monkeypatch.delenv("OPENROUTER_API_KEY", raising=False)
+    c = _client()
+    assert c.put("/api/config", json={"OPENROUTER_API_KEY": "sk-x", "max_imagens": 10}).status_code == 200
+    r = c.get("/api/config")
+    assert "sk-x" not in r.text and r.json()["keys"]["OPENROUTER_API_KEY"] is True and r.json()["max_imagens"] == 10
+    assert c.put("/api/config", json={"foo": 1}).status_code == 400
+
+
+def test_profile_crud_and_bad_slug():
+    c = _client()
+    slug = c.post("/api/perfis", json={"nome": "Benji"}).json()["slug"]
+    assert c.get(f"/api/perfis/{slug}").json()["perfil"]["nome"] == "Benji"
+    assert c.put(f"/api/perfis/{slug}", json={"ativo": True, "slug": "x"}).json()["slug"] == slug
+    assert c.put(f"/api/perfis/{slug}", json={"onboarding": 99}).status_code == 422
+    iid = c.post(f"/api/perfis/{slug}/ideias", json={"texto": "oi"}).json()["id"]
+    assert c.delete(f"/api/perfis/{slug}/ideias/{iid}").status_code == 200
+    assert c.get(f"/api/perfis/{slug}").json()["ideias"] == []
+    assert c.get("/api/perfis/../x").status_code == 404
+    assert c.get("/api/perfis/nao-existe").status_code == 404
+    assert c.post("/api/perfis/nao-existe/gerar").status_code == 404
+
+
+def test_path_rel_traversal_rejected():
+    _ep()
+    c = _client()
+    assert c.post("/api/series/pausar", json={"path_rel": "../../x", "paused": True}).status_code == 404
+    assert c.post("/api/series/pausar", json={"path_rel": "benji/series/01-apagao", "paused": True}).status_code == 200
+    assert c.get("/api/perfis/benji").json()["series"][0]["serie"]["paused"] is True
+
+
+def test_episode_actions_conflict():
+    _, serie = _ep()
+    c = _client()
+    jid = episode.new_episode_job(server.STORE, serie, 1)
+    assert c.post(f"/api/episodios/{jid}/aprovar").status_code == 409
+    assert c.post(f"/api/episodios/{jid}/retomar").status_code == 409
+    assert c.post("/api/episodios/999/aprovar").status_code == 404
+
+
+def test_episode_detail_urls_and_postado():
+    _, serie = _ep()
+    c = _client()
+    jid = episode.new_episode_job(server.STORE, serie, 1)
+    ep = data.ep_dir(serie, 1)
+    assert c.get(f"/api/episodios/{jid}").json()["final"] is None
+    (ep / "out").mkdir()
+    (ep / "out" / "final.mp4").write_bytes(b"x")
+    d = c.get(f"/api/episodios/{jid}").json()
+    assert d["final"].startswith("/projects/perfis/") and d["n"] == 1 and d["titulo"] == "t1"
+    assert c.get(d["final"]).content == b"x"
+    assert c.post(f"/api/episodios/{jid}/postado", json={"rede": "tiktok"}).json()["postado"] == ["tiktok"]
+    assert c.post(f"/api/episodios/{jid}/postado", json={"rede": "orkut"}).status_code == 422
+    assert c.get("/api/fila").json()["jobs"][0]["titulo"] == "t1"
+
+
+def test_cli_gerar_refuses_when_serve_produces(monkeypatch, capsys):
+    from autovideo import cli, fila
+    monkeypatch.setattr(fila, "acquire_producer", lambda: False)
+    assert cli.main(["gerar", "benji"]) == 1
+    assert "autovideo serve está produzindo" in capsys.readouterr().err

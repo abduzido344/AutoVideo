@@ -20,6 +20,7 @@ _state_lock = threading.RLock()
 # ponytail: cooldown só em memória (some no restart), persiste em fila.json se o restart virar laço de gasto
 _cooldown: dict[str, float] = {}
 _producer = None  # handle do producer.lock, aberto pela vida do processo
+_forced: set[str] = set()  # perfis que o painel pediu para gerar agora; o loop consome (nada roda em thread de request)
 
 
 def _file() -> Path:
@@ -78,6 +79,18 @@ def acquire_producer() -> bool:
         return False
     _producer = fh
     return True
+
+
+def request_force(slug: str) -> None:
+    with _state_lock:
+        _forced.add(slug)
+
+
+def _take_forced() -> list[str]:
+    with _state_lock:
+        out = sorted(_forced)
+        _forced.clear()
+        return out
 
 
 def _serie(path: Path) -> data.Serie:
@@ -175,6 +188,8 @@ def loop(store: JobStore) -> None:
         busy = False
         try:
             tick(store, datetime.now())
+            for slug in _take_forced():
+                tick(store, datetime.now(), force=slug)
         except Exception:  # noqa: BLE001 — um erro num ciclo não pode derrubar a fila
             log.exception("erro no agendador")
         try:

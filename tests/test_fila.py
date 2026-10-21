@@ -251,3 +251,20 @@ def test_single_producer(env):
     out = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, check=True,
                          env={**os.environ}).stdout.strip()
     assert out == "False"
+
+
+def test_request_force_is_consumed_by_loop(env, monkeypatch):
+    calls = []
+    monkeypatch.setattr(fila, "tick", lambda store, now, force=None: calls.append(force))
+    monkeypatch.setattr(fila, "run_next", lambda store, now: False)
+
+    class Stop(Exception):
+        pass
+
+    def stop(_):
+        raise Stop
+    monkeypatch.setattr(fila.time, "sleep", stop)
+    fila.request_force(env.perfil)
+    with pytest.raises(Stop):
+        fila.loop(env.store)
+    assert calls == [None, env.perfil] and fila._take_forced() == []

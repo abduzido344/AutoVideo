@@ -10,7 +10,7 @@ vi.mock("@/components/ui/toast", () => ({ toast: vi.fn(), Toasts: () => null }))
 vi.mock("@/lib/route", () => ({ go: vi.fn() }))
 
 const cfg = (eleven: boolean): Config => ({
-  keys: { ELEVENLABS_API_KEY: eleven, OPENROUTER_API_KEY: false, HIGGSFIELD_API_KEY: false, OPENAI_API_KEY: false, APIFY_TOKEN: false },
+  keys: { ELEVENLABS_API_KEY: eleven ? { mascara: "sk_••••3f9c", ambiente: false } : null, OPENROUTER_API_KEY: null, HIGGSFIELD_API_KEY: null, OPENAI_API_KEY: null, APIFY_TOKEN: null },
   image_provider: "openrouter", image_model: "google/gemini", higgsfield_model: "xai/grok", openai_model: "gpt-image-2", max_imagens: 40,
 })
 const redes = { youtube: { conectada: false, usuario: "" }, tiktok: { conectada: false, usuario: "" }, instagram: { conectada: false, usuario: "" }, facebook: { conectada: false, usuario: "" } }
@@ -31,33 +31,46 @@ describe("Configuracoes", () => {
     render(<Configuracoes aba="xyz" />)
     expect(screen.getByRole("tab", { name: "Chaves API" }).getAttribute("aria-selected")).toBe("true")
   })
-  it("chaves são campos de senha vazios com o estado salva/não salva", async () => {
+  it("chave salva mostra a máscara com Editar e Excluir; as outras, o campo vazio", async () => {
     render(<Configuracoes />)
-    expect(await screen.findByText("salva")).toBeTruthy()
-    expect(screen.getAllByText("não salva")).toHaveLength(4)
-    for (const id of ["ELEVENLABS_API_KEY", "OPENROUTER_API_KEY", "HIGGSFIELD_API_KEY", "OPENAI_API_KEY", "APIFY_TOKEN"]) {
+    expect((await screen.findByLabelText("Chave ElevenLabs salva")).textContent).toBe("sk_••••3f9c")
+    expect(screen.getByRole("button", { name: "Editar a chave ElevenLabs" })).toBeTruthy()
+    expect(screen.getByRole("button", { name: "Excluir a chave ElevenLabs" })).toBeTruthy()
+    expect(document.getElementById("ELEVENLABS_API_KEY")).toBeNull()
+    for (const id of ["OPENROUTER_API_KEY", "HIGGSFIELD_API_KEY", "OPENAI_API_KEY", "APIFY_TOKEN"]) {
       const el = document.getElementById(id) as HTMLInputElement
       expect(el.type).toBe("password")
       expect(el.value).toBe("")
     }
   })
-  it("Salvar das chaves manda só as chaves digitadas e limpa o campo", async () => {
-    vi.mocked(api.saveConfig).mockResolvedValue({ ...cfg(true), keys: { ...cfg(true).keys, OPENROUTER_API_KEY: true } })
+  it("Salvar de uma linha manda só aquela chave e mostra a máscara", async () => {
+    const c = cfg(true)
+    vi.mocked(api.saveConfig).mockResolvedValue({ ...c, keys: { ...c.keys, OPENROUTER_API_KEY: { mascara: "sk-••••redo", ambiente: false } } })
     render(<Configuracoes aba="chaves" />)
-    await screen.findByText("salva")
-    const campo = document.getElementById("OPENROUTER_API_KEY") as HTMLInputElement
-    await userEvent.type(campo, "sk-segredo")
-    await userEvent.click(screen.getByRole("button", { name: "Salvar" }))
+    await screen.findByLabelText("Chave ElevenLabs salva")
+    await userEvent.type(document.getElementById("OPENROUTER_API_KEY")!, "sk-segredo")
+    await userEvent.click(screen.getByRole("button", { name: "Salvar a chave OpenRouter" }))
     await waitFor(() => expect(api.saveConfig).toHaveBeenCalledWith({ OPENROUTER_API_KEY: "sk-segredo" }))
-    await waitFor(() => expect(campo.value).toBe(""))
-    expect(document.body.textContent).not.toContain("sk-segredo")
-    expect(screen.queryAllByText("não salva")).toHaveLength(3)
+    expect(await screen.findByLabelText("Chave OpenRouter salva")).toBeTruthy()
+    expect(document.getElementById("OPENROUTER_API_KEY")).toBeNull()
   })
-  it("Salvar das chaves sem nada digitado não chama a API", async () => {
+  it("Salvar com o campo vazio não chama a API", async () => {
     render(<Configuracoes aba="chaves" />)
-    await screen.findByText("salva")
-    await userEvent.click(screen.getByRole("button", { name: "Salvar" }))
+    await screen.findByLabelText("Chave ElevenLabs salva")
+    await userEvent.click(screen.getByRole("button", { name: "Salvar a chave Apify" }))
     expect(api.saveConfig).not.toHaveBeenCalled()
+  })
+  it("Editar abre o campo; Excluir pede confirmação e manda a chave vazia", async () => {
+    vi.mocked(api.saveConfig).mockResolvedValue(cfg(false))
+    render(<Configuracoes aba="chaves" />)
+    await userEvent.click(await screen.findByRole("button", { name: "Editar a chave ElevenLabs" }))
+    expect(document.getElementById("ELEVENLABS_API_KEY")).toBeTruthy()
+    await userEvent.click(screen.getByRole("button", { name: "Cancelar" }))
+    await userEvent.click(screen.getByRole("button", { name: "Excluir a chave ElevenLabs" }))
+    expect(api.saveConfig).not.toHaveBeenCalled()
+    await userEvent.click(screen.getByRole("button", { name: "Excluir" }))
+    await waitFor(() => expect(api.saveConfig).toHaveBeenCalledWith({ ELEVENLABS_API_KEY: "" }))
+    expect(await screen.findByRole("button", { name: "Salvar a chave ElevenLabs" })).toBeTruthy()
   })
   it("Imagens mostra o modelo e o limite e salva só os campos dela", async () => {
     vi.mocked(api.saveConfig).mockResolvedValue({ ...cfg(true), max_imagens: 25 })

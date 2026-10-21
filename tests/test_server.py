@@ -89,7 +89,13 @@ def test_config_never_returns_secret(monkeypatch):
     c = _client()
     assert c.put("/api/config", json={"OPENROUTER_API_KEY": "sk-x", "max_imagens": 10}).status_code == 200
     r = c.get("/api/config")
-    assert "sk-x" not in r.text and r.json()["keys"]["OPENROUTER_API_KEY"] is True and r.json()["max_imagens"] == 10
+    assert "sk-x" not in r.text and r.json()["keys"]["OPENROUTER_API_KEY"] == {"mascara": "••••", "ambiente": False}
+    assert r.json()["max_imagens"] == 10
+    c.put("/api/config", json={"OPENROUTER_API_KEY": "sk_abcdefgh1234"})
+    r = c.get("/api/config")
+    assert "abcdefgh" not in r.text and r.json()["keys"]["OPENROUTER_API_KEY"]["mascara"] == "sk_••••1234"
+    c.put("/api/config", json={"OPENROUTER_API_KEY": ""})  # excluir = salvar vazio
+    assert c.get("/api/config").json()["keys"]["OPENROUTER_API_KEY"] is None
     assert c.put("/api/config", json={"foo": 1}).status_code == 400
     assert c.put("/api/config", json={"max_imagens": 0}).status_code == 400
     assert c.put("/api/config", json={"APIFY_TOKEN": 5}).status_code == 400

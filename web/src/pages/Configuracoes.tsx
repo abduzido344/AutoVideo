@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { api, type Auth, type Config, type ConfigPatch, type Perfil, type Rede } from "@/api"
+import { api, type Auth, type Chave, type Config, type ConfigPatch, type Perfil, type Rede } from "@/api"
 import { COR, ICONE } from "@/components/secoes"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -26,11 +26,59 @@ const DICA_MODELO = {
 
 const ABAS = [{ aba: "chaves", label: "Chaves API" }, { aba: "conexoes", label: "Conexões" }, { aba: "imagens", label: "Imagens" }] as const
 const SUB: Record<string, string> = {
-  chaves: "As chaves ficam só neste computador e nunca voltam para a tela.",
+  chaves: "As chaves ficam só neste computador. A tela mostra só o começo e o fim de cada uma.",
   conexoes: "A conta do Claude que roda os agentes e as redes de cada perfil.",
   imagens: "Quem gera as imagens das cenas e quantas por episódio.",
 }
 const REDES: [Rede, string][] = [["youtube", "YouTube"], ["tiktok", "TikTok"], ["instagram", "Instagram"], ["facebook", "Facebook"]]
+
+// uma linha por chave: salva mostra a máscara com Editar/Excluir; sem chave (ou editando) mostra o campo
+function LinhaChave({ id, label, dica, chave, salvando, onSalvar }: {
+  id: string; label: string; dica: string; chave: Chave | null; salvando: boolean; onSalvar: (valor: string) => Promise<boolean>
+}) {
+  const [editando, setEditando] = useState(false)
+  const [excluindo, setExcluindo] = useState(false)
+  const [valor, setValor] = useState("")
+  const campo = !chave || editando
+  const salvar = async () => {
+    if (!valor.trim()) return toast({ message: "Cole a chave para salvar", state: "error" })
+    if (await onSalvar(valor.trim())) { setValor(""); setEditando(false) }
+  }
+  return (
+    <li className="space-y-2 py-4 first:pt-0 last:pb-0">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+        <div className="min-w-0 flex-1">
+          <Label htmlFor={id} className="font-medium">{label}</Label>
+          <p className="text-xs text-muted-foreground">{dica}</p>
+        </div>
+        {chave && !editando && (excluindo
+          ? <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground">Excluir a chave?</span>
+              <Button size="sm" variant="destructive" disabled={salvando}
+                onClick={async () => { if (await onSalvar("")) setExcluindo(false) }}>Excluir</Button>
+              <Button size="sm" variant="outline" onClick={() => setExcluindo(false)}>Cancelar</Button>
+            </div>
+          : <div className="flex items-center gap-2">
+              <code className="rounded-md bg-muted px-2 py-1 font-mono text-xs" aria-label={`Chave ${label} salva`}>{chave.mascara}</code>
+              {chave.ambiente
+                ? <span className="text-xs text-muted-foreground">variável de ambiente</span>
+                : <>
+                    <Button size="sm" variant="outline" onClick={() => setEditando(true)} aria-label={`Editar a chave ${label}`}>Editar</Button>
+                    <Button size="sm" variant="ghost" className="text-destructive" onClick={() => setExcluindo(true)} aria-label={`Excluir a chave ${label}`}>Excluir</Button>
+                  </>}
+            </div>)}
+      </div>
+      {campo && (
+        <form className="flex gap-2" onSubmit={(e) => { e.preventDefault(); void salvar() }}>
+          <Input id={id} type="password" autoComplete="off" value={valor} autoFocus={editando}
+            placeholder={editando ? "Cole a nova chave" : "Cole a chave"} onChange={(e) => setValor(e.target.value)} />
+          <Button type="submit" disabled={salvando} aria-label={`Salvar a chave ${label}`}>Salvar</Button>
+          {editando && <Button type="button" variant="outline" onClick={() => { setEditando(false); setValor("") }}>Cancelar</Button>}
+        </form>
+      )}
+    </li>
+  )
+}
 
 // cartão de contas de um perfil (antes na aba Contas do perfil)
 function Contas({ perfil }: { perfil: Perfil }) {
@@ -87,7 +135,6 @@ export function Configuracoes({ aba, perfis = [], auth = null, onClaude = () => 
 }) {
   const atual = ABAS.some((a) => a.aba === aba) ? aba! : "chaves"
   const [cfg, setCfg] = useState<Config | null>(null)
-  const [novas, setNovas] = useState<Record<string, string>>({})
   const [provedor, setProvedor] = useState("openrouter")
   const [modelos, setModelos] = useState({ openrouter: "", higgsfield: "", openai: "" })
   const [limite, setLimite] = useState("")
@@ -99,20 +146,16 @@ export function Configuracoes({ aba, perfis = [], auth = null, onClaude = () => 
   }, [])
 
   // cada aba salva só o que é dela e só recarrega o que é dela (não apaga o que foi digitado na outra)
-  async function enviar(patch: ConfigPatch, depois: (c: Config) => void) {
+  async function enviar(patch: ConfigPatch, depois: (c: Config) => void, message = "Configurações salvas") {
     setSalvando(true)
     try {
       depois(await api.saveConfig(patch))
-      toast({ message: "Configurações salvas", state: "success" })
+      toast({ message, state: "success" })
+      return true
     } catch (e) {
       toast({ message: "Não consegui salvar", description: (e as Error).message, state: "error" })
+      return false
     } finally { setSalvando(false) }
-  }
-  function salvarChaves() {
-    const patch: ConfigPatch = {}
-    for (const { id } of CHAVES) if (novas[id]?.trim()) patch[id] = novas[id].trim()
-    if (!Object.keys(patch).length) return toast({ message: "Digite ao menos uma chave para salvar", state: "error" })
-    void enviar(patch, (c) => { setCfg(c); setNovas({}) })
   }
   function salvarImagens() {
     const n = Number(limite)
@@ -125,25 +168,16 @@ export function Configuracoes({ aba, perfis = [], auth = null, onClaude = () => 
   return (
     <Pagina titulo="Configurações" icone={ICONE.config} cor={COR.config.caixa} sub={SUB[atual]}
       abas={<Abas label="Seções das configurações" valor={atual} itens={ABAS} onChange={(a) => go({ name: "config", aba: a })} />}>
-      {atual === "chaves" && <>
-        <div className="space-y-4">
-          {CHAVES.map(({ id, label, dica }) => {
-            const salva = cfg?.keys[id] ?? false
-            return (
-              <div key={id} className="space-y-1.5">
-                <div className="flex items-center justify-between gap-2">
-                  <Label htmlFor={id}>{label} <span className="font-normal text-muted-foreground">· {dica}</span></Label>
-                  <span className={salva ? "text-xs text-success" : "text-xs text-muted-foreground"}>{salva ? "salva" : "não salva"}</span>
-                </div>
-                <Input id={id} type="password" autoComplete="off" value={novas[id] ?? ""}
-                  placeholder={salva ? "Digite para trocar" : "Cole a chave"}
-                  onChange={(e) => setNovas({ ...novas, [id]: e.target.value })} />
-              </div>
-            )
-          })}
-        </div>
-        {salvar(salvarChaves)}
-      </>}
+      {atual === "chaves" && (
+        <Card className="p-4">
+          <ul className="divide-y">
+            {CHAVES.map(({ id, label, dica }) => (
+              <LinhaChave key={id} id={id} label={label} dica={dica} chave={cfg?.keys[id] ?? null} salvando={salvando || !cfg}
+                onSalvar={(v) => enviar({ [id]: v }, setCfg, v ? `Chave ${label} salva` : `Chave ${label} excluída`)} />
+            ))}
+          </ul>
+        </Card>
+      )}
 
       {atual === "conexoes" && <Conexoes perfis={perfis} auth={auth} onClaude={onClaude} />}
 

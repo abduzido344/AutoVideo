@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 import threading
 import time
 from pathlib import Path
@@ -178,9 +179,16 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
             raise HTTPException(501, str(e)) from e
         return {"ok": True}
 
+    def _chave(k: str) -> dict | None:
+        # a chave nunca volta inteira: só o começo (sk_...) e o fim, para o usuário reconhecer qual é
+        v = config.get_key(k)
+        if not v:
+            return None
+        return {"mascara": f"{v[:3]}••••{v[-4:]}" if len(v) >= 12 else "••••", "ambiente": bool(os.environ.get(k))}
+
     @app.get("/api/config")
     def get_config():
-        return {"keys": {k: bool(config.get_key(k)) for k in SECRETS}, **{k: config.setting(k) for k in SETTINGS}}
+        return {"keys": {k: _chave(k) for k in SECRETS}, **{k: config.setting(k) for k in SETTINGS}}
 
     @app.put("/api/config")
     def put_config(body: dict):

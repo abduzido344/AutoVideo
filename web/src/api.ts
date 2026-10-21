@@ -34,8 +34,10 @@ export type ChatReply = { resposta: string; historico: ChatMsg[]; etapa: number 
 
 export type Voz = { voice_id: string; nome: string; preview_url: string | null; descricao: string }
 
+export type Chave = { mascara: string; ambiente: boolean }
 export type Config = {
-  keys: { ELEVENLABS_API_KEY: boolean; OPENROUTER_API_KEY: boolean; HIGGSFIELD_API_KEY: boolean; OPENAI_API_KEY: boolean; APIFY_TOKEN: boolean }
+  // null = não salva; a chave nunca volta inteira, só a máscara (começo e fim)
+  keys: Record<"ELEVENLABS_API_KEY" | "OPENROUTER_API_KEY" | "HIGGSFIELD_API_KEY" | "OPENAI_API_KEY" | "APIFY_TOKEN", Chave | null>
   image_provider: string; image_model: string; higgsfield_model: string; openai_model: string; max_imagens: number
 }
 export type ConfigPatch = Partial<{

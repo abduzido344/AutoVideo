@@ -276,4 +276,4 @@ def test_killed_mid_stage_resumes_and_redoes_partial(env, monkeypatch):
 
 
 def test_aparencia_drops_headings_and_joins_lines():
-    assert episode._aparencia("# Benji\nbig head,\n  dot eyes\n\n## Notas\nred cap") == "big head, dot eyes red cap"
+    assert data.aparencia("# Benji\nbig head,\n  dot eyes\n\n## Notas\nred cap") == "big head, dot eyes red cap"

@@ -184,6 +184,11 @@ def personagens(slug: str) -> list[dict]:
             for d in sorted(base.iterdir()) if d.is_dir()]
 
 
+def aparencia(ficha: str) -> str:
+    """Ficha em uma linha, sem títulos markdown (o nome do personagem viraria texto na imagem)."""
+    return " ".join(" ".join(ln for ln in ficha.splitlines() if not ln.lstrip().startswith("#")).split())
+
+
 def ready(slug: str, estilo: str | None = None) -> str | None:
     """Motivo (em português) de o perfil não poder produzir; None se está pronto. `estilo`: o que vai ser salvo."""
     try:

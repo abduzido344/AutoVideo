@@ -17,7 +17,7 @@ def gerar_folha(perfil: str, p: str) -> None:
         raise ValueError("o personagem não tem ficha.md")
     ficha = (d / "ficha.md").read_text(encoding="utf-8")
     # folha_prefixo, não imagem_prefixo: este traz formato (9:16) e cenário que brigam com a folha
-    prompt = ", ".join(x for x in (estilo.folha_prefixo, SHEET_PROMPT, ficha) if x)
+    prompt = ", ".join(x for x in (estilo.folha_prefixo, SHEET_PROMPT, data.aparencia(ficha)) if x)
     images.generate(prompt, [], d / "folha.png", aspect="16:9")
     (d / "aprovada").unlink(missing_ok=True)  # folha nova = aprovação nova (só depois de gerar com sucesso)
 

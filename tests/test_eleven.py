@@ -88,5 +88,13 @@ def test_vozes_errors(monkeypatch):
     with pytest.raises(eleven.MissingKey):
         eleven.vozes(client=client(lambda r: httpx.Response(200)))
     monkeypatch.setenv("ELEVENLABS_API_KEY", "k")
-    with pytest.raises(RuntimeError, match="401"):
+    with pytest.raises(RuntimeError, match="inválida"):
         eleven.vozes(client=client(lambda r: httpx.Response(401, text="no")))
+
+
+def test_key_id_instead_of_key_has_clear_message(monkeypatch):
+    monkeypatch.setenv("ELEVENLABS_API_KEY", "abc123")
+    body = {"detail": {"type": "authentication_error", "status": "api_key_id_used_as_api_key"}}
+    c = httpx.Client(transport=httpx.MockTransport(lambda q: httpx.Response(400, json=body)))
+    with pytest.raises(RuntimeError, match="começa com sk_"):
+        eleven.vozes(client=c)

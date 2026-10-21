@@ -11,6 +11,14 @@ class MissingKey(RuntimeError):
     pass
 
 
+def _erro(r: httpx.Response) -> str:
+    if "api_key_id_used_as_api_key" in r.text:
+        return "a chave da ElevenLabs salva é o ID da chave: cole a chave que começa com sk_ (Configurações → Chaves API)"
+    if r.status_code == 401:
+        return "chave da ElevenLabs inválida (Configurações → Chaves API)"
+    return f"ElevenLabs {r.status_code}: {r.text[:300]}"
+
+
 def _post(path: str, body: dict, out: Path, client: httpx.Client | None) -> None:
     key = config.get_key("ELEVENLABS_API_KEY")
     if not key:
@@ -23,7 +31,7 @@ def _post(path: str, body: dict, out: Path, client: httpx.Client | None) -> None
         if own:
             c.close()
     if not r.is_success:
-        raise RuntimeError(f"ElevenLabs {r.status_code}: {r.text[:300]}")
+        raise RuntimeError(_erro(r))
     out.parent.mkdir(parents=True, exist_ok=True)
     part = out.with_name(out.name + ".part")
     part.write_bytes(r.content)
@@ -62,7 +70,7 @@ def vozes(client: httpx.Client | None = None) -> list[dict]:
         if own:
             c.close()
     if not r.is_success:
-        raise RuntimeError(f"ElevenLabs {r.status_code}: {r.text[:300]}")
+        raise RuntimeError(_erro(r))
     return [{"voice_id": v["voice_id"], "nome": v.get("name", ""), "preview_url": v.get("preview_url"),
              "descricao": ", ".join(str(x) for x in (v.get("labels") or {}).values() if x)}
             for v in r.json().get("voices", [])]

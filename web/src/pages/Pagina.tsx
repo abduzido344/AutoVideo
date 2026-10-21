@@ -38,7 +38,7 @@ export function Abas({ valor, itens, onChange, label }: {
   valor: string; itens: readonly { aba: string; label: string }[]; onChange: (aba: string) => void; label: string
 }) {
   return (
-    <Tabs value={valor} onValueChange={onChange} className="max-w-full overflow-x-auto">
+    <Tabs value={valor} onValueChange={onChange} className="max-w-full overflow-x-auto overflow-y-hidden">
       <TabsList aria-label={label}>
         {itens.map((i) => <TabsTrigger key={i.aba} value={i.aba}>{i.label}</TabsTrigger>)}
       </TabsList>

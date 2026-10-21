@@ -1,6 +1,7 @@
 """Estilo a partir de um perfil do Instagram: Apify → vídeos → transcrição + folha de frames → Analista."""
 import math
 import re
+import shutil
 from pathlib import Path
 from urllib.parse import urlsplit
 import httpx
@@ -11,6 +12,8 @@ from autovideo.hf import run
 from autovideo.project import home
 
 APIFY = "https://api.apify.com/v2/acts/apify~instagram-reel-scraper/run-sync-get-dataset-items"
+MAX_BYTES = 100 * 1024 * 1024  # ponytail: teto fixo por vídeo (URL vem de terceiro); configurável se reels longos estourarem
+MAX_VIDEOS = 3
 MAX_FRAMES = 24  # ponytail: só os primeiros 72 s por vídeo (6 linhas); a folha inteira estouraria a visão
 
 
@@ -26,7 +29,11 @@ def normalizar_handle(raw: str) -> str:
 
 def criar_job(store, handle: str) -> int:
     h = normalizar_handle(handle)
-    d = home() / "estilos" / data.slugify(h) / ".analise"
+    base = data.slugify(h)
+    for i in range(1, 1000):  # a_b e a.b dão o mesmo slug: handle diferente no mesmo dir ganha sufixo
+        d = home() / "estilos" / (base if i == 1 else f"{base}-{i}") / ".analise"
+        if not (d / "perfil.txt").exists() or (d / "perfil.txt").read_text(encoding="utf-8") == h:
+            break
     d.mkdir(parents=True, exist_ok=True)
     (d / "perfil.txt").write_text(h, encoding="utf-8")
     return store.create(str(d), "estilo", False)
@@ -39,18 +46,28 @@ def _baixar(h: str, work: Path, client: httpx.Client) -> list[Path]:
     r = client.post(APIFY, json={"username": [h], "resultsLimit": 3}, headers={"Authorization": f"Bearer {token}"})
     if not r.is_success:
         raise RuntimeError(f"Apify {r.status_code}: {r.text[:300]}")
-    urls = [i["videoUrl"] for i in r.json() if isinstance(i, dict) and i.get("videoUrl")]
+    urls = [u for i in r.json() if isinstance(i, dict) and isinstance(u := i.get("videoUrl"), str)
+            and urlsplit(u).scheme in ("http", "https")][:MAX_VIDEOS]
     if not urls:
         raise RuntimeError(f"o Apify não devolveu vídeos de @{h} (perfil privado ou sem reels?)")
     out = []
     for n, u in enumerate(urls, 1):
         v = work / f"v{n}" / "video.mp4"
         v.parent.mkdir(parents=True, exist_ok=True)
-        resp = client.get(u)
-        if not resp.is_success:
-            raise RuntimeError(f"download do vídeo {n} falhou: {resp.status_code}")
         part = v.with_name(v.name + ".part")
-        part.write_bytes(resp.content)
+        try:
+            with client.stream("GET", u) as resp, part.open("wb") as f:
+                if not resp.is_success:
+                    raise RuntimeError(f"download do vídeo {n} falhou: {resp.status_code}")
+                size = 0
+                for chunk in resp.iter_bytes():
+                    size += len(chunk)
+                    if size > MAX_BYTES:
+                        raise RuntimeError(f"vídeo {n} maior que {MAX_BYTES // 2**20} MB: abortado")
+                    f.write(chunk)
+        except BaseException:
+            part.unlink(missing_ok=True)
+            raise
         part.replace(v)
         out.append(v)
     return out
@@ -78,9 +95,15 @@ def run_job(store, jid: int, client: httpx.Client | None = None) -> str:
             (v.parent / "transcricao.txt").write_text(" ".join(w.text for w in words), encoding="utf-8")
             _folha(v)
         task = (f"Analise os vídeos do perfil @{h} em .analise/ (v1, v2, ...: folha.jpg e transcricao.txt) e grave "
-                "estilo.md e estilo.json na pasta atual. Só o estilo; nunca copie personagem, mundo ou história.")
-        (est / "estilo.json").unlink(missing_ok=True)
-        agents.run_role(agents.ROLES["analista"], est, task, est / "estilo.json", validate=agents.validate_model(Estilo))
+                "estilo.md e estilo.json em .analise/saida/. Só o estilo; nunca copie personagem, mundo ou história.")
+        saida = work / "saida"  # staging: o estilo existente só é trocado depois da validação
+        shutil.rmtree(saida, ignore_errors=True)
+        saida.mkdir()
+        agents.run_role(agents.ROLES["analista"], est, task, saida / "estilo.json", validate=agents.validate_model(Estilo))
+        if not (saida / "estilo.md").exists():
+            raise RuntimeError("o analista não gravou estilo.md")
+        (saida / "estilo.md").replace(est / "estilo.md")
+        (saida / "estilo.json").replace(est / "estilo.json")
         status, err = "completed", ""
     except agents.UsageLimit:
         store.set(jid, status="queued", error="")  # a fila pausa e o job recomeça

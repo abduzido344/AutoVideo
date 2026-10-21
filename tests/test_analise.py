@@ -39,7 +39,7 @@ def test_analise_pipeline_with_fakes(env, media_dir, monkeypatch):
         assert role.name == "analista"
         v1 = cwd / ".analise" / "v1"
         assert (v1 / "folha.jpg").stat().st_size > 0 and (v1 / "transcricao.txt").read_text(encoding="utf-8") == "olá mundo"
-        (cwd / "estilo.md").write_text("estilo", encoding="utf-8")
+        (output.parent / "estilo.md").write_text("estilo", encoding="utf-8")
         output.write_text(json.dumps(ESTILO), encoding="utf-8")
         validate(output)
 
@@ -67,3 +67,62 @@ def test_usage_limit_requeues(env, monkeypatch):
     with pytest.raises(agents.UsageLimit):
         analise.run_job(env, jid)
     assert env.get(jid)["status"] == "queued"
+
+
+def _fake_apify(urls, body=b"x" * 10):
+    def h(req):
+        if req.url.host == "api.apify.com":
+            return httpx.Response(200, json=[{"videoUrl": u} for u in urls])
+        return httpx.Response(200, content=body)
+    return httpx.Client(transport=httpx.MockTransport(h))
+
+
+def test_download_caps_count_and_scheme(env, tmp_path):
+    urls = ["file:///etc/passwd", "ftp://x/v.mp4", *[f"https://cdn.example/{i}.mp4" for i in range(5)]]
+    out = analise._baixar("abc", tmp_path, _fake_apify(urls))
+    assert len(out) == 3 and all(v.read_bytes() == b"x" * 10 for v in out)
+    with pytest.raises(RuntimeError, match="não devolveu vídeos"):
+        analise._baixar("abc", tmp_path, _fake_apify(["file:///x"]))
+
+
+def test_download_size_cap(env, tmp_path, monkeypatch):
+    monkeypatch.setattr(analise, "MAX_BYTES", 5)
+    with pytest.raises(RuntimeError, match="maior que"):
+        analise._baixar("abc", tmp_path, _fake_apify(["https://cdn.example/a.mp4"]))
+    assert not list(tmp_path.rglob("video.mp4*"))
+
+
+def test_failed_agent_keeps_existing_style(env, monkeypatch):
+    from autovideo.project import home
+    est = home() / "estilos" / "abc"
+    est.mkdir(parents=True)
+    (est / "estilo.json").write_text(json.dumps(ESTILO), encoding="utf-8")
+    (est / "estilo.md").write_text("antigo", encoding="utf-8")
+    monkeypatch.setattr(analise, "_baixar", lambda *a: [])
+
+    def ruim(role, cwd, task, output, validate=None, context=""):
+        output.write_text("{lixo", encoding="utf-8")
+        (output.parent / "estilo.md").write_text("novo", encoding="utf-8")
+        raise agents.AgentOutputError("inválido")
+
+    monkeypatch.setattr(agents, "run_role", ruim)
+    jid = analise.criar_job(env, "abc")
+    assert analise.run_job(env, jid) == "failed"
+    assert (est / "estilo.md").read_text(encoding="utf-8") == "antigo"
+    assert json.loads((est / "estilo.json").read_text(encoding="utf-8"))["titulo"] == "Analisado"
+
+
+def test_invalid_estilo_json_skipped_by_list(env):
+    from autovideo.project import home
+    bad = home() / "estilos" / "ruim"
+    bad.mkdir(parents=True)
+    (bad / "estilo.json").write_text("{lixo", encoding="utf-8")
+    assert "ruim" not in {e["slug"] for e in data.list_estilos()}
+
+
+def test_slug_collision_gets_suffix(env):
+    a, b = analise.criar_job(env, "a_b"), analise.criar_job(env, "a.b")
+    assert analise.criar_job(env, "a_b") != a
+    dirs = {env.get(j)["project_dir"].split("estilos")[-1] for j in (a, b)}
+    assert len(dirs) == 2
+    assert env.get(analise.criar_job(env, "a_b"))["project_dir"] == env.get(a)["project_dir"]

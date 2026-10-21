@@ -1,4 +1,5 @@
 import json
+import logging
 import re
 import unicodedata
 import uuid
@@ -10,6 +11,7 @@ from autovideo.project import home
 ScreenType = Literal["chat", "alerta", "bateria", "bloqueio", "notificacao"]
 Rede = Literal["youtube", "tiktok", "instagram", "facebook"]
 FABRICA = Path(__file__).parent / "estilos"
+log = logging.getLogger("autovideo.data")
 
 
 class Estilo(BaseModel):
@@ -181,8 +183,12 @@ def list_estilos() -> list[dict]:
             continue
         for d in sorted(base.iterdir()):
             if d.name not in seen and (d / "estilo.json").exists():
-                seen[d.name] = {"slug": d.name, "origem": origem,
-                                "titulo": json.loads((d / "estilo.json").read_text(encoding="utf-8")).get("titulo", d.name)}
+                try:
+                    titulo = Estilo.model_validate_json((d / "estilo.json").read_text(encoding="utf-8")).titulo
+                except ValueError:  # JSON inválido ou fora do schema (UnicodeDecodeError também é ValueError)
+                    log.warning("estilo %s ignorado: estilo.json inválido", d.name)
+                    continue
+                seen[d.name] = {"slug": d.name, "origem": origem, "titulo": titulo}
     return sorted(seen.values(), key=lambda e: e["slug"])
 
 

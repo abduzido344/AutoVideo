@@ -191,3 +191,11 @@ def test_analisar_endpoint(monkeypatch):
     assert c.post("/api/estilos/analisar", json={"handle": "../x"}).status_code == 422
     jid = c.post("/api/estilos/analisar", json={"handle": "@abc"}).json()["job"]
     assert server.STORE.get(jid)["recipe"] == "estilo"
+
+
+def test_folha_without_ficha_is_409_without_paths():
+    c = _client()
+    slug = c.post("/api/perfis", json={"nome": "Benji"}).json()["slug"]
+    (data.perfis_dir() / slug / "personagens" / "ze").mkdir(parents=True)
+    r = c.post(f"/api/perfis/{slug}/personagens/ze/folha")
+    assert r.status_code == 409 and str(data.perfis_dir()) not in r.json()["detail"]

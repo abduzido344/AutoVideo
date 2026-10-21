@@ -242,8 +242,12 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
             personagem.gerar_folha(slug, p)
         except MissingKey as e:
             raise HTTPException(400, str(e)) from e
-        except (ImageError, OSError) as e:
+        except (KeyError, ValueError) as e:  # perfil/estilo sumiu ou inválido, sem ficha: sem caminhos na mensagem
+            raise HTTPException(409, str(e) if isinstance(e, ValueError) and "ficha" in str(e) else "perfil, estilo ou ficha inválidos") from e
+        except ImageError as e:
             raise HTTPException(502, f"não consegui gerar a folha: {e}") from e
+        except OSError as e:
+            raise HTTPException(502, "não consegui gravar a folha") from e
         return {"ok": True}
 
     @app.post("/api/perfis/{slug}/personagens/{p}/aprovar")

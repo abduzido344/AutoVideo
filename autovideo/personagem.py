@@ -11,6 +11,8 @@ def _dir(perfil: str, p: str):
 def gerar_folha(perfil: str, p: str) -> None:
     d = _dir(perfil, p)
     _, estilo = data.load_estilo(data.load_perfil(perfil).estilo)
+    if not (d / "ficha.md").exists():
+        raise ValueError("o personagem não tem ficha.md")
     ficha = (d / "ficha.md").read_text(encoding="utf-8")
     images.generate(f"{estilo.imagem_prefixo}, {SHEET_PROMPT}, {ficha}", [], d / "folha.png", aspect="16:9")
     (d / "aprovada").unlink(missing_ok=True)  # folha nova = aprovação nova (só depois de gerar com sucesso)

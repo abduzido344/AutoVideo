@@ -23,7 +23,7 @@ Os demais 77 respondem 401 e exigem **Kobra Pro**. O token vai em `KOBRA_TOKEN`,
 **Instalar item free sem token:** com `@kobra` no `components.json` o shadcn exige `KOBRA_TOKEN` até para itens free (erro "requires the following environment variables"). Instale pela URL: `npx shadcn@latest add https://kobra.systems/r/<nome>.json`.
 
 ## Estado atual do painel (`web/`)
-Sem KOBRA_TOKEN na instalação. Kobra: video (player), sound (<SoundEffects>) e toast (`<Toasts />` no App; padrão de notificação do painel: `toast({ message, description?, state })`). O toast depende de `@kobra/alert`, `@kobra/spinner` e `@kobra/button`, que são Pro: `components/toast-marks.tsx` substitui os dois primeiros com ícones do lucide, o `button` é o do shadcn, e `useDirection` (base-ui) virou `document.dir`. shadcn base: sidebar (variant inset), switch, dropdown-menu, tabs, button, dialog. Markdown do brief com react-markdown.
+Sem KOBRA_TOKEN na instalação. Kobra: video (player), sound (<SoundEffects>) e toast (`<Toasts />` no App; padrão de notificação do painel: `toast({ message, description?, state })`). O toast depende de `@kobra/alert`, `@kobra/spinner` e `@kobra/button`, que são Pro: `components/toast-marks.tsx` substitui os dois primeiros com ícones do lucide, o `button` é o do shadcn, e `useDirection` (base-ui) virou `document.dir`. shadcn base: sidebar (variant inset), switch, dropdown-menu, tabs, button, dialog, card, input, label, select, sheet, table, textarea, toggle-group, tooltip, progress, badge, scroll-area, separator, skeleton. Telas: Perfis, Onboarding, Perfil, Estilos, Fila, Revisão e Configurações. Markdown do brief com react-markdown.
 
 Nota: o `liquidglass` vai duas vezes no bundle: a lib vendorizada em `src/lib/liquidglass` (importada por `src/lib/glass-controls.ts`, vinda do item `video`) e a cópia interna do `loomix` (chunks `liquidglass-*.js` no build, ~51 kB cada). A deduplicação não é uma troca trivial de import (o `loomix` não exporta a lib), então ficou como está.
 
@@ -62,3 +62,5 @@ Nota: o `liquidglass` vai duas vezes no bundle: a lib vendorizada em `src/lib/li
 | `components/StatusPill.tsx` | Pílula de status do doctor; `badge` do shadcn não tem o estado "verificando" com ponto |
 | `pages/Perfil.tsx`, `pages/Estilos.tsx` | Telas: `tabs` + `card` + `input`/`textarea`; `<select>` nativo na Agenda (estilo); dialog "Novo estilo" abre a conversa (`Chat` kind estilo) |
 | `pages/Fila.tsx`, `pages/Revisao.tsx` | Telas: Fila = `card` por status + barra de etapas à mão (Kobra `task-list`/`grouped-table` exigem Pro); Revisão = Kobra `video` + `card` + `textarea`, confirmação de Descartar inline |
+| `pages/Configuracoes.tsx` | Tela: `card` + `input` para as chaves (ElevenLabs, OpenRouter, Apify) e o status do Claude; sem componente equivalente pronto |
+| `components/toast-marks.tsx` | Substitui `@kobra/alert` e `@kobra/spinner` (Pro) no toast, com ícones do lucide |

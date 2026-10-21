@@ -1,6 +1,6 @@
 # AutoVideo
 
-- **Rumo atual:** fábrica local de séries narradas em vídeo vertical, multi-perfil, com revisão antes de postar. Spec: `docs/superpowers/specs/2026-10-21-autovideo-series-design.md`. O fluxo antigo de edição de gravação (M1) saiu do escopo; o código dele só é removido ou reaproveitado conforme o plano do novo rumo.
+- **Rumo atual:** fábrica local de séries narradas em vídeo vertical, multi-perfil, com revisão antes de postar. Spec: `docs/superpowers/specs/2026-10-21-autovideo-series-design.md`. O fluxo antigo de edição de gravação (M1) saiu do escopo.
 - **Agentes:** um Diretor orquestra subagentes de função única. O bastão passa por arquivo, nunca por contexto: cada subagente nasce limpo, grava o artefato e devolve um recibo curto. O Diretor não lê artefatos pesados, e o Revisor é um subagente separado.
 - **UI (painel em `web/`):** React + Vite + Tailwind v4 + shadcn/ui + registry Kobra (`@kobra`). O visual alvo é o do Lum Studio (claro, ação preta, acento magenta `#FF4081`); os tokens estão no spec.
   **Regra:** antes de escrever qualquer componente de UI, procure um pronto na ordem Kobra → shadcn base → outros registries do índice shadcn, seguindo `docs/ui-components.md`. Se nada servir e você escrever à mão, registre o componente nesse doc.

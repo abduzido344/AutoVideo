@@ -3,6 +3,7 @@ import logging
 import threading
 import time
 from pathlib import Path
+import httpx
 from urllib.parse import urlsplit
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
@@ -10,7 +11,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, ValidationError
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 from autovideo import agents, analise, chat, config, data, doctor, episode, fila, images, personagem
-from autovideo.eleven import MissingKey
+from autovideo.eleven import MissingKey, vozes
 from autovideo.images import ImageError
 from autovideo.jobs import GateError, JobStore
 
@@ -127,6 +128,13 @@ def _where(job: dict) -> dict:
     except (ValueError, StopIteration):
         pass
     return out
+
+
+def _postado(ep: Path, n: int | None) -> list:
+    try:
+        return next(e.postado for e in data.Serie.model_validate_json(_read(ep.parent / "serie.json")).episodios if e.n == n)
+    except (ValueError, StopIteration):
+        return []  # sem série/episódio: nada postado
 
 
 def _url(p: Path) -> str | None:
@@ -335,10 +343,27 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
         except agents.AgentOutputError as e:
             raise HTTPException(502, str(e)) from e
 
+    def _card(j: dict) -> dict:
+        w = {**j, **_where(j)}
+        if j["recipe"] == "episodio":
+            ep = Path(j["project_dir"])
+            w |= {"capa": _url(ep / "out" / "capa.jpg"), "video": (ep / "out" / "final.mp4").exists(),
+                  "postado": _postado(ep, w["n"]), "aprovado": w["n"] is not None and fila._approved(ep.parent, w["n"])}
+        return w
+
     @app.get("/api/fila")
     def get_fila():
         # receitas antigas do M1 (director, post...) não são episódio nem estilo: ficam fora do painel
-        return {**fila.state(), "jobs": [{**j, **_where(j)} for j in store.list() if j["recipe"] in ("episodio", "estilo")]}
+        return {**fila.state(), "jobs": [_card(j) for j in store.list() if j["recipe"] in ("episodio", "estilo")]}
+
+    @app.get("/api/vozes")
+    def get_vozes():
+        try:
+            return vozes()
+        except MissingKey as e:
+            raise HTTPException(400, "salve a chave da ElevenLabs em Configurações") from e
+        except (RuntimeError, httpx.HTTPError) as e:
+            raise HTTPException(502, str(e)) from e
 
     @app.post("/api/fila/pausar")
     def pausar():
@@ -367,11 +392,7 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
             except ValueError:
                 pass  # linha truncada por kill no meio da escrita
         w = _where(job)
-        postado = []
-        try:
-            postado = next(e.postado for e in data.Serie.model_validate_json(_read(ep.parent / "serie.json")).episodios if e.n == w["n"])
-        except (ValueError, StopIteration):
-            pass  # sem série/episódio: nada postado
+        postado = _postado(ep, w["n"])
         aprovado = w["n"] is not None and fila._approved(ep.parent, w["n"])
         return {"job": job, **w, "postado": postado, "aprovado": aprovado, "roteiro": _read(ep / "roteiro.md"), "episodio": _json(ep / "episodio.json"),
                 "cenas": _json(ep / "cenas.json"), "revisao": _json(ep / "revisao.json"),

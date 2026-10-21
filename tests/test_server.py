@@ -150,7 +150,26 @@ def test_episode_detail_urls_and_postado():
     assert c.post(f"/api/episodios/{jid}/postado", json={"rede": "tiktok"}).json()["postado"] == ["tiktok"]
     assert c.post(f"/api/episodios/{jid}/postado", json={"rede": "orkut"}).status_code == 422
     assert c.get(f"/api/episodios/{jid}").json()["postado"] == ["tiktok"]
-    assert c.get("/api/fila").json()["jobs"][0]["titulo"] == "t1"
+    j = c.get("/api/fila").json()["jobs"][0]
+    assert j["titulo"] == "t1" and j["video"] is True and j["capa"] is None
+    assert j["aprovado"] is True and j["postado"] == ["tiktok"]
+    (ep / "out" / "capa.jpg").write_bytes(b"x")
+    assert c.get("/api/fila").json()["jobs"][0]["capa"].endswith("/out/capa.jpg")
+
+
+def test_vozes_endpoint(monkeypatch):
+    c = _client()
+    monkeypatch.delenv("ELEVENLABS_API_KEY", raising=False)
+    r = c.get("/api/vozes")
+    assert r.status_code == 400 and "ElevenLabs" in r.json()["detail"]
+    monkeypatch.setenv("ELEVENLABS_API_KEY", "k")
+    monkeypatch.setattr(server, "vozes", lambda: [{"voice_id": "a", "nome": "Ana", "preview_url": None, "descricao": ""}])
+    assert c.get("/api/vozes").json()[0]["nome"] == "Ana"
+
+    def boom():
+        raise RuntimeError("ElevenLabs 401")
+    monkeypatch.setattr(server, "vozes", boom)
+    assert c.get("/api/vozes").status_code == 502
 
 
 def test_cli_gerar_refuses_when_serve_produces(monkeypatch, capsys):
@@ -212,7 +231,7 @@ def test_folha_without_ficha_is_409_without_paths():
 
 def _ready(slug):
     p = data.load_perfil(slug)
-    p.onboarding = 6
+    p.onboarding, p.voz_id = 6, "V1"
     data.save_perfil(p)
     d = data.perfis_dir() / slug / "personagens" / "ze"
     d.mkdir(parents=True)

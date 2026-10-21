@@ -48,3 +48,21 @@ def tts(text: str, voice_id: str, out: Path, previous_text: str = "", next_text:
 
 def sfx(prompt: str, seconds: float, out: Path, client: httpx.Client | None = None) -> None:
     _post("/sound-generation", {"text": prompt, "duration_seconds": min(max(seconds, 0.5), 22)}, out, client)
+
+
+def vozes(client: httpx.Client | None = None) -> list[dict]:
+    key = config.get_key("ELEVENLABS_API_KEY")
+    if not key:
+        raise MissingKey("falta ELEVENLABS_API_KEY (defina a variável ou salve em Configurações)")
+    own = client is None
+    c = client or httpx.Client(timeout=30)
+    try:
+        r = c.get(BASE + "/voices", headers={"xi-api-key": key})
+    finally:
+        if own:
+            c.close()
+    if not r.is_success:
+        raise RuntimeError(f"ElevenLabs {r.status_code}: {r.text[:300]}")
+    return [{"voice_id": v["voice_id"], "nome": v.get("name", ""), "preview_url": v.get("preview_url"),
+             "descricao": ", ".join(str(x) for x in (v.get("labels") or {}).values() if x)}
+            for v in r.json().get("voices", [])]

@@ -20,7 +20,7 @@ def env(tmp_path, monkeypatch):
     monkeypatch.setattr(fila, "_cooldown", {})
     monkeypatch.setattr(fila, "_producer", None)
     p = data.create_perfil("Benji")
-    p.ativo, p.onboarding = True, 6
+    p.ativo, p.onboarding, p.voz_id = True, 6, "V1"
     data.save_perfil(p)
     ch = data.perfis_dir() / p.slug / "personagens" / "benji"
     ch.mkdir(parents=True)

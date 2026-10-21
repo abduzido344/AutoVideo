@@ -66,3 +66,27 @@ def test_tts_bad_audio_no_leftover(monkeypatch, tmp_path):
     with pytest.raises(RuntimeError, match="inválido"):
         eleven.tts("oi", "V", out, client=client(lambda r: httpx.Response(200, content=b"nao e audio")))
     assert not out.exists()
+
+
+def test_vozes_lists_with_labels(monkeypatch):
+    monkeypatch.setenv("ELEVENLABS_API_KEY", "k")
+    seen = {}
+
+    def h(req):
+        seen["key"] = req.headers["xi-api-key"]
+        return httpx.Response(200, json={"voices": [
+            {"voice_id": "a", "name": "Ana", "preview_url": "http://p/a.mp3", "labels": {"accent": "paulista", "gender": "female"}},
+            {"voice_id": "b", "name": "Beto"}]})
+
+    out = eleven.vozes(client=client(h))
+    assert seen["key"] == "k"
+    assert out[0] == {"voice_id": "a", "nome": "Ana", "preview_url": "http://p/a.mp3", "descricao": "paulista, female"}
+    assert out[1]["descricao"] == "" and out[1]["preview_url"] is None
+
+
+def test_vozes_errors(monkeypatch):
+    with pytest.raises(eleven.MissingKey):
+        eleven.vozes(client=client(lambda r: httpx.Response(200)))
+    monkeypatch.setenv("ELEVENLABS_API_KEY", "k")
+    with pytest.raises(RuntimeError, match="401"):
+        eleven.vozes(client=client(lambda r: httpx.Response(401, text="no")))

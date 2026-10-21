@@ -192,7 +192,7 @@ def aparencia(ficha: str) -> str:
 def ready(slug: str, estilo: str | None = None) -> str | None:
     """Motivo (em português) de o perfil não poder produzir; None se está pronto. `estilo`: o que vai ser salvo."""
     try:
-        load_estilo(estilo or load_perfil(slug).estilo)
+        est = load_estilo(estilo or load_perfil(slug).estilo)[1]
     except (KeyError, ValueError, OSError):
         return "o estilo do perfil não existe ou está inválido"
     if (feito := load_perfil(slug).onboarding) < 6:
@@ -202,6 +202,8 @@ def ready(slug: str, estilo: str | None = None) -> str | None:
         return "crie ao menos um personagem"
     if bad := [c["slug"] for c in cs if not (c["folha"] and c["aprovada"])]:
         return f"aprove a folha de: {', '.join(bad)}"
+    if not (load_perfil(slug).voz_id or est.voz_padrao):
+        return "escolha a voz do perfil"
     return None
 
 

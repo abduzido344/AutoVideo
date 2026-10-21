@@ -121,6 +121,9 @@ def test_ready_requires_estilo_and_approved_characters():
     data.save_perfil(p)
     assert "personagem" in data.ready(p.slug)
     _char(p.slug, "ana")
+    assert "voz" in data.ready(p.slug)
+    p.voz_id = "V1"
+    data.save_perfil(p)
     assert data.ready(p.slug) is None
     _char(p.slug, "zeca", aprovada=False)
     assert "zeca" in data.ready(p.slug)

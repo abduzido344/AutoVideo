@@ -344,3 +344,33 @@ def test_artefatos_episodio_vazio():
 
 def test_artefatos_job_inexistente():
     assert _client().get("/api/episodios/999/artefatos").status_code == 404
+
+
+def _rel(serie):
+    return serie.relative_to(data.perfis_dir()).as_posix()
+
+
+def test_serie_detalhe_soma_custo_e_status():
+    p, serie = _ep()
+    jid = episode.new_episode_job(server.STORE, serie, 1)
+    server.STORE.set(jid, status="awaiting_approval")
+    ep = data.ep_dir(serie, 1)
+    (ep / "decisions.log").write_text('{"cost_usd": 0.3}\n{"cost_usd": 0.1}\n{"x": 1}\nlixo\n', encoding="utf-8")
+    d = _client().get("/api/series/detalhe", params={"path_rel": _rel(serie)}).json()
+    assert d["perfil"] == p.slug and d["serie"]["titulo"] == "Apagão"
+    e1, e2 = d["episodios"]
+    assert e1["job"] == jid and e1["status"] == "awaiting_approval" and e1["custo_usd"] == pytest.approx(0.4)
+    assert d["custo_usd"] == pytest.approx(0.4)
+    assert e2["status"] is None and e2["custo_usd"] == 0 and e2["capa"] is None and e2["aprovado"] is False
+
+
+def test_serie_detalhe_path_invalido():
+    assert _client().get("/api/series/detalhe", params={"path_rel": "../x"}).status_code == 404
+
+
+def test_serie_detalhe_job_apagado():
+    _, serie = _ep()
+    jid = episode.new_episode_job(server.STORE, serie, 1)
+    server.STORE.con.execute("delete from jobs where id=?", (jid,))
+    r = _client().get("/api/series/detalhe", params={"path_rel": _rel(serie)})
+    assert r.status_code == 200 and r.json()["episodios"][0]["status"] is None

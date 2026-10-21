@@ -392,6 +392,32 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
         fila.set_series_paused(_serie_path(body.path_rel), body.paused)
         return {"ok": True}
 
+    @app.get("/api/series/detalhe")
+    def serie_detalhe(path_rel: str):
+        # query param: path_rel tem barras. Custo = soma dos cost_usd do decisions.log de cada episódio
+        sp = _serie_path(path_rel)
+        s = data.Serie.model_validate_json(_read(sp / "serie.json"))
+        eps = []
+        for e in s.episodios:
+            d = data.ep_dir(sp, e.n)
+            try:
+                j = store.get(e.job) if e.job is not None else None
+            except KeyError:
+                j = None  # job apagado do db
+            custo = 0.0
+            for ln in _read(d / "decisions.log").splitlines():
+                try:
+                    c = json.loads(ln).get("cost_usd")
+                except (ValueError, AttributeError):
+                    continue  # linha truncada ou que não é objeto
+                if isinstance(c, (int, float)) and not isinstance(c, bool):
+                    custo += c
+            eps.append({"n": e.n, "titulo": e.titulo, "sinopse": e.sinopse, "job": e.job,
+                        "status": j["status"] if j else None, "stage": j["stage"] if j else None,
+                        "aprovado": fila._approved(sp, e.n), "custo_usd": custo, "capa": _url(d / "out" / "capa.jpg")})
+        return {"serie": s, "perfil": sp.relative_to(data.perfis_dir().resolve()).parts[0],
+                "custo_usd": sum(x["custo_usd"] for x in eps), "episodios": eps}
+
     @app.get("/api/episodios/{jid}")
     def get_episodio(jid: int):
         job = _job(store, jid)

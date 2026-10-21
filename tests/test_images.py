@@ -78,3 +78,10 @@ def test_https_url_rejected(tmp_path):
     with pytest.raises(images.ImageError, match="data URI"):
         images.generate("g", [], tmp_path / "o.png", client=client(lambda q: bad))
     assert not (tmp_path / "o.png").exists()
+
+
+def test_non_data_url_with_comma_rejected(tmp_path):
+    bad = httpx.Response(200, json={"choices": [{"message": {"images": [{"image_url": {"url": "https://cdn/x.png,QUJD"}}]}}]})
+    with pytest.raises(images.ImageError, match="data URI"):
+        images.generate("g", [], tmp_path / "o.png", client=client(lambda q: bad))
+    assert not (tmp_path / "o.png").exists()

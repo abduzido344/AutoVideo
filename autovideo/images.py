@@ -48,11 +48,14 @@ def generate(prompt: str, refs: list[Path], out: Path, aspect: str = "9:16",
     if not imgs:
         raise ImageError(f"a resposta não trouxe imagem: {str(msg.get('content'))[:300]}")
     try:
-        raw = base64.b64decode(imgs[0]["image_url"]["url"].split(",", 1)[1], validate=True)
+        url = imgs[0]["image_url"]["url"]
+        if not url.startswith("data:"):
+            raise ValueError(url)
+        raw = base64.b64decode(url.split(",", 1)[1], validate=True)
     except (KeyError, IndexError, TypeError, ValueError) as e:
         raise ImageError(f"imagem fora do formato data URI: {r.text[:300]}") from e
     out.parent.mkdir(parents=True, exist_ok=True)
     part = out.with_name(out.name + ".part")
     part.write_bytes(raw)
     part.replace(out)
-    return {"provider": "openrouter", "model": model, "cost_usd": (data.get("usage") or {}).get("cost")}
+    return {"provider": "openrouter", "model": model, "cost_usd": (data.get("usage") if isinstance(data.get("usage"), dict) else {}).get("cost")}

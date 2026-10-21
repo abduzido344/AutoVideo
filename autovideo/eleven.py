@@ -37,9 +37,11 @@ def tts(text: str, voice_id: str, out: Path, previous_text: str = "", next_text:
            "previous_text": previous_text, "next_text": next_text}, out, client)
     # media.probe exige trilha de vídeo; mp3 não tem, então lê só a duração do container
     try:
-        o = run(["ffprobe", "-v", "error", "-print_format", "json", "-show_format", str(out)]).stdout
+        o = run(["ffprobe", "-v", "error", "-print_format", "json", "-show_format", str(out)],
+                ok_codes=(0, 1)).stdout
         return float(json.loads(o)["format"]["duration"])
-    except Exception as e:  # corpo que não é áudio: não deixa lixo em out
+    except (ValueError, KeyError, TypeError) as e:  # só falha de parse (ffprobe sai 1 em dados inválidos); ToolError propaga e mantém o mp3
+        # corpo que não é áudio: não deixa lixo em out
         out.unlink(missing_ok=True)
         raise RuntimeError(f"ElevenLabs devolveu áudio inválido: {str(e)[:300]}") from e
 

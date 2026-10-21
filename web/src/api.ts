@@ -33,12 +33,12 @@ export type ChatMsg = { autor: "voce" | "claude"; texto: string }
 export type ChatReply = { resposta: string; historico: ChatMsg[]; etapa: number }
 
 export type Config = {
-  keys: { ELEVENLABS_API_KEY: boolean; OPENROUTER_API_KEY: boolean; HIGGSFIELD_API_KEY: boolean; APIFY_TOKEN: boolean }
-  image_provider: string; image_model: string; higgsfield_model: string; max_imagens: number
+  keys: { ELEVENLABS_API_KEY: boolean; OPENROUTER_API_KEY: boolean; HIGGSFIELD_API_KEY: boolean; OPENAI_API_KEY: boolean; APIFY_TOKEN: boolean }
+  image_provider: string; image_model: string; higgsfield_model: string; openai_model: string; max_imagens: number
 }
 export type ConfigPatch = Partial<{
-  ELEVENLABS_API_KEY: string; OPENROUTER_API_KEY: string; HIGGSFIELD_API_KEY: string; APIFY_TOKEN: string
-  image_provider: string; image_model: string; higgsfield_model: string; max_imagens: number
+  ELEVENLABS_API_KEY: string; OPENROUTER_API_KEY: string; HIGGSFIELD_API_KEY: string; OPENAI_API_KEY: string; APIFY_TOKEN: string
+  image_provider: string; image_model: string; higgsfield_model: string; openai_model: string; max_imagens: number
 }>
 
 export type FilaJob = Job & { perfil: string | null; serie: string | null; n: number | null; titulo: string | null }

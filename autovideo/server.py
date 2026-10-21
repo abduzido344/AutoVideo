@@ -9,15 +9,15 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, ValidationError
 from starlette.middleware.trustedhost import TrustedHostMiddleware
-from autovideo import agents, analise, chat, config, data, doctor, episode, fila, personagem
+from autovideo import agents, analise, chat, config, data, doctor, episode, fila, images, personagem
 from autovideo.eleven import MissingKey
 from autovideo.images import ImageError
 from autovideo.jobs import GateError, JobStore
 
 DIST = Path(__file__).resolve().parent.parent / "web" / "dist"
 LOCAL_HOSTS = ["127.0.0.1", "localhost", "[::1]"]
-SECRETS = ("ELEVENLABS_API_KEY", "OPENROUTER_API_KEY", "HIGGSFIELD_API_KEY", "APIFY_TOKEN")
-SETTINGS = ("image_provider", "image_model", "higgsfield_model", "max_imagens")
+SECRETS = ("ELEVENLABS_API_KEY", "OPENROUTER_API_KEY", "HIGGSFIELD_API_KEY", "OPENAI_API_KEY", "APIFY_TOKEN")
+SETTINGS = ("image_provider", "image_model", "higgsfield_model", "openai_model", "max_imagens")
 log = logging.getLogger("autovideo.server")
 
 
@@ -183,7 +183,7 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
             if k == "max_imagens":
                 ok = type(v) is int and v >= 1
             elif k == "image_provider":
-                ok = v in ("openrouter", "higgsfield")
+                ok = v in images.PROVIDERS
             else:
                 ok = isinstance(v, str)
             if not ok:

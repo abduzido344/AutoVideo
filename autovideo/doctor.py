@@ -99,7 +99,7 @@ def run_checks() -> list[tuple[str, bool, str]]:
     check("claude auth", claude_auth)
 
     check("hyperframes skills", skills)
-    imagem = "HIGGSFIELD_API_KEY" if config.setting("image_provider") == "higgsfield" else "OPENROUTER_API_KEY"
+    imagem = f"{config.setting('image_provider').upper()}_API_KEY"
     for k in ("ELEVENLABS_API_KEY", imagem):
         check(k, lambda k=k: key(k))
     return out

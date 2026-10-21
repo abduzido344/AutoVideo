@@ -19,7 +19,7 @@ O AutoVideo não tem login próprio. Ele usa o Claude Agent SDK, que herda a aut
 
 ## Chaves
 - `ELEVENLABS_API_KEY`: narração (TTS) dos episódios.
-- `OPENROUTER_API_KEY` ou `HIGGSFIELD_API_KEY`: imagens dos episódios e das folhas de personagem, conforme o provedor escolhido em Configurações. A da Higgsfield vai no formato `KEY_ID:KEY_SECRET` (console.higgsfield.ai). O modelo padrão dela é `xai/grok-imagine-image-2.0`, que aceita até 10 imagens de referência.
+- `OPENROUTER_API_KEY`, `HIGGSFIELD_API_KEY` ou `OPENAI_API_KEY`: imagens dos episódios e das folhas de personagem, conforme o provedor escolhido em Configurações. A da Higgsfield vai no formato `KEY_ID:KEY_SECRET` (console.higgsfield.ai). Modelos padrão: `xai/grok-imagine-image-2.0` na Higgsfield (até 10 referências) e `gpt-image-2` na OpenAI (gera em 1152x2048; a OpenAI pode exigir verificar a organização).
 - `APIFY_TOKEN`: só para analisar um perfil do Instagram ao criar um estilo.
 
 Cada chave vem da variável de ambiente ou é salva em **Configurações** no painel (fica em `config.json` na pasta de dados, nunca é servida pelo painel). A autenticação do Claude não muda (login ou `ANTHROPIC_API_KEY`).

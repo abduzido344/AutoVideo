@@ -8,8 +8,8 @@ vi.mock("@/api", () => ({ api: { config: vi.fn(), saveConfig: vi.fn() } }))
 vi.mock("@/components/ui/toast", () => ({ toast: vi.fn(), Toasts: () => null }))
 
 const cfg = (eleven: boolean): Config => ({
-  keys: { ELEVENLABS_API_KEY: eleven, OPENROUTER_API_KEY: false, HIGGSFIELD_API_KEY: false, APIFY_TOKEN: false },
-  image_provider: "openrouter", image_model: "google/gemini", higgsfield_model: "xai/grok", max_imagens: 40,
+  keys: { ELEVENLABS_API_KEY: eleven, OPENROUTER_API_KEY: false, HIGGSFIELD_API_KEY: false, OPENAI_API_KEY: false, APIFY_TOKEN: false },
+  image_provider: "openrouter", image_model: "google/gemini", higgsfield_model: "xai/grok", openai_model: "gpt-image-2", max_imagens: 40,
 })
 
 beforeEach(() => { vi.mocked(api.config).mockResolvedValue(cfg(true)); vi.mocked(api.saveConfig).mockReset() })
@@ -18,8 +18,8 @@ describe("Configuracoes", () => {
   it("chaves são campos de senha vazios com o estado salva/não salva", async () => {
     render(<Configuracoes />)
     expect(await screen.findByText("salva")).toBeTruthy()
-    expect(screen.getAllByText("não salva")).toHaveLength(3)
-    for (const id of ["ELEVENLABS_API_KEY", "OPENROUTER_API_KEY", "HIGGSFIELD_API_KEY", "APIFY_TOKEN"]) {
+    expect(screen.getAllByText("não salva")).toHaveLength(4)
+    for (const id of ["ELEVENLABS_API_KEY", "OPENROUTER_API_KEY", "HIGGSFIELD_API_KEY", "OPENAI_API_KEY", "APIFY_TOKEN"]) {
       const el = document.getElementById(id) as HTMLInputElement
       expect(el.type).toBe("password")
       expect(el.value).toBe("")
@@ -37,11 +37,11 @@ describe("Configuracoes", () => {
     await userEvent.type(campo, "sk-segredo")
     await userEvent.click(screen.getByRole("button", { name: "Salvar" }))
     await waitFor(() => expect(api.saveConfig).toHaveBeenCalledWith({
-      image_provider: "openrouter", image_model: "google/gemini", higgsfield_model: "xai/grok", max_imagens: 25, OPENROUTER_API_KEY: "sk-segredo",
+      image_provider: "openrouter", image_model: "google/gemini", higgsfield_model: "xai/grok", openai_model: "gpt-image-2", max_imagens: 25, OPENROUTER_API_KEY: "sk-segredo",
     }))
     await waitFor(() => expect(campo.value).toBe(""))
     expect(document.body.textContent).not.toContain("sk-segredo")
-    expect(screen.queryAllByText("não salva")).toHaveLength(2)
+    expect(screen.queryAllByText("não salva")).toHaveLength(3)
   })
   it("trocar para Higgsfield mostra o modelo dela e salva o provedor", async () => {
     vi.mocked(api.saveConfig).mockResolvedValue({ ...cfg(true), image_provider: "higgsfield" })

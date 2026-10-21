@@ -142,6 +142,56 @@ def test_higgsfield_key_format(monkeypatch, tmp_path):
         images.generate("gato", [], tmp_path / "o.png", client=client(lambda q: httpx.Response(500)))
 
 
+def openai_env(monkeypatch):
+    config.save({"image_provider": "openai"})
+    monkeypatch.setenv("OPENAI_API_KEY", "sk-oa")
+
+
+def oa_reply():
+    return httpx.Response(200, json={"data": [{"b64_json": base64.b64encode(PNG).decode()}]})
+
+
+def test_openai_without_refs_uses_generations_with_9x16_size(monkeypatch, tmp_path):
+    openai_env(monkeypatch)
+    seen = {}
+
+    def h(req):
+        seen["url"], seen["auth"], seen["body"] = str(req.url), req.headers["authorization"], json.loads(req.content)
+        return oa_reply()
+
+    r = images.generate("gato", [], tmp_path / "o.png", client=client(h))
+    assert seen["url"] == "https://api.openai.com/v1/images/generations" and seen["auth"] == "Bearer sk-oa"
+    assert seen["body"] == {"model": "gpt-image-2", "prompt": "gato", "size": "1152x2048"}
+    assert (tmp_path / "o.png").read_bytes() == PNG and r == {"provider": "openai", "model": "gpt-image-2", "cost_usd": None}
+
+
+def test_openai_refs_go_to_edits_as_multipart(monkeypatch, tmp_path):
+    openai_env(monkeypatch)
+    refs = []
+    for n in "ab":
+        (tmp_path / f"{n}.png").write_bytes(PNG)
+        refs.append(tmp_path / f"{n}.png")
+    seen = {}
+
+    def h(req):
+        seen["url"], seen["body"] = str(req.url), req.read()
+        return oa_reply()
+
+    images.generate("gato", refs, tmp_path / "o.png", aspect="16:9", client=client(h))
+    assert seen["url"] == "https://api.openai.com/v1/images/edits"
+    assert seen["body"].count(b'name="image[]"') == 2 and b"2048x1152" in seen["body"] and b"gpt-image-2" in seen["body"]
+
+
+@pytest.mark.parametrize("status,code,match", [(429, "insufficient_quota", "sem saldo na OpenAI"),
+                                               (400, "moderation_blocked", "moderação"),
+                                               (401, "invalid_api_key", "inválida")])
+def test_openai_errors(monkeypatch, tmp_path, status, code, match):
+    openai_env(monkeypatch)
+    resp = lambda q: httpx.Response(status, json={"error": {"code": code, "message": "x"}})
+    with pytest.raises(images.ImageError, match=match):
+        images.generate("gato", [], tmp_path / "o.png", client=client(resp))
+
+
 def test_missing_key(monkeypatch, tmp_path):
     monkeypatch.delenv("OPENROUTER_API_KEY")
     with pytest.raises(eleven.MissingKey, match="OPENROUTER_API_KEY"):

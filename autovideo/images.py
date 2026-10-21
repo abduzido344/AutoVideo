@@ -30,15 +30,55 @@ def _write(raw: bytes, out: Path) -> None:
 def generate(prompt: str, refs: list[Path], out: Path, aspect: str = "9:16",
              client: httpx.Client | None = None) -> dict:
     provider = config.setting("image_provider")
-    if provider not in ("openrouter", "higgsfield"):
+    if provider not in PROVIDERS:
         raise ImageError(f"provedor {provider} desconhecido")
     own = client is None
     c = client or httpx.Client(timeout=180)
     try:
-        return (_openrouter if provider == "openrouter" else _higgsfield)(prompt, refs, out, aspect, c)
+        return PROVIDERS[provider](prompt, refs, out, aspect, c)
     finally:
         if own:
             c.close()
+
+
+OPENAI_API = "https://api.openai.com/v1/images"
+# gpt-image-2 aceita WIDTHxHEIGHT múltiplos de 16: 9:16 exato em vez do 2:3 dos tamanhos fixos
+OPENAI_SIZES = {"9:16": "1152x2048", "16:9": "2048x1152", "1:1": "1024x1024"}
+
+
+def _openai(prompt: str, refs: list[Path], out: Path, aspect: str, c: httpx.Client) -> dict:
+    key = config.get_key("OPENAI_API_KEY")
+    if not key:
+        raise MissingKey("falta OPENAI_API_KEY (defina a variável ou salve em Configurações)")
+    model = config.setting("openai_model")
+    auth = {"Authorization": f"Bearer {key}"}
+    fields = {"model": model, "prompt": prompt, "size": OPENAI_SIZES.get(aspect, "auto")}
+    if refs:  # com referência é o endpoint de edição (multipart, uma parte image[] por folha)
+        files = [("image[]", (r.name, r.read_bytes(), mimetypes.guess_type(r.name)[0] or "image/png")) for r in refs]
+        r = c.post(f"{OPENAI_API}/edits", data=fields, files=files, headers=auth)
+    else:
+        r = c.post(f"{OPENAI_API}/generations", json=fields, headers=auth)
+    if not r.is_success:
+        try:
+            err = r.json()["error"]
+        except (ValueError, KeyError, TypeError):
+            err = {}
+        code = err.get("code") or ""
+        if code in ("insufficient_quota", "billing_hard_limit_reached"):
+            raise ImageError("sem saldo na OpenAI: adicione créditos em platform.openai.com/settings/organization/billing")
+        if r.status_code == 401:
+            raise ImageError("chave da OpenAI inválida")
+        if code == "moderation_blocked":
+            raise ImageError("a OpenAI bloqueou o prompt pela moderação de conteúdo")
+        if "verif" in (err.get("message") or "").lower():
+            raise ImageError("a OpenAI exige verificar a organização para usar o GPT Image: platform.openai.com/settings/organization/general")
+        raise ImageError(f"OpenAI {r.status_code}: {r.text[:300]}")
+    try:
+        raw = base64.b64decode(r.json()["data"][0]["b64_json"], validate=True)
+    except (ValueError, KeyError, IndexError, TypeError) as e:
+        raise ImageError(f"resposta inesperada da OpenAI: {r.text[:300]}") from e
+    _write(raw, out)
+    return {"provider": "openai", "model": model, "cost_usd": None}
 
 
 HF_API = "https://api.higgsfield.ai"
@@ -141,3 +181,6 @@ def _openrouter(prompt: str, refs: list[Path], out: Path, aspect: str, c: httpx.
         raise ImageError(f"imagem fora do formato data URI: {r.text[:300]}") from e
     _write(raw, out)
     return {"provider": "openrouter", "model": model, "cost_usd": (data.get("usage") if isinstance(data.get("usage"), dict) else {}).get("cost")}
+
+
+PROVIDERS = {"openrouter": _openrouter, "higgsfield": _higgsfield, "openai": _openai}

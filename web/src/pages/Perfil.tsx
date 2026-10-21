@@ -18,17 +18,22 @@ const STATUS: Record<string, string> = {
   queued: "Na fila", in_progress: "Em andamento", awaiting_approval: "Aguardando aprovação", completed: "Concluído", failed: "Falhou",
 }
 const REDES: [Rede, string][] = [["youtube", "YouTube"], ["tiktok", "TikTok"], ["instagram", "Instagram"], ["facebook", "Facebook"]]
+const HORA = /^([01]\d|2[0-3]):[0-5]\d$/
 const erro = (message: string) => (e: Error) => toast({ message, description: e.message, state: "error" })
 
 function Series({ slug, d, refresh }: { slug: string; d: PerfilDetalhe; refresh: () => void }) {
   const pausar = (path_rel: string, paused: boolean) =>
     api.pausarSerie(path_rel, paused).then(refresh, erro(paused ? "Não consegui pausar a série" : "Não consegui continuar a série"))
-  const gerar = () => api.gerar(slug).then(
-    () => toast({ message: "Episódio na fila", description: "Acompanhe o andamento na Fila.", state: "success" }),
-    erro("Não consegui gerar o episódio"))
+  const [gerando, setGerando] = useState(false)
+  const gerar = () => {
+    setGerando(true)
+    api.gerar(slug).then(
+      () => toast({ message: "Episódio na fila", description: "Acompanhe o andamento na Fila.", state: "success" }),
+      erro("Não consegui gerar o episódio")).finally(() => setGerando(false))
+  }
   return (
     <div className="space-y-4">
-      <Button onClick={gerar}>Gerar próximo episódio</Button>
+      <Button disabled={gerando} onClick={gerar}>Gerar próximo episódio</Button>
       {d.series.length === 0 && <p className="text-sm text-muted-foreground">Nenhuma série ainda. Aprove uma ideia para o Claude criar a primeira.</p>}
       {d.series.map(({ path_rel, serie, episodios }) => (
         <Card key={path_rel} className="gap-3 p-4">
@@ -108,15 +113,18 @@ function AgendaForm({ slug, d }: { slug: string; d: PerfilDetalhe }) {
   function salvar() {
     const eps = Number(a.eps), porDia = Number(a.por_dia)
     if (!Number.isInteger(eps) || eps < 1 || eps > 10) return toast({ message: "Episódios por série: de 1 a 10", state: "error" })
-    if (!Number.isInteger(porDia) || porDia < 0) return toast({ message: "Por dia: um número inteiro, 0 ou mais", state: "error" })
-    const agenda: Agenda = { gerar_as: a.gerar_as, por_dia: porDia, postar_as: a.postar_as.split(",").map((s) => s.trim()).filter(Boolean), episodios_por_serie: eps }
+    if (!Number.isInteger(porDia) || porDia < 1 || porDia > 5) return toast({ message: "Episódios por dia: de 1 a 5", state: "error" })
+    const postar = a.postar_as.split(",").map((s) => s.trim()).filter(Boolean)
+    if (!HORA.test(a.gerar_as)) return toast({ message: "Horário de gerar inválido", description: "Use HH:MM, por exemplo 03:00.", state: "error" })
+    if (postar.length === 0 || !postar.every((h) => HORA.test(h))) return toast({ message: "Horários de postar inválidos", description: "Informe ao menos um, em HH:MM, separados por vírgula.", state: "error" })
+    const agenda: Agenda = { gerar_as: a.gerar_as, por_dia: porDia, postar_as: postar, episodios_por_serie: eps }
     api.salvarPerfil(slug, { agenda, voz_id: voz, estilo }).then(() => toast({ message: "Agenda salva", state: "success" }), erro("Não consegui salvar a agenda"))
   }
   const lista = estilos ?? []
   return (
     <form noValidate className="grid max-w-md gap-3" onSubmit={(e) => { e.preventDefault(); salvar() }}>
       <label className="grid gap-1 text-sm">Gerar às<Input type="time" value={a.gerar_as} onChange={set("gerar_as")} /></label>
-      <label className="grid gap-1 text-sm">Episódios por dia<Input type="number" min={0} value={a.por_dia} onChange={set("por_dia")} /></label>
+      <label className="grid gap-1 text-sm">Episódios por dia<Input type="number" min={1} max={5} value={a.por_dia} onChange={set("por_dia")} /></label>
       <label className="grid gap-1 text-sm">Postar às (horários separados por vírgula)<Input placeholder="09:00, 18:00" value={a.postar_as} onChange={set("postar_as")} /></label>
       <label className="grid gap-1 text-sm">Episódios por série<Input type="number" min={1} max={10} value={a.eps} onChange={set("eps")} /></label>
       <label className="grid gap-1 text-sm">Voz (voice_id)<Input value={voz} onChange={(e) => setVoz(e.target.value)} /></label>

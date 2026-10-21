@@ -62,6 +62,28 @@ describe("Perfil", () => {
     expect(toast).toHaveBeenCalledWith(expect.objectContaining({ state: "error" }))
   })
 
+  it.each([["Episódios por dia", "0"], ["Episódios por dia", "6"], ["Gerar às", ""], ["Postar às (horários separados por vírgula)", "9h"], ["Postar às (horários separados por vírgula)", ""]])(
+    "Agenda rejeita %s = %j", async (rotulo, valor) => {
+      render(<Perfil slug="benji" aba="agenda" />)
+      const campo = await screen.findByLabelText(rotulo)
+      await userEvent.clear(campo)
+      if (valor) await userEvent.type(campo, valor)
+      await userEvent.click(screen.getByRole("button", { name: "Salvar agenda" }))
+      expect(api.salvarPerfil).not.toHaveBeenCalled()
+      expect(toast).toHaveBeenCalledWith(expect.objectContaining({ state: "error" }))
+    })
+
+  it("Gerar próximo episódio bloqueia duplo clique", async () => {
+    let fim!: () => void
+    vi.mocked(api.gerar).mockReturnValue(new Promise((r) => { fim = () => r({ ok: true }) }))
+    render(<Perfil slug="benji" aba="series" />)
+    const b = await screen.findByRole("button", { name: "Gerar próximo episódio" })
+    await userEvent.click(b)
+    await userEvent.click(b)
+    expect(api.gerar).toHaveBeenCalledTimes(1)
+    fim()
+  })
+
   it("Agenda envia o PUT com agenda inteira, voz e estilo", async () => {
     vi.mocked(api.salvarPerfil).mockResolvedValue(det().perfil)
     render(<Perfil slug="benji" aba="agenda" />)

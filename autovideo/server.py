@@ -337,7 +337,8 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
 
     @app.get("/api/fila")
     def get_fila():
-        return {**fila.state(), "jobs": [{**j, **_where(j)} for j in store.list()]}
+        # receitas antigas do M1 (director, post...) não são episódio nem estilo: ficam fora do painel
+        return {**fila.state(), "jobs": [{**j, **_where(j)} for j in store.list() if j["recipe"] in ("episodio", "estilo")]}
 
     @app.post("/api/fila/pausar")
     def pausar():

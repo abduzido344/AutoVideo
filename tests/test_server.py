@@ -251,6 +251,7 @@ def test_fila_lists_estilo_jobs_and_resumes_them(monkeypatch):
     monkeypatch.setenv("APIFY_TOKEN", "t")
     c = _client()
     jid = c.post("/api/estilos/analisar", json={"handle": "@abc"}).json()["job"]
+    server.STORE.create("/tmp/velho", "director", False)  # receita do M1: fora da fila
     jobs = c.get("/api/fila").json()["jobs"]
     assert [(j["id"], j["recipe"], j["titulo"]) for j in jobs] == [(jid, "estilo", "@abc")]
     server.STORE.set(jid, status="failed", error="x")

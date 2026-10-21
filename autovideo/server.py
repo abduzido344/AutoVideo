@@ -411,6 +411,22 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
                 "ajustes": _read(ep / "ajustes.md"), "decisions": decisions,
                 "final": _url(ep / "out" / "final.mp4"), "capa": _url(ep / "out" / "capa.jpg")}
 
+    @app.get("/api/episodios/{jid}/artefatos")
+    def artefatos(jid: int):
+        # storyboard: junta cena + imagem + voz por id; só devolve URL de arquivo que existe
+        ep = Path(_job(store, jid)["project_dir"])
+        imgs = _json(ep / "img" / "manifest.json")
+        vozes = {v.get("id"): v for v in ((_json(ep / "voz.json") or {}).get("cenas") or [])}
+        cenas = []
+        for c in ((_json(ep / "cenas.json") or {}).get("cenas") or []):
+            v = vozes.get(c.get("id"))
+            cenas.append({"id": c.get("id"), "kind": c.get("kind"), "narration": c.get("narration", ""),
+                          "prompt": c.get("prompt", ""), "camera": c.get("camera", ""), "sfx": c.get("sfx", ""),
+                          "imagem": _url(ep / imgs[c["id"]]) if isinstance(imgs, dict) and c.get("id") in imgs else None,
+                          "audio": _url(ep / v["file"]) if v and v.get("file") else None,
+                          "dur": v.get("dur") if v else None})
+        return {"cenas": cenas}
+
     @app.post("/api/episodios/{jid}/aprovar")
     def aprovar(jid: int):
         _job(store, jid)

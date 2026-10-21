@@ -1,3 +1,4 @@
+import json
 import pytest
 from autovideo import agents, fila
 from fastapi.testclient import TestClient
@@ -313,3 +314,33 @@ def test_profile_with_missing_job_shows_null_status():
     server.STORE.con.execute("delete from jobs where id=?", (jid,))
     eps = _client().get(f"/api/perfis/{p.slug}").json()["series"][0]["episodios"]
     assert eps[0]["job"] == jid and eps[0]["status"] is None
+
+
+def test_artefatos_junta_cena_imagem_e_voz():
+    _, serie = _ep()
+    c = _client()
+    jid = episode.new_episode_job(server.STORE, serie, 1)
+    ep = data.ep_dir(serie, 1)
+    (ep / "img").mkdir(); (ep / "voz").mkdir()
+    (ep / "cenas.json").write_text(json.dumps({"cenas": [
+        {"id": "s01", "kind": "image", "narration": "n1", "prompt": "p1", "camera": "zoom", "sfx": "x"},
+        {"id": "s02", "kind": "screen", "narration": "n2", "prompt": "", "camera": "", "sfx": ""}]}), encoding="utf-8")
+    (ep / "img" / "manifest.json").write_text(json.dumps({"s01": "img/a.png"}), encoding="utf-8")
+    (ep / "img" / "a.png").write_bytes(b"x")
+    (ep / "voz.json").write_text(json.dumps({"cenas": [{"id": "s01", "file": "voz/a.mp3", "dur": 3.5, "sha": "x"}]}), encoding="utf-8")
+    (ep / "voz" / "a.mp3").write_bytes(b"x")
+    cs = {x["id"]: x for x in c.get(f"/api/episodios/{jid}/artefatos").json()["cenas"]}
+    assert cs["s01"]["imagem"].endswith("/img/a.png") and cs["s01"]["audio"].endswith("/voz/a.mp3")
+    assert cs["s01"]["dur"] == 3.5 and cs["s01"]["kind"] == "image" and cs["s01"]["camera"] == "zoom"
+    assert cs["s02"]["imagem"] is None and cs["s02"]["audio"] is None and cs["s02"]["dur"] is None
+
+
+def test_artefatos_episodio_vazio():
+    _, serie = _ep()
+    jid = episode.new_episode_job(server.STORE, serie, 1)
+    r = _client().get(f"/api/episodios/{jid}/artefatos")
+    assert r.status_code == 200 and r.json() == {"cenas": []}
+
+
+def test_artefatos_job_inexistente():
+    assert _client().get("/api/episodios/999/artefatos").status_code == 404

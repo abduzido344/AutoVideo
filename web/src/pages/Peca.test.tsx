@@ -1,4 +1,4 @@
-import { render, screen, waitFor, within } from "@testing-library/react"
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { api, type Cena, type Episodio } from "@/api"
@@ -58,10 +58,10 @@ describe("Peca", () => {
   })
   it("pedir ajuste chama api.ajustar", async () => {
     render(<Peca jid={5} />)
-    await userEvent.type(await screen.findByLabelText("Pedir ajuste ao Diretor"), "refaz a cena 4")
+    fireEvent.change(await screen.findByLabelText("Pedir ajuste ao Diretor"), { target: { value: "refaz a cena 4" } })
     await userEvent.click(screen.getByRole("button", { name: "Enviar" }))
     await waitFor(() => expect(api.ajustar).toHaveBeenCalledWith(5, "refaz a cena 4"))
-  }, 20000)
+  })
   it("aba Vídeo sem final mostra Ainda renderizando; com final, o player", async () => {
     const { unmount } = render(<Peca jid={5} />)
     await userEvent.click(await screen.findByRole("tab", { name: "Vídeo" }))
@@ -71,6 +71,11 @@ describe("Peca", () => {
     render(<Peca jid={5} />)
     await userEvent.click(await screen.findByRole("tab", { name: "Vídeo" }))
     expect((await screen.findByTestId("player")).getAttribute("src")).toBe("/projects/x/final.mp4")
+  })
+  it("falha ao carregar as cenas mostra aviso", async () => {
+    vi.mocked(api.artefatos).mockRejectedValue(new Error("x"))
+    render(<Peca jid={5} />)
+    expect(await screen.findByText("Não consegui carregar as cenas")).toBeTruthy()
   })
   it("falha ao carregar mostra aviso", async () => {
     vi.mocked(api.episodio).mockRejectedValue(new Error("x"))

@@ -8,18 +8,14 @@ import { Storyboard } from "@/components/Storyboard"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { toast } from "@/components/ui/toast"
 import { Video } from "@/components/ui/video"
+import { ETAPAS } from "@/lib/etapas"
 import { usePoll } from "@/lib/usePoll"
 import { Pagina, Secao } from "@/pages/Pagina"
 
-// mesma ordem do episode.STAGES do servidor
-const ETAPAS: [string, string][] = [
-  ["roteiro", "Roteiro"], ["cenas", "Cenas"], ["voz", "Voz"], ["imagens", "Imagens"], ["sfx", "Sons"],
-  ["montagem", "Montagem"], ["render", "Render"], ["revisao", "Revisão"], ["aprovacao", "Aprovação"],
-]
 
 export function Peca({ jid }: { jid: number }) {
   const { data: ep, error } = usePoll(() => api.episodio(jid))
-  const { data: arte } = usePoll(() => api.artefatos(jid))
+  const { data: arte, error: erroCenas } = usePoll(() => api.artefatos(jid))
   const [texto, setTexto] = useState("")
   const [busy, setBusy] = useState(false)
   const atual = ETAPAS.findIndex(([k]) => k === ep?.job.stage)
@@ -51,7 +47,7 @@ export function Peca({ jid }: { jid: number }) {
               <TabsTrigger value="roteiro">Roteiro</TabsTrigger>
               <TabsTrigger value="video">Vídeo</TabsTrigger>
             </TabsList>
-            <TabsContent value="storyboard"><Storyboard cenas={arte?.cenas ?? []} /></TabsContent>
+            <TabsContent value="storyboard"><Storyboard cenas={arte?.cenas ?? []} erro={erroCenas && !arte} /></TabsContent>
             <TabsContent value="roteiro"><p className="whitespace-pre-wrap">{ep.roteiro}</p></TabsContent>
             <TabsContent value="video">
               {ep.final ? <Video src={ep.final} className="aspect-[9/16] max-w-sm" /> : <p className="text-muted-foreground">Ainda renderizando</p>}

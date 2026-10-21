@@ -11,15 +11,11 @@ import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/toast"
 import { Video } from "@/components/ui/video"
 import { go } from "@/lib/route"
+import { ETAPAS } from "@/lib/etapas"
 import { usePoll } from "@/lib/usePoll"
 import { cn } from "@/lib/utils"
 import { Pagina, Secao } from "@/pages/Pagina"
 
-// mesma ordem do episode.STAGES do servidor
-const ETAPAS: [string, string][] = [
-  ["roteiro", "Roteiro"], ["cenas", "Cenas"], ["voz", "Voz"], ["imagens", "Imagens"], ["sfx", "Sons"],
-  ["montagem", "Montagem"], ["render", "Render"], ["revisao", "Revisão"], ["aprovacao", "Aprovação"],
-]
 const etapa = (s: string) => ETAPAS.find(([k]) => k === s)?.[1] ?? s
 const COLUNAS = [["fila", "Na fila"], ["produzindo", "Produzindo"], ["revisar", "Para revisar"], ["prontos", "Prontos"]] as const
 type Coluna = (typeof COLUNAS)[number][0]

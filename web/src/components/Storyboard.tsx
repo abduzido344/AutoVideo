@@ -13,13 +13,14 @@ function Quadro({ c }: { c: Cena }) {
         <p className="font-medium">{c.id}</p>
         <p className="line-clamp-3 text-muted-foreground">{c.narration}</p>
         {c.camera && <p className="text-muted-foreground/70">{c.camera}</p>}
-        {c.audio && <audio controls src={c.audio} className="h-7 w-full" />}
+        {c.audio && <audio controls aria-label={`Narração ${c.id}`} src={c.audio} className="h-7 w-full" />}
       </figcaption>
     </figure>
   )
 }
 
-export function Storyboard({ cenas }: { cenas: Cena[] }) {
+export function Storyboard({ cenas, erro }: { cenas: Cena[]; erro?: boolean }) {
+  if (erro) return <p className="text-sm text-destructive">Não consegui carregar as cenas</p>
   if (!cenas.length) return <p className="text-sm text-muted-foreground">As cenas aparecem aqui quando o roteiro for dividido.</p>
   return <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">{cenas.map((c) => <Quadro key={c.id} c={c} />)}</div>
 }

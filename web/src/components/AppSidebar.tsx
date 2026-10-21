@@ -18,9 +18,9 @@ export function TopBar() {
   )
 }
 
-export function AppSidebar({ perfis, perfilSlug, onPerfil, aguardando, route, doctor, auth, onAccount }: {
+export function AppSidebar({ perfis, perfilSlug, onPerfil, aguardando, route, doctor, auth, onAccount, onNovoPerfil }: {
   perfis: Perfil[]; perfilSlug: string | null; onPerfil: (slug: string) => void; aguardando: number
-  route: Route; doctor: Doctor | null; auth: Auth | null; onAccount: () => void
+  route: Route; doctor: Doctor | null; auth: Auth | null; onAccount: () => void; onNovoPerfil: () => void
 }) {
   const sys = doctorText(doctor)
   const { setOpenMobile } = useSidebar()
@@ -49,7 +49,7 @@ export function AppSidebar({ perfis, perfilSlug, onPerfil, aguardando, route, do
             <Plus className="size-4" />Criar<ChevronsUpDown className="size-3.5 opacity-60" />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start" className="w-(--radix-dropdown-menu-trigger-width)">
-            <DropdownMenuItem onSelect={() => { setOpenMobile(false); go({ name: "perfis" }) }}>Novo perfil</DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => { setOpenMobile(false); onNovoPerfil() }}>Novo perfil</DropdownMenuItem>
             <DropdownMenuItem onSelect={() => { setOpenMobile(false); go({ name: "estilos" }) }}>Novo estilo</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

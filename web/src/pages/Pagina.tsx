@@ -6,7 +6,7 @@ export function Pagina({ titulo, sub, children }: { titulo: string; sub?: string
   return (
     <div className="flex h-full flex-1 flex-col overflow-hidden">
       <header className="sticky top-0 bg-background/95 px-8 pt-6 pb-4 backdrop-blur-sm lg:px-12">
-        <h1 className="text-[22px] font-medium tracking-tight">{titulo}</h1>
+        <h1 className="font-serif text-[22px] font-medium tracking-tight">{titulo}</h1>
         {sub && <p className="text-sm text-muted-foreground">{sub}</p>}
       </header>
       <div className="flex-1 overflow-y-auto px-8 pb-10 lg:px-12">

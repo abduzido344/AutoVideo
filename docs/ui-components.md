@@ -56,4 +56,7 @@ Nota: o `liquidglass` vai duas vezes no bundle: a lib vendorizada em `src/lib/li
 | `components/AppSidebar.tsx` | Composição da `sidebar` do shadcn (variant inset, 252px) com wordmark, `select` de perfil, `dropdown-menu` do botão Criar, links Fila/Revisão (contagem)/Estilos/Configurações; inclui o `TopBar` (`SidebarTrigger`) |
 | `pages/Pagina.tsx` | Casca de página do Lum (header sticky, título 22px, label de seção 11px); layout puro, sem componente equivalente |
 | `components/ConnectClaude.tsx` | Composição do `dialog` do shadcn: janela "Conectar o Claude" (status da conta, botão que abre o terminal com `claude auth login`, comando para copiar); Kobra não tem modal grátis |
+| `components/Chat.tsx` | Conversa com o agente: `conversation`/`chat-input` da Kobra dependem de Pro (sem token); fallback do mapa: `card` + `textarea` com bolhas simples |
+| `components/FolhaPersonagem.tsx` | Card do personagem (ficha, imagem da folha, gerar/aprovar); composição de `card` + `button`, sem equivalente pronto |
+| `pages/Perfis.tsx`, `pages/Onboarding.tsx` | Telas: cards de perfil + `dialog` de Novo perfil; chat + painel de etapas |
 | `components/StatusPill.tsx` | Pílula de status do doctor; `badge` do shadcn não tem o estado "verificando" com ponto |

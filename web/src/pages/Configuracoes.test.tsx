@@ -59,4 +59,11 @@ describe("Configuracoes", () => {
     await userEvent.click(screen.getByRole("button", { name: "Salvar" }))
     expect(api.saveConfig).not.toHaveBeenCalled()
   })
+  it("modelo vazio não chama a API", async () => {
+    render(<Configuracoes />)
+    await screen.findByText("salva")
+    await userEvent.clear(screen.getByLabelText("Modelo"))
+    await userEvent.click(screen.getByRole("button", { name: "Salvar" }))
+    expect(api.saveConfig).not.toHaveBeenCalled()
+  })
 })

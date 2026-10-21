@@ -12,7 +12,7 @@ function setup(o: Partial<Parameters<typeof AppSidebar>[0]> = {}) {
   const onPerfil = vi.fn()
   const props = {
     perfis: [perfil("benji", "Benji"), perfil("lum", "Lum")], perfilSlug: "benji", onPerfil, aguardando: 0,
-    route: { name: "fila" } as Route, doctor: null, auth: null, onAccount: () => {}, ...o,
+    route: { name: "fila" } as Route, doctor: null, auth: null, onAccount: () => {}, onNovoPerfil: () => {}, ...o,
   }
   render(<SidebarProvider><AppSidebar {...props} /><SidebarInset><TopBar /></SidebarInset></SidebarProvider>)
   return { onPerfil }

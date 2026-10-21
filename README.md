@@ -10,6 +10,7 @@ Render feito com [HyperFrames](https://github.com/heygen-com/hyperframes). Desig
 - Claude Code instalado (`claude --version`)
 
 No Windows não há whisper-cpp: a transcrição usa o modelo Parakeet (ver Setup).
+Os comandos usam `uv run python -m autovideo` e não `uv run autovideo`: o Controle Inteligente de Aplicativos do Windows bloqueia o `autovideo.exe` que o uv gera, porque ele não é assinado.
 
 ## Autenticação
 O AutoVideo não tem login próprio. Ele usa o Claude Agent SDK, que herda a autenticação do Claude Code da sua máquina:
@@ -28,7 +29,7 @@ Cada chave vem da variável de ambiente ou é salva em **Configurações** no pa
 uv venv && uv pip install -e ".[dev]"
 npx --yes hyperframes@0.8.158 models install parakeet
 npx --yes hyperframes@0.8.158 skills update hyperframes hyperframes-core hyperframes-animation
-uv run autovideo doctor
+uv run python -m autovideo doctor
 ```
 
 O `doctor` mostra a pasta dos projetos (`AUTOVIDEO_HOME`) e confere ffmpeg, ffprobe, Node 22+, HyperFrames, o modelo Parakeet,
@@ -40,12 +41,12 @@ o Claude CLI, a autenticação do Claude, as skills e as chaves `ELEVENLABS_API_
 O painel precisa de build antes do `serve`, porque o servidor só serve o painel se `web/dist` existir:
 ```bash
 cd web && npm install && npm run build && cd ..
-uv run autovideo serve                   # http://127.0.0.1:8765 (outra porta: --port)
+uv run python -m autovideo serve                   # http://127.0.0.1:8765 (outra porta: --port)
 ```
 
 - O servidor escuta só em `127.0.0.1`, nunca em `0.0.0.0`, e aceita os hosts `127.0.0.1`, `localhost` e `[::1]`.
 - O servidor também executa a fila de geração em segundo plano.
-- Desenvolvimento: rode `uv run autovideo serve` e, em outro terminal, `cd web && npm run dev`. O Vite (http://localhost:5173) faz proxy de `/api` e `/projects` para `127.0.0.1:8765`.
+- Desenvolvimento: rode `uv run python -m autovideo serve` e, em outro terminal, `cd web && npm run dev`. O Vite (http://localhost:5173) faz proxy de `/api` e `/projects` para `127.0.0.1:8765`.
 
 O painel é React + Vite + Tailwind v4 + shadcn/ui, com componentes do registry Kobra (`@kobra`). Componentes Kobra Pro exigem `KOBRA_TOKEN` na instalação (`npx shadcn add`), enviado pelo `web/components.json`. Sem o token, são usados os fallbacks shadcn base. Antes de criar um componente de UI, veja [docs/ui-components.md](docs/ui-components.md).
 
@@ -60,13 +61,13 @@ Nada é postado automaticamente: o AutoVideo só produz e exporta; postar é com
 
 ## CLI
 ```bash
-uv run autovideo doctor                  # confere o ambiente
-uv run autovideo serve [--port N]        # painel + agendador
-uv run autovideo fila                    # lista a fila e se ela está pausada
-uv run autovideo gerar <perfil>          # produz o próximo episódio do perfil agora
-uv run autovideo aprovar <id>            # aprova o episódio em revisão
-uv run autovideo ajustar <id> "texto"    # pede ajuste e refaz o episódio
-uv run autovideo retomar <id>            # retoma um episódio que falhou
+uv run python -m autovideo doctor                  # confere o ambiente
+uv run python -m autovideo serve [--port N]        # painel + agendador
+uv run python -m autovideo fila                    # lista a fila e se ela está pausada
+uv run python -m autovideo gerar <perfil>          # produz o próximo episódio do perfil agora
+uv run python -m autovideo aprovar <id>            # aprova o episódio em revisão
+uv run python -m autovideo ajustar <id> "texto"    # pede ajuste e refaz o episódio
+uv run python -m autovideo retomar <id>            # retoma um episódio que falhou
 ```
 `gerar` recusa rodar enquanto o `serve` estiver produzindo: use o painel.
 

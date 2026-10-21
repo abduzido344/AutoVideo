@@ -41,7 +41,11 @@ export type ConfigPatch = Partial<{
   image_provider: string; image_model: string; higgsfield_model: string; openai_model: string; max_imagens: number
 }>
 
-export type FilaJob = Job & { perfil: string | null; serie: string | null; n: number | null; titulo: string | null }
+export type FilaJob = Job & {
+  perfil: string | null; serie: string | null; n: number | null; titulo: string | null
+  // só nos jobs de episódio
+  capa?: string | null; video?: boolean; aprovado?: boolean; postado?: Rede[]
+}
 export type Fila = { paused: boolean; paused_until: number | null; reason: string; jobs: FilaJob[] }
 
 export type Decision = {

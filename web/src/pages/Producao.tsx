@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { api, type Episodio, type FilaJob, type Rede } from "@/api"
 import { COR, ICONE } from "@/components/secoes"
 import { Badge } from "@/components/ui/badge"
@@ -50,26 +50,20 @@ function Etapas({ atual }: { atual: string }) {
 }
 
 function Cartao({ j, nomePerfil, busy, onRetomar }: { j: FilaJob; nomePerfil: (s: string | null) => string | null; busy: boolean; onRetomar: () => void }) {
-  // capa, vídeo e postado só existem no detalhe do episódio: busca uma vez por status
-  const [ep, setEp] = useState<Episodio | null>(null)
-  const temDetalhe = j.recipe === "episodio" && (j.status === "awaiting_approval" || j.status === "completed")
-  useEffect(() => {
-    if (temDetalhe) api.episodio(j.id).then(setEp, () => {})
-  }, [j.id, j.status, temDetalhe])
   const falhou = j.status === "failed"
   const estilo = j.recipe === "estilo"
   const titulo = j.titulo ?? (estilo ? "Análise de estilo" : `Episódio ${j.id}`)
   const sub = estilo ? "Análise de estilo" : [j.serie, nomePerfil(j.perfil)].filter(Boolean).join(" · ")
-  const abre = !falhou && (j.status === "awaiting_approval" || Boolean(ep?.final))
+  const abre = !falhou && (j.status === "awaiting_approval" || Boolean(j.video))
   const corpo = (
     <div className="flex gap-3">
-      {ep?.capa && <img src={ep.capa} alt="" className="aspect-[9/16] w-12 shrink-0 rounded-md border object-cover" />}
+      {j.capa && <img src={j.capa} alt="" className="aspect-[9/16] w-12 shrink-0 rounded-md border object-cover" />}
       <div className="min-w-0 flex-1 space-y-1">
         <p className="text-sm leading-snug font-medium break-words">{titulo}</p>
         {sub && <p className="truncate text-xs text-muted-foreground">{sub}</p>}
         <div className="flex flex-wrap items-center gap-1.5">
           {j.n !== null && !estilo && <span className="text-xs text-muted-foreground">Parte {j.n}</span>}
-          {j.status === "completed" && (ep?.postado.length ?? 0) > 0 && <Badge variant="secondary">postado</Badge>}
+          {j.status === "completed" && (j.postado?.length ?? 0) > 0 && <Badge variant="secondary">postado</Badge>}
         </div>
       </div>
     </div>

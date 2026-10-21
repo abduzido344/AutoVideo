@@ -102,11 +102,11 @@ describe("Produção: esteira", () => {
     expect(api.retomar).toHaveBeenCalledWith(9)
   })
   it("pronto postado ganha o selo e a capa", async () => {
-    vi.mocked(api.fila).mockResolvedValue(fila({ jobs: [job({ id: 4, status: "completed", titulo: "Aprovado" })] }))
-    vi.mocked(api.episodio).mockResolvedValue({ ...ep, aprovado: true, postado: ["tiktok"] } as Episodio)
+    vi.mocked(api.fila).mockResolvedValue(fila({ jobs: [job({ id: 4, status: "completed", titulo: "Aprovado", capa: "/projects/x/out/capa.jpg", video: true, aprovado: true, postado: ["tiktok"] })] }))
     const { container } = render(<Producao />)
     expect(await within(coluna("Prontos")).findByText("postado")).toBeTruthy()
     expect(container.querySelector("img")?.getAttribute("src")).toBe("/projects/x/out/capa.jpg")
+    expect(api.episodio).not.toHaveBeenCalled()
   })
   it("filtro por perfil esconde os outros", async () => {
     vi.mocked(api.fila).mockResolvedValue(fila({ jobs: [job({ id: 1, titulo: "Do Benji" }), job({ id: 2, perfil: "lum", titulo: "Da Lum" })] }))

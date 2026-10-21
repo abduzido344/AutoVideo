@@ -70,3 +70,19 @@ def test_get_key_env_wins(monkeypatch):
     monkeypatch.setenv("OPENROUTER_API_KEY", "a")
     assert config.get_key("OPENROUTER_API_KEY") == "a"
     assert config.setting("max_imagens", 40) == 40
+
+
+def test_personagens_and_context_alphabetical():
+    p = data.create_perfil("Canal")
+    root = data.perfis_dir() / p.slug
+    (root / "universo" / "mundo.md").write_text("MUNDO", encoding="utf-8")
+    (root / "universo" / "historico.md").write_text("HISTORICO", encoding="utf-8")
+    for nome, ficha in (("zeca", "FICHA_Z"), ("ana", "FICHA_A")):
+        (root / "personagens" / nome).mkdir(parents=True)
+        (root / "personagens" / nome / "ficha.md").write_text(ficha, encoding="utf-8")
+    (root / "personagens" / "ana" / "folha.png").write_bytes(b"x")
+    (root / "personagens" / "ana" / "aprovada").write_text("", encoding="utf-8")
+    ps = data.personagens(p.slug)
+    assert [(c["slug"], c["folha"], c["aprovada"]) for c in ps] == [("ana", True, True), ("zeca", False, False)]
+    ctx = data.context_for(p.slug)
+    assert ctx.index("MUNDO") < ctx.index("FICHA_A") < ctx.index("FICHA_Z") < ctx.index("HISTORICO")

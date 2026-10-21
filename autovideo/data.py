@@ -117,6 +117,8 @@ def create_perfil(nome: str) -> Perfil:
             break
         except FileExistsError:
             continue
+    else:
+        raise RuntimeError(f"não consegui um slug livre para {nome!r}")
     root = perfis_dir() / slug
     (root / "universo").mkdir()
     (root / "universo" / "mundo.md").write_text("", encoding="utf-8")
@@ -159,8 +161,8 @@ def add_ideia(slug: str, texto: str, origem: str = "usuario") -> Ideia:
 
 
 def personagens(slug: str) -> list[dict]:
-    # universo/personagens/<slug>/{ficha.md, folha.png, aprovada (arquivo marcador)}
-    base = perfis_dir() / slug / "universo" / "personagens"
+    # perfis/<slug>/personagens/<p>/{ficha.md, folha.png, aprovada (arquivo marcador)}
+    base = perfis_dir() / slug / "personagens"
     if not base.exists():
         return []
     return [{"slug": d.name, "ficha": (d / "ficha.md").read_text(encoding="utf-8") if (d / "ficha.md").exists() else "",

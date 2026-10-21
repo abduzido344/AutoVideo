@@ -85,6 +85,19 @@ def test_rejects_paths_outside_episode(tmp_path):
     (tmp_path / "fora.png").write_bytes(b"x")
     with pytest.raises(ValueError, match="fora"):
         montage.build(ep, cenas, voz, {"s01": "../fora.png"}, {}, None)
+    with pytest.raises(ValueError, match="fora"):
+        montage.build(ep, cenas, voz, {"s01": str((tmp_path / "fora.png").resolve())}, {}, None)
+
+
+def test_rebuild_drops_stale_files(tmp_path):
+    ep, cenas, voz, imgs = _ep(tmp_path, [2.0, 3.0], ["image", "screen"])
+    montage.build(ep, cenas, voz, imgs, {}, None)
+    (ep / "composition/hyperframes.json").write_text("{}")
+    cenas.cenas[1] = Cena(id="s02", kind="image", narration="x", prompt="y")
+    (ep / "img/s02.png").write_bytes(b"png")
+    montage.build(ep, cenas, voz, {**imgs, "s02": "img/s02.png"}, {}, None)
+    assert not (ep / "composition/compositions/screen-s02.html").exists()
+    assert (ep / "composition/hyperframes.json").exists()
 
 
 def test_voice_must_match_scenes(tmp_path):
@@ -106,6 +119,9 @@ def test_camera_tweens(tmp_path):
 
 
 def test_cena_schema():
+    for bad in ('s01"><x', "../x", "s1", "x01"):
+        with pytest.raises(ValidationError):
+            Cena(id=bad, kind="image", narration="x", prompt="y")
     with pytest.raises(ValidationError, match="prompt"):
         Cena(id="s01", kind="image", narration="x")
     with pytest.raises(ValidationError, match="screen"):

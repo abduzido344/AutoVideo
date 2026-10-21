@@ -1,7 +1,7 @@
 """Modelos dos artefatos de um episódio (episodio.json, cenas.json, voz.json, revisao.json).
 Só validação de schema; as checagens entre arquivos (roteiro, personagens, limite de imagens) ficam no episode."""
 from typing import Literal
-from pydantic import BaseModel, model_validator
+from pydantic import BaseModel, Field, model_validator
 from autovideo.blocks import SCHEMAS
 from autovideo.data import ScreenType
 
@@ -28,7 +28,7 @@ class Screen(BaseModel):
 
 
 class Cena(BaseModel):
-    id: str  # "s01", "s02"... sequencial
+    id: str = Field(pattern=r"^s\d{2,}$")  # "s01", "s02"... sequencial; vai cru para HTML, JS e nome de arquivo
     kind: Literal["image", "screen"]
     narration: str  # trecho do roteiro lido nesta cena
     prompt: str = ""  # obrigatório se kind=image (em inglês, sem o prefixo do estilo)

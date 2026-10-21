@@ -36,7 +36,9 @@ def build(ep: Path, cenas: Cenas, voz: Voz, imgs: dict[str, str], sfx: dict[str,
     if [c.id for c in cenas.cenas] != [v.id for v in voz.cenas]:
         raise ValueError("voz.json não corresponde às cenas (ids/ordem diferentes)")
     comp = ep / "composition"
-    (comp / "compositions").mkdir(parents=True, exist_ok=True)
+    for d in ("assets", "compositions"):  # re-execução não deixa telas/mídia velhas; o resto do scaffold fica
+        shutil.rmtree(comp / d, ignore_errors=True)
+        (comp / d).mkdir(parents=True)
     clips, audio, tweens, t = [], [], [], 0.0
     for c, v in zip(cenas.cenas, voz.cenas):
         dur = round(v.dur + RESPIRO, 3)

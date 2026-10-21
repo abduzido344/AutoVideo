@@ -1,7 +1,7 @@
 # UI — Componentes do painel AutoVideo
 
 **Stack:** React + Vite + Tailwind v4 + shadcn/ui + registry Kobra (`@kobra`).
-**Design alvo:** visual do Lum Studio (claro, sidebar `#F3F4F6`, painel branco inset, ação preta, acento magenta `#FF4081`, Cormorant só no display). Os tokens e as telas estão em docs/superpowers/specs/2026-10-21-autovideo-series-design.md. O `web/src/index.css` atual ainda tem os tokens do painel v2 (estilo Kimi) até a migração.
+**Design alvo:** visual do Lum Studio (claro, sidebar `#F3F4F6`, painel branco inset, ação preta, acento magenta `#FF4081`, Cormorant só no display). Os tokens e as telas estão em docs/superpowers/specs/2026-10-21-autovideo-series-design.md. Os tokens já estão em `web/src/index.css`, mapeados para as variáveis do shadcn.
 
 ## Regra: procure componente pronto antes de escrever
 Antes de criar qualquer elemento de UI, procure nesta ordem e use o primeiro que servir:
@@ -53,11 +53,7 @@ Nota: o `liquidglass` vai duas vezes no bundle: a lib vendorizada em `src/lib/li
 ## Componentes escritos à mão
 | Componente | Motivo |
 |---|---|
-| `components/workspace/Timeline.tsx` | Faixas do timeline.json (vídeo/zoom/overlays/legendas/música/sfx); clicáveis só depois do render final (antes é só leitura, com dica); não há timeline de vídeo em Kobra, shadcn nem nos registries do índice |
-| `components/workspace/StageBar.tsx` | Barra segmentada das 13 etapas do pipeline; Kobra `task-list` é Pro e o `progress` do shadcn é uma barra contínua só |
-| `components/workspace/Transcript.tsx` | Transcrição com fillers/pausas riscados; texto corrido, sem componente equivalente |
-| `components/workspace/ActionBox.tsx` | Caixa de aprovar/pedir ajustes com chips de feedback; Kobra `question-card` é Pro |
-| `components/workspace/DetailTabs.tsx` | Composição (não é primitivo novo): `tabs` do shadcn + `react-markdown` para brief, revisão e post |
-| `components/AppSidebar.tsx` | Composição da `sidebar` do shadcn (variant inset) com a lista de projetos e estado; inclui o `TopBar` (`SidebarTrigger`) |
+| `components/AppSidebar.tsx` | Composição da `sidebar` do shadcn (variant inset, 252px) com wordmark, `select` de perfil, `dropdown-menu` do botão Criar, links Fila/Revisão (contagem)/Estilos/Configurações; inclui o `TopBar` (`SidebarTrigger`) |
+| `pages/Pagina.tsx` | Casca de página do Lum (header sticky, título 22px, label de seção 11px); layout puro, sem componente equivalente |
 | `components/ConnectClaude.tsx` | Composição do `dialog` do shadcn: janela "Conectar o Claude" (status da conta, botão que abre o terminal com `claude auth login`, comando para copiar); Kobra não tem modal grátis |
 | `components/StatusPill.tsx` | Pílula de status do doctor; `badge` do shadcn não tem o estado "verificando" com ponto |

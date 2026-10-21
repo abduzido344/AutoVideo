@@ -5,20 +5,28 @@ import { ConnectClaude } from "@/components/ConnectClaude"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { toast, Toasts } from "@/components/ui/toast"
 import { SoundEffects } from "@/components/ui/sound"
-import { go, isNewVideoShortcut, useRoute } from "@/lib/route"
+import { go, useRoute } from "@/lib/route"
 import { usePoll } from "@/lib/usePoll"
-import { NewVideo } from "@/pages/NewVideo"
-import { Workspace } from "@/pages/Workspace"
+import { Configuracoes } from "@/pages/Configuracoes"
+import { EmBreve } from "@/pages/Pagina"
 
 const OFFLINE: Doctor = { ok: false, checks: [{ name: "resposta do servidor", ok: false, detail: "sem resposta do /api/doctor" }] }
+const TITULO = {
+  perfis: "Perfis", perfil: "Perfil", onboarding: "Novo perfil", estilos: "Estilos", estilo: "Estilo", fila: "Fila", revisao: "Revisão",
+} as const
 
 export default function App() {
   const route = useRoute()
-  const jobs = usePoll(api.jobs)
-  const [stages, setStages] = useState<string[]>([])
+  const fila = usePoll(api.fila)
+  const perfis = usePoll(api.perfis, 10000)
+  const [escolhido, setEscolhido] = useState<string | null>(null)
   const [doctor, setDoctor] = useState<Doctor | null>(null)
+  // o perfil da rota manda; senão vale o último escolhido; senão o primeiro
+  const lista = perfis.data ?? []
+  const noRoute = route.name === "perfil" || route.name === "onboarding" ? route.slug : null
+  const perfilSlug = noRoute ?? (lista.some((p) => p.slug === escolhido) ? escolhido : lista[0]?.slug ?? null)
+  const aguardando = (fila.data?.jobs ?? []).filter((j) => j.status === "awaiting_approval").length
 
-  useEffect(() => { api.stages().then(setStages).catch(() => {}) }, [])
   useEffect(() => { api.doctor().then(setDoctor, () => setDoctor(OFFLINE)) }, [])
   // conta do Claude: sem login, a janela "Conectar o Claude" abre sozinha ao carregar
   const [auth, setAuth] = useState<Auth | null>(null)
@@ -26,7 +34,7 @@ export default function App() {
   useEffect(() => { api.auth().then((a) => { setAuth(a); if (!a.ok) setConnect(true) }, () => {}) }, [])
   const connected = useCallback((a: Auth) => { setAuth(a); api.doctor().then(setDoctor, () => {}) }, [])
   // queda do servidor vira um toast fixo (pending não some sozinho); na volta, o mesmo id troca para sucesso e some
-  const offline = Boolean(jobs.error)
+  const offline = Boolean(fila.error)
   const wasOffline = useRef(false)
   useEffect(() => {
     if (offline) toast({ id: "offline", message: "Sem conexão com o servidor — tentando de novo…", state: "pending" })
@@ -40,23 +48,16 @@ export default function App() {
     addEventListener("drop", block)
     return () => { removeEventListener("dragover", block); removeEventListener("drop", block) }
   }, [])
-  useEffect(() => {
-    const on = (e: KeyboardEvent) => {
-      if (isNewVideoShortcut(e)) { e.preventDefault(); go({ name: "new" }) }
-    }
-    addEventListener("keydown", on)
-    return () => removeEventListener("keydown", on)
-  }, [])
 
   return (
     <SoundEffects>
       <SidebarProvider>
-        <AppSidebar jobs={jobs.data ?? []} route={route} doctor={doctor} auth={auth} onAccount={() => setConnect(true)} />
+        <AppSidebar perfis={lista} perfilSlug={perfilSlug} aguardando={aguardando} route={route}
+          onPerfil={(slug) => { setEscolhido(slug); go({ name: "perfil", slug }) }}
+          doctor={doctor} auth={auth} onAccount={() => setConnect(true)} />
         <SidebarInset>
           <TopBar />
-          {route.name === "project"
-            ? <Workspace key={route.id} id={route.id} stages={stages} onChange={jobs.refresh} />
-            : <NewVideo doctor={doctor} onCreated={(id) => { jobs.refresh(); go({ name: "project", id }) }} />}
+          {route.name === "config" ? <Configuracoes /> : <EmBreve titulo={TITULO[route.name]} />}
         </SidebarInset>
       </SidebarProvider>
       <ConnectClaude open={connect} onOpenChange={setConnect} onConnected={connected} />

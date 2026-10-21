@@ -1,14 +1,44 @@
 import { useEffect, useState } from "react"
 
-export type Route = { name: "new" } | { name: "project"; id: number }
+export type Route =
+  | { name: "perfis" }
+  | { name: "perfil"; slug: string; aba?: string }
+  | { name: "onboarding"; slug: string }
+  | { name: "estilos" }
+  | { name: "estilo"; slug: string }
+  | { name: "fila" }
+  | { name: "revisao"; jid?: number }
+  | { name: "config" }
+
+const dec = (s: string) => { try { return decodeURIComponent(s) } catch { return s } }
 
 export function parseHash(hash: string): Route {
-  const m = /^#\/p\/(\d+)$/.exec(hash)
-  return m ? { name: "project", id: Number(m[1]) } : { name: "new" }
+  const [head, a, b] = hash.replace(/^#\/?/, "").split("/").map(dec)
+  switch (head) {
+    case "perfil": return a ? { name: "perfil", slug: a, ...(b ? { aba: b } : {}) } : { name: "perfis" }
+    case "onboarding": return a ? { name: "onboarding", slug: a } : { name: "perfis" }
+    case "estilos": return { name: "estilos" }
+    case "estilo": return a ? { name: "estilo", slug: a } : { name: "estilos" }
+    case "fila": return { name: "fila" }
+    case "revisao": return /^\d+$/.test(a ?? "") ? { name: "revisao", jid: Number(a) } : { name: "revisao" }
+    case "config": return { name: "config" }
+    default: return { name: "perfis" }
+  }
+}
+
+export function formatHash(r: Route): string {
+  const e = encodeURIComponent
+  switch (r.name) {
+    case "perfil": return `#/perfil/${e(r.slug)}${r.aba ? `/${e(r.aba)}` : ""}`
+    case "onboarding": return `#/onboarding/${e(r.slug)}`
+    case "estilo": return `#/estilo/${e(r.slug)}`
+    case "revisao": return r.jid === undefined ? "#/revisao" : `#/revisao/${r.jid}`
+    default: return `#/${r.name}`
+  }
 }
 
 export function go(r: Route): void {
-  location.hash = r.name === "project" ? `#/p/${r.id}` : "#/"
+  location.hash = formatHash(r)
 }
 
 export function useRoute(): Route {
@@ -19,13 +49,4 @@ export function useRoute(): Route {
     return () => removeEventListener("hashchange", on)
   }, [])
   return route
-}
-
-export function isNewVideoShortcut(
-  e: Pick<KeyboardEvent, "key" | "ctrlKey" | "metaKey" | "shiftKey" | "altKey" | "defaultPrevented" | "target">,
-): boolean {
-  if (e.defaultPrevented || e.shiftKey || e.altKey || !(e.ctrlKey || e.metaKey)) return false
-  if (e.key.toLowerCase() !== "k") return false
-  const t = e.target as Element | null
-  return !t?.closest?.('input, textarea, select, [contenteditable]:not([contenteditable="false"])')
 }

@@ -1,30 +1,30 @@
 import { describe, expect, it } from "vitest"
-import { isNewVideoShortcut, parseHash } from "./route"
+import { formatHash, parseHash, type Route } from "./route"
 
-describe("parseHash", () => {
-  it("lê o workspace e cai na home no resto", () => {
-    expect(parseHash("#/p/12")).toEqual({ name: "project", id: 12 })
-    expect(parseHash("#/")).toEqual({ name: "new" })
-    expect(parseHash("")).toEqual({ name: "new" })
-    expect(parseHash("#/p/abc")).toEqual({ name: "new" })
+describe("rotas", () => {
+  const casos: [string, Route][] = [
+    ["#/perfis", { name: "perfis" }],
+    ["#/perfil/benji", { name: "perfil", slug: "benji" }],
+    ["#/perfil/benji/agenda", { name: "perfil", slug: "benji", aba: "agenda" }],
+    ["#/onboarding/benji", { name: "onboarding", slug: "benji" }],
+    ["#/estilos", { name: "estilos" }],
+    ["#/estilo/meu-estilo", { name: "estilo", slug: "meu-estilo" }],
+    ["#/fila", { name: "fila" }],
+    ["#/revisao", { name: "revisao" }],
+    ["#/revisao/7", { name: "revisao", jid: 7 }],
+    ["#/config", { name: "config" }],
+  ]
+  it.each(casos)("%s <-> rota", (hash, route) => {
+    expect(parseHash(hash)).toEqual(route)
+    expect(formatHash(route)).toBe(hash)
   })
-})
-
-describe("isNewVideoShortcut", () => {
-  const ev = (o: Partial<Parameters<typeof isNewVideoShortcut>[0]> = {}) =>
-    ({ key: "k", ctrlKey: true, metaKey: false, shiftKey: false, altKey: false, defaultPrevented: false, target: document.body, ...o })
-  it("aceita Ctrl/Cmd+K fora de campos de texto", () => {
-    expect(isNewVideoShortcut(ev())).toBe(true)
-    expect(isNewVideoShortcut(ev({ ctrlKey: false, metaKey: true, key: "K" }))).toBe(true)
+  it("cai em perfis no que não existe ou está incompleto", () => {
+    for (const h of ["", "#/", "#/xyz", "#/perfil", "#/onboarding"]) expect(parseHash(h)).toEqual({ name: "perfis" })
+    expect(parseHash("#/estilo")).toEqual({ name: "estilos" })
+    expect(parseHash("#/revisao/abc")).toEqual({ name: "revisao" })
   })
-  it("ignora campos de texto, modificadores extras e eventos já tratados", () => {
-    for (const tag of ["textarea", "input"]) expect(isNewVideoShortcut(ev({ target: document.createElement(tag) }))).toBe(false)
-    const ce = document.createElement("div"); ce.setAttribute("contenteditable", "true")
-    expect(isNewVideoShortcut(ev({ target: ce }))).toBe(false)
-    expect(isNewVideoShortcut(ev({ shiftKey: true }))).toBe(false)
-    expect(isNewVideoShortcut(ev({ altKey: true }))).toBe(false)
-    expect(isNewVideoShortcut(ev({ defaultPrevented: true }))).toBe(false)
-    expect(isNewVideoShortcut(ev({ ctrlKey: false }))).toBe(false)
-    expect(isNewVideoShortcut(ev({ key: "j" }))).toBe(false)
+  it("codifica o slug", () => {
+    expect(formatHash({ name: "perfil", slug: "a b" })).toBe("#/perfil/a%20b")
+    expect(parseHash("#/perfil/a%20b")).toEqual({ name: "perfil", slug: "a b" })
   })
 })

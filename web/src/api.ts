@@ -2,38 +2,62 @@ export type Job = {
   id: number; project_dir: string; recipe: string; auto: number; status: string; stage: string; error: string
   created: number; updated: number
 }
-// linhas de decisions.log: agentes (role/cost_usd...), reversão de revisão (review_round), beats_error (stage) e validation_error
-export type Decision = {
-  ts: number; role?: string; attempt?: number; cost_usd?: number | null; turns?: number | null; is_error?: boolean; result?: string
-  review_round?: number; stage?: string; beats_error?: string; validation_error?: string
-}
-export type Word = { text: string; start: number; end: number }
-export type TimelineJSON = {
-  width: number; height: number; fps?: number
-  segments: { src: string; in: number; out: number }[]
-  zooms?: { at: number; dur: number; scale?: number; kind?: string }[]
-  overlays?: { start: number; dur: number; src: string }[]
-  broll?: { start: number; dur: number; src: string }[]
-  sfx?: { at: number; src: string; dur?: number }[]
-  music?: { src: string; volume?: number } | null
-  captions?: boolean
-}
-export type Review = { issues_restantes: { code?: string | null; message?: string | null }[]; lufs: number | null }
-export type RecipeInfo = {
-  id: string; title: string; mode: "speech" | "montage"; aspect: string
-  captions: { enabled: boolean; component: string }; pacing: { max_gap: number }; audio: { lufs: number }
-}
 export type Auth = { ok: boolean; detail: string }
 export type Doctor = { ok: boolean; checks: { name: string; ok: boolean; detail: string }[] }
-export type JobDetail = Job & {
-  rel: string | null
-  files: {
-    brief: string | null; post: { title: string; caption: string; hashtags: string[] } | null
-    has_final: boolean; decisions: Decision[]
-    preview: string | null; aspect: string | null
-    transcript: { words: Word[]; fillers: number[] } | null
-    timeline: TimelineJSON | null; review: Review | null; script: string | null
-  }
+
+export type Rede = "youtube" | "tiktok" | "instagram" | "facebook"
+export type Agenda = { gerar_as: string; por_dia: number; postar_as: string[]; episodios_por_serie: number }
+export type Conta = { conectada: boolean; usuario: string }
+export type Perfil = {
+  slug: string; nome: string; assunto: string; publico: string; estilo: string; voz_id: string; ativo: boolean
+  agenda: Agenda; contas: Record<Rede, Conta>; onboarding: number
+}
+export type Ideia = { id: string; texto: string; origem: "usuario" | "claude"; usada: boolean }
+export type EpisodioRef = { n: number; titulo: string; sinopse: string; job: number | null; postado: Rede[] }
+export type Serie = { slug: string; titulo: string; logline: string; ideia: string | null; paused: boolean; episodios: EpisodioRef[] }
+export type Personagem = { slug: string; ficha: string; folha: boolean; aprovada: boolean }
+export type PerfilDetalhe = {
+  perfil: Perfil; ideias: Ideia[]; personagens: Personagem[]
+  // path_rel é relativo à pasta de perfis (ex.: "benji/series/01-x")
+  series: { path_rel: string; serie: Serie; episodios: { n: number; titulo: string; job: number | null; status: string | null; stage: string | null }[] }[]
+  universo: { mundo: string; historico: string }
+}
+export type EstiloInfo = { slug: string; origem: "usuario" | "fabrica"; titulo: string }
+export type Estilo = {
+  titulo: string; duracao_alvo_s: [number, number]; segundos_por_cena: number; legenda: boolean; paleta: string[]
+  telas: string[]; imagem_prefixo: string; gancho: string; voz_padrao: string
+}
+export type EstiloDetalhe = { md: string; json: Estilo }
+export type ChatKind = "onboarding" | "estilo"
+export type ChatMsg = { autor: "voce" | "claude"; texto: string }
+export type ChatReply = { resposta: string; historico: ChatMsg[]; etapa: number }
+
+export type Config = {
+  keys: { ELEVENLABS_API_KEY: boolean; OPENROUTER_API_KEY: boolean; APIFY_TOKEN: boolean }
+  image_provider: string; image_model: string; max_imagens: number
+}
+export type ConfigPatch = Partial<{
+  ELEVENLABS_API_KEY: string; OPENROUTER_API_KEY: string; APIFY_TOKEN: string
+  image_provider: string; image_model: string; max_imagens: number
+}>
+
+export type FilaJob = Job & { perfil: string | null; serie: string | null; n: number | null; titulo: string | null }
+export type Fila = { paused: boolean; paused_until: number | null; reason: string; jobs: FilaJob[] }
+
+export type Decision = {
+  ts: number; role?: string; model?: string; attempt?: number; cost_usd?: number | null; turns?: number | null
+  is_error?: boolean; result?: string
+}
+export type Episodio = {
+  job: Job; perfil: string | null; serie: string | null; n: number | null; titulo: string | null
+  roteiro: string; episodio: unknown; cenas: unknown; revisao: unknown; ajustes: string
+  decisions: Decision[]
+  final: string | null; capa: string | null // URLs /projects/...
+}
+
+export class ApiError extends Error {
+  readonly status: number
+  constructor(message: string, status: number) { super(message); this.status = status }
 }
 
 async function j<T>(path: string, init?: RequestInit): Promise<T> {
@@ -42,24 +66,50 @@ async function j<T>(path: string, init?: RequestInit): Promise<T> {
     const body = await r.text()
     let msg: unknown = body
     try { msg = JSON.parse(body).detail ?? body } catch { /* corpo não é JSON */ }
-    throw new Error(typeof msg === "string" ? msg : JSON.stringify(msg))
+    throw new ApiError(typeof msg === "string" ? msg : JSON.stringify(msg), r.status)
   }
   return r.json() as Promise<T>
 }
+const send = <T>(method: string, path: string, body?: unknown) =>
+  j<T>(path, body === undefined ? { method } : { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
+type Ok = { ok: boolean }
+const e = encodeURIComponent
 
 export const api = {
-  recipeInfo: () => j<RecipeInfo[]>("/api/recipe-info"),
   doctor: () => j<Doctor>("/api/doctor"),
   auth: () => j<Auth>("/api/auth"),
-  authLogin: () => j<{ ok: boolean }>("/api/auth/login", { method: "POST" }),
-  stages: () => j<string[]>("/api/stages"),
-  jobs: () => j<Job[]>("/api/jobs"),
-  job: (id: number) => j<JobDetail>(`/api/jobs/${id}`),
-  create: (fd: FormData) => j<{ id: number }>("/api/jobs", { method: "POST", body: fd }),
-  approve: (id: number) => j<{ ok: boolean }>(`/api/jobs/${id}/approve`, { method: "POST" }),
-  resume: (id: number) => j<{ ok: boolean }>(`/api/jobs/${id}/resume`, { method: "POST" }),
-  reject: (id: number, feedback: string) =>
-    j<{ ok: boolean }>(`/api/jobs/${id}/reject`, {
-      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ feedback }),
-    }),
+  authLogin: () => send<Ok>("POST", "/api/auth/login"),
+  config: () => j<Config>("/api/config"),
+  saveConfig: (patch: ConfigPatch) => send<Config>("PUT", "/api/config", patch),
+
+  estilos: () => j<EstiloInfo[]>("/api/estilos"),
+  estilo: (slug: string) => j<EstiloDetalhe>(`/api/estilos/${e(slug)}`),
+  analisarEstilo: (handle: string) => send<{ job: number }>("POST", "/api/estilos/analisar", { handle }),
+
+  perfis: () => j<Perfil[]>("/api/perfis"),
+  novoPerfil: (nome: string) => send<Perfil>("POST", "/api/perfis", { nome }),
+  perfil: (slug: string) => j<PerfilDetalhe>(`/api/perfis/${e(slug)}`),
+  // merge raso: agenda e contas vão inteiras
+  salvarPerfil: (slug: string, patch: Partial<Omit<Perfil, "slug">>) => send<Perfil>("PUT", `/api/perfis/${e(slug)}`, patch),
+  gerarFolha: (slug: string, p: string) => send<Ok>("POST", `/api/perfis/${e(slug)}/personagens/${e(p)}/folha`),
+  aprovarPersonagem: (slug: string, p: string) => send<Ok>("POST", `/api/perfis/${e(slug)}/personagens/${e(p)}/aprovar`),
+  salvarMundo: (slug: string, texto: string) => send<Ok>("PUT", `/api/perfis/${e(slug)}/universo/mundo`, { texto }),
+  addIdeia: (slug: string, texto: string) => send<Ideia>("POST", `/api/perfis/${e(slug)}/ideias`, { texto }),
+  delIdeia: (slug: string, id: string) => send<Ok>("DELETE", `/api/perfis/${e(slug)}/ideias/${e(id)}`),
+  gerar: (slug: string) => send<Ok>("POST", `/api/perfis/${e(slug)}/gerar`),
+
+  chat: (kind: ChatKind, slug: string) => j<ChatMsg[]>(`/api/chat/${kind}/${e(slug)}`),
+  chatSend: (kind: ChatKind, slug: string, mensagem: string) => send<ChatReply>("POST", `/api/chat/${kind}/${e(slug)}`, { mensagem }),
+
+  fila: () => j<Fila>("/api/fila"),
+  pausarFila: () => send<Ok>("POST", "/api/fila/pausar"),
+  continuarFila: () => send<Ok>("POST", "/api/fila/continuar"),
+  pausarSerie: (path_rel: string, paused: boolean) => send<Ok>("POST", "/api/series/pausar", { path_rel, paused }),
+
+  episodio: (jid: number) => j<Episodio>(`/api/episodios/${jid}`),
+  aprovar: (jid: number) => send<Ok>("POST", `/api/episodios/${jid}/aprovar`),
+  ajustar: (jid: number, texto: string) => send<Ok>("POST", `/api/episodios/${jid}/ajustar`, { texto }),
+  descartar: (jid: number) => send<Ok>("POST", `/api/episodios/${jid}/descartar`),
+  retomar: (jid: number) => send<Ok>("POST", `/api/episodios/${jid}/retomar`),
+  postado: (jid: number, rede: Rede) => send<{ ok: boolean; postado: Rede[] }>("POST", `/api/episodios/${jid}/postado`, { rede }),
 }

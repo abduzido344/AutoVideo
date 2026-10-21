@@ -13,3 +13,7 @@ if (!window.matchMedia) {
 }
 // jsdom não tem ResizeObserver; o toast do Kobra mede as pílulas com ele
 globalThis.ResizeObserver ??= class { observe() {} unobserve() {} disconnect() {} } as unknown as typeof ResizeObserver
+// jsdom não tem estas APIs de ponteiro/rolagem; o Select do Radix as chama ao abrir
+Element.prototype.hasPointerCapture ??= () => false
+Element.prototype.releasePointerCapture ??= () => {}
+Element.prototype.scrollIntoView ??= () => {}

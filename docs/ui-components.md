@@ -37,8 +37,8 @@ O app tem sempre a altura da tela (`h-svh overflow-hidden` no wrapper): só a si
 | `#/perfil/<slug>/<aba>` | Perfil: abas Séries, Ideias, Universo, Agenda e voz (as mesmas da sidebar); ações Ativo e Gerar próximo episódio | perfil (azul) |
 | `#/onboarding/<slug>` | Onboarding: chat + etapas | perfil (azul) |
 | `#/producao[/<jid>]` | Produção: esteira kanban (Na fila, Produzindo, Para revisar, Prontos), filtro por perfil, Pausar/Retomar fila; `jid` abre a revisão num `sheet` à direita. `#/fila` e `#/revisao[/jid]` redirecionam para cá | produção (magenta) |
-| `#/serie/<path_rel>` (urlencoded) | Série: episódios com etapa atual, status, custo e capa; abre a peça | produção (magenta) |
-| `#/episodio/<jid>` | Peça: abas com vídeo (Kobra `video`), storyboard de cenas e conversa dos agentes; pedir ajuste | produção (magenta) |
+| `#/serie/<path_rel>` (urlencoded) | Série: progresso (`progress`) e custo total; cartões (`card`) por episódio com capa, status (`badge`) e custo; abre a peça | produção (magenta) |
+| `#/episodio/<jid>` | Peça: coluna esquerda com etapas (`todo-list`), conversa dos agentes e Pedir ajuste; à direita abas Storyboard, Roteiro e Vídeo (Kobra `video`) | produção (magenta) |
 | `#/estilos`, `#/estilo/<slug>` | Estilos: lista + análise de @; conversa do estilo | estilos (violeta) |
 | `#/config/<aba>` | Configurações: Chaves API, Conexões (Claude, Codex, redes de cada perfil), Imagens | config (grafite) |
 

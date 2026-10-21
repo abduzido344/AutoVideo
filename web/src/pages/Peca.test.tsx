@@ -57,10 +57,24 @@ describe("Peca", () => {
     expect(container.querySelectorAll("audio").length).toBe(1)
   })
   it("pedir ajuste chama api.ajustar", async () => {
+    vi.mocked(api.episodio).mockResolvedValue(ep({ job: { id: 5, status: "awaiting_approval", stage: "aprovacao" } }))
     render(<Peca jid={5} />)
     fireEvent.change(await screen.findByLabelText("Pedir ajuste ao Diretor"), { target: { value: "refaz a cena 4" } })
     await userEvent.click(screen.getByRole("button", { name: "Enviar" }))
     await waitFor(() => expect(api.ajustar).toHaveBeenCalledWith(5, "refaz a cena 4"))
+  })
+  it("pedir ajuste fica desligado fora de awaiting_approval", async () => {
+    render(<Peca jid={5} />)
+    const campo = (await screen.findByLabelText("Pedir ajuste ao Diretor")) as HTMLTextAreaElement
+    expect(campo.disabled).toBe(true)
+    expect(campo.placeholder).toMatch(/aguardando revisão/)
+  })
+  it("episódio concluído mostra todas as etapas concluídas", async () => {
+    vi.mocked(api.episodio).mockResolvedValue(ep({ job: { id: 5, status: "completed", stage: "aprovacao" } }))
+    render(<Peca jid={5} />)
+    await screen.findByText("Etapas")
+    expect(screen.queryByText("Em andamento")).toBeNull()
+    expect(screen.queryByText("Pendente")).toBeNull()
   })
   it("aba Vídeo sem final mostra Ainda renderizando; com final, o player", async () => {
     const { unmount } = render(<Peca jid={5} />)

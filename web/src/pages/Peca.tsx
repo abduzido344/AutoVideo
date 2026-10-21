@@ -12,14 +12,15 @@ import { ETAPAS } from "@/lib/etapas"
 import { usePoll } from "@/lib/usePoll"
 import { Pagina, Secao } from "@/pages/Pagina"
 
-
 export function Peca({ jid }: { jid: number }) {
   const { data: ep, error } = usePoll(() => api.episodio(jid))
   const { data: arte, error: erroCenas } = usePoll(() => api.artefatos(jid))
   const [texto, setTexto] = useState("")
   const [busy, setBusy] = useState(false)
   const atual = ETAPAS.findIndex(([k]) => k === ep?.job.stage)
-  const etapas: TodoItem[] = ETAPAS.map(([k, t], i) => ({ id: k, title: t, status: i < atual ? "completed" : i === atual ? "in-progress" : "pending" }))
+  const concluido = ep?.job.status === "completed"
+  const etapas: TodoItem[] = ETAPAS.map(([k, t], i) => ({ id: k, title: t, status: concluido || i < atual ? "completed" : i === atual ? "in-progress" : "pending" }))
+  const podeAjustar = ep?.job.status === "awaiting_approval" // mesmo estado que episode.adjust aceita
 
   async function pedir(m: string) {
     if (busy) return
@@ -38,8 +39,9 @@ export function Peca({ jid }: { jid: number }) {
             <TodoList title="Etapas" items={etapas} collapseOnComplete={false} maxHeight={360} />
             <Secao>Conversa dos agentes</Secao>
             <ConversaAgentes decisions={ep.decisions} etapa={ETAPAS[atual]?.[1] ?? ep.job.stage} />
-            <PromptInput value={texto} onValueChange={setTexto} onSubmit={pedir} disabled={busy} minRows={2}
-              aria-label="Pedir ajuste ao Diretor" placeholder="Pedir ajuste ao Diretor" />
+            <PromptInput value={texto} onValueChange={setTexto} onSubmit={pedir} disabled={busy || !podeAjustar} minRows={2}
+              aria-label="Pedir ajuste ao Diretor"
+              placeholder={podeAjustar ? "Pedir ajuste ao Diretor" : "Só dá para pedir ajuste com o episódio aguardando revisão"} />
           </div>
           <Tabs defaultValue="storyboard">
             <TabsList>

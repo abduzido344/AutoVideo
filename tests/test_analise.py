@@ -1,3 +1,4 @@
+import ipaddress
 import json
 import httpx
 import pytest
@@ -6,6 +7,16 @@ from autovideo.jobs import JobStore
 from conftest import needs_ffmpeg
 
 ESTILO = {"titulo": "Analisado", "paleta": ["#001122"], "imagem_prefixo": "flat cartoon"}
+
+
+@pytest.fixture(autouse=True)
+def dns(monkeypatch):
+    def ips(host):
+        try:
+            return [str(ipaddress.ip_address(host))]
+        except ValueError:
+            return ["127.0.0.1"] if host == "localhost" else ["93.184.216.34"]
+    monkeypatch.setattr(analise, "_ips", ips)
 
 
 @pytest.fixture
@@ -126,3 +137,38 @@ def test_slug_collision_gets_suffix(env):
     dirs = {env.get(j)["project_dir"].split("estilos")[-1] for j in (a, b)}
     assert len(dirs) == 2
     assert env.get(analise.criar_job(env, "a_b"))["project_dir"] == env.get(a)["project_dir"]
+
+
+def test_download_rejects_local_hosts_and_redirects(env, tmp_path):
+    for u in ("http://localhost/v.mp4", "http://127.0.0.1/v.mp4", "http://10.0.0.5/v.mp4", "http://169.254.169.254/x"):
+        with pytest.raises(RuntimeError, match="recusada"):
+            analise._baixar("abc", tmp_path, _fake_apify([u]))
+
+    def h(req):
+        if req.url.host == "api.apify.com":
+            return httpx.Response(200, json=[{"videoUrl": "https://cdn.example/v.mp4"}])
+        if req.url.host == "cdn.example":
+            return httpx.Response(302, headers={"location": "http://127.0.0.1/x"})
+        pytest.fail("seguiu o redirect para host local")
+
+    with pytest.raises(RuntimeError, match="recusada"):
+        analise._baixar("abc", tmp_path, httpx.Client(transport=httpx.MockTransport(h)))
+
+
+def test_download_follows_safe_redirect_with_hop_limit(env, tmp_path):
+    def h(req):
+        if req.url.host == "api.apify.com":
+            return httpx.Response(200, json=[{"videoUrl": "https://cdn.example/a"}])
+        if req.url.path == "/a":
+            return httpx.Response(302, headers={"location": "/b"})
+        return httpx.Response(200, content=b"ok")
+
+    assert analise._baixar("abc", tmp_path, httpx.Client(transport=httpx.MockTransport(h)))[0].read_bytes() == b"ok"
+
+    def loop(req):
+        if req.url.host == "api.apify.com":
+            return httpx.Response(200, json=[{"videoUrl": "https://cdn.example/a"}])
+        return httpx.Response(302, headers={"location": "/a"})
+
+    with pytest.raises(RuntimeError, match="redirecionamentos"):
+        analise._baixar("abc", tmp_path / "2", httpx.Client(transport=httpx.MockTransport(loop)))

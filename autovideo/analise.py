@@ -1,9 +1,12 @@
 """Estilo a partir de um perfil do Instagram: Apify → vídeos → transcrição + folha de frames → Analista."""
+import ipaddress
+from contextlib import closing
 import math
 import re
 import shutil
+import socket
 from pathlib import Path
-from urllib.parse import urlsplit
+from urllib.parse import urljoin, urlsplit
 import httpx
 from autovideo import agents, config, data, media, transcribe
 from autovideo.data import Estilo
@@ -39,6 +42,38 @@ def criar_job(store, handle: str) -> int:
     return store.create(str(d), "estilo", False)
 
 
+def _ips(host: str) -> list[str]:
+    return [i[4][0] for i in socket.getaddrinfo(host, None)]
+
+
+def _publica(url: str) -> None:
+    """SSRF: a URL vem de terceiro (Apify); só http(s) para host público."""
+    u = urlsplit(url)
+    if u.scheme not in ("http", "https") or not u.hostname:
+        raise RuntimeError("URL de vídeo recusada: esquema inválido")
+    try:
+        ips = _ips(u.hostname)
+    except OSError as e:
+        raise RuntimeError("URL de vídeo recusada: host não resolve") from e
+    for ip in ips:
+        a = ipaddress.ip_address(ip.split("%")[0])
+        if a.is_loopback or a.is_private or a.is_link_local or a.is_reserved or a.is_multicast or a.is_unspecified:
+            raise RuntimeError("URL de vídeo recusada: endereço local ou privado")
+
+
+def _abrir(client: httpx.Client, url: str) -> httpx.Response:
+    # redirects manuais (máx. 3): cada salto é revalidado
+    # ponytail: DNS rebinding entre a checagem e a conexão não é coberto; fixar o IP se o risco importar
+    for _ in range(4):
+        _publica(url)
+        resp = client.send(client.build_request("GET", url), stream=True)
+        if not resp.is_redirect:
+            return resp
+        url = urljoin(url, resp.headers.get("location", ""))
+        resp.close()
+    raise RuntimeError("redirecionamentos demais no download do vídeo")
+
+
 def _baixar(h: str, work: Path, client: httpx.Client) -> list[Path]:
     token = config.get_key("APIFY_TOKEN")
     if not token:
@@ -56,7 +91,7 @@ def _baixar(h: str, work: Path, client: httpx.Client) -> list[Path]:
         v.parent.mkdir(parents=True, exist_ok=True)
         part = v.with_name(v.name + ".part")
         try:
-            with client.stream("GET", u) as resp, part.open("wb") as f:
+            with closing(_abrir(client, u)) as resp, part.open("wb") as f:
                 if not resp.is_success:
                     raise RuntimeError(f"download do vídeo {n} falhou: {resp.status_code}")
                 size = 0
@@ -87,7 +122,7 @@ def run_job(store, jid: int, client: httpx.Client | None = None) -> str:
     work = Path(job["project_dir"])
     est = work.parent
     own = client is None
-    c = client or httpx.Client(timeout=300, follow_redirects=True)
+    c = client or httpx.Client(timeout=300)
     try:
         h = (work / "perfil.txt").read_text(encoding="utf-8")
         for v in _baixar(h, work, c):

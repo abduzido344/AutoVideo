@@ -1,40 +1,41 @@
 import { useState } from "react"
 import { Trash2 } from "lucide-react"
 import ReactMarkdown from "react-markdown"
-import { api, type Agenda, type PerfilDetalhe, type Rede } from "@/api"
+import { api, type Agenda, type PerfilDetalhe } from "@/api"
 import { FolhaPersonagem } from "@/components/FolhaPersonagem"
+import { ABAS_PERFIL, COR, ICONE } from "@/components/secoes"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/toast"
 import { go } from "@/lib/route"
 import { usePoll } from "@/lib/usePoll"
-import { Pagina, Secao } from "@/pages/Pagina"
+import { Abas, Pagina, Secao } from "@/pages/Pagina"
 
-const ABAS = [["series", "Séries"], ["ideias", "Banco de ideias"], ["universo", "Universo"], ["agenda", "Agenda"], ["contas", "Contas"]] as const
 const STATUS: Record<string, string> = {
   queued: "Na fila", in_progress: "Em andamento", awaiting_approval: "Aguardando aprovação", completed: "Concluído", failed: "Falhou",
 }
-const REDES: [Rede, string][] = [["youtube", "YouTube"], ["tiktok", "TikTok"], ["instagram", "Instagram"], ["facebook", "Facebook"]]
 const HORA = /^([01]\d|2[0-3]):[0-5]\d$/
 const erro = (message: string) => (e: Error) => toast({ message, description: e.message, state: "error" })
 
-function Series({ slug, d, refresh }: { slug: string; d: PerfilDetalhe; refresh: () => void }) {
-  const pausar = (path_rel: string, paused: boolean) =>
-    api.pausarSerie(path_rel, paused).then(refresh, erro(paused ? "Não consegui pausar a série" : "Não consegui continuar a série"))
+function Gerar({ slug }: { slug: string }) {
   const [gerando, setGerando] = useState(false)
   const gerar = () => {
     setGerando(true)
     api.gerar(slug).then(
-      () => toast({ message: "Episódio na fila", description: "Acompanhe o andamento na Fila.", state: "success" }),
+      () => toast({ message: "Episódio na fila", description: "Acompanhe o andamento em Produção.", state: "success" }),
       erro("Não consegui gerar o episódio")).finally(() => setGerando(false))
   }
+  return <Button disabled={gerando} onClick={gerar}>Gerar próximo episódio</Button>
+}
+
+function Series({ d, refresh }: { d: PerfilDetalhe; refresh: () => void }) {
+  const pausar = (path_rel: string, paused: boolean) =>
+    api.pausarSerie(path_rel, paused).then(refresh, erro(paused ? "Não consegui pausar a série" : "Não consegui continuar a série"))
   return (
     <div className="space-y-4">
-      <Button disabled={gerando} onClick={gerar}>Gerar próximo episódio</Button>
       {d.series.length === 0 && <p className="text-sm text-muted-foreground">Nenhuma série ainda. Aprove uma ideia para o Claude criar a primeira.</p>}
       {d.series.map(({ path_rel, serie, episodios }) => (
         <Card key={path_rel} className="gap-3 p-4">
@@ -112,9 +113,9 @@ function Ativo({ slug, d, refresh }: { slug: string; d: PerfilDetalhe; refresh: 
       .finally(() => setBusy(false))
   }
   return (
-    <label className="mb-6 flex w-fit items-center gap-3 text-sm">
+    <label title="Gera episódios sozinho nos horários da agenda" className="flex items-center gap-2 text-sm">
       <Switch checked={d.perfil.ativo} disabled={busy} onCheckedChange={mudar} aria-label="Ativo" />
-      Ativo: gera episódios sozinho nos horários da agenda
+      Ativo
     </label>
   )
 }
@@ -157,43 +158,18 @@ function AgendaForm({ slug, d }: { slug: string; d: PerfilDetalhe }) {
   )
 }
 
-function Contas({ d }: { d: PerfilDetalhe }) {
-  return (
-    <div className="space-y-3">
-      <p className="text-sm text-muted-foreground">Nesta versão você posta à mão: o painel só marca o episódio como postado.</p>
-      {REDES.map(([r, nome]) => (
-        <Card key={r} className="flex-row items-center justify-between gap-3 p-4">
-          <div>
-            <h3 className="font-medium">{nome}</h3>
-            <p className="text-sm text-muted-foreground">{d.perfil.contas[r]?.conectada ? `Conectada (${d.perfil.contas[r].usuario})` : "Não conectada"}</p>
-          </div>
-          <Button variant="outline" disabled title="Chega numa próxima versão" aria-label={`Conectar ${nome}`}>Conectar</Button>
-        </Card>
-      ))}
-      <p className="text-xs text-muted-foreground">Conectar contas chega numa próxima versão.</p>
-    </div>
-  )
-}
-
 export function Perfil({ slug, aba }: { slug: string; aba?: string }) {
   const { data, refresh } = usePoll(() => api.perfil(slug), 5000)
-  const atual = ABAS.some(([k]) => k === aba) ? aba! : "series"
+  const atual = ABAS_PERFIL.some((a) => a.aba === aba) ? aba! : "series"
   return (
-    <Pagina titulo={data?.perfil.nome ?? "Perfil"} sub={data?.perfil.assunto}>
-      <Tabs value={atual} onValueChange={(v) => go({ name: "perfil", slug, aba: v })}>
-        <TabsList className="mb-4 flex-wrap">
-          {ABAS.map(([k, t]) => <TabsTrigger key={k} value={k}>{t}</TabsTrigger>)}
-        </TabsList>
-        {data ? (
-          <>
-            <TabsContent value="series"><Series slug={slug} d={data} refresh={refresh} /></TabsContent>
-            <TabsContent value="ideias"><Ideias slug={slug} d={data} refresh={refresh} /></TabsContent>
-            <TabsContent value="universo"><Universo slug={slug} d={data} refresh={refresh} /></TabsContent>
-            <TabsContent value="agenda"><Ativo slug={slug} d={data} refresh={refresh} /><AgendaForm slug={slug} d={data} /></TabsContent>
-            <TabsContent value="contas"><Contas d={data} /></TabsContent>
-          </>
-        ) : <p className="text-sm text-muted-foreground">Carregando…</p>}
-      </Tabs>
+    <Pagina titulo={data?.perfil.nome ?? "Perfil"} icone={ICONE.perfil} cor={COR.perfil.caixa} sub={data?.perfil.assunto || undefined}
+      acoes={data && <><Ativo slug={slug} d={data} refresh={refresh} /><Gerar slug={slug} /></>}
+      abas={<Abas label="Seções do perfil" valor={atual} itens={ABAS_PERFIL} onChange={(v) => go({ name: "perfil", slug, aba: v })} />}>
+      {!data ? <p className="text-sm text-muted-foreground">Carregando…</p>
+        : atual === "series" ? <Series d={data} refresh={refresh} />
+        : atual === "ideias" ? <Ideias slug={slug} d={data} refresh={refresh} />
+        : atual === "universo" ? <Universo slug={slug} d={data} refresh={refresh} />
+        : <AgendaForm slug={slug} d={data} />}
     </Pagina>
   )
 }

@@ -1,185 +1,38 @@
 from fastapi.testclient import TestClient
-from autovideo.jobs import JobStore
+from autovideo import server
 from autovideo.server import create_app
 
 
-def _client(tmp_path, monkeypatch):
-    monkeypatch.setenv("AUTOVIDEO_HOME", str(tmp_path))
-    store = JobStore(tmp_path / "jobs.db")
-    return store, TestClient(create_app(store, start_worker=False), base_url="http://127.0.0.1")
+def _client():
+    return TestClient(create_app(), base_url="http://127.0.0.1")
 
 
-def _mk(c, name="a b.mp4", recipe="talking-head-punchy"):
-    return c.post("/api/jobs", data={"recipe": recipe, "auto": "false"},
-                  files=[("videos", (name, b"fake", "video/mp4")), ("script", ("r.md", "Olá".encode(), "text/markdown"))])
+def test_blocks_foreign_origin_and_host(monkeypatch):
+    monkeypatch.setattr(server.doctor, "open_login_terminal", lambda: None)
+    c = _client()
+    assert c.post("/api/auth/login", headers={"Origin": "http://evil.example"}).status_code == 403
+    assert c.post("/api/auth/login", headers={"Origin": "http://127.0.0.1"}).status_code == 200
+    assert c.get("/api/auth", headers={"Host": "evil.example"}).status_code == 400
 
 
-def test_create_list_and_reject(tmp_path, monkeypatch):
-    store, c = _client(tmp_path, monkeypatch)
-    assert "talking-head-punchy" in c.get("/api/recipes").json()
-    assert c.get("/api/stages").json()[0] == "ingest"
-    jid = _mk(c).json()["id"]
-    assert c.get("/api/jobs").json()[0]["id"] == jid
-    store.set(jid, status="awaiting_approval", stage="gate1")
-    assert c.post(f"/api/jobs/{jid}/reject", json={"feedback": "mais curto"}).status_code == 200
-    assert store.get(jid)["status"] == "queued"
-    files = c.get(f"/api/jobs/{jid}").json()["files"]
-    assert files["has_final"] is False and files["decisions"] == []
-
-
-def test_reject_gate2_redoes_from_copywriter(tmp_path, monkeypatch):
-    from pathlib import Path
-    store, c = _client(tmp_path, monkeypatch)
-    jid = _mk(c).json()["id"]
-    root = Path(store.get(jid)["project_dir"])
-    for rel in ("brief.md", "approvals/gate1.ok", "edit.json"):
-        (root / rel).parent.mkdir(parents=True, exist_ok=True); (root / rel).write_text("x")
-    store.set(jid, status="awaiting_approval", stage="gate2")
-    assert c.post(f"/api/jobs/{jid}/reject", json={"feedback": "x"}).status_code == 200
-    assert (root / "brief.md").exists() and not (root / "edit.json").exists()
-
-
-def test_gate_errors_409_and_unknown_404(tmp_path, monkeypatch):
-    store, c = _client(tmp_path, monkeypatch)
-    jid = _mk(c).json()["id"]  # queued, não em gate
-    assert c.post(f"/api/jobs/{jid}/approve").status_code == 409
-    assert c.post(f"/api/jobs/{jid}/reject", json={"feedback": "x"}).status_code == 409
-    assert c.get("/api/jobs/999").status_code == 404
-    assert c.post("/api/jobs/999/approve").status_code == 404
-    assert c.post("/api/jobs/999/reject", json={"feedback": "x"}).status_code == 404
-
-
-def test_create_validation(tmp_path, monkeypatch):
-    store, c = _client(tmp_path, monkeypatch)
-    assert _mk(c, recipe="../x").status_code == 400
-    assert _mk(c, recipe="nope").status_code == 400
-    assert _mk(c, name="").status_code == 422  # parte sem filename vira campo de texto: o FastAPI recusa
-    two = c.post("/api/jobs", data={"recipe": "talking-head-punchy"},
-                 files=[("videos", ("a.mp4", b"1", "video/mp4")), ("videos", ("A.mp4", b"2", "video/mp4"))])
-    assert two.status_code == 400  # nomes repetidos (ValueError do pipeline)
-    assert store.list() == []
-
-
-def test_upload_name_sanitized_keeps_accents(tmp_path, monkeypatch):
-    from pathlib import Path
-    store, c = _client(tmp_path, monkeypatch)
-    r = _mk(c, name="../../evil é.mp4")
-    assert r.status_code == 200
-    root = Path(store.get(r.json()["id"])["project_dir"])
-    assert [p.name for p in (root / "input/raw").iterdir()] == ["evil é.mp4"]
-    assert not (tmp_path.parent / "evil é.mp4").exists()
-
-
-def test_has_final_only_with_review_marker(tmp_path, monkeypatch):
-    from pathlib import Path
-    store, c = _client(tmp_path, monkeypatch)
-    jid = _mk(c).json()["id"]
-    out = Path(store.get(jid)["project_dir"]) / "out"
-    out.mkdir(); (out / "final.mp4").write_bytes(b"old")
-    assert c.get(f"/api/jobs/{jid}").json()["files"]["has_final"] is False
-    (out / "review.json").write_text("{}")
-    assert c.get(f"/api/jobs/{jid}").json()["files"]["has_final"] is False  # sem marcador: render morreu no fim
-    (out.parent / ".stages/render.ok").write_text("ok")
-    assert c.get(f"/api/jobs/{jid}").json()["files"]["has_final"] is True
-
-
-def test_projects_static_serves_and_does_not_escape(tmp_path, monkeypatch):
-    store, c = _client(tmp_path, monkeypatch)
-    (tmp_path / "ok.txt").write_text("hi")
-    (tmp_path.parent / "secret.txt").write_text("nope")
-    assert c.get("/projects/ok.txt").text == "hi"
-    assert c.get("/projects/../secret.txt").status_code == 404
-    assert c.get("/projects/%2e%2e/secret.txt").status_code == 404
-
-
-def test_blocks_foreign_origin_and_host(tmp_path, monkeypatch):
-    store, c = _client(tmp_path, monkeypatch)
-    jid = _mk(c).json()["id"]
-    store.set(jid, status="awaiting_approval", stage="gate1")
-    assert c.post(f"/api/jobs/{jid}/approve", headers={"Origin": "http://evil.example"}).status_code == 403
-    assert c.post(f"/api/jobs/{jid}/approve", headers={"Origin": "http://127.0.0.1"}).status_code == 200
-    assert c.get("/api/recipes", headers={"Host": "evil.example"}).status_code == 400
-
-
-def test_serve_fails_stale_before_worker(tmp_path, monkeypatch):
-    monkeypatch.setenv("AUTOVIDEO_HOME", str(tmp_path))
-    store = JobStore(tmp_path / "jobs.db")
-    jid = store.create(str(tmp_path / "p"), "talking-head-punchy", False)
-    store.set(jid, status="in_progress")
-    monkeypatch.setattr("autovideo.server.threading.Thread", lambda **kw: type("T", (), {"start": lambda s: None})())
-    create_app(store)
-    assert store.get(jid)["status"] == "failed" and store.get(jid)["error"] == "interrompido"  # não reroda sozinho
-
-
-def test_resume_endpoint(tmp_path, monkeypatch):
-    store, c = _client(tmp_path, monkeypatch)
-    jid = _mk(c).json()["id"]
-    assert c.post(f"/api/jobs/{jid}/resume").status_code == 409  # queued
-    store.set(jid, status="failed", error="interrompido")
-    assert c.post(f"/api/jobs/{jid}/resume").status_code == 200
-    assert store.get(jid)["status"] == "queued"
-    assert c.post(f"/api/jobs/{jid}/resume").status_code == 409
-    assert c.post("/api/jobs/999/resume").status_code == 404
-
-
-def test_vite_dev_proxy_origin_allowed(tmp_path, monkeypatch):
+def test_vite_dev_proxy_origin_allowed(monkeypatch):
     # proxy com changeOrigin:false mantém Host=localhost:5173 e Origin=http://localhost:5173
-    store, c = _client(tmp_path, monkeypatch)
-    jid = _mk(c).json()["id"]
-    store.set(jid, status="awaiting_approval", stage="gate1")
+    monkeypatch.setattr(server.doctor, "open_login_terminal", lambda: None)
     h = {"Host": "localhost:5173", "Origin": "http://localhost:5173"}
-    assert c.post(f"/api/jobs/{jid}/approve", headers=h).status_code == 200
+    assert _client().post("/api/auth/login", headers=h).status_code == 200
 
 
-def test_malformed_post_json_is_null(tmp_path, monkeypatch):
-    from pathlib import Path
-    store, c = _client(tmp_path, monkeypatch)
-    jid = _mk(c).json()["id"]
-    out = Path(store.get(jid)["project_dir"]) / "out"
-    out.mkdir(); (out / "post.json").write_text("{trunc")
-    r = c.get(f"/api/jobs/{jid}")
-    assert r.status_code == 200 and r.json()["files"]["post"] is None
+def test_old_job_endpoints_are_gone():
+    c = _client()
+    assert c.get("/api/jobs").status_code == 404 and c.get("/api/recipes").status_code == 404
 
 
-def test_worker_marks_failed_and_survives(tmp_path, monkeypatch):
-    from autovideo import server
-    store, c = _client(tmp_path, monkeypatch)
-    jid = _mk(c).json()["id"]
-    monkeypatch.setattr(server, "run_job", lambda *a: (_ for _ in ()).throw(RuntimeError("boom")))
-    assert server._run_one(store) is True
-    assert store.get(jid)["status"] == "failed" and "boom" in store.get(jid)["error"]
-    assert server._run_one(store) is False  # nada mais na fila
-    # mesmo se marcar failed falhar, _run_one não propaga
-    jid2 = _mk(c, name="b.mp4").json()["id"]
-    real_set = store.set
-    def bad_set(j, **f):
-        if f.get("status") == "failed":
-            raise RuntimeError("db travado")
-        real_set(j, **f)
-    monkeypatch.setattr(store, "set", bad_set)
-    assert server._run_one(store) is True
-
-
-import json
-from pathlib import Path
-
-
-def test_recipe_info_lists_display_fields(tmp_path, monkeypatch):
-    _, c = _client(tmp_path, monkeypatch)
-    info = {r["id"]: r for r in c.get("/api/recipe-info").json()}
-    th = info["talking-head-punchy"]
-    assert th["mode"] == "speech" and th["aspect"] == "9:16" and th["title"]
-    assert set(th["captions"]) == {"enabled", "component"} and "max_gap" in th["pacing"] and "lufs" in th["audio"]
-    assert info["montage-beat"]["mode"] == "montage"
-
-
-def test_doctor_caches_success_but_rechecks_failure(tmp_path, monkeypatch):
-    from autovideo import server
+def test_doctor_caches_success_but_rechecks_failure(monkeypatch):
     calls, logged = [], [False]
     monkeypatch.setattr(server.doctor, "run_checks", lambda: calls.append(1) or [
         ("ffmpeg", True, "7.1"), ("claude auth", logged[0], "ok" if logged[0] else "rode claude login")])
     monkeypatch.setattr(server, "_doctor_ok", None)
-    _, c = _client(tmp_path, monkeypatch)
+    c = _client()
     a, b = c.get("/api/doctor").json(), c.get("/api/doctor").json()
     assert a == b == {"ok": False, "checks": [{"name": "ffmpeg", "ok": True, "detail": "7.1"},
                                              {"name": "claude auth", "ok": False, "detail": "rode claude login"}]}
@@ -190,87 +43,8 @@ def test_doctor_caches_success_but_rechecks_failure(tmp_path, monkeypatch):
     assert len(calls) == 3  # sucesso fica em cache
 
 
-def test_job_detail_exposes_preview_transcript_timeline_review(tmp_path, monkeypatch):
-    store, c = _client(tmp_path, monkeypatch)
-    jid = _mk(c, name="meu vídeo #1.mp4").json()["id"]
-    root = Path(store.get(jid)["project_dir"])
-    empty = c.get(f"/api/jobs/{jid}").json()["files"]
-    assert empty["preview"] is None and empty["transcript"] is None and empty["timeline"] is None
-    assert empty["review"] is None and empty["aspect"] is None and empty["script"] == "Olá"
-
-    (root / "input").mkdir(exist_ok=True)
-    (root / "input/meu vídeo #1.clean.mp4").write_bytes(b"x")
-    (root / "input/clean.ok").write_text("ok")
-    (root / ".stages").mkdir(exist_ok=True)
-    (root / ".stages/clean.ok").write_text("ok")
-    (root / "input/manifest.json").write_text(json.dumps({"aspect": "9:16", "videos": [
-        {"raw": "input/raw/x.mp4", "clean": "input/nao-existe.clean.mp4"},
-        {"raw": "input/raw/meu vídeo #1.mp4", "clean": "input/meu vídeo #1.clean.mp4"}]}), encoding="utf-8")
-    (root / "analysis").mkdir(exist_ok=True)
-    (root / "analysis/words.json").write_text(json.dumps([
-        {"text": "Olá", "start": 0.0, "end": 0.4, "src": "s"}, {"text": "é…", "start": 0.5, "end": 0.9, "src": "s"}]),
-        encoding="utf-8")
-    (root / "analysis/summary.json").write_text(json.dumps({"filler_candidates": [1]}), encoding="utf-8")
-    tl = {"width": 1080, "height": 1920, "segments": [{"src": "input/a.mp4", "in": 0, "out": 2}]}
-    (root / "timeline.json").write_text(json.dumps(tl), encoding="utf-8")
-    (root / "out").mkdir(exist_ok=True)
-    (root / "out/review.json").write_text(json.dumps({"issues_restantes": [], "lufs": -14.1}), encoding="utf-8")
-
-    f = c.get(f"/api/jobs/{jid}").json()["files"]
-    assert f["preview"] == "input/meu vídeo #1.clean.mp4" and f["aspect"] == "9:16"
-    assert f["transcript"] == {"words": [{"text": "Olá", "start": 0.0, "end": 0.4},
-                                         {"text": "é…", "start": 0.5, "end": 0.9}], "fillers": [1]}
-    assert f["timeline"] == tl and f["review"] == {"issues_restantes": [], "lufs": -14.1}
-
-
-def test_montage_job_has_no_transcript(tmp_path, monkeypatch):
-    store, c = _client(tmp_path, monkeypatch)
-    jid = _mk(c, recipe="montage-beat").json()["id"]
-    root = Path(store.get(jid)["project_dir"])
-    (root / "analysis").mkdir(exist_ok=True)
-    (root / "analysis/words.json").write_text("[]", encoding="utf-8")
-    assert c.get(f"/api/jobs/{jid}").json()["files"]["transcript"] is None
-
-
-def test_invalid_timeline_is_null(tmp_path, monkeypatch):
-    store, c = _client(tmp_path, monkeypatch)
-    jid = _mk(c).json()["id"]
-    root = Path(store.get(jid)["project_dir"])
-    (root / "timeline.json").write_text(json.dumps({"width": 1080, "height": 1920}), encoding="utf-8")
-    assert c.get(f"/api/jobs/{jid}").json()["files"]["timeline"] is None
-
-
-def test_recipe_info_skips_broken_recipe(tmp_path, monkeypatch):
-    from autovideo import recipes
-    d = tmp_path / "recipes"
-    d.mkdir()
-    for f in recipes.RECIPES_DIR.glob("*.yaml"):
-        (d / f.name).write_bytes(f.read_bytes())
-    (d / "quebrada.yaml").write_text("id: [nope\n  : :", encoding="utf-8")
-    monkeypatch.setattr(recipes, "RECIPES_DIR", d)
-    _, c = _client(tmp_path, monkeypatch)
-    ids = {r["id"] for r in c.get("/api/recipe-info").json()}
-    assert "talking-head-punchy" in ids and "quebrada" not in ids
-
-
-def test_preview_only_after_clean_marker(tmp_path, monkeypatch):
-    store, c = _client(tmp_path, monkeypatch)
-    jid = _mk(c).json()["id"]
-    root = Path(store.get(jid)["project_dir"])
-    (root / "input").mkdir(exist_ok=True)
-    (root / "input/v.clean.mp4").write_bytes(b"x")
-    (root / "input/manifest.json").write_text(json.dumps({"videos": [{"raw": "r", "clean": "input/v.clean.mp4"}]}), encoding="utf-8")
-    assert c.get(f"/api/jobs/{jid}").json()["files"]["preview"] is None
-    (root / "input/clean.ok").write_text("ok")
-    (root / ".stages").mkdir(exist_ok=True)  # projeto com marcadores: precisa do .stages/clean.ok
-    assert c.get(f"/api/jobs/{jid}").json()["files"]["preview"] is None
-    (root / ".stages/clean.ok").write_text("ok")
-    assert c.get(f"/api/jobs/{jid}").json()["files"]["preview"] == "input/v.clean.mp4"
-
-
-def test_auth_status_and_login_terminal(tmp_path, monkeypatch):
-    from autovideo import server
-    _, c = _client(tmp_path, monkeypatch)
+def test_auth_status_and_login_terminal(monkeypatch):
+    c = _client()
     monkeypatch.setattr(server.doctor, "claude_auth", lambda: "logado (claude.ai)")
     assert c.get("/api/auth").json() == {"ok": True, "detail": "logado (claude.ai)"}
 

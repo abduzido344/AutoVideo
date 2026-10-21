@@ -1,5 +1,7 @@
 import asyncio
+import re
 import shutil
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable
 from pydantic import BaseModel
@@ -9,41 +11,37 @@ from autovideo.project import Project
 
 _query = query
 PROMPTS = Path(__file__).parent / "prompts"
-# subcomandos do hyperframes que os prompts/receitas/skills usam (inspeção e edição local); render/init/publish/
+# subcomandos do hyperframes que os prompts/skills usam (inspeção e edição local); render/init/publish/
 # cloud/upgrade/skills/tts ficam de fora. BARE = os que também aparecem sem argumentos.
-# `beats` não entra: o pipeline já grava analysis/beats.json.
 HF_SUBS = ("catalog", "add", "lint", "check", "snapshot", "media-treatment", "compositions", "info", "docs", "timeline")
 HF_BARE = ("catalog", "docs", "info")
+LIMIT_RE = re.compile(r"usage limit|limit reached|rate.?limit", re.I)
 
 
 class AgentOutputError(RuntimeError):
     pass
 
 
-class OnScreen(BaseModel):
-    word_idx: int
-    text: str
+class UsageLimit(AgentOutputError):
+    def __init__(self, msg: str, retry_at: float | None = None):
+        super().__init__(msg)
+        self.retry_at = retry_at
 
 
-class Post(BaseModel):
-    title: str
-    caption: str
-    hashtags: list[str]
+@dataclass(frozen=True)
+class Role:
+    name: str  # prompt em autovideo/prompts/<name>.md
+    model: str  # "opus" | "sonnet" | "haiku"
+    max_turns: int = 30
+    max_usd: float = 2.0
+    skills: tuple[str, ...] = ()
+    bash: bool = False
 
 
-class EditDecisions(BaseModel):
-    drop: list[tuple[int, int]]
-    emphasis: list[str] = []
-    hook_text: str
-    onscreen: list[OnScreen] = []
-    post: Post
-
-
-class Style(BaseModel):
-    palette: list[str]
-    fonts: list[str]
-    caption_component: str
-    notes: str = ""
+ROLES: dict[str, Role] = {r.name: r for r in (
+    *(Role(n, "opus") for n in ("roteirista", "revisor", "showrunner", "analista")),
+    *(Role(n, "sonnet") for n in ("diretor_arte", "onboarding", "estilo_chat")),
+    Role("triagem", "haiku", max_turns=5, max_usd=0.2))}
 
 
 def validate_model(model: type[BaseModel]) -> Callable[[Path], None]:
@@ -52,27 +50,27 @@ def validate_model(model: type[BaseModel]) -> Callable[[Path], None]:
     return v
 
 
-def options_for(role: str, project: Project, recipe, bash: bool) -> ClaudeAgentOptions:
-    system = (PROMPTS / f"{role}.md").read_text(encoding="utf-8") + \
-        f"\n\n## Receita: {recipe.title}\n{recipe.prompts[role]}"
+def options_for(role: Role, cwd: Path, context: str = "") -> ClaudeAgentOptions:
+    # contexto primeiro: prefixo estável entre chamadas aproveita o cache de prompt
+    system = (context + "\n\n" if context else "") + (PROMPTS / f"{role.name}.md").read_text(encoding="utf-8")
     # Docs: path rules on Write/Glob are never consulted (Edit/Read rules cover all edit/read tools,
     # Grep/Glob included), so Write/Glob/Grep are listed bare and scoped via Read/Edit rules + cwd.
     tools = ["Read(./**)", "Edit(./**)", "Glob", "Grep"]
-    if bash:
+    if role.bash:
         hf = " ".join(HF)
         tools += [f"Bash({hf} {sub} *)" for sub in HF_SUBS] + [f"Bash({hf} {sub})" for sub in HF_BARE]
         tools.append("Bash(ffprobe *)")
     return ClaudeAgentOptions(
-        system_prompt=system, cwd=str(project.root), permission_mode="dontAsk",
+        system_prompt=system, model=role.model, cwd=str(cwd), permission_mode="dontAsk",
         allowed_tools=tools,
         # agentes nunca escrevem aprovação humana, saída final nem marcadores de etapa (nem a config do projeto)
         disallowed_tools=["Edit(./.claude/**)", "Edit(./approvals/**)", "Edit(./out/**)", "Edit(./.stages/**)"],
         setting_sources=["project"],  # not "user": user hooks (e.g. rtk) would rewrite Bash and break allow rules
-        skills=recipe.skills if role in ("designer", "editor") else None,
-        max_turns=recipe.budget.max_turns, max_budget_usd=recipe.budget.max_usd)
+        skills=list(role.skills) or None,
+        max_turns=role.max_turns, max_budget_usd=role.max_usd)
 
 
-def missing_skills(names: list[str]) -> str | None:
+def missing_skills(names) -> str | None:
     """Mensagem com as skills ausentes de ~/.claude/skills e o comando que as instala (None se nada falta)."""
     src = Path.home() / ".claude" / "skills"
     missing = [n for n in names if not (src / n).is_dir()]
@@ -81,12 +79,12 @@ def missing_skills(names: list[str]) -> str | None:
     return None
 
 
-def install_skills(project: Project, recipe) -> None:
+def install_skills(cwd: Path, names) -> None:
     src = Path.home() / ".claude" / "skills"
-    if err := missing_skills(recipe.skills):
+    if err := missing_skills(names):
         raise AgentOutputError(err)
-    for n in recipe.skills:
-        shutil.copytree(src / n, project.root / ".claude" / "skills" / n, dirs_exist_ok=True)
+    for n in names:
+        shutil.copytree(src / n, cwd / ".claude" / "skills" / n, dirs_exist_ok=True)
 
 
 async def _run(prompt: str, opts: ClaudeAgentOptions):
@@ -101,25 +99,36 @@ def _mtime(p: Path):
     return p.stat().st_mtime_ns if p.exists() else None
 
 
-def run_role(role: str, project: Project, recipe, task: str, output: Path,
-             validate: Callable[[Path], None] | None = None, bash: bool = False) -> None:
-    if role in ("designer", "editor"):
-        install_skills(project, recipe)
-    opts = options_for(role, project, recipe, bash)
+def _failure(role: Role, res) -> AgentOutputError:
+    text = str(getattr(res, "result", "sem resultado"))
+    msg = f"{role.name}: execução do agente falhou ({text})"
+    if res is not None and LIMIT_RE.search(text):
+        m = re.search(r"\|(\d{10})", text)
+        return UsageLimit(msg, int(m.group(1)) if m else None)
+    return AgentOutputError(msg)
+
+
+def run_role(role: Role, cwd: Path, task: str, output: Path,
+             validate: Callable[[Path], None] | None = None, context: str = "") -> None:
+    project = Project(cwd)
+    if role.skills:
+        install_skills(project.root, role.skills)
+    opts = options_for(role, project.root, context)
     prompt = task
     for attempt in (1, 2):
         before = _mtime(output)
         try:
             res = asyncio.run(_run(prompt, opts))
         except Exception as e:
-            project.log({"role": role, "attempt": attempt, "is_error": True, "result": repr(e)[:500]})
-            raise AgentOutputError(f"{role}: falha no SDK: {e}") from e
-        entry = {"role": role, "attempt": attempt, "cost_usd": getattr(res, "total_cost_usd", None),
-                 "turns": getattr(res, "num_turns", None), "is_error": getattr(res, "is_error", True),
-                 "result": str(getattr(res, "result", ""))[:500]}
+            project.log({"role": role.name, "model": role.model, "attempt": attempt, "is_error": True,
+                         "result": repr(e)[:500]})
+            raise AgentOutputError(f"{role.name}: falha no SDK: {e}") from e
+        entry = {"role": role.name, "model": role.model, "attempt": attempt,
+                 "cost_usd": getattr(res, "total_cost_usd", None), "turns": getattr(res, "num_turns", None),
+                 "is_error": getattr(res, "is_error", True), "result": str(getattr(res, "result", ""))[:500]}
         if res is None or res.is_error:
             project.log(entry)
-            raise AgentOutputError(f"{role}: execução do agente falhou ({getattr(res, 'result', 'sem resultado')})")
+            raise _failure(role, res)
         try:
             after = _mtime(output)
             if after is None or (before is not None and after <= before):
@@ -133,4 +142,4 @@ def run_role(role: str, project: Project, recipe, task: str, output: Path,
             project.log({**entry, "validation_error": err[:500]})
             opts.resume = res.session_id
             prompt = f"O arquivo {output.name} falhou na validação:\n{err}\nCorrija o arquivo e termine."
-    raise AgentOutputError(f"{role}: saída inválida após retentativa: {err}")
+    raise AgentOutputError(f"{role.name}: saída inválida após retentativa: {err}")

@@ -8,7 +8,6 @@ from pathlib import Path
 from autovideo import hf
 from autovideo.agents import missing_skills
 from autovideo.project import home
-from autovideo.recipes import list_recipes, load_recipe
 
 
 def parse_node_major(version: str) -> int:
@@ -25,6 +24,7 @@ def parakeet() -> str:
     return found["model"]
 
 
+SKILLS = ("hyperframes", "hyperframes-core", "hyperframes-animation")
 AUTH_HINT = "rode `claude auth login` (uso pessoal) ou defina ANTHROPIC_API_KEY"
 LOGIN = ["claude", "auth", "login"]
 
@@ -61,10 +61,9 @@ def open_login_terminal() -> None:
 
 
 def skills() -> str:
-    names = sorted({s for rid in list_recipes() for s in load_recipe(rid).skills})
-    if err := missing_skills(names):
+    if err := missing_skills(SKILLS):
         raise hf.ToolError(err)
-    return f"{len(names)} skills das receitas em {Path.home() / '.claude' / 'skills'}"
+    return f"{len(SKILLS)} skills em {Path.home() / '.claude' / 'skills'}"
 
 
 def run_checks() -> list[tuple[str, bool, str]]:
@@ -93,4 +92,5 @@ def run_checks() -> list[tuple[str, bool, str]]:
     check("claude auth", claude_auth)
 
     check("hyperframes skills", skills)
+    # TODO(Task 2): ELEVENLABS_API_KEY e OPENROUTER_API_KEY, passam se config.get_key achar a chave
     return out

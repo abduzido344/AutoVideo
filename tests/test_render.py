@@ -4,11 +4,9 @@ from types import SimpleNamespace
 import pytest
 from conftest import needs_ffmpeg, ff
 from autovideo import render
-from autovideo.compose import write_composition
 from autovideo.hf import ToolError
 from autovideo.media import integrated_lufs
 from autovideo.project import Project
-from autovideo.timeline import Timeline, Segment, Word
 
 # shape REAL do `hyperframes check --json` (0.8.158): findings por categoria; só os campos relevantes
 REAL = {
@@ -81,11 +79,6 @@ def test_check_garbled_json_raises(monkeypatch):
 def test_caption_zone_by_aspect():
     assert "y0=0.55" in render.caption_zone("9:16") and "severity=error" in render.caption_zone("16:9")
     assert render.caption_zone("1:1") == render.caption_zone("16:9")
-
-
-def test_apply_grading_skips_none(monkeypatch):
-    monkeypatch.setattr(render, "run", lambda *a, **k: pytest.fail("não deve rodar"))
-    render.apply_grading(None, None)
 
 
 def _render_final(monkeypatch, tmp_path, measures, write=True, fail=False, normalize_fail=False):
@@ -185,96 +178,16 @@ def test_make_cover_exit_0_without_file_raises(monkeypatch, tmp_path):
         render.make_cover(tmp_path / "v.mp4", 1.0, tmp_path / "c.jpg")
 
 
-CAPTIONS_TPL = """<template id="captions-template">
-<div data-composition-id="captions" data-track-kind="captions" data-start="0" data-duration="2" data-width="1080" data-height="1920">
-<style>#cap{position:absolute;left:5%;right:5%;top:62%;text-align:center;font:700 72px sans-serif;color:#fff;background:#000a;padding:8px}</style>
-<div id="cap" class="clip" data-start="0" data-duration="2">oi mundo</div>
-<script>
-const WORDS = /*AV_WORDS*/[];
-window.__timelines = window.__timelines || {};
-const tl = gsap.timeline({ paused: true });
-tl.from("#cap", { opacity: 0, duration: 0.3 }, 0);
-window.__timelines["captions"] = tl;
-</script>
-</div></template>"""
+def test_formats_only_vertical():
+    assert render.FORMATS == {"9:16": (1080, 1920, "portrait")}
 
 
-@needs_ffmpeg
-def test_real_pipeline_smoke(slow, tmp_path):
-    """init → compose → grading → check → snapshot → render → LUFS, com espaço e acento no caminho."""
-    project = Project(tmp_path / "Projeto Açaí")
-    render.init_composition(project, "9:16")
-    assert (project.comp / "hyperframes.json").exists()
-    render.init_composition(project, "9:16")  # idempotente
-    ff("-f", "lavfi", "-i", "testsrc2=size=1080x1920:rate=30", "-f", "lavfi", "-i", "sine=frequency=440:sample_rate=48000",
-       "-af", "volume=0.3", "-t", "2", "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac",
-       str(project.comp / "assets" / "clip.mp4"))
-    (project.comp / "compositions" / "captions.template.html").write_text(CAPTIONS_TPL, encoding="utf-8")
-    t = Timeline(width=1080, height=1920, segments=[Segment(src="input/clip.mp4", **{"in": 0.0}, out=2.0)], captions=True)
-    write_composition(project.comp, t, [Word(text="oi", start=0.1, end=0.5, src="out")])
-    render.apply_grading(project.comp, {"adjust": {"exposure": 0.1, "contrast": 0.1}})
-    assert "data-color-grading" in (project.comp / "index.html").read_text(encoding="utf-8")
-    assert render.check(project.comp, "9:16") == []
-    snaps = render.snapshots(project.comp, [0.5, 1.5], project.root / "review")
-    assert len(snaps) == 2
-    final = project.out / "final.mp4"
-    measured = render.render_final(project.comp, final, -14)
-    assert abs(measured - (-14)) <= 1.5 and abs(integrated_lufs(final) - measured) < 0.01
-    print(f"LUFS medido: {measured}")
-
-
-@pytest.mark.parametrize("bad", [{"adjust": {"exposure": "0.1&calc"}}, {"adjust": {"exposure": 5}},
-                                 {"adjust": {"nope": 0.1}}, {"lut": "x.cube"}, {"adjust": {"exposure": True}}])
-def test_apply_grading_rejects_non_numeric_or_unknown(monkeypatch, bad):
-    monkeypatch.setattr(render, "run", lambda *a, **k: pytest.fail("não deve rodar"))
-    with pytest.raises(ValueError):
-        render.apply_grading(Path("c"), bad)
-
-
-def test_apply_grading_passes_validated_numbers(monkeypatch):
+def test_init_composition_runs_init_once(monkeypatch, tmp_path):
     seen = []
-    monkeypatch.setattr(render, "run", lambda args, **k: seen.append(args))
-    render.apply_grading(Path("c"), {"adjust": {"exposure": 0.1, "contrast": 0}})
-    assert json.loads(seen[0][seen[0].index("--grading") + 1]) == {"adjust": {"exposure": 0.1, "contrast": 0}}
-
-
-def test_timeline_rejects_bad_grading():
-    with pytest.raises(ValueError):
-        Timeline(width=1, height=1, segments=[Segment(src="a", **{"in": 0}, out=1)], grading={"adjust": {"x": 1}})
-
-
-SWATCH = """<!doctype html>
-<html data-composition-variables='[{"id":"bg","type":"color","label":"Fundo","default":"#00ff00"}]'>
-<head><meta charset="UTF-8" /></head>
-<body><template>
-<style>#root{position:absolute;inset:0} #sw{position:absolute;inset:30%;background:var(--bg)}</style>
-<div id="root" data-composition-id="swatch" data-width="1080" data-height="1080"><div id="sw"></div></div>
-<script>
-window.__timelines = window.__timelines || {};
-window.__timelines["swatch"] = gsap.timeline({ paused: true });
-</script>
-</template></body></html>"""
-
-
-def _center_rgb(png: Path) -> tuple[int, ...]:
-    import subprocess
-    raw = subprocess.run(["ffmpeg", "-v", "error", "-i", str(png), "-vf", "crop=1:1:iw/2:ih/2", "-f", "rawvideo",
-                          "-pix_fmt", "rgb24", "-"], capture_output=True, check=True).stdout
-    return tuple(raw[:3])
-
-
-@needs_ffmpeg
-def test_same_overlay_twice_with_different_vars_renders_each_instance(slow, tmp_path):
-    """T8: dois hosts com o mesmo data-composition-id (= stem do arquivo) e vars diferentes não colidem."""
-    project = Project(tmp_path / "Projeto ç")
-    render.init_composition(project, "1:1")
-    ff("-f", "lavfi", "-i", "color=c=black:size=1080x1080:rate=30", "-t", "3", "-pix_fmt", "yuv420p",
-       "-c:v", "libx264", str(project.comp / "assets" / "clip.mp4"))
-    (project.comp / "compositions" / "swatch.html").write_text(SWATCH, encoding="utf-8")
-    t = Timeline(width=1080, height=1080, captions=False, segments=[Segment(src="input/clip.mp4", **{"in": 0.0}, out=3.0)],
-                 overlays=[{"start": 0, "dur": 1.2, "src": "compositions/swatch.html", "vars": {"bg": "#ff0000"}},
-                           {"start": 1.5, "dur": 1.2, "src": "compositions/swatch.html", "vars": {"bg": "#0000ff"}}])
-    write_composition(project.comp, t, [])
-    assert render.check(project.comp, "1:1") == []
-    red, blue = (_center_rgb(p) for p in render.snapshots(project.comp, [0.6, 2.1], project.root / "snaps"))
-    assert red[0] > 200 and red[2] < 50 and blue[2] > 200 and blue[0] < 50, (red, blue)
+    p = Project(tmp_path / "p")
+    monkeypatch.setattr(render, "run", lambda args, **k: (seen.append(args), p.comp.mkdir(exist_ok=True)))
+    render.init_composition(p, "9:16")
+    assert "portrait" in seen[0] and (p.comp / "assets").is_dir()
+    (p.comp / "hyperframes.json").write_text("{}")
+    render.init_composition(p, "9:16")
+    assert len(seen) == 1

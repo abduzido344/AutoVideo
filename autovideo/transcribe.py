@@ -1,8 +1,16 @@
 import json
 import re
 from pathlib import Path
+from pydantic import BaseModel, ConfigDict
 from autovideo.hf import HF, ToolError, run
-from autovideo.timeline import Word
+
+
+class Word(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    text: str
+    start: float
+    end: float
+    src: str
 
 
 class NoSpeechError(RuntimeError):

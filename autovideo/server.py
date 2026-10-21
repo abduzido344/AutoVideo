@@ -8,7 +8,7 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, ValidationError
 from starlette.middleware.trustedhost import TrustedHostMiddleware
-from autovideo import config, data, doctor, episode, fila
+from autovideo import agents, chat, config, data, doctor, episode, fila
 from autovideo.jobs import GateError, JobStore
 
 DIST = Path(__file__).resolve().parent.parent / "web" / "dist"
@@ -36,6 +36,10 @@ def _doctor() -> dict:
 
 class Texto(BaseModel):
     texto: str
+
+
+class Mensagem(BaseModel):
+    mensagem: str
 
 
 class Nome(BaseModel):
@@ -233,6 +237,29 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
         _slug(slug)
         fila.request_force(slug)  # quem roda é o fila.loop: dois Showrunners em paralelo, não
         return {"ok": True}
+
+    def _chat_kind(kind: str, slug: str) -> None:
+        if kind not in ("onboarding", "estilo"):
+            raise HTTPException(404, "conversa não existe")
+        if kind == "onboarding":
+            _slug(slug)
+
+    @app.get("/api/chat/{kind}/{slug}")
+    def chat_history(kind: str, slug: str):
+        _chat_kind(kind, slug)
+        return chat.history(kind, slug)
+
+    @app.post("/api/chat/{kind}/{slug}")
+    def chat_send(kind: str, slug: str, body: Mensagem):
+        _chat_kind(kind, slug)
+        if not body.mensagem.strip():
+            raise HTTPException(422, "mensagem vazia")
+        try:
+            return chat.send(kind, slug, body.mensagem)
+        except agents.UsageLimit as e:
+            raise HTTPException(429, "Limite de uso do Claude atingido") from e
+        except agents.AgentOutputError as e:
+            raise HTTPException(502, str(e)) from e
 
     @app.get("/api/fila")
     def get_fila():

@@ -12,7 +12,7 @@ Antes de criar qualquer elemento de UI, procure nesta ordem e use o primeiro que
 
 Ao usar um componente Kobra:
 - leia o `docs` do item (vem no JSON do registry);
-- mantenha os atributos `data-slot`/`data-sound`, que alimentam a camada de som;
+- o painel não tem sons de interface: o `@kobra/sound` foi removido a pedido do usuário; não reinstale;
 - envolva o app uma vez em `<SoundEffects>`.
 
 ## Acesso à Kobra (verificado em 2026-10-14)
@@ -26,7 +26,7 @@ Os demais 77 respondem 401 e exigem **Kobra Pro**. O token vai em `KOBRA_TOKEN`,
 `https://beui.dev/r/<nome>.json` (catálogo: https://beui.dev/components/agents). Instale pela URL. O CLI do shadcn para no aviso "utils.ts já existe" e pode deixar de gravar os arquivos que vêm depois; confira e grave à mão os que faltarem (hooks, `lib/touch.ts`, `lib/favicon.ts`), sem sobrescrever o `lib/utils.ts` do projeto. Em uso: `prompt-input` (composer do Chat), `message` (+ `message-bubble`, `message-scroller`), `reasoning-text` (espera do Chat), `streaming-response` (invólucro da resposta do Claude, sem as ações) e `todo-list` (etapas do Onboarding). Ficam em `components/agents` e `components/motion`, ignorados pelo oxlint (código vendorizado; veja `.oxlintrc.json`). Dependência nova: `motion`. Ajustes feitos nos arquivos instalados: textos em português (`prompt-input`: "Enviar"/"Parar"; `todo-list`: rótulos).
 
 ## Estado atual do painel (`web/`)
-Sem KOBRA_TOKEN na instalação. Kobra: video (player), sound (<SoundEffects>) e toast (`<Toasts />` no App; padrão de notificação do painel: `toast({ message, description?, state })`). O toast depende de `@kobra/alert`, `@kobra/spinner` e `@kobra/button`, que são Pro: `components/toast-marks.tsx` substitui os dois primeiros com ícones do lucide, o `button` é o do shadcn, e `useDirection` (base-ui) virou `document.dir`. shadcn base: sidebar (variant inset), switch, dropdown-menu, tabs, button, dialog, card, input, label, select, sheet, table, textarea, toggle-group, tooltip, progress, badge, scroll-area, separator, skeleton. Markdown do brief e das respostas do Chat com react-markdown. O `sidebar.tsx` exporta também o `SidebarContext`, para o cabeçalho de página saber se a sidebar está fechada sem quebrar fora do provider.
+Sem KOBRA_TOKEN na instalação. Kobra: video (player) e toast (`<Toasts />` no App; padrão de notificação do painel: `toast({ message, description?, state })`). O toast depende de `@kobra/alert`, `@kobra/spinner` e `@kobra/button`, que são Pro: `components/toast-marks.tsx` substitui os dois primeiros com ícones do lucide, o `button` é o do shadcn, e `useDirection` (base-ui) virou `document.dir`. shadcn base: sidebar (variant inset), switch, dropdown-menu, tabs, button, dialog, card, input, label, select, sheet, table, textarea, toggle-group, tooltip, progress, badge, scroll-area, separator, skeleton. Markdown do brief e das respostas do Chat com react-markdown. O `sidebar.tsx` exporta também o `SidebarContext`, para o cabeçalho de página saber se a sidebar está fechada sem quebrar fora do provider.
 
 ### Mapa de telas
 O app tem sempre a altura da tela (`h-svh overflow-hidden` no wrapper): só a sidebar (`SidebarContent`) e o corpo de cada página rolam. Toda página usa o cabeçalho de `pages/Pagina.tsx`: ícone colorido da seção (tokens `--sec-*` no `index.css`), título, ações globais; abas; subtítulo.
@@ -46,7 +46,6 @@ Nota: o `liquidglass` vai duas vezes no bundle: a lib vendorizada em `src/lib/li
 | Necessidade no painel | Kobra | Fallback (shadcn base) |
 |---|---|---|
 | Player do vídeo final | `video` (free) | `<video controls>` |
-| Sons de interação | `sound` (free) | — |
 | Feedback ao agente / histórico de iterações | `conversation` (free), `message`, `chat-input` | `textarea` + `card` |
 | Ações rápidas (novo job, aprovar, ir para job) | `command-menu` (free) | `command` |
 | Fundo/estado vazio com textura | `halftone-dots` (free), `empty` | `card` |

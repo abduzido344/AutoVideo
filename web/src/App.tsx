@@ -4,7 +4,6 @@ import { AppSidebar } from "@/components/AppSidebar"
 import { ConnectClaude } from "@/components/ConnectClaude"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { toast, Toasts } from "@/components/ui/toast"
-import { SoundEffects } from "@/components/ui/sound"
 import { go, useRoute } from "@/lib/route"
 import { usePoll } from "@/lib/usePoll"
 import { Configuracoes } from "@/pages/Configuracoes"
@@ -53,7 +52,7 @@ export default function App() {
   }, [])
 
   return (
-    <SoundEffects>
+    <>
       {/* o app tem sempre o tamanho da tela: só a sidebar e o corpo das páginas rolam */}
       <SidebarProvider className="h-svh overflow-hidden">
         <AppSidebar perfis={lista} perfilSlug={perfilSlug} aguardando={aguardando} route={route}
@@ -73,6 +72,6 @@ export default function App() {
       <NovoPerfil open={novo} onOpenChange={setNovo} />
       <ConnectClaude open={connect} onOpenChange={setConnect} onConnected={connected} />
       <Toasts />
-    </SoundEffects>
+    </>
   )
 }

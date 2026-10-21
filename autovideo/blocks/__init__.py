@@ -1,10 +1,11 @@
 """Blocos de tela de celular: sub-composições HyperFrames 1080×1920 geradas por templating."""
 import html
+import re
 from pathlib import Path
 from string import Template
 from pydantic import BaseModel, Field
 
-GSAP = "https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"
+GSAP_URL = "https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"
 _DIR = Path(__file__).parent
 
 
@@ -46,6 +47,7 @@ class Notificacao(BaseModel):
 SCHEMAS: dict[str, type[BaseModel]] = {"chat": Chat, "alerta": Alerta, "bateria": Bateria,
                                        "bloqueio": Bloqueio, "notificacao": Notificacao}
 
+# O GSAP (GSAP_URL) é carregado uma vez pelo index.html hospedeiro; os blocos usam o `gsap` global.
 # Não adaptei blocos do catálogo (notification-cascade, message-thread-reveal): trazem tema, dados e
 # timing próprios de anúncio; estes cinco são telas simples guiadas por dados.
 _SHELL = Template("""<template>
@@ -73,7 +75,6 @@ _SHELL = Template("""<template>
 $body
 </div></div>
 </div>
-<script src="$gsap"></script>
 <script>
 const tl = gsap.timeline({ paused: true });
 tl.fromTo("#$id-phone", { scale: 1 }, { scale: 1.06, duration: $dur, ease: "none" }, 0);
@@ -100,8 +101,14 @@ def _fields(kind: str, d: BaseModel) -> dict:
 
 
 def render_block(kind: str, data: dict, dur: float, comp_id: str) -> str:
+    if kind not in SCHEMAS:
+        raise ValueError(f"bloco desconhecido: {kind}")
+    if dur <= 0:
+        raise ValueError("dur deve ser maior que zero")
+    if not re.fullmatch(r"[\w-]+", comp_id):
+        raise ValueError(f"comp_id inválido: {comp_id!r}")
     d = SCHEMAS[kind].model_validate(data)
     body, js = (_DIR / f"{kind}.html").read_text(encoding="utf-8").split("<!--JS-->")
     f = {"id": _e(comp_id), "dur": dur, **_fields(kind, d)}
-    return _SHELL.substitute(id=f["id"], dur=dur, gsap=GSAP, theme="light" if kind == "notificacao" else "",
+    return _SHELL.substitute(id=f["id"], dur=dur, theme="light" if kind == "notificacao" else "",
                              body=Template(body).substitute(f), js=Template(js).substitute(f))

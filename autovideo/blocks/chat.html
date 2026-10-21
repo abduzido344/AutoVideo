@@ -2,4 +2,4 @@
 <div class="col" id="$id-msgs">$msgs</div>
 <!--JS-->
 const ms = document.querySelectorAll("#$id-msgs .msg");
-ms.forEach((m, i) => tl.fromTo(m, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 0.3 + i * Math.min(0.6, ($dur - 0.7) / ms.length)));
+ms.forEach((m, i) => tl.fromTo(m, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 0.3 + i * Math.max(0, Math.min(0.6, ($dur - 0.7) / ms.length))));

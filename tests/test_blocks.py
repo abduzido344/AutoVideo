@@ -1,8 +1,9 @@
+import copy
 import re
 import pytest
 from pydantic import ValidationError
 from autovideo import render
-from autovideo.blocks import SCHEMAS, render_block
+from autovideo.blocks import GSAP_URL, SCHEMAS, render_block
 from autovideo.project import Project
 
 EXEMPLOS = {
@@ -14,9 +15,36 @@ EXEMPLOS = {
 }
 
 
-def test_escapes_text():
-    out = render_block("chat", {"grupo": "g", "mensagens": [{"autor": "a", "texto": "<script>x</script>"}]}, 3, "t")
-    assert "<script>x" not in out and "&lt;script&gt;x" in out
+EVIL = '<script>x</script>"'
+
+
+def _casos():
+    for kind, data in EXEMPLOS.items():
+        for k, v in data.items():
+            if isinstance(v, str):
+                yield kind, k, None
+        if kind == "chat":
+            yield kind, "mensagens", "autor"
+            yield kind, "mensagens", "texto"
+
+
+@pytest.mark.parametrize("kind,campo,sub", list(_casos()))
+def test_escapes_text(kind, campo, sub):
+    data = copy.deepcopy(EXEMPLOS[kind])
+    if sub:
+        data[campo][0][sub] = EVIL
+    else:
+        data[campo] = EVIL
+    out = render_block(kind, data, 3, "t")
+    assert "<script>x" not in out and "&lt;script&gt;x" in out and "&quot;" in out
+    assert out.count("<script>") == 1  # só o do timeline
+
+
+def test_rejects_bad_args():
+    ok = EXEMPLOS["bloqueio"]
+    for args in (("nada", ok, 3, "t"), ("bloqueio", ok, 0, "t"), ("bloqueio", ok, 3, 'a"b'), ("bloqueio", ok, 3, "")):
+        with pytest.raises(ValueError):
+            render_block(*args)
 
 
 def test_every_kind_renders():
@@ -44,5 +72,7 @@ def test_blocks_pass_hyperframes_check(slow, tmp_path):
     cut = s.rindex("</div>", 0, s.index("<script", s.index("data-composition-id")))
     s = s[:cut] + "\n".join(hosts) + "\n" + s[cut:]
     s = re.sub(r'<h1 id="title".*?</h1>', "", s)  # título do exemplo "blank" ficaria atrás dos blocos
+    if GSAP_URL not in s:
+        s = s.replace("<head>", f'<head><script src="{GSAP_URL}"></script>', 1)
     idx.write_text(s, encoding="utf-8")
     assert render.check(p.comp, "9:16") == []

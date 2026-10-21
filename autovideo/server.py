@@ -1,4 +1,5 @@
 import json
+import math
 import logging
 import os
 import threading
@@ -113,6 +114,26 @@ def _json(p: Path):
         return None  # artefato corrompido: o painel mostra vazio em vez de quebrar
 
 
+def _decisions(ep: Path) -> list[dict]:
+    f = ep / "decisions.log"
+    raw = f.read_bytes().decode("utf-8", "replace") if f.exists() else ""
+    out = []
+    for ln in raw.splitlines():
+        try:
+            d = json.loads(ln)
+        except ValueError:
+            continue  # linha truncada por kill no meio da escrita
+        if isinstance(d, dict):
+            out.append(d)
+    return out
+
+
+def _lista(doc) -> list[dict]:
+    # doc["cenas"]: qualquer outra forma (lista, texto, entradas que não são objeto) vira vazio
+    cs = doc.get("cenas") if isinstance(doc, dict) else None
+    return [c for c in cs if isinstance(c, dict)] if isinstance(cs, list) else []
+
+
 def _where(job: dict) -> dict:
     # perfis/<perfil>/series/<NN>-<serie>/ep<NN>; campos None se a pasta sumiu
     ep = Path(job["project_dir"])
@@ -140,7 +161,7 @@ def _postado(ep: Path, n: int | None) -> list:
 
 def _url(p: Path) -> str | None:
     try:
-        return "/projects/" + p.relative_to(data.perfis_dir()).as_posix() if p.exists() else None
+        return "/projects/" + p.resolve().relative_to(data.perfis_dir().resolve()).as_posix() if p.exists() else None
     except ValueError:
         return None
 
@@ -404,14 +425,8 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
                 j = store.get(e.job) if e.job is not None else None
             except KeyError:
                 j = None  # job apagado do db
-            custo = 0.0
-            for ln in _read(d / "decisions.log").splitlines():
-                try:
-                    c = json.loads(ln).get("cost_usd")
-                except (ValueError, AttributeError):
-                    continue  # linha truncada ou que não é objeto
-                if isinstance(c, (int, float)) and not isinstance(c, bool):
-                    custo += c
+            custo = sum(c for x in _decisions(d) if isinstance(c := x.get("cost_usd"), (int, float))
+                        and not isinstance(c, bool) and math.isfinite(c))
             eps.append({"n": e.n, "titulo": e.titulo, "sinopse": e.sinopse, "job": e.job,
                         "status": j["status"] if j else None, "stage": j["stage"] if j else None,
                         "aprovado": fila._approved(sp, e.n), "custo_usd": custo, "capa": _url(d / "out" / "capa.jpg")})
@@ -422,19 +437,12 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
     def get_episodio(jid: int):
         job = _job(store, jid)
         ep = Path(job["project_dir"])
-        decisions = []
-        raw = (ep / "decisions.log").read_bytes().decode("utf-8", "replace") if (ep / "decisions.log").exists() else ""
-        for ln in raw.splitlines():
-            try:
-                decisions.append(json.loads(ln))
-            except ValueError:
-                pass  # linha truncada por kill no meio da escrita
         w = _where(job)
         postado = _postado(ep, w["n"])
         aprovado = w["n"] is not None and fila._approved(ep.parent, w["n"])
         return {"job": job, **w, "postado": postado, "aprovado": aprovado, "roteiro": _read(ep / "roteiro.md"), "episodio": _json(ep / "episodio.json"),
                 "cenas": _json(ep / "cenas.json"), "revisao": _json(ep / "revisao.json"),
-                "ajustes": _read(ep / "ajustes.md"), "decisions": decisions,
+                "ajustes": _read(ep / "ajustes.md"), "decisions": _decisions(ep),
                 "final": _url(ep / "out" / "final.mp4"), "capa": _url(ep / "out" / "capa.jpg")}
 
     @app.get("/api/episodios/{jid}/artefatos")
@@ -442,9 +450,9 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
         # storyboard: junta cena + imagem + voz por id; só devolve URL de arquivo que existe
         ep = Path(_job(store, jid)["project_dir"])
         imgs = _json(ep / "img" / "manifest.json")
-        vozes = {v.get("id"): v for v in ((_json(ep / "voz.json") or {}).get("cenas") or [])}
+        vozes = {v.get("id"): v for v in (_lista(_json(ep / "voz.json")))}
         cenas = []
-        for c in ((_json(ep / "cenas.json") or {}).get("cenas") or []):
+        for c in (_lista(_json(ep / "cenas.json"))):
             v = vozes.get(c.get("id"))
             cenas.append({"id": c.get("id"), "kind": c.get("kind"), "narration": c.get("narration", ""),
                           "prompt": c.get("prompt", ""), "camera": c.get("camera", ""), "sfx": c.get("sfx", ""),

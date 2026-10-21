@@ -374,3 +374,54 @@ def test_serie_detalhe_job_apagado():
     server.STORE.con.execute("delete from jobs where id=?", (jid,))
     r = _client().get("/api/series/detalhe", params={"path_rel": _rel(serie)})
     assert r.status_code == 200 and r.json()["episodios"][0]["status"] is None
+
+
+def test_serie_detalhe_decisions_utf8_invalido():
+    _, serie = _ep()
+    episode.new_episode_job(server.STORE, serie, 1)
+    (data.ep_dir(serie, 1) / "decisions.log").write_bytes(b'{"cost_usd":0.3}\n\xc3')
+    r = _client().get("/api/series/detalhe", params={"path_rel": _rel(serie)})
+    assert r.status_code == 200 and r.json()["custo_usd"] == pytest.approx(0.3)
+
+
+def test_serie_detalhe_custo_ignora_nao_numerico():
+    _, serie = _ep()
+    episode.new_episode_job(server.STORE, serie, 1)
+    (data.ep_dir(serie, 1) / "decisions.log").write_text('{"cost_usd":true}\n{"cost_usd":"1"}\n{"cost_usd":1e999}\n{"cost_usd":0.2}\n', encoding="utf-8")
+    assert _client().get("/api/series/detalhe", params={"path_rel": _rel(serie)}).json()["custo_usd"] == pytest.approx(0.2)
+
+
+def test_capa_com_perfis_dir_nao_resolvido(monkeypatch):
+    _, serie = _ep()
+    real = data.perfis_dir()
+    rel = _rel(serie)
+    # mesma pasta por um caminho não resolvido (como junction/symlink)
+    monkeypatch.setattr(data, "perfis_dir", lambda: real.parent / "zz" / ".." / real.name)
+    out = data.ep_dir(serie, 1) / "out"
+    out.mkdir(parents=True)
+    (out / "capa.jpg").write_bytes(b"x")
+    d = _client().get("/api/series/detalhe", params={"path_rel": rel}).json()
+    assert d["episodios"][0]["capa"].startswith("/projects/") and d["episodios"][0]["capa"].endswith("out/capa.jpg")
+
+
+@pytest.mark.parametrize("cenas", ["[]", "lixo{", '{"cenas": [1, "x", null]}'])
+def test_artefatos_cenas_formato_errado(cenas):
+    _, serie = _ep()
+    jid = episode.new_episode_job(server.STORE, serie, 1)
+    (data.ep_dir(serie, 1) / "cenas.json").write_text(cenas, encoding="utf-8")
+    r = _client().get(f"/api/episodios/{jid}/artefatos")
+    assert r.status_code == 200 and r.json() == {"cenas": []}
+
+
+def test_artefatos_voz_e_manifest_formato_errado():
+    _, serie = _ep()
+    jid = episode.new_episode_job(server.STORE, serie, 1)
+    ep = data.ep_dir(serie, 1)
+    (ep / "img").mkdir()
+    (ep / "cenas.json").write_text('{"cenas": [{"id": "s01", "kind": "image"}]}', encoding="utf-8")
+    (ep / "voz.json").write_text('{"cenas": [1, {"id": "s01", "file": "x.mp3", "dur": 2}]}', encoding="utf-8")
+    (ep / "img" / "manifest.json").write_text("[]", encoding="utf-8")
+    r = _client().get(f"/api/episodios/{jid}/artefatos")
+    assert r.status_code == 200 and r.json()["cenas"][0]["imagem"] is None
+    (ep / "voz.json").write_text("[]", encoding="utf-8")
+    assert _client().get(f"/api/episodios/{jid}/artefatos").status_code == 200

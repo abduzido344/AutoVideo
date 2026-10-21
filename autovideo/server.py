@@ -195,13 +195,15 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
         bad = [k for k in body if k not in SECRETS + SETTINGS]
         if bad:
             raise HTTPException(400, f"chave desconhecida: {', '.join(bad)}")
+        # espaço ou quebra de linha colados junto da chave viram header inválido; vazio só vale para chave (= excluir)
+        body = {k: v.strip() if isinstance(v, str) else v for k, v in body.items()}
         for k, v in body.items():
             if k == "max_imagens":
                 ok = type(v) is int and v >= 1
             elif k == "image_provider":
                 ok = v in images.PROVIDERS
             else:
-                ok = isinstance(v, str)
+                ok = isinstance(v, str) and (k in SECRETS or v != "")
             if not ok:
                 raise HTTPException(400, f"valor inválido para {k}")
         config.save({(k.lower() if k in SECRETS else k): v for k, v in body.items()})
@@ -325,6 +327,8 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
             raise HTTPException(409, "este perfil já tem um episódio em andamento, na fila, em revisão ou com falha")
         if motivo := data.ready(slug):
             raise HTTPException(409, f"perfil ainda não pode gerar: {motivo}")
+        if titulo := fila.paused_series(slug):
+            raise HTTPException(409, f"a série \"{titulo}\" está pausada: continue a série em Séries")
         fila.request_force(slug)  # quem roda é o fila.loop: dois Showrunners em paralelo, não
         return {"ok": True}
 

@@ -1,7 +1,7 @@
 import pytest
 from autovideo import agents, fila
 from fastapi.testclient import TestClient
-from autovideo import data, episode, server
+from autovideo import config, data, episode, server
 from autovideo.jobs import JobStore
 from autovideo.server import create_app
 
@@ -99,6 +99,9 @@ def test_config_never_returns_secret(monkeypatch):
     assert c.put("/api/config", json={"foo": 1}).status_code == 400
     assert c.put("/api/config", json={"max_imagens": 0}).status_code == 400
     assert c.put("/api/config", json={"APIFY_TOKEN": 5}).status_code == 400
+    assert c.put("/api/config", json={"image_model": "  "}).status_code == 400
+    c.put("/api/config", json={"OPENAI_API_KEY": " sk-abcdefgh9876\n"})
+    assert config.get_key("OPENAI_API_KEY") == "sk-abcdefgh9876"
     for f in ("config.json", "jobs.db"):
         g = c.get("/projects/" + f)
         assert g.status_code == 404 and b"sk-x" not in g.content
@@ -269,6 +272,10 @@ def test_gerar_conflicts(monkeypatch):
     jid = episode.new_episode_job(server.STORE, serie, 1)
     assert "andamento" in c.post(f"/api/perfis/{p.slug}/gerar").json()["detail"]
     server.STORE.set(jid, status="completed")
+    fila.set_series_paused(serie, True)  # série em andamento pausada: o clique não geraria nada
+    r = c.post(f"/api/perfis/{p.slug}/gerar")
+    assert r.status_code == 409 and '"Apagão" está pausada' in r.json()["detail"] and fila._take_forced() == []
+    fila.set_series_paused(serie, False)
     assert c.post(f"/api/perfis/{p.slug}/gerar").status_code == 200 and fila._take_forced() == [p.slug]
 
 

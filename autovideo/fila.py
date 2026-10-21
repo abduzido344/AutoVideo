@@ -84,6 +84,7 @@ def acquire_producer() -> bool:
 def request_force(slug: str) -> None:
     with _state_lock:
         _forced.add(slug)
+        _cooldown.pop(slug, None)  # o clique é uma nova tentativa: sem isso o pedido some calado por até 1 h
 
 
 def _take_forced() -> list[str]:
@@ -109,10 +110,21 @@ def _approved(serie_path: Path, n: int) -> bool:
     return jobs.stage_done(data.ep_dir(serie_path, n), "aprovacao", "approvals/aprovado.ok")
 
 
-def next_episode(perfil: str) -> tuple[Path, int] | None:
+def _pendente(perfil: str) -> tuple[Path, data.Serie] | None:
+    """A série em andamento: a última com episódio ainda não aprovado."""
     pend = [(p, s) for p, s in data.series(perfil) if any(not _approved(p, e.n) for e in s.episodios)]
-    if pend:
-        path, s = pend[-1]
+    return pend[-1] if pend else None
+
+
+def paused_series(perfil: str) -> str | None:
+    """Título da série em andamento se ela está pausada (gerar agora não faria nada)."""
+    pend = _pendente(perfil)
+    return pend[1].titulo if pend and pend[1].paused else None
+
+
+def next_episode(perfil: str) -> tuple[Path, int] | None:
+    if pend := _pendente(perfil):
+        path, s = pend
     else:
         path = showrunner.plan_series(perfil)
         s = _serie(path)

@@ -67,8 +67,12 @@ export function Chat({ kind, slug, onReply, className }: { kind: ChatKind; slug:
     } catch (e) {
       if (e instanceof ApiError && e.status === 429) toast({ message: "Limite de uso do Claude atingido", description: e.message, state: "error" })
       else toast({ message: "O Claude não respondeu", description: (e as Error).message, state: "error" })
-      setMsgs((h) => h.slice(0, -1)) // o servidor não gravou este turno
-      setTexto(m)
+      // o servidor às vezes grava o turno e só depois falha (agente gravou arquivo inválido): a verdade é o histórico dele
+      const antes = msgs.length
+      const h = await api.chat(kind, slug).catch(() => msgs)
+      setMsgs(h)
+      setNovo(-1)
+      if (h.length <= antes) setTexto(m) // não gravou: devolve o texto para reenviar
     } finally { setEnviando(false); setTimeout(() => raiz.current?.querySelector("textarea")?.focus()) }
   }
 

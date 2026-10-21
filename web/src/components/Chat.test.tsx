@@ -44,6 +44,17 @@ describe("Chat", () => {
     expect(screen.queryByText("oi", { selector: "div" })).toBeNull()
     expect((screen.getByLabelText("Mensagem") as HTMLTextAreaElement).value).toBe("oi")
   })
+  it("falha depois de o servidor gravar o turno: mostra o histórico dele e não devolve o texto", async () => {
+    vi.mocked(api.chatSend).mockRejectedValue(new ApiError("arquivo inválido", 502))
+    render(<Chat kind="onboarding" slug="benji" />)
+    await screen.findByText("Oi, qual o assunto?")
+    vi.mocked(api.chat).mockResolvedValueOnce([
+      { autor: "claude", texto: "Oi, qual o assunto?" }, { autor: "voce", texto: "terror" }, { autor: "claude", texto: "Gravei." }])
+    await userEvent.type(screen.getByLabelText("Mensagem"), "terror")
+    await userEvent.click(screen.getByRole("button", { name: "Enviar" }))
+    expect(await screen.findByText("Gravei.")).toBeTruthy()
+    expect((screen.getByLabelText("Mensagem") as HTMLTextAreaElement).value).toBe("")
+  })
   it("mostra o estado pensando enquanto o POST está pendente", async () => {
     let fim!: (v: Awaited<ReturnType<typeof api.chatSend>>) => void
     vi.mocked(api.chatSend).mockReturnValue(new Promise((r) => { fim = r }))

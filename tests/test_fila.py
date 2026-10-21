@@ -291,6 +291,12 @@ def test_request_force_is_consumed_by_loop(env, monkeypatch):
     assert calls == [None, env.perfil] and fila._take_forced() == []
 
 
+def test_request_force_clears_cooldown(env):
+    fila._cooldown[env.perfil] = at(10, 0).timestamp() + 3600  # o showrunner falhou há pouco
+    fila.request_force(env.perfil)
+    assert env.perfil not in fila._cooldown and fila._take_forced() == [env.perfil]
+
+
 def test_unready_profile_skipped_even_forced(env, monkeypatch):
     monkeypatch.setattr(fila, "next_episode", lambda perfil: pytest.fail("perfil sem folha aprovada não gera"))
     (env.ch / "aprovada").unlink()

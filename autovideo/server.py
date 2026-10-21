@@ -335,7 +335,13 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
                 decisions.append(json.loads(ln))
             except ValueError:
                 pass  # linha truncada por kill no meio da escrita
-        return {"job": job, **_where(job), "roteiro": _read(ep / "roteiro.md"), "episodio": _json(ep / "episodio.json"),
+        w = _where(job)
+        postado = []
+        try:
+            postado = next(e.postado for e in data.Serie.model_validate_json(_read(ep.parent / "serie.json")).episodios if e.n == w["n"])
+        except (ValueError, StopIteration):
+            pass  # sem série/episódio: nada postado
+        return {"job": job, **w, "postado": postado, "roteiro": _read(ep / "roteiro.md"), "episodio": _json(ep / "episodio.json"),
                 "cenas": _json(ep / "cenas.json"), "revisao": _json(ep / "revisao.json"),
                 "ajustes": _read(ep / "ajustes.md"), "decisions": decisions,
                 "final": _url(ep / "out" / "final.mp4"), "capa": _url(ep / "out" / "capa.jpg")}

@@ -2,6 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { api, type Episodio, type FilaJob } from "@/api"
+import { toast } from "@/components/ui/toast"
 import { Revisao } from "./Revisao"
 
 vi.mock("@/api", () => ({ api: { fila: vi.fn(), episodio: vi.fn(), aprovar: vi.fn(), ajustar: vi.fn(), descartar: vi.fn(), postado: vi.fn() } }))
@@ -57,6 +58,29 @@ describe("Revisao", () => {
     await userEvent.type(screen.getByLabelText("O que ajustar"), "mais lento")
     await userEvent.click(b)
     await waitFor(() => expect(api.ajustar).toHaveBeenCalledWith(5, "mais lento"))
+  })
+  it("Copiar legenda copia; sem clipboard ou com falha vira toast de erro", async () => {
+    render(<Revisao jid={5} />)
+    const b = await screen.findByRole("button", { name: "Copiar legenda" })
+    await userEvent.click(b)
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith("Legenda boa\n\n#a #b")
+    Object.assign(navigator, { clipboard: undefined })
+    await userEvent.click(b)
+    await waitFor(() => expect(toast).toHaveBeenLastCalledWith(expect.objectContaining({ state: "error" })))
+    Object.assign(navigator, { clipboard: { writeText: vi.fn().mockRejectedValue(new Error("negado")) } })
+    await userEvent.click(b)
+    await waitFor(() => expect(toast).toHaveBeenLastCalledWith(expect.objectContaining({ description: "negado" })))
+  })
+  it("redes já postadas vêm do servidor e ficam desabilitadas", async () => {
+    vi.mocked(api.episodio).mockResolvedValue({ ...ep, postado: ["tiktok"] } as Episodio)
+    render(<Revisao jid={5} />)
+    const b = await screen.findByRole("button", { name: "Postado no TikTok" })
+    expect((b as HTMLButtonElement).disabled).toBe(true)
+  })
+  it("falha ao carregar o episódio mostra aviso", async () => {
+    vi.mocked(api.episodio).mockRejectedValue(new Error("x"))
+    render(<Revisao jid={5} />)
+    expect(await screen.findByText("Não consegui carregar o episódio")).toBeTruthy()
   })
   it("Marcar como postado registra a rede", async () => {
     vi.mocked(api.postado).mockResolvedValue({ ok: true, postado: ["tiktok"] })

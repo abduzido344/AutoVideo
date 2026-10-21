@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { api, type FilaJob } from "@/api"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -35,7 +36,13 @@ function Etapas({ atual }: { atual: string }) {
 
 export function Fila() {
   const { data, refresh } = usePoll(api.fila)
-  const act = (p: Promise<unknown>, msg: string) => p.then(refresh, erro(msg))
+  const [busy, setBusy] = useState(false)
+  // uma ação por vez: evita clique duplo em Pausar/Continuar/Retomar
+  const act = (f: () => Promise<unknown>, msg: string) => {
+    if (busy) return
+    setBusy(true)
+    f().then(refresh, erro(msg)).finally(() => setBusy(false))
+  }
   const jobs = data?.jobs ?? []
   const limite = data?.reason.includes("limite de uso")
   return (
@@ -48,8 +55,8 @@ export function Fila() {
               : `Fila pausada${data.reason ? ` — ${data.reason}` : ""}`}
           </p>
           {data.paused
-            ? <Button onClick={() => act(api.continuarFila(), "Não consegui continuar a fila")}>Continuar</Button>
-            : <Button variant="outline" onClick={() => act(api.pausarFila(), "Não consegui pausar a fila")}>Pausar</Button>}
+            ? <Button disabled={busy} onClick={() => act(api.continuarFila, "Não consegui continuar a fila")}>Continuar</Button>
+            : <Button variant="outline" disabled={busy} onClick={() => act(api.pausarFila, "Não consegui pausar a fila")}>Pausar</Button>}
         </Card>
       )}
       {data && jobs.length === 0 && <p className="mt-6 text-sm text-muted-foreground">Nada na fila.</p>}
@@ -67,7 +74,7 @@ export function Fila() {
                     <div className="flex items-center gap-2">
                       {j.stage && status !== "in_progress" && <Badge variant="secondary">{etapa(j.stage)}</Badge>}
                       {status === "awaiting_approval" && <Button size="sm" onClick={() => go({ name: "revisao", jid: j.id })}>Revisar</Button>}
-                      {status === "failed" && <Button size="sm" onClick={() => act(api.retomar(j.id), "Não consegui retomar")}>Retomar</Button>}
+                      {status === "failed" && <Button size="sm" disabled={busy} onClick={() => act(() => api.retomar(j.id), "Não consegui retomar")}>Retomar</Button>}
                     </div>
                   </div>
                   {status === "in_progress" && j.recipe === "episodio" && <Etapas atual={j.stage} />}

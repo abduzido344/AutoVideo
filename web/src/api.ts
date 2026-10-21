@@ -52,6 +52,7 @@ export type Episodio = {
   job: Job; perfil: string | null; serie: string | null; n: number | null; titulo: string | null
   roteiro: string; episodio: unknown; cenas: unknown; revisao: unknown; ajustes: string
   decisions: Decision[]
+  postado: Rede[]
   final: string | null; capa: string | null // URLs /projects/...
 }
 

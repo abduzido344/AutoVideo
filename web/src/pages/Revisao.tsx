@@ -15,19 +15,25 @@ const erro = (message: string) => (e: Error) => toast({ message, description: e.
 type Post = { caption: string; hashtags: string[] }
 type Fix = { role: string; scene: string | null; note: string }
 const postDe = (ep: Episodio): Post | null => (ep.episodio as { post?: Post } | null)?.post ?? null
-const textoPost = (p: Post) => `${p.caption}\n\n${p.hashtags.join(" ")}`
-const copiar = (t: string) => navigator.clipboard.writeText(t).then(
-  () => toast({ message: "Legenda copiada", state: "success" }), erro("Não consegui copiar a legenda"))
+const tags = (p: Post) => Array.isArray(p.hashtags) ? p.hashtags : []
+const textoPost = (p: Post) => `${p.caption}\n\n${tags(p).join(" ")}`
+async function copiar(t: string) {
+  try { await navigator.clipboard.writeText(t); toast({ message: "Legenda copiada", state: "success" }) }
+  catch (e) { erro("Não consegui copiar a legenda")(e instanceof Error ? e : new Error("a área de transferência não está disponível")) }
+}
 
 function Detalhe({ jid }: { jid: number }) {
-  const { data: ep, refresh } = usePoll(() => api.episodio(jid))
+  const { data: ep, error, refresh } = usePoll(() => api.episodio(jid))
+  const [marcando, setMarcando] = useState<Rede | null>(null)
   const [ajuste, setAjuste] = useState("")
   const [confirma, setConfirma] = useState(false)
   const [postado, setPostado] = useState<Rede[]>([])
   const [busy, setBusy] = useState(false)
-  if (!ep) return <Pagina titulo="Revisão" />
+  if (!ep) return <Pagina titulo="Revisão">{error && <p className="text-sm text-destructive">Não consegui carregar o episódio</p>}</Pagina>
   const post = postDe(ep)
-  const fixes = (ep.revisao as { fixes?: Fix[] } | null)?.fixes ?? []
+  const fx = (ep.revisao as { fixes?: Fix[] } | null)?.fixes
+  const fixes = Array.isArray(fx) ? fx : []
+  const feitos = new Set([...(ep.postado ?? []), ...postado])
   const aguarda = ep.job.status === "awaiting_approval"
   // depois da ação o episódio sai da lista de revisão: volta para ela
   async function acao(p: Promise<unknown>, ok: string, falha: string) {
@@ -48,7 +54,7 @@ function Detalhe({ jid }: { jid: number }) {
           <section>
             <Secao>Legenda</Secao>
             <Card className="px-5 py-4 text-sm">
-              {post ? <><p className="whitespace-pre-wrap">{post.caption}</p><p className="mt-2 text-muted-foreground">{post.hashtags.join(" ")}</p></>
+              {post ? <><p className="whitespace-pre-wrap">{post.caption}</p><p className="mt-2 text-muted-foreground">{tags(post).join(" ")}</p></>
                 : <p className="text-muted-foreground">Sem legenda ainda.</p>}
             </Card>
             {post && <Button className="mt-2" variant="outline" size="sm" onClick={() => copiar(textoPost(post))}>Copiar legenda</Button>}
@@ -92,9 +98,9 @@ function Detalhe({ jid }: { jid: number }) {
       <p className="mb-2 text-sm text-muted-foreground">Só registra que você postou. Nada é publicado daqui.</p>
       <div className="flex flex-wrap gap-2">
         {REDES.map(([r, nome]) => (
-          <Button key={r} variant="outline" size="sm" disabled={postado.includes(r)}
-            onClick={() => api.postado(jid, r).then((x) => setPostado(x.postado), erro("Não consegui marcar como postado"))}>
-            {postado.includes(r) ? `Postado no ${nome}` : `Marcar como postado no ${nome}`}
+          <Button key={r} variant="outline" size="sm" disabled={feitos.has(r) || marcando !== null}
+            onClick={() => { setMarcando(r); api.postado(jid, r).then((x) => setPostado(x.postado), erro("Não consegui marcar como postado")).finally(() => setMarcando(null)) }}>
+            {feitos.has(r) ? `Postado no ${nome}` : `Marcar como postado no ${nome}`}
           </Button>
         ))}
       </div>

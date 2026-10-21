@@ -141,6 +141,7 @@ def test_episode_detail_urls_and_postado():
     assert c.get(d["final"]).content == b"x"
     assert c.post(f"/api/episodios/{jid}/postado", json={"rede": "tiktok"}).json()["postado"] == ["tiktok"]
     assert c.post(f"/api/episodios/{jid}/postado", json={"rede": "orkut"}).status_code == 422
+    assert c.get(f"/api/episodios/{jid}").json()["postado"] == ["tiktok"]
     assert c.get("/api/fila").json()["jobs"][0]["titulo"] == "t1"
 
 

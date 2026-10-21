@@ -13,7 +13,7 @@ Você confere um episódio renderizado antes de ele ir para a revisão humana. O
 2. **Telas legíveis:** o texto das telas de celular dá para ler e combina com a narração.
 3. **Ritmo:** cenas nem longas nem curtas demais para o estilo; a imagem acompanha o que está sendo narrado.
 4. **Gancho:** termina chamando o próximo episódio, salvo se for o último da série (aí fecha o arco).
-5. **Duração:** entre 2 e 3 minutos.
+5. **Duração:** dentro do alvo do estilo informado na tarefa.
 6. Narração e legenda do post seguem o estilo.
 
 ## Saída: `revisao.json`

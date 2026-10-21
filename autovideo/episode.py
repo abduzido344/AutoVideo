@@ -192,6 +192,8 @@ def _tempos(ep: Path) -> list[tuple[str, float, float]]:
 def render_ep(ctx: Ctx) -> None:
     ep = ctx.project.root
     final = ep / "out" / "final.mp4"
+    if issues := render.check(ep / "composition", "9:16"):  # falha a etapa (retomável) antes do render caro
+        raise RuntimeError("a composição tem erros: " + "; ".join(f"{i['category']}: {i['message']}" for i in issues[:5]))
     render.render_final(ep / "composition", final, -14)
     ts = _tempos(ep)
     _, t, d = next((x for x in ts if x[0] == "image"), ts[0])
@@ -211,7 +213,8 @@ def revisar(ctx: Ctx) -> None:
     total = ts[-1][1] + ts[-1][2]
     lista = ", ".join(f.relative_to(ep).as_posix() for f in frames) or "nenhum"
     folhas = ", ".join(f.relative_to(ep).as_posix() for f in sorted(refs.glob("*.png"))) or "nenhuma"
-    task = (f"Revise o episódio. Duração total: {total:.1f} s. Leia roteiro.md, episodio.json e cenas.json; "
+    lo, hi = _estilo(ctx.recipe["perfil"]).duracao_alvo_s
+    task = (f"Revise o episódio. Duração total: {total:.1f} s; o alvo do estilo é entre {lo} e {hi} s. Leia roteiro.md, episodio.json e cenas.json; "
             f"frames do meio de cada cena, na ordem: {lista}. Folhas aprovadas dos personagens em cena: {folhas}. "
             "Grave revisao.json.")
     agents.run_role(agents.ROLES["revisor"], ep, task, ep / "revisao.json", agents.validate_model(Revisao),
@@ -299,8 +302,7 @@ def adjust(store: JobStore, jid: int, texto: str) -> None:
 
 
 def discard(store: JobStore, jid: int) -> None:
-    import importlib  # import tardio evita ciclo; import_module respeita sys.modules (o teste troca o módulo)
-    showrunner = importlib.import_module("autovideo.showrunner")
+    from autovideo import showrunner  # import tardio evita ciclo
     ctx = make_ctx(_awaiting(store, jid, ("awaiting_approval", "failed")))
     showrunner.rewrite_synopsis(ctx.recipe["serie"], ctx.recipe["n"])
     with store.lock:
@@ -320,6 +322,8 @@ def new_episode_job(store: JobStore, serie_path: Path, n: int) -> int:
         raise ValueError(f"a série {s.slug} não tem o episódio {n}")
     (ep / ".stages").mkdir(parents=True, exist_ok=True)  # idem
     jid = store.create(str(ep), "episodio", False)
-    ref.job = jid
-    data.save_serie(serie_path, s)
+    with data.SERIE_LOCK:
+        s = _serie(serie_path)
+        next(e for e in s.episodios if e.n == n).job = jid
+        data.save_serie(serie_path, s)
     return jid

@@ -1,6 +1,7 @@
 import json
 import logging
 import threading
+import time
 from pathlib import Path
 from urllib.parse import urlsplit
 from fastapi import FastAPI, HTTPException, Request
@@ -87,6 +88,16 @@ def _gate(fn, *a):
         return fn(*a)
     except GateError as e:
         raise HTTPException(409, str(e)) from e
+
+
+def _agent(fn, *a):
+    # mesmos códigos do chat: limite de uso é 429, saída inválida do agente é 502
+    try:
+        return fn(*a)
+    except agents.UsageLimit as e:
+        raise HTTPException(429, "Limite de uso do Claude atingido") from e
+    except agents.AgentOutputError as e:
+        raise HTTPException(502, str(e)) from e
 
 
 def _read(p: Path) -> str:
@@ -212,7 +223,10 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
         for path, s in data.series(slug):
             eps = []
             for e in s.episodios:
-                j = store.get(e.job) if e.job is not None else None
+                try:
+                    j = store.get(e.job) if e.job is not None else None
+                except KeyError:  # job apagado do jobs.db: o episódio aparece sem status
+                    j = None
                 eps.append({"n": e.n, "titulo": e.titulo, "job": e.job,
                             "status": j and j["status"], "stage": j and j["stage"]})
             series.append({"path_rel": path.relative_to(data.perfis_dir()).as_posix(), "serie": s, "episodios": eps})
@@ -227,6 +241,10 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
             p = data.Perfil.model_validate({**_slug(slug).model_dump(), **body, "slug": slug})
         except ValidationError as e:
             raise HTTPException(422, str(e)) from e
+        if p.estilo not in {e["slug"] for e in data.list_estilos()}:
+            raise HTTPException(400, f"estilo {p.estilo!r} não existe")
+        if body.get("ativo") is True and (motivo := data.ready(slug, p.estilo)):
+            raise HTTPException(409, f"perfil ainda não pode ser ativado: {motivo}")
         data.save_perfil(p)
         return p
 
@@ -279,6 +297,12 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
     @app.post("/api/perfis/{slug}/gerar")
     def gerar(slug: str):
         _slug(slug)
+        if fila.is_paused(time.time()):
+            raise HTTPException(409, "a fila está pausada")
+        if any(fila._perfil(j) == slug and j["status"] in fila.BUSY for j in store.list()):
+            raise HTTPException(409, "este perfil já tem um episódio em andamento, na fila, em revisão ou com falha")
+        if motivo := data.ready(slug):
+            raise HTTPException(409, f"perfil ainda não pode gerar: {motivo}")
         fila.request_force(slug)  # quem roda é o fila.loop: dois Showrunners em paralelo, não
         return {"ok": True}
 
@@ -307,7 +331,7 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
 
     @app.get("/api/fila")
     def get_fila():
-        return {**fila.state(), "jobs": [{**j, **_where(j)} for j in store.list() if j["recipe"] == "episodio"]}
+        return {**fila.state(), "jobs": [{**j, **_where(j)} for j in store.list()]}
 
     @app.post("/api/fila/pausar")
     def pausar():
@@ -355,13 +379,13 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
     @app.post("/api/episodios/{jid}/ajustar")
     def ajustar(jid: int, body: Texto):
         _job(store, jid)
-        _gate(episode.adjust, store, jid, body.texto)
+        _agent(_gate, episode.adjust, store, jid, body.texto)
         return {"ok": True}
 
     @app.post("/api/episodios/{jid}/descartar")
     def descartar(jid: int):
         _job(store, jid)
-        _gate(episode.discard, store, jid)
+        _agent(_gate, episode.discard, store, jid)
         return {"ok": True}
 
     @app.post("/api/episodios/{jid}/retomar")
@@ -378,11 +402,14 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
         if job["recipe"] != "episodio" or w["titulo"] is None:
             raise HTTPException(404, "episódio ou série não existe")
         ep = Path(job["project_dir"])
-        s = data.Serie.model_validate_json(_read(ep.parent / "serie.json"))
-        ref = next(e for e in s.episodios if e.n == w["n"])
-        if body.rede not in ref.postado:
-            ref.postado.append(body.rede)
-            data.save_serie(ep.parent, s)
+        if not fila._approved(ep.parent, w["n"]):
+            raise HTTPException(409, "o episódio ainda não foi aprovado")
+        with data.SERIE_LOCK:
+            s = data.Serie.model_validate_json(_read(ep.parent / "serie.json"))
+            ref = next(e for e in s.episodios if e.n == w["n"])
+            if body.rede not in ref.postado:
+                ref.postado.append(body.rede)
+                data.save_serie(ep.parent, s)
         return {"ok": True, "postado": ref.postado}
 
     if start_worker:

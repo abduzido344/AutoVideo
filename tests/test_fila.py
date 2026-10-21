@@ -22,6 +22,10 @@ def env(tmp_path, monkeypatch):
     p = data.create_perfil("Benji")
     p.ativo = True
     data.save_perfil(p)
+    ch = data.perfis_dir() / p.slug / "personagens" / "benji"
+    ch.mkdir(parents=True)
+    (ch / "folha.png").write_bytes(b"png")
+    (ch / "aprovada").write_text("ok")
     serie = data.create_serie(p.slug, "Apagão", "log", EPS)
     planned = []
 
@@ -31,7 +35,7 @@ def env(tmp_path, monkeypatch):
         return path
 
     monkeypatch.setattr(showrunner, "plan_series", plan)
-    yield type("Env", (), dict(store=JobStore(tmp_path / "jobs.db"), perfil=p.slug, serie=serie, planned=planned))
+    yield type("Env", (), dict(store=JobStore(tmp_path / "jobs.db"), perfil=p.slug, ch=ch, serie=serie, planned=planned))
     if fila._producer is not None:
         fila._producer.close()
 
@@ -285,3 +289,13 @@ def test_request_force_is_consumed_by_loop(env, monkeypatch):
     with pytest.raises(Stop):
         fila.loop(env.store)
     assert calls == [None, env.perfil] and fila._take_forced() == []
+
+
+def test_unready_profile_skipped_even_forced(env, monkeypatch):
+    monkeypatch.setattr(fila, "next_episode", lambda perfil: pytest.fail("perfil sem folha aprovada não gera"))
+    (env.ch / "aprovada").unlink()
+    assert fila.tick(env.store, at(10, 0)) is None
+    assert fila.tick(env.store, at(10, 0), force=env.perfil) is None
+    (env.ch / "aprovada").write_text("ok")
+    p = data.load_perfil(env.perfil); p.estilo = "sumiu"; data.save_perfil(p)
+    assert fila.tick(env.store, at(10, 0), force=env.perfil) is None and env.store.list() == []

@@ -35,14 +35,16 @@ def _etapa(kind: str, cwd: Path, slug: str) -> int:
     return int((cwd / "estilo.json").exists())
 
 
-def _check(kind: str, cwd: Path, slug: str) -> str | None:
-    """Valida o que o agente gravou; devolve a mensagem de erro (None se ok)."""
+def _check(kind: str, cwd: Path, slug: str, fixed: dict | None = None) -> str | None:
+    """Valida o que o agente gravou; devolve a mensagem de erro (None se ok). `fixed`: campos que só o painel muda."""
     try:
         if kind == "onboarding":
             f = cwd / "perfil.json"
             raw = json.loads(f.read_text(encoding="utf-8"))
-            if raw.get("slug") != slug:  # o slug é a pasta: o servidor restaura
-                raw["slug"] = slug
+            # o slug é a pasta; ativar (gate de prontidão) e contas são do painel: o servidor restaura
+            keep = {"slug": slug, **(fixed or {})}
+            if any(raw.get(k) != v for k, v in keep.items()):
+                raw.update(keep)
                 data._write_json(f, raw)
             data.Perfil.model_validate(raw)
         elif (cwd / "estilo.json").exists():
@@ -78,8 +80,9 @@ def _send(kind: Kind, slug: str, mensagem: str) -> dict:
     cwd = _cwd(kind, slug)
     project = Project(cwd)  # cria a pasta do estilo no 1º envio
     st = _state(cwd, kind)
-    ctx = ""
+    ctx, fixed = "", None
     if kind == "onboarding":
+        fixed = data.load_perfil(slug).model_dump(mode="json", include={"ativo", "contas"})
         ctx = "## Estilos existentes\n" + "\n".join(f"- {e['slug']}: {e['titulo']}" for e in data.list_estilos())
     opts = agents.options_for(role, cwd, ctx)
     prompt, resposta, err = mensagem, "", None
@@ -99,7 +102,7 @@ def _send(kind: Kind, slug: str, mensagem: str) -> dict:
         st["session_id"] = res.session_id
         _save(cwd, kind, st)  # a sessão vale mesmo se a validação falhar
         resposta = text or str(res.result or "")
-        err = _check(kind, cwd, slug)
+        err = _check(kind, cwd, slug, fixed)
         if err is None:
             break
         prompt = f"O arquivo gravado falhou na validação:\n{err}\nCorrija o arquivo e termine."

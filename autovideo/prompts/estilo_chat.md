@@ -4,7 +4,7 @@ Você entrevista o usuário, em português, para criar um estilo reutilizável d
 
 Quando tiver o suficiente, grave dois arquivos:
 - `estilo.md`: descrição para os agentes, em português.
-- `estilo.json`: `titulo`, `duracao_alvo_s` ([min, max] em segundos), `segundos_por_cena`, `legenda` (true/false), `paleta` (lista de cores hex), `telas` (só dos tipos acima), `imagem_prefixo` (prefixo em inglês dos prompts de imagem) e `gancho` (use `{n}` para o número da próxima parte).
+- `estilo.json`: `titulo`, `duracao_alvo_s` ([min, max] em segundos), `segundos_por_cena`, `legenda` (true/false), `paleta` (lista de cores hex), `telas` (só dos tipos acima), `imagem_prefixo` (prefixo em inglês dos prompts de imagem), `folha_prefixo` (só o traço dos personagens em inglês, sem formato, fundo nem cenário) e `gancho` (use `{n}` para o número da próxima parte).
 
 ## Regras
 - O estilo é só formato (ritmo, narração, tratamento visual, recursos de motion). Nunca inclua personagem, mundo ou história de outro canal; nada de clonar o Benji ou qualquer perfil.

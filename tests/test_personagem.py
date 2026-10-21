@@ -28,7 +28,8 @@ def test_sheet_regeneration_clears_approval(perfil, monkeypatch):
     assert not (d / "aprovada").exists() and (d / "folha.png").exists()
     prompt, refs, aspect = calls[0]
     _, est = data.load_estilo(data.load_perfil(slug).estilo)
-    assert prompt == f"{est.imagem_prefixo}, {personagem.SHEET_PROMPT}, homem de bigode" and refs == [] and aspect == "16:9"
+    assert prompt == f"{est.folha_prefixo}, {personagem.SHEET_PROMPT}, homem de bigode" and refs == [] and aspect == "16:9"
+    assert est.folha_prefixo.startswith("2D cartoon") and "9:16" not in prompt and "rainy" not in prompt
 
 
 def test_failed_regeneration_keeps_approval(perfil, monkeypatch):

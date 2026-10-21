@@ -98,9 +98,10 @@ def _serie(path: Path) -> data.Serie:
 
 
 def set_series_paused(serie_path: Path, paused: bool) -> None:
-    s = _serie(serie_path)
-    s.paused = paused
-    data.save_serie(serie_path, s)
+    with data.SERIE_LOCK:
+        s = _serie(serie_path)
+        s.paused = paused
+        data.save_serie(serie_path, s)
 
 
 def _approved(serie_path: Path, n: int) -> bool:
@@ -135,7 +136,7 @@ def tick(store: JobStore, now: datetime, force: str | None = None) -> int | None
     for p in data.list_perfis():
         if (p.slug != force) if force else not p.ativo:
             continue
-        if ts < _cooldown.get(p.slug, 0):
+        if ts < _cooldown.get(p.slug, 0) or data.ready(p.slug):  # forçar pula ativo, nunca a prontidão
             continue
         mine = [j for j in store.list() if _perfil(j) == p.slug]
         if any(j["status"] in BUSY for j in mine):

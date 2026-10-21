@@ -25,7 +25,7 @@ export type PerfilDetalhe = {
 export type EstiloInfo = { slug: string; origem: "usuario" | "fabrica"; titulo: string }
 export type Estilo = {
   titulo: string; duracao_alvo_s: [number, number]; segundos_por_cena: number; legenda: boolean; paleta: string[]
-  telas: string[]; imagem_prefixo: string; gancho: string; voz_padrao: string
+  telas: string[]; imagem_prefixo: string; folha_prefixo: string; gancho: string; voz_padrao: string
 }
 export type EstiloDetalhe = { md: string; json: Estilo }
 export type ChatKind = "onboarding" | "estilo"

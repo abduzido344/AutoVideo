@@ -95,5 +95,7 @@ def rewrite_synopsis(serie_path: Path, n: int) -> None:
     _run(perfil, work, task, out, valida)
     novo = out.read_text(encoding="utf-8").strip()
     data._write(data.ep_dir(serie_path, n) / "sinopse.md", novo)
-    ref.sinopse = novo
-    data.save_serie(serie_path, s)
+    with data.SERIE_LOCK:  # relê: o painel pode ter marcado postado ou pausado enquanto o agente rodava
+        s = data.Serie.model_validate_json((serie_path / "serie.json").read_text(encoding="utf-8"))
+        next(e for e in s.episodios if e.n == n).sinopse = novo
+        data.save_serie(serie_path, s)

@@ -100,6 +100,7 @@ def env(tmp_path, monkeypatch):
     monkeypatch.setattr(render, "render_final", final)
     monkeypatch.setattr(render, "make_cover", cover)
     monkeypatch.setattr(render, "snapshots", snaps)
+    monkeypatch.setattr(render, "check", lambda comp, aspect: calls.setdefault("check", []).append(aspect) or [])
     store = JobStore(tmp_path / "jobs.db")
     jid = episode.new_episode_job(store, serie, 1)
     return types.SimpleNamespace(store=store, jid=jid, fake=fake, calls=calls, serie=serie, perfil=p.slug,
@@ -118,7 +119,8 @@ def test_full_run_stops_at_approval(env):
     assert (env.ep / "out/capa.jpg").exists()
     imgs, sfx, amb, leg = env.calls["build"]
     assert set(imgs) == {"s01", "s02"} and set(sfx) == {"s01"} and amb and leg is False
-    assert env.calls["lufs"] == -14
+    assert env.calls["lufs"] == -14 and env.calls["check"] == ["9:16"]
+    assert "150 e 180 s" in env.fake.tasks["revisor"][0]          # alvo de duração vem do estilo
     assert (env.ep / "review/refs/benji.png").read_bytes() == b"png"   # folha aprovada ao alcance do revisor
     assert "review/refs/benji.png" in env.fake.tasks["revisor"][0]
     assert env.calls["snaps"] == [1.125, 3.375, 5.625]          # meio de cada cena (2 s + respiro)
@@ -217,9 +219,7 @@ def test_adjust_to_art_keeps_script(env):
 
 def test_discard_keeps_only_synopsis(env, monkeypatch):
     seen = []
-    fake = types.ModuleType("autovideo.showrunner")
-    fake.rewrite_synopsis = lambda serie, n: seen.append((serie, n))
-    monkeypatch.setitem(sys.modules, "autovideo.showrunner", fake)
+    monkeypatch.setattr("autovideo.showrunner.rewrite_synopsis", lambda serie, n: seen.append((serie, n)))
     episode.produce(env.store, env.jid)
     episode.discard(env.store, env.jid)
     assert seen == [(env.serie, 1)]
@@ -245,3 +245,30 @@ def test_make_ctx_derives_from_dir(env):
 def test_new_episode_job_rejects_unknown_episode(env):
     with pytest.raises(ValueError, match="episódio 7"):
         episode.new_episode_job(env.store, env.serie, 7)
+
+
+def test_check_issues_fail_render_before_rendering(env, monkeypatch):
+    monkeypatch.setattr(render, "check", lambda comp, aspect: [{"category": "layout", "message": "legenda cortada"}])
+    assert episode.produce(env.store, env.jid) == "failed"
+    job = env.store.get(env.jid)
+    assert job["stage"] == "render" and "legenda cortada" in job["error"] and "lufs" not in env.calls
+
+
+def test_killed_mid_stage_resumes_and_redoes_partial(env, monkeypatch):
+    # Review Focus 3: processo morto no meio da etapa cenas (job in_progress, cenas.json parcial sem marcador)
+    real = episode.cenas
+
+    def killed(ctx):
+        (ctx.project.root / "cenas.json").write_text("{parcial", encoding="utf-8")
+        raise KeyboardInterrupt  # BaseException: o run_job relança, como um kill
+
+    monkeypatch.setattr(episode, "STAGES", [(n, r, killed if n == "cenas" else f) for n, r, f in episode.STAGES])
+    with pytest.raises(KeyboardInterrupt):
+        episode.produce(env.store, env.jid)
+    env.store.set(env.jid, status="in_progress")                 # hard kill: nada chegou a marcar failed
+    (env.ep / "cenas.json").write_text("{parcial", encoding="utf-8")
+    assert env.store.requeue_stale() == 1
+    monkeypatch.setattr(episode, "STAGES", [(n, r, real if n == "cenas" else f) for n, r, f in episode.STAGES])
+    assert episode.produce(env.store, env.jid) == "awaiting_approval"
+    assert env.fake.calls["roteirista"] == 1 and env.fake.calls["diretor_arte"] == 1
+    assert json.loads((env.ep / "cenas.json").read_text(encoding="utf-8"))["cenas"][0]["id"] == "s01"

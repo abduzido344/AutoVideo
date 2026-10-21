@@ -1,4 +1,5 @@
 import pytest
+from autovideo import agents, fila
 from fastapi.testclient import TestClient
 from autovideo import data, episode, server
 from autovideo.jobs import JobStore
@@ -101,7 +102,7 @@ def test_profile_crud_and_bad_slug():
     c = _client()
     slug = c.post("/api/perfis", json={"nome": "Benji"}).json()["slug"]
     assert c.get(f"/api/perfis/{slug}").json()["perfil"]["nome"] == "Benji"
-    assert c.put(f"/api/perfis/{slug}", json={"ativo": True, "slug": "x"}).json()["slug"] == slug
+    assert c.put(f"/api/perfis/{slug}", json={"nome": "B", "slug": "x"}).json()["slug"] == slug
     assert c.put(f"/api/perfis/{slug}", json={"onboarding": 99}).status_code == 422
     iid = c.post(f"/api/perfis/{slug}/ideias", json={"texto": "oi"}).json()["id"]
     assert c.delete(f"/api/perfis/{slug}/ideias/{iid}").status_code == 200
@@ -139,6 +140,11 @@ def test_episode_detail_urls_and_postado():
     d = c.get(f"/api/episodios/{jid}").json()
     assert d["final"].startswith("/projects/benji/") and d["n"] == 1 and d["titulo"] == "t1"
     assert c.get(d["final"]).content == b"x"
+    r = c.post(f"/api/episodios/{jid}/postado", json={"rede": "tiktok"})
+    assert r.status_code == 409 and "aprovado" in r.json()["detail"]      # só depois de aprovar
+    for f in ("approvals/aprovado.ok", ".stages/aprovacao.ok"):
+        (ep / f).parent.mkdir(parents=True, exist_ok=True)
+        (ep / f).write_text("ok")
     assert c.post(f"/api/episodios/{jid}/postado", json={"rede": "tiktok"}).json()["postado"] == ["tiktok"]
     assert c.post(f"/api/episodios/{jid}/postado", json={"rede": "orkut"}).status_code == 422
     assert c.get(f"/api/episodios/{jid}").json()["postado"] == ["tiktok"]
@@ -200,3 +206,67 @@ def test_folha_without_ficha_is_409_without_paths():
     (data.perfis_dir() / slug / "personagens" / "ze").mkdir(parents=True)
     r = c.post(f"/api/perfis/{slug}/personagens/ze/folha")
     assert r.status_code == 409 and str(data.perfis_dir()) not in r.json()["detail"]
+
+
+def _ready(slug):
+    d = data.perfis_dir() / slug / "personagens" / "ze"
+    d.mkdir(parents=True)
+    (d / "folha.png").write_bytes(b"png")
+    (d / "aprovada").write_text("ok")
+
+
+def test_activate_requires_ready_profile():
+    c = _client()
+    slug = c.post("/api/perfis", json={"nome": "Benji"}).json()["slug"]
+    r = c.put(f"/api/perfis/{slug}", json={"ativo": True})
+    assert r.status_code == 409 and "personagem" in r.json()["detail"]
+    assert c.put(f"/api/perfis/{slug}", json={"estilo": "nao-existe"}).status_code == 400
+    _ready(slug)
+    assert c.put(f"/api/perfis/{slug}", json={"ativo": True}).json()["ativo"] is True
+    assert c.put(f"/api/perfis/{slug}", json={"ativo": False}).json()["ativo"] is False
+
+
+def test_gerar_conflicts(monkeypatch):
+    monkeypatch.setattr(fila, "_forced", set())
+    p, serie = _ep()
+    c = _client()
+    r = c.post(f"/api/perfis/{p.slug}/gerar")
+    assert r.status_code == 409 and "personagem" in r.json()["detail"]
+    _ready(p.slug)
+    fila.pause()
+    assert "pausada" in c.post(f"/api/perfis/{p.slug}/gerar").json()["detail"]
+    fila.resume()
+    jid = episode.new_episode_job(server.STORE, serie, 1)
+    assert "andamento" in c.post(f"/api/perfis/{p.slug}/gerar").json()["detail"]
+    server.STORE.set(jid, status="completed")
+    assert c.post(f"/api/perfis/{p.slug}/gerar").status_code == 200 and fila._take_forced() == [p.slug]
+
+
+def test_fila_lists_estilo_jobs():
+    jid = server.STORE.create(str(data.home() / "estilos" / "x" / ".analise"), "estilo", False)
+    jobs = _client().get("/api/fila").json()["jobs"]
+    assert [(j["id"], j["recipe"]) for j in jobs] == [(jid, "estilo")]
+
+
+@pytest.mark.parametrize("err,code", [(agents.UsageLimit("limit"), 429), (agents.AgentOutputError("ruim"), 502)])
+def test_adjust_discard_agent_errors(monkeypatch, err, code):
+    _, serie = _ep()
+    jid = episode.new_episode_job(server.STORE, serie, 1)
+
+    def boom(*a):
+        raise err
+    monkeypatch.setattr(episode, "adjust", boom)
+    monkeypatch.setattr(episode, "discard", boom)
+    c = _client()
+    for r in (c.post(f"/api/episodios/{jid}/ajustar", json={"texto": "x"}), c.post(f"/api/episodios/{jid}/descartar")):
+        assert r.status_code == code
+        if code == 429:
+            assert r.json()["detail"] == "Limite de uso do Claude atingido"
+
+
+def test_profile_with_missing_job_shows_null_status():
+    p, serie = _ep()
+    jid = episode.new_episode_job(server.STORE, serie, 1)
+    server.STORE.con.execute("delete from jobs where id=?", (jid,))
+    eps = _client().get(f"/api/perfis/{p.slug}").json()["series"][0]["episodios"]
+    assert eps[0]["job"] == jid and eps[0]["status"] is None

@@ -74,3 +74,20 @@ def test_rewrite_keeps_numbering(perfil, monkeypatch):
     assert after[2] == "outra abordagem" and after[1] == before[1] and after[3] == before[3]
     s = data.series(perfil.slug)[0][1]
     assert [(e.n, e.titulo, e.sinopse) for e in s.episodios] == [(1, "t0", "s0"), (2, "t1", "outra abordagem"), (3, "t2", "s2")]
+
+
+def test_rewrite_keeps_changes_made_while_agent_ran(perfil, monkeypatch):
+    fake = Fake([3])
+    monkeypatch.setattr(agents, "run_role", fake)
+    path = showrunner.plan_series(perfil.slug)
+
+    def slow_agent(*a, **k):  # o painel marca "postado" e pausa a série enquanto o agente roda
+        s = data.series(perfil.slug)[0][1]
+        s.paused = True
+        s.episodios[0].postado = ["tiktok"]
+        data.save_serie(path, s)
+        fake(*a, **k)
+    monkeypatch.setattr(agents, "run_role", slow_agent)
+    showrunner.rewrite_synopsis(path, 2)
+    s = data.series(perfil.slug)[0][1]
+    assert s.paused and s.episodios[0].postado == ["tiktok"] and s.episodios[1].sinopse == "outra abordagem"

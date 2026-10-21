@@ -60,13 +60,18 @@ def options_for(role: Role, cwd: Path, context: str = "") -> ClaudeAgentOptions:
         hf = " ".join(HF)
         tools += [f"Bash({hf} {sub} *)" for sub in HF_SUBS] + [f"Bash({hf} {sub})" for sub in HF_BARE]
         tools.append("Bash(ffprobe *)")
+    # agentes nunca escrevem aprovação humana, saída final nem marcadores de etapa (nem a config do projeto),
+    # em qualquer profundidade: o onboarding roda na raiz do perfil, acima de series/*/epNN
+    deny = [f"Edit(./{d}/**)" for d in (".claude", "approvals", "out", ".stages")]
+    deny += [f"Edit(./**/{d}/**)" for d in (".claude", "approvals", "out", ".stages")]
+    # aprovação da folha é humana (painel); o histórico do chat é do servidor
+    deny += ["Edit(./personagens/**/aprovada)", "Edit(./personagens/**/folha.png)", "Edit(./.chat/**)"]
+    if role.name in ("onboarding", "estilo_chat"):
+        deny.append("Edit(./series/**)")  # conversa não mexe em episódios
     return ClaudeAgentOptions(
         system_prompt=system, model=role.model, cwd=str(cwd), permission_mode="dontAsk",
         allowed_tools=tools,
-        # agentes nunca escrevem aprovação humana, saída final nem marcadores de etapa (nem a config do projeto)
-        disallowed_tools=["Edit(./.claude/**)", "Edit(./approvals/**)", "Edit(./out/**)", "Edit(./.stages/**)",
-                          # aprovação da folha é humana (painel); o histórico do chat é do servidor
-                          "Edit(./personagens/**/aprovada)", "Edit(./personagens/**/folha.png)", "Edit(./.chat/**)"],
+        disallowed_tools=deny,
         setting_sources=["project"],  # not "user": user hooks (e.g. rtk) would rewrite Bash and break allow rules
         skills=list(role.skills) or None,
         max_turns=role.max_turns, max_budget_usd=role.max_usd)

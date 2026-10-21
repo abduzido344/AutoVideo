@@ -18,6 +18,6 @@ Narração (pessoa, tempo verbal, tamanho das frases, como abre, como vira a ten
 
 ## Saídas
 - `.analise/saida/estilo.md`: descrição do estilo para os agentes, em português.
-- `.analise/saida/estilo.json`: `titulo`, `duracao_alvo_s` ([min, max] em segundos), `segundos_por_cena`, `legenda` (true/false), `paleta` (lista de cores hex), `telas` (só dos tipos acima), `imagem_prefixo` e `gancho` (use `{n}` para o número da próxima parte).
+- `.analise/saida/estilo.json`: `titulo`, `duracao_alvo_s` ([min, max] em segundos), `segundos_por_cena`, `legenda` (true/false), `paleta` (lista de cores hex), `telas` (só dos tipos acima), `imagem_prefixo`, `folha_prefixo` (só o traço dos personagens em inglês, sem formato, fundo nem cenário; usado na folha de referência) e `gancho` (use `{n}` para o número da próxima parte).
 
 Se o servidor devolver erro de validação, corrija o arquivo. Responda só com um recibo de até 3 linhas.

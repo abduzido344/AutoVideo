@@ -86,3 +86,40 @@ def test_personagens_and_context_alphabetical():
     assert [(c["slug"], c["folha"], c["aprovada"]) for c in ps] == [("ana", True, True), ("zeca", False, False)]
     ctx = data.context_for(p.slug)
     assert ctx.index("MUNDO") < ctx.index("FICHA_A") < ctx.index("FICHA_Z") < ctx.index("HISTORICO")
+
+
+def test_voz_id_alphanumeric_only():
+    data.Perfil(slug="a", nome="A", voz_id="Abc123")
+    with pytest.raises(ValidationError):
+        data.Perfil(slug="a", nome="A", voz_id="../x")
+
+
+def test_list_perfis_skips_corrupt(caplog):
+    a = data.create_perfil("Bom")
+    b = data.create_perfil("Ruim")
+    (data.perfis_dir() / b.slug / "perfil.json").write_text("{x", encoding="utf-8")
+    assert [p.slug for p in data.list_perfis()] == [a.slug]
+    assert "ruim" in caplog.text
+
+
+def _char(slug, nome, folha=True, aprovada=True):
+    d = data.perfis_dir() / slug / "personagens" / nome
+    d.mkdir(parents=True)
+    if folha:
+        (d / "folha.png").write_bytes(b"png")
+    if aprovada:
+        (d / "aprovada").write_text("ok")
+
+
+def test_ready_requires_estilo_and_approved_characters():
+    p = data.create_perfil("Canal")
+    assert "personagem" in data.ready(p.slug)
+    _char(p.slug, "ana")
+    assert data.ready(p.slug) is None
+    _char(p.slug, "zeca", aprovada=False)
+    assert "zeca" in data.ready(p.slug)
+    (data.perfis_dir() / p.slug / "personagens" / "zeca" / "aprovada").write_text("ok")
+    assert data.ready(p.slug) is None
+    p.estilo = "nao-existe"
+    data.save_perfil(p)
+    assert "estilo" in data.ready(p.slug)

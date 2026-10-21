@@ -1,6 +1,7 @@
 import json
 import logging
 import re
+import threading
 import unicodedata
 import uuid
 from pathlib import Path
@@ -12,6 +13,9 @@ ScreenType = Literal["chat", "alerta", "bateria", "bloqueio", "notificacao"]
 Rede = Literal["youtube", "tiktok", "instagram", "facebook"]
 FABRICA = Path(__file__).parent / "estilos"
 log = logging.getLogger("autovideo.data")
+# read-modify-write de serie.json (postado, pausa, sinopse): um por vez no processo
+# ponytail: lock global, por série se a contenção aparecer
+SERIE_LOCK = threading.Lock()
 
 
 class Estilo(BaseModel):
@@ -22,6 +26,7 @@ class Estilo(BaseModel):
     paleta: list[str]
     telas: list[ScreenType] = []
     imagem_prefixo: str
+    folha_prefixo: str = ""  # traço do personagem para a folha, sem formato nem fundo
     gancho: str = "Segue pra ver a Parte {n}"
     voz_padrao: str = ""
 
@@ -58,7 +63,7 @@ class Perfil(BaseModel):
     assunto: str = ""
     publico: str = ""
     estilo: str = "benji"
-    voz_id: str = ""
+    voz_id: str = Field("", pattern=r"^[A-Za-z0-9]*$")
     ativo: bool = False
     agenda: Agenda = Agenda()
     contas: dict[Rede, Conta] = {r: Conta() for r in ("youtube", "tiktok", "instagram", "facebook")}
@@ -145,7 +150,14 @@ def save_perfil(p: Perfil) -> None:
 def list_perfis() -> list[Perfil]:
     if not perfis_dir().exists():
         return []
-    return [load_perfil(d.name) for d in sorted(perfis_dir().iterdir()) if (d / "perfil.json").exists()]
+    out = []
+    for d in sorted(perfis_dir().iterdir()):
+        if (d / "perfil.json").exists():
+            try:
+                out.append(load_perfil(d.name))
+            except ValueError:  # JSON inválido ou fora do schema: um perfil quebrado não derruba os outros
+                log.warning("perfil %s ignorado: perfil.json inválido", d.name)
+    return out
 
 
 def load_ideias(slug: str) -> list[Ideia]:
@@ -170,6 +182,20 @@ def personagens(slug: str) -> list[dict]:
     return [{"slug": d.name, "ficha": (d / "ficha.md").read_text(encoding="utf-8") if (d / "ficha.md").exists() else "",
              "folha": (d / "folha.png").exists(), "aprovada": (d / "aprovada").exists()}
             for d in sorted(base.iterdir()) if d.is_dir()]
+
+
+def ready(slug: str, estilo: str | None = None) -> str | None:
+    """Motivo (em português) de o perfil não poder produzir; None se está pronto. `estilo`: o que vai ser salvo."""
+    try:
+        load_estilo(estilo or load_perfil(slug).estilo)
+    except (KeyError, ValueError, OSError):
+        return "o estilo do perfil não existe ou está inválido"
+    cs = personagens(slug)
+    if not cs:
+        return "crie ao menos um personagem"
+    if bad := [c["slug"] for c in cs if not (c["folha"] and c["aprovada"])]:
+        return f"aprove a folha de: {', '.join(bad)}"
+    return None
 
 
 def _estilo_dirs() -> list[tuple[Path, str]]:

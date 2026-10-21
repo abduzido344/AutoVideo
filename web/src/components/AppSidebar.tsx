@@ -7,7 +7,7 @@ import {
   SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarTrigger, useSidebar,
 } from "@/components/ui/sidebar"
 import { doctorText } from "@/lib/format"
-import { go, type Route } from "@/lib/route"
+import { type Route } from "@/lib/route"
 import { cn } from "@/lib/utils"
 
 export function TopBar() {
@@ -18,9 +18,9 @@ export function TopBar() {
   )
 }
 
-export function AppSidebar({ perfis, perfilSlug, onPerfil, aguardando, route, doctor, auth, onAccount, onNovoPerfil }: {
+export function AppSidebar({ perfis, perfilSlug, onPerfil, aguardando, route, doctor, auth, onAccount, onNovoPerfil, onNovoEstilo }: {
   perfis: Perfil[]; perfilSlug: string | null; onPerfil: (slug: string) => void; aguardando: number
-  route: Route; doctor: Doctor | null; auth: Auth | null; onAccount: () => void; onNovoPerfil: () => void
+  route: Route; doctor: Doctor | null; auth: Auth | null; onAccount: () => void; onNovoPerfil: () => void; onNovoEstilo: () => void
 }) {
   const sys = doctorText(doctor)
   const { setOpenMobile } = useSidebar()
@@ -50,7 +50,7 @@ export function AppSidebar({ perfis, perfilSlug, onPerfil, aguardando, route, do
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start" className="w-(--radix-dropdown-menu-trigger-width)">
             <DropdownMenuItem onSelect={() => { setOpenMobile(false); onNovoPerfil() }}>Novo perfil</DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => { setOpenMobile(false); go({ name: "estilos" }) }}>Novo estilo</DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => { setOpenMobile(false); onNovoEstilo() }}>Novo estilo</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarHeader>

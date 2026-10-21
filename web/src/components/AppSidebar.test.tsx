@@ -12,7 +12,7 @@ function setup(o: Partial<Parameters<typeof AppSidebar>[0]> = {}) {
   const onPerfil = vi.fn()
   const props = {
     perfis: [perfil("benji", "Benji"), perfil("lum", "Lum")], perfilSlug: "benji", onPerfil, aguardando: 0,
-    route: { name: "fila" } as Route, doctor: null, auth: null, onAccount: () => {}, onNovoPerfil: () => {}, ...o,
+    route: { name: "fila" } as Route, doctor: null, auth: null, onAccount: () => {}, onNovoPerfil: () => {}, onNovoEstilo: () => {}, ...o,
   }
   render(<SidebarProvider><AppSidebar {...props} /><SidebarInset><TopBar /></SidebarInset></SidebarProvider>)
   return { onPerfil }
@@ -48,6 +48,13 @@ describe("AppSidebar", () => {
     await userEvent.click(screen.getByRole("button", { name: /Criar/ }))
     expect(await screen.findByRole("menuitem", { name: "Novo perfil" })).toBeTruthy()
     expect(screen.getByRole("menuitem", { name: "Novo estilo" })).toBeTruthy()
+  })
+  it("Novo estilo chama onNovoEstilo", async () => {
+    const onNovoEstilo = vi.fn()
+    setup({ onNovoEstilo })
+    await userEvent.click(screen.getByRole("button", { name: /Criar/ }))
+    await userEvent.click(await screen.findByRole("menuitem", { name: "Novo estilo" }))
+    expect(onNovoEstilo).toHaveBeenCalled()
   })
   it("sem perfis o seletor fica desabilitado", () => {
     setup({ perfis: [], perfilSlug: null })

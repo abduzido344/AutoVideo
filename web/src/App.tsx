@@ -9,6 +9,8 @@ import { go, useRoute } from "@/lib/route"
 import { usePoll } from "@/lib/usePoll"
 import { Configuracoes } from "@/pages/Configuracoes"
 import { Onboarding } from "@/pages/Onboarding"
+import { Estilos, EstiloPagina, NovoEstilo } from "@/pages/Estilos"
+import { Perfil } from "@/pages/Perfil"
 import { NovoPerfil, Perfis } from "@/pages/Perfis"
 import { EmBreve } from "@/pages/Pagina"
 
@@ -34,6 +36,7 @@ export default function App() {
   const [auth, setAuth] = useState<Auth | null>(null)
   const [connect, setConnect] = useState(false)
   const [novo, setNovo] = useState(false)
+  const [novoEstilo, setNovoEstilo] = useState(false)
   useEffect(() => { api.auth().then((a) => { setAuth(a); if (!a.ok) setConnect(true) }, () => {}) }, [])
   const connected = useCallback((a: Auth) => { setAuth(a); api.doctor().then(setDoctor, () => {}) }, [])
   // queda do servidor vira um toast fixo (pending não some sozinho); na volta, o mesmo id troca para sucesso e some
@@ -57,15 +60,19 @@ export default function App() {
       <SidebarProvider>
         <AppSidebar perfis={lista} perfilSlug={perfilSlug} aguardando={aguardando} route={route}
           onPerfil={(slug) => { setEscolhido(slug); go({ name: "perfil", slug }) }}
-          doctor={doctor} auth={auth} onAccount={() => setConnect(true)} onNovoPerfil={() => setNovo(true)} />
+          doctor={doctor} auth={auth} onAccount={() => setConnect(true)} onNovoPerfil={() => setNovo(true)} onNovoEstilo={() => setNovoEstilo(true)} />
         <SidebarInset>
           <TopBar />
           {route.name === "config" ? <Configuracoes />
             : route.name === "perfis" ? <Perfis perfis={perfis.data} onNovo={() => setNovo(true)} />
+            : route.name === "perfil" ? <Perfil key={route.slug} slug={route.slug} aba={route.aba} />
+            : route.name === "estilos" ? <Estilos onNovo={() => setNovoEstilo(true)} />
+            : route.name === "estilo" ? <EstiloPagina key={route.slug} slug={route.slug} />
             : route.name === "onboarding" ? <Onboarding key={route.slug} slug={route.slug} />
             : <EmBreve titulo={TITULO[route.name]} />}
         </SidebarInset>
       </SidebarProvider>
+      <NovoEstilo open={novoEstilo} onOpenChange={setNovoEstilo} />
       <NovoPerfil open={novo} onOpenChange={setNovo} />
       <ConnectClaude open={connect} onOpenChange={setConnect} onConnected={connected} />
       <Toasts />

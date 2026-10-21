@@ -12,12 +12,10 @@ import { Onboarding } from "@/pages/Onboarding"
 import { Estilos, EstiloPagina, NovoEstilo } from "@/pages/Estilos"
 import { Perfil } from "@/pages/Perfil"
 import { NovoPerfil, Perfis } from "@/pages/Perfis"
-import { EmBreve } from "@/pages/Pagina"
+import { Fila } from "@/pages/Fila"
+import { Revisao } from "@/pages/Revisao"
 
 const OFFLINE: Doctor = { ok: false, checks: [{ name: "resposta do servidor", ok: false, detail: "sem resposta do /api/doctor" }] }
-const TITULO = {
-  perfis: "Perfis", perfil: "Perfil", onboarding: "Novo perfil", estilos: "Estilos", estilo: "Estilo", fila: "Fila", revisao: "Revisão",
-} as const
 
 export default function App() {
   const route = useRoute()
@@ -69,7 +67,8 @@ export default function App() {
             : route.name === "estilos" ? <Estilos onNovo={() => setNovoEstilo(true)} />
             : route.name === "estilo" ? <EstiloPagina key={route.slug} slug={route.slug} />
             : route.name === "onboarding" ? <Onboarding key={route.slug} slug={route.slug} />
-            : <EmBreve titulo={TITULO[route.name]} />}
+            : route.name === "fila" ? <Fila />
+            : <Revisao jid={route.jid} />}
         </SidebarInset>
       </SidebarProvider>
       <NovoEstilo open={novoEstilo} onOpenChange={setNovoEstilo} />

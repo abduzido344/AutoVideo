@@ -61,3 +61,4 @@ Nota: o `liquidglass` vai duas vezes no bundle: a lib vendorizada em `src/lib/li
 | `pages/Perfis.tsx`, `pages/Onboarding.tsx` | Telas: cards de perfil + `dialog` de Novo perfil; chat + painel de etapas |
 | `components/StatusPill.tsx` | Pílula de status do doctor; `badge` do shadcn não tem o estado "verificando" com ponto |
 | `pages/Perfil.tsx`, `pages/Estilos.tsx` | Telas: `tabs` + `card` + `input`/`textarea`; `<select>` nativo na Agenda (estilo); dialog "Novo estilo" abre a conversa (`Chat` kind estilo) |
+| `pages/Fila.tsx`, `pages/Revisao.tsx` | Telas: Fila = `card` por status + barra de etapas à mão (Kobra `task-list`/`grouped-table` exigem Pro); Revisão = Kobra `video` + `card` + `textarea`, confirmação de Descartar inline |

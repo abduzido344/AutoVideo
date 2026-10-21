@@ -1,0 +1,7 @@
+<div class="big">$hora</div>
+<div class="sub">$aviao</div>
+<div class="bat"><i id="$id-fill" style="width:calc(($nivel / 100) * (100% - 20px));background:$cor"></i></div>
+<div class="sub" id="$id-pct" style="font-size:90px;font-weight:700">$nivel%</div>
+<!--JS-->
+tl.fromTo("#$id-fill", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 0.3);
+tl.fromTo("#$id-pct", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 0.4);

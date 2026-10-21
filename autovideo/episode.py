@@ -137,23 +137,32 @@ def _cached(ep: Path, cp: Path, cache: dict, sha: str, ext: str, gen) -> str:
     return cache[sha]
 
 
+def _aparencia(ficha: str) -> str:
+    """Ficha em uma linha, sem títulos markdown (o nome do personagem viraria texto na imagem)."""
+    return " ".join(" ".join(ln for ln in ficha.splitlines() if not ln.lstrip().startswith("#")).split())
+
+
 def imagens(ctx: Ctx) -> None:
     ep, perfil = ctx.project.root, ctx.recipe["perfil"]
     est, cs = _estilo(perfil), [c for c in _cenas(ep).cenas if c.kind == "image"]
-    ok = {c["slug"] for c in data.personagens(perfil) if c["folha"] and c["aprovada"]}
+    pers = data.personagens(perfil)
+    ok = {c["slug"] for c in pers if c["folha"] and c["aprovada"]}
     if bad := {p for c in cs for p in c.characters} - ok:  # checa tudo antes de gastar a primeira imagem
         raise RuntimeError(f"folha de {', '.join(sorted(bad))} não aprovada")
+    aparencia = {c["slug"]: _aparencia(c["ficha"]) for c in pers}
     base, cp = data.perfis_dir() / perfil / "personagens", ep / "img" / "cache.json"
     cache, manifest = _cache(cp), {}
     for c in cs:
         refs = [base / p / "folha.png" for p in c.characters]
-        prompt = f"{est.imagem_prefixo}. {c.prompt}"
+        # a aparência fixa vai em todo prompt, além da folha: só a referência deixa o personagem mudar de cara
+        quem = " ".join(f"Character from reference image {i}: {aparencia[p]}." for i, p in enumerate(c.characters, 1))
+        prompt = " ".join(x for x in (f"{est.imagem_prefixo}. {c.prompt.rstrip('. ')}.", quem) if x)
 
         def gen(out, c=c, prompt=prompt, refs=refs):
             info = images.generate(prompt, refs, out)
             ctx.project.log({"stage": "imagens", "scene": c.id, "cost_usd": info.get("cost_usd")})
 
-        manifest[c.id] = _cached(ep, cp, cache, _sha(est.imagem_prefixo, c.prompt, *(r.read_bytes() for r in refs)), "png", gen)
+        manifest[c.id] = _cached(ep, cp, cache, _sha(prompt, *(r.read_bytes() for r in refs)), "png", gen)
     _save(ep / "img" / "manifest.json", manifest)
 
 

@@ -1,7 +1,9 @@
 from autovideo import data, images
 
-SHEET_PROMPT = ("character reference sheet, same character in front, 3/4, side and back views, plus 3 facial expressions, "
-                "neutral light grey background, full body, consistent outfit and proportions")
+# 2 painéis grandes servem de referência melhor que muitas vistas pequenas
+SHEET_PROMPT = ("character reference sheet, two panels side by side on pure white background: left panel tight face close-up, "
+                "right panel full body front view, arms relaxed at the sides, neutral expression looking at camera, "
+                "identical character, outfit and lighting in both panels, soft even light, no text, no logos")
 
 
 def _dir(perfil: str, p: str):

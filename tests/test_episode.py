@@ -125,6 +125,8 @@ def test_full_run_stops_at_approval(env):
     assert env.calls["snaps"] == [1.125, 3.375, 5.625]          # meio de cada cena (2 s + respiro)
     assert env.calls["gen"][0][1] == [env.ch / "folha.png"]      # folha do personagem como referência
     assert env.calls["gen"][0][0].startswith("2D cartoon")       # prefixo do estilo
+    assert env.calls["gen"][0][0].endswith("dark building. Character from reference image 1: cabeça grande.")
+    assert "Character" not in env.calls["gen"][1][0]             # cena sem personagem não ganha aparência
     s = json.loads(data.ep_dir(env.serie, 1).parent.joinpath("serie.json").read_text(encoding="utf-8"))
     assert s["episodios"][0]["job"] == env.jid
     log = (env.ep / "decisions.log").read_text(encoding="utf-8")
@@ -271,3 +273,7 @@ def test_killed_mid_stage_resumes_and_redoes_partial(env, monkeypatch):
     assert episode.produce(env.store, env.jid) == "awaiting_approval"
     assert env.fake.calls["roteirista"] == 1 and env.fake.calls["diretor_arte"] == 1
     assert json.loads((env.ep / "cenas.json").read_text(encoding="utf-8"))["cenas"][0]["id"] == "s01"
+
+
+def test_aparencia_drops_headings_and_joins_lines():
+    assert episode._aparencia("# Benji\nbig head,\n  dot eyes\n\n## Notas\nred cap") == "big head, dot eyes red cap"

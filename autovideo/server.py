@@ -10,7 +10,6 @@ from pydantic import BaseModel, ValidationError
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 from autovideo import config, data, doctor, episode, fila
 from autovideo.jobs import GateError, JobStore
-from autovideo.project import home
 
 DIST = Path(__file__).resolve().parent.parent / "web" / "dist"
 LOCAL_HOSTS = ["127.0.0.1", "localhost", "[::1]"]
@@ -85,7 +84,10 @@ def _read(p: Path) -> str:
 
 
 def _json(p: Path):
-    return json.loads(_read(p)) if p.exists() else None
+    try:
+        return json.loads(_read(p)) if p.exists() else None
+    except ValueError:
+        return None  # artefato corrompido: o painel mostra vazio em vez de quebrar
 
 
 def _where(job: dict) -> dict:
@@ -103,7 +105,7 @@ def _where(job: dict) -> dict:
 
 
 def _url(p: Path) -> str | None:
-    return "/projects/" + p.relative_to(home()).as_posix() if p.exists() else None
+    return "/projects/" + p.relative_to(data.perfis_dir()).as_posix() if p.exists() else None
 
 
 def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
@@ -149,6 +151,13 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
         bad = [k for k in body if k not in SECRETS + SETTINGS]
         if bad:
             raise HTTPException(400, f"chave desconhecida: {', '.join(bad)}")
+        for k, v in body.items():
+            if k == "max_imagens":
+                ok = type(v) is int and v >= 1
+            else:
+                ok = isinstance(v, str)
+            if not ok:
+                raise HTTPException(400, f"valor inválido para {k}")
         config.save({(k.lower() if k in SECRETS else k): v for k, v in body.items()})
         return get_config()
 
@@ -245,7 +254,12 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
     def get_episodio(jid: int):
         job = _job(store, jid)
         ep = Path(job["project_dir"])
-        decisions = [json.loads(ln) for ln in _read(ep / "decisions.log").splitlines() if ln.strip()]
+        decisions = []
+        for ln in _read(ep / "decisions.log").splitlines():
+            try:
+                decisions.append(json.loads(ln))
+            except ValueError:
+                pass  # linha truncada por kill no meio da escrita
         return {"job": job, **_where(job), "roteiro": _read(ep / "roteiro.md"), "episodio": _json(ep / "episodio.json"),
                 "cenas": _json(ep / "cenas.json"), "revisao": _json(ep / "revisao.json"),
                 "ajustes": _read(ep / "ajustes.md"), "decisions": decisions,
@@ -278,9 +292,13 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
 
     @app.post("/api/episodios/{jid}/postado")
     def postado(jid: int, body: Postado):
-        ep = Path(_job(store, jid)["project_dir"])
+        job = _job(store, jid)
+        w = _where(job)
+        if job["recipe"] != "episodio" or w["titulo"] is None:
+            raise HTTPException(404, "episódio ou série não existe")
+        ep = Path(job["project_dir"])
         s = data.Serie.model_validate_json(_read(ep.parent / "serie.json"))
-        ref = next(e for e in s.episodios if e.n == int(ep.name[2:]))
+        ref = next(e for e in s.episodios if e.n == w["n"])
         if body.rede not in ref.postado:
             ref.postado.append(body.rede)
             data.save_serie(ep.parent, s)
@@ -288,8 +306,9 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
 
     if start_worker:
         threading.Thread(target=fila.loop, args=(store,), daemon=True, name="fila").start()
-    home().mkdir(parents=True, exist_ok=True)
-    app.mount("/projects", StaticFiles(directory=home()), name="projects")
+    data.perfis_dir().mkdir(parents=True, exist_ok=True)
+    # só perfis/: home() tem config.json (chaves), jobs.db e fila.json que não podem sair pela rede
+    app.mount("/projects", StaticFiles(directory=data.perfis_dir()), name="projects")
     if DIST.exists():
         app.mount("/", StaticFiles(directory=DIST, html=True), name="web")
     return app

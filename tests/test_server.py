@@ -90,6 +90,11 @@ def test_config_never_returns_secret(monkeypatch):
     r = c.get("/api/config")
     assert "sk-x" not in r.text and r.json()["keys"]["OPENROUTER_API_KEY"] is True and r.json()["max_imagens"] == 10
     assert c.put("/api/config", json={"foo": 1}).status_code == 400
+    assert c.put("/api/config", json={"max_imagens": 0}).status_code == 400
+    assert c.put("/api/config", json={"APIFY_TOKEN": 5}).status_code == 400
+    for f in ("config.json", "jobs.db"):
+        g = c.get("/projects/" + f)
+        assert g.status_code == 404 and b"sk-x" not in g.content
 
 
 def test_profile_crud_and_bad_slug():
@@ -101,7 +106,7 @@ def test_profile_crud_and_bad_slug():
     iid = c.post(f"/api/perfis/{slug}/ideias", json={"texto": "oi"}).json()["id"]
     assert c.delete(f"/api/perfis/{slug}/ideias/{iid}").status_code == 200
     assert c.get(f"/api/perfis/{slug}").json()["ideias"] == []
-    assert c.get("/api/perfis/../x").status_code == 404
+    assert c.get("/api/perfis/%2e%2e%2fx").status_code == 404
     assert c.get("/api/perfis/nao-existe").status_code == 404
     assert c.post("/api/perfis/nao-existe/gerar").status_code == 404
 
@@ -132,7 +137,7 @@ def test_episode_detail_urls_and_postado():
     (ep / "out").mkdir()
     (ep / "out" / "final.mp4").write_bytes(b"x")
     d = c.get(f"/api/episodios/{jid}").json()
-    assert d["final"].startswith("/projects/perfis/") and d["n"] == 1 and d["titulo"] == "t1"
+    assert d["final"].startswith("/projects/benji/") and d["n"] == 1 and d["titulo"] == "t1"
     assert c.get(d["final"]).content == b"x"
     assert c.post(f"/api/episodios/{jid}/postado", json={"rede": "tiktok"}).json()["postado"] == ["tiktok"]
     assert c.post(f"/api/episodios/{jid}/postado", json={"rede": "orkut"}).status_code == 422
@@ -144,3 +149,16 @@ def test_cli_gerar_refuses_when_serve_produces(monkeypatch, capsys):
     monkeypatch.setattr(fila, "acquire_producer", lambda: False)
     assert cli.main(["gerar", "benji"]) == 1
     assert "autovideo serve está produzindo" in capsys.readouterr().err
+
+
+def test_detail_survives_corrupt_artifacts_and_postado_guards():
+    _, serie = _ep()
+    c = _client()
+    jid = episode.new_episode_job(server.STORE, serie, 1)
+    ep = data.ep_dir(serie, 1)
+    (ep / "episodio.json").write_text("{x", encoding="utf-8")
+    (ep / "decisions.log").write_text('{"a": 1}' + chr(10) + '{trunc', encoding="utf-8")
+    d = c.get(f"/api/episodios/{jid}").json()
+    assert d["episodio"] is None and d["decisions"] == [{"a": 1}]
+    (serie / "serie.json").unlink()
+    assert c.post(f"/api/episodios/{jid}/postado", json={"rede": "tiktok"}).status_code == 404

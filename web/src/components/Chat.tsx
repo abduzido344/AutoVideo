@@ -1,28 +1,60 @@
 import { useEffect, useRef, useState } from "react"
+import ReactMarkdown from "react-markdown"
 import { api, ApiError, type ChatKind, type ChatMsg } from "@/api"
-import { Button } from "@/components/ui/button"
+import { Message, MessageBubble, MessageBubbleContent, MessageContent, MessageScroller } from "@/components/agents/message"
+import { PromptInput } from "@/components/agents/prompt-input"
+import { ReasoningText } from "@/components/agents/loading-states/reasoning-text"
+import { StreamingResponse } from "@/components/agents/streaming-response"
 import { Card } from "@/components/ui/card"
-import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/toast"
 import { cn } from "@/lib/utils"
 
-// Conversa com o agente (onboarding ou estilo). Fallback shadcn: card + textarea (Kobra conversation/chat-input exigem Pro).
+// frases que giram enquanto o POST não volta
+const FRASES: Record<ChatKind, string[]> = {
+  onboarding: ["Lendo o perfil", "Pensando na próxima etapa", "Gravando o que decidimos"],
+  estilo: ["Lendo o estilo", "Ajustando as regras", "Gravando o estilo"],
+}
+
+// A API devolve a resposta inteira (sem streaming): isto só anima a revelação, palavra a palavra.
+// ponytail: o markdown parcial pisca (ex.: "**neg" aparece cru até fechar); trocar por fade do bloco se incomodar.
+function useRevelar(texto: string, ativo: boolean) {
+  const [n, setN] = useState(ativo ? 0 : Infinity)
+  const partes = texto.split(/(\s+)/)
+  useEffect(() => {
+    if (!ativo || window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) { setN(Infinity); return }
+    setN(1)
+    const passo = Math.max(2, Math.ceil(partes.length / 60)) // ~1,5 s no máximo
+    const t = setInterval(() => setN((k) => { if (k + passo >= partes.length) { clearInterval(t); return Infinity } return k + passo }), 25)
+    return () => clearInterval(t)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [texto, ativo])
+  return { texto: n === Infinity ? texto : partes.slice(0, n).join(""), pronto: n === Infinity }
+}
+
+function RespostaClaude({ texto, anima }: { texto: string; anima: boolean }) {
+  const r = useRevelar(texto, anima)
+  return (
+    <StreamingResponse status={r.pronto ? "complete" : "streaming"} showActions={false} announce={false}>
+      <ReactMarkdown>{r.texto}</ReactMarkdown>
+    </StreamingResponse>
+  )
+}
+
+// Conversa com o agente (onboarding ou estilo): componentes do beui (prompt-input, message, reasoning-text, streaming-response).
 export function Chat({ kind, slug, onReply, className }: { kind: ChatKind; slug: string; onReply?: (etapa: number) => void; className?: string }) {
   const [msgs, setMsgs] = useState<ChatMsg[]>([])
+  const [novo, setNovo] = useState(-1) // índice da resposta recém-chegada: só ela anima
   const [texto, setTexto] = useState("")
   const [enviando, setEnviando] = useState(false)
-  const fim = useRef<HTMLDivElement>(null)
-  const campo = useRef<HTMLTextAreaElement>(null)
+  const raiz = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     let vivo = true
-    api.chat(kind, slug).then((h) => { if (vivo) setMsgs(h) }, (e: Error) => toast({ message: "Não consegui ler a conversa", description: e.message, state: "error" }))
+    api.chat(kind, slug).then((h) => { if (vivo) { setMsgs(h); setNovo(-1) } }, (e: Error) => toast({ message: "Não consegui ler a conversa", description: e.message, state: "error" }))
     return () => { vivo = false }
   }, [kind, slug])
-  useEffect(() => { fim.current?.scrollIntoView?.({ block: "end" }) }, [msgs, enviando])
 
-  async function enviar() {
-    const m = texto.trim()
+  async function enviar(m: string) {
     if (!m || enviando) return
     setEnviando(true)
     setMsgs((h) => [...h, { autor: "voce", texto: m }])
@@ -30,33 +62,40 @@ export function Chat({ kind, slug, onReply, className }: { kind: ChatKind; slug:
     try {
       const r = await api.chatSend(kind, slug, m)
       setMsgs(r.historico)
+      setNovo(r.historico.at(-1)?.autor === "claude" ? r.historico.length - 1 : -1)
       onReply?.(r.etapa)
     } catch (e) {
       if (e instanceof ApiError && e.status === 429) toast({ message: "Limite de uso do Claude atingido", description: e.message, state: "error" })
       else toast({ message: "O Claude não respondeu", description: (e as Error).message, state: "error" })
       setMsgs((h) => h.slice(0, -1)) // o servidor não gravou este turno
       setTexto(m)
-    } finally { setEnviando(false); setTimeout(() => campo.current?.focus()) }
+    } finally { setEnviando(false); setTimeout(() => raiz.current?.querySelector("textarea")?.focus()) }
   }
 
   return (
     <Card className={cn("flex min-h-0 flex-col gap-3 p-4", className)}>
-      <div className="flex-1 space-y-3 overflow-y-auto" aria-live="polite">
+      <MessageScroller label="Conversa" busy={enviando} className="flex-1" contentClassName="flex flex-col gap-4 pb-1">
         {msgs.map((m, i) => (
-          <div key={i} className={cn("max-w-[85%] rounded-xl px-3 py-2 text-sm whitespace-pre-wrap", m.autor === "voce" ? "ml-auto bg-primary text-primary-foreground" : "bg-muted")}>
-            {m.texto}
-          </div>
+          <Message key={i} from={m.autor === "voce" ? "user" : "assistant"} aria-label={m.autor === "voce" ? "Você" : "Claude"}>
+            <MessageContent>
+              <MessageBubble variant={m.autor === "voce" ? "solid" : "soft"}>
+                <MessageBubbleContent>
+                  {m.autor === "voce" ? <p className="whitespace-pre-wrap">{m.texto}</p> : <RespostaClaude texto={m.texto} anima={i === novo} />}
+                </MessageBubbleContent>
+              </MessageBubble>
+            </MessageContent>
+          </Message>
         ))}
-        {enviando && <p className="text-sm text-muted-foreground">O Claude está pensando…</p>}
-        <div ref={fim} />
+        {enviando && (
+          <Message from="assistant" aria-label="Claude">
+            <MessageContent><ReasoningText phrases={FRASES[kind]} /></MessageContent>
+          </Message>
+        )}
+      </MessageScroller>
+      <div ref={raiz}>
+        <PromptInput value={texto} onValueChange={setTexto} onSubmit={enviar} disabled={enviando} minRows={2}
+          aria-label="Mensagem" placeholder="Escreva para o Claude" />
       </div>
-      <form className="flex items-end gap-2" onSubmit={(e) => { e.preventDefault(); void enviar() }}>
-        <Textarea ref={campo} aria-label="Mensagem" value={texto} disabled={enviando} rows={2} className="min-h-10 flex-1"
-          placeholder="Escreva para o Claude"
-          onChange={(e) => setTexto(e.target.value)}
-          onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); void enviar() } }} />
-        <Button type="submit" disabled={enviando || !texto.trim()}>Enviar</Button>
-      </form>
     </Card>
   )
 }

@@ -12,7 +12,7 @@ Stage = tuple[str, str, Callable | None]
 
 
 class GateError(ValueError):
-    """approve/reject fora de um gate pendente."""
+    """approve fora de um gate pendente."""
 
 
 @dataclass
@@ -27,7 +27,7 @@ class JobStore:
     def __init__(self, db: Path):
         db.parent.mkdir(parents=True, exist_ok=True)
         # ponytail: one shared connection behind one RLock, per-thread connections if throughput matters
-        # `lock` é público: approve/reject o seguram durante a troca de arquivos para o worker não ver "queued" cedo
+        # `lock` é público: approve/adjust/discard o seguram durante a troca de arquivos para o worker não ver "queued" cedo
         self.lock = threading.RLock()
         self.con = sqlite3.connect(db, check_same_thread=False)
         self.con.row_factory = sqlite3.Row
@@ -69,11 +69,6 @@ class JobStore:
             self.con.commit()
             return cur.rowcount == 1
 
-    def next_queued(self) -> dict | None:
-        with self.lock:
-            r = self.con.execute("select * from jobs where status='queued' order by id limit 1").fetchone()
-        return dict(r) if r else None
-
     def claim(self, jid: int, from_status: tuple[str, ...] = ("queued",)) -> bool:
         """Reivindica atomicamente um job (-> in_progress). False se outro executor já o pegou."""
         marks = ",".join("?" * len(from_status))
@@ -82,20 +77,6 @@ class JobStore:
                                    (time.time(), jid, *from_status))
             self.con.commit()
             return cur.rowcount == 1
-
-    def claim_next(self) -> dict | None:
-        with self.lock:
-            job = self.next_queued()
-            return self.get(job["id"]) if job and self.claim(job["id"]) else None
-
-    def fail_stale(self) -> int:
-        """Jobs in_progress de um processo que morreu viram failed ("interrompido"): só voltam com um resume
-        explícito (Retomar no painel / `autovideo resume`), nunca rodam de novo sozinhos num restart."""
-        with self.lock:
-            cur = self.con.execute("update jobs set status='failed', error='interrompido', updated=? "
-                                   "where status='in_progress'", (time.time(),))
-            self.con.commit()
-            return cur.rowcount
 
     def queued(self) -> "list[dict]":  # string: `list` aqui já é o método acima
         with self.lock:
@@ -205,22 +186,3 @@ def approve(store: JobStore, jid: int, stages: list[Stage]) -> None:
             _commit(Path(job["project_dir"]), name)
         store.set(jid, status="queued")
 
-
-def reject(store: JobStore, jid: int, stages: list[Stage], feedback: str, redo_from: str | None = None) -> None:
-    with store.lock:  # idem: artefatos apagados e feedback gravado antes de o job voltar para a fila
-        job = store.get(jid)
-        idx = _gate_index(jid, job, stages)
-        if redo_from is None:
-            start = max([i for i, (_, _, f) in enumerate(stages[:idx]) if f is None], default=-1) + 1
-        else:
-            names = [n for n, _, _ in stages[:idx]]
-            if redo_from not in names:
-                raise GateError(f"redo_from {redo_from!r} não é uma etapa antes do gate atual")
-            start = names.index(redo_from)
-        if job["status"] != "awaiting_approval":
-            raise GateError(f"job {jid} não está aguardando aprovação")
-        root = Path(job["project_dir"])
-        invalidate_from(root, stages, stages[start][0])
-        with (root / "feedback.md").open("a", encoding="utf-8") as fh:
-            fh.write(f"\n## Feedback ({job['stage']})\n{feedback}\n")
-        store.set(jid, status="queued", stage="")

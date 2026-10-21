@@ -84,18 +84,10 @@ def test_options_put_context_before_role_prompt(tmp_path):
     assert o.model == "haiku" and o.max_turns == 7 and o.max_budget_usd == 0.5
 
 
-def test_options_restrict_bash_and_paths(tmp_path):
-    o = agents.options_for(Role("teste", "sonnet", bash=True, skills=("a",)), tmp_path)
+def test_options_restrict_paths_no_bash(tmp_path):
+    o = agents.options_for(Role("teste", "sonnet", skills=("a",)), tmp_path)
     assert o.permission_mode == "dontAsk" and o.setting_sources == ["project"] and o.skills == ["a"]
-    hf_rules = [t for t in o.allowed_tools if t.startswith("Bash(npx")]
-    assert "Bash(npx --yes hyperframes@0.8.158 *)" not in hf_rules  # nada de render/init/publish/cloud/upgrade...
-    for sub in ("catalog", "add", "lint", "check", "snapshot"):
-        assert f"Bash(npx --yes hyperframes@0.8.158 {sub} *)" in hf_rules
-    assert "Bash(npx --yes hyperframes@0.8.158 catalog)" in hf_rules
-    assert not any(x in t for t in hf_rules for x in ("render", "publish", "cloud", "upgrade", "init", "lambda"))
-    assert "Bash(ffprobe *)" in o.allowed_tools and not any(t == "Bash" for t in o.allowed_tools)
-    assert "Read(./**)" in o.allowed_tools and "Edit(./**)" in o.allowed_tools
-    assert "Edit(./.claude/**)" in o.disallowed_tools
+    assert o.allowed_tools == ["Read(./**)", "Edit(./**)", "Glob", "Grep"]
 
 
 def test_no_bash_no_skills(tmp_path):
@@ -211,8 +203,10 @@ def test_role_with_skills_installs_before_query(tmp_path, monkeypatch):
     assert (cwd / ".claude" / "skills" / "a-skill").is_dir()
 
 
-@pytest.mark.parametrize("role", [T, Role("teste", "opus", bash=True)])  # prompts reais vêm nas próximas tasks
+@pytest.mark.parametrize("role", [T, *ROLES.values()])
 def test_every_role_denies_gate_out_and_stage_markers(tmp_path, role):
+    # recursivo: o onboarding roda na raiz do perfil, acima de series/*/epNN
     o = agents.options_for(role, tmp_path)
-    for rule in ("Edit(./.claude/**)", "Edit(./approvals/**)", "Edit(./out/**)", "Edit(./.stages/**)"):
-        assert rule in o.disallowed_tools
+    for d in (".claude", "approvals", "out", ".stages"):
+        assert f"Edit(./{d}/**)" in o.disallowed_tools and f"Edit(./**/{d}/**)" in o.disallowed_tools
+    assert ("Edit(./series/**)" in o.disallowed_tools) == (role.name in ("onboarding", "estilo_chat"))

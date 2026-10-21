@@ -1,6 +1,6 @@
 # AutoVideo
 
-Fábrica local de séries narradas em vídeo vertical (Shorts, TikTok, Reels, Facebook), com vários perfis. Cada perfil tem um estilo, um Universo (personagens e mundo) e uma agenda. Todo dia uma equipe de agentes Claude produz o próximo episódio, você revisa, e ele é exportado ou postado.
+Fábrica local de séries narradas em vídeo vertical (Shorts, TikTok, Reels, Facebook), com vários perfis. Cada perfil tem um estilo, um Universo (personagens e mundo) e uma agenda. Todo dia uma equipe de agentes Claude produz o próximo episódio, você revisa, e ele é exportado, e você posta.
 Render feito com [HyperFrames](https://github.com/heygen-com/hyperframes). Design: [docs/superpowers/specs/2026-10-21-autovideo-series-design.md](docs/superpowers/specs/2026-10-21-autovideo-series-design.md).
 
 ## Requisitos
@@ -86,4 +86,8 @@ No PowerShell:
 ```powershell
 uv run pytest -q
 $env:AV_SLOW=1; uv run pytest -q         # a variável fica definida nesta sessão; Remove-Item Env:AV_SLOW para desligar
+```
+O `tests/test_e2e.py` produz um episódio de verdade (Claude, ElevenLabs e OpenRouter; custa dinheiro). Ele só roda com `AV_SLOW=1`, o login do Claude na máquina, `ELEVENLABS_API_KEY` e `OPENROUTER_API_KEY` (no ambiente ou salvas em Configurações) e `AV_E2E_VOICE` com um voice_id do ElevenLabs; sem algum deles, é pulado:
+```bash
+AV_SLOW=1 AV_E2E_VOICE=<voice_id> uv run pytest -q tests/test_e2e.py
 ```

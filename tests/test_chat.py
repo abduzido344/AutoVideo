@@ -152,12 +152,3 @@ def test_onboarding_cannot_change_ativo_or_contas(monkeypatch):
     chat.send("onboarding", p.slug, "liga")
     got = data.load_perfil(p.slug)
     assert got.ativo is False and got.contas == p.contas and got.nome == "Nova"
-
-
-def test_options_deny_rules_recursive():
-    for role in agents.ROLES.values():
-        o = agents.options_for(role, data.home())
-        for r in ("Edit(./**/approvals/**)", "Edit(./**/.stages/**)", "Edit(./**/out/**)", "Edit(./**/.claude/**)",
-                  "Edit(./approvals/**)", "Edit(./.claude/**)"):
-            assert r in o.disallowed_tools, (role.name, r)
-        assert ("Edit(./series/**)" in o.disallowed_tools) == (role.name in ("onboarding", "estilo_chat"))

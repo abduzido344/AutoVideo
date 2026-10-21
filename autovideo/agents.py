@@ -11,10 +11,6 @@ from autovideo.project import Project
 
 _query = query
 PROMPTS = Path(__file__).parent / "prompts"
-# subcomandos do hyperframes que os prompts/skills usam (inspeção e edição local); render/init/publish/
-# cloud/upgrade/skills/tts ficam de fora. BARE = os que também aparecem sem argumentos.
-HF_SUBS = ("catalog", "add", "lint", "check", "snapshot", "media-treatment", "compositions", "info", "docs", "timeline")
-HF_BARE = ("catalog", "docs", "info")
 LIMIT_RE = re.compile(r"usage limit|limit reached|rate.?limit", re.I)
 
 
@@ -35,7 +31,6 @@ class Role:
     max_turns: int = 30
     max_usd: float = 2.0
     skills: tuple[str, ...] = ()
-    bash: bool = False
 
 
 ROLES: dict[str, Role] = {r.name: r for r in (
@@ -55,11 +50,7 @@ def options_for(role: Role, cwd: Path, context: str = "") -> ClaudeAgentOptions:
     system = (context + "\n\n" if context else "") + (PROMPTS / f"{role.name}.md").read_text(encoding="utf-8")
     # Docs: path rules on Write/Glob are never consulted (Edit/Read rules cover all edit/read tools,
     # Grep/Glob included), so Write/Glob/Grep are listed bare and scoped via Read/Edit rules + cwd.
-    tools = ["Read(./**)", "Edit(./**)", "Glob", "Grep"]
-    if role.bash:
-        hf = " ".join(HF)
-        tools += [f"Bash({hf} {sub} *)" for sub in HF_SUBS] + [f"Bash({hf} {sub})" for sub in HF_BARE]
-        tools.append("Bash(ffprobe *)")
+    tools = ["Read(./**)", "Edit(./**)", "Glob", "Grep"]  # nenhum agente roda Bash
     # agentes nunca escrevem aprovação humana, saída final nem marcadores de etapa (nem a config do projeto),
     # em qualquer profundidade: o onboarding roda na raiz do perfil, acima de series/*/epNN
     deny = [f"Edit(./{d}/**)" for d in (".claude", "approvals", "out", ".stages")]

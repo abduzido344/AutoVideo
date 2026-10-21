@@ -1,6 +1,6 @@
 from pathlib import Path
 import pytest
-from autovideo.jobs import JobStore, run_job, approve, reject, Ctx, GateError
+from autovideo.jobs import JobStore, run_job, approve, Ctx, GateError
 from autovideo.project import Project
 
 def mk_stages(calls, boom=None):
@@ -55,18 +55,6 @@ def test_failure_marks_failed_and_resume_continues(tmp_path):
     assert run_job(store, jid, mk_stages(calls), mk) == "completed"   # Review Focus 5
     assert calls == ["a", "b", "b", "c"]
 
-def test_reject_clears_only_downstream_and_saves_feedback(tmp_path):
-    calls = []
-    store, jid, mk = setup(tmp_path)
-    st = mk_stages(calls)
-    run_job(store, jid, st, mk); approve(store, jid, st); run_job(store, jid, st, mk)
-    root = Path(store.get(jid)["project_dir"])
-    reject(store, jid, st, "zoom demais")
-    assert (root / "a.txt").exists() and (root / "approvals/gate1.ok").exists()
-    assert not (root / "b.txt").exists() and not (root / "out/c.txt").exists()
-    assert "zoom demais" in (root / "feedback.md").read_text(encoding="utf-8")
-    assert store.get(jid)["status"] == "queued"
-
 def test_approve_requires_gate_awaiting_approval(tmp_path):
     calls = []
     store, jid, mk = setup(tmp_path)
@@ -80,28 +68,6 @@ def test_approve_requires_gate_awaiting_approval(tmp_path):
         approve(store, jid, st)
     assert store.get(jid)["status"] == "in_progress" and not (root / "approvals/gate1.ok").exists()
     assert calls == []
-
-def test_stale_approve_after_reject_raises(tmp_path):
-    calls = []
-    store, jid, mk = setup(tmp_path)
-    st = mk_stages(calls)
-    run_job(store, jid, st, mk); approve(store, jid, st); run_job(store, jid, st, mk)
-    root = Path(store.get(jid)["project_dir"])
-    reject(store, jid, st, "refazer")
-    with pytest.raises(GateError):
-        approve(store, jid, st)
-    assert not (root / "approvals/gate2.ok").exists()
-    assert store.get(jid)["stage"] == ""
-
-def test_fail_stale_marks_in_progress_failed_interrompido(tmp_path):
-    store, jid, _ = setup(tmp_path)
-    jid2 = store.create(str(tmp_path / "p 2"), "talking-head-punchy", False)
-    store.set(jid, status="in_progress")
-    store.set(jid2, status="awaiting_approval")
-    assert store.fail_stale() == 1
-    assert store.get(jid)["status"] == "failed" and store.get(jid)["error"] == "interrompido"
-    assert store.get(jid2)["status"] == "awaiting_approval"
-
 
 def test_resume_only_requeues_failed(tmp_path):
     store, jid, _ = setup(tmp_path)
@@ -138,62 +104,6 @@ def test_get_unknown_job_raises_keyerror(tmp_path):
     with pytest.raises(KeyError):
         store.get(999)
 
-def test_reject_redo_from_keeps_earlier_stages(tmp_path):
-    calls = []
-    store, jid, mk = setup(tmp_path)
-    st = [simple(calls, "a", "a.txt"), simple(calls, "x", "x.txt"),
-          ("gate1", "approvals/gate1.ok", None), simple(calls, "b", "b.txt")]
-    run_job(store, jid, st, mk)              # a, x -> gate1
-    root = Path(store.get(jid)["project_dir"])
-    (root / "approvals").mkdir(parents=True, exist_ok=True)
-    (root / "approvals/gate1.ok").write_text("stale")   # checks the current gate file is removed too
-    with pytest.raises(GateError):           # "b" is after gate1, not before it
-        reject(store, jid, st, "x", redo_from="b")
-    assert store.get(jid)["status"] == "awaiting_approval" and (root / "x.txt").exists()
-    reject(store, jid, st, "refazer x", redo_from="x")
-    assert (root / "a.txt").exists()         # earlier stage survives
-    assert not (root / "x.txt").exists() and not (root / "approvals/gate1.ok").exists()
-    assert store.get(jid)["status"] == "queued" and store.get(jid)["stage"] == ""
-    assert "refazer x" in (root / "feedback.md").read_text(encoding="utf-8")
-    assert run_job(store, jid, st, mk) == "awaiting_approval"
-    assert calls == ["a", "x", "x"]          # a not redone
-
-def test_reject_without_redo_from_at_first_gate_clears_from_start(tmp_path):
-    calls = []
-    store, jid, mk = setup(tmp_path)
-    st = [simple(calls, "a", "a.txt"), simple(calls, "x", "x.txt"),
-          ("gate1", "approvals/gate1.ok", None), simple(calls, "b", "b.txt")]
-    run_job(store, jid, st, mk)              # a, x -> gate1
-    root = Path(store.get(jid)["project_dir"])
-    reject(store, jid, st, "do de novo")     # redo_from=None
-    assert not (root / "a.txt").exists() and not (root / "x.txt").exists()
-    assert run_job(store, jid, st, mk) == "awaiting_approval"
-    assert calls == ["a", "x", "a", "x"]
-
-
-def test_worker_cannot_see_queued_before_reject_file_work(tmp_path, monkeypatch):
-    from autovideo import jobs
-    calls = []
-    store, jid, mk = setup(tmp_path)
-    st = mk_stages(calls)
-    run_job(store, jid, st, mk); approve(store, jid, st); run_job(store, jid, st, mk)  # -> gate2
-    seen = []
-    real = jobs._remove
-    def spy(p):
-        # chamado no meio do reject, com o lock seguro: outra thread não pode reivindicar o job
-        import threading
-        t = threading.Thread(target=lambda: seen.append(store.next_queued()))
-        t.start(); t.join(timeout=0.3)
-        assert t.is_alive() or seen == [None]  # bloqueada pelo lock (ou viu nenhum queued)
-        real(p)
-    monkeypatch.setattr(jobs, "_remove", spy)
-    reject(store, jid, st, "x")
-    monkeypatch.undo()
-    assert store.get(jid)["status"] == "queued"
-    assert store.next_queued()["id"] == jid
-    assert all(s is None or s["id"] == jid for s in seen)
-
-
 def test_gate_status_checked_before_file_work(tmp_path):
     calls = []
     store, jid, mk = setup(tmp_path)
@@ -201,18 +111,16 @@ def test_gate_status_checked_before_file_work(tmp_path):
     run_job(store, jid, st, mk)  # gate1
     root = Path(store.get(jid)["project_dir"])
     store.set(jid, status="in_progress")  # worker/CLI já pegou: gate não pode mexer em arquivos
-    for fn in (lambda: approve(store, jid, st), lambda: reject(store, jid, st, "x")):
-        with pytest.raises(GateError):
-            fn()
+    with pytest.raises(GateError):
+        approve(store, jid, st)
     assert not (root / "approvals/gate1.ok").exists() and (root / "a.txt").exists()
 
 
 def test_claim_is_atomic_and_run_job_runs_from_in_progress(tmp_path):
     calls = []
     store, jid, mk = setup(tmp_path)
-    c = store.claim_next()
-    assert c["id"] == jid and store.get(jid)["status"] == "in_progress"
-    assert store.claim(jid) is False and store.claim_next() is None
+    assert store.claim(jid) and store.get(jid)["status"] == "in_progress"
+    assert store.claim(jid) is False
     assert run_job(store, jid, mk_stages(calls), mk) == "awaiting_approval"
 
 
@@ -251,19 +159,6 @@ def test_legacy_project_without_stages_dir_is_skipped_and_migrated(tmp_path):
     assert (root / "x.txt").read_text() == "velho"
     run_job(store, jid, st, mk)
     assert calls == ["b"]
-
-
-def test_gates_and_reject_keep_markers_consistent(tmp_path):
-    calls = []
-    store, jid, mk = setup(tmp_path)
-    st = mk_stages(calls)
-    run_job(store, jid, st, mk); approve(store, jid, st)
-    root = Path(store.get(jid)["project_dir"])
-    assert (root / ".stages/gate1.ok").exists()
-    run_job(store, jid, st, mk)  # -> gate2
-    assert {m.name for m in (root / ".stages").iterdir()} == {"a.ok", "gate1.ok", "b.ok", "c.ok"}
-    reject(store, jid, st, "refazer")  # sem redo_from: refaz b, c (depois do gate1)
-    assert {m.name for m in (root / ".stages").iterdir()} == {"a.ok", "gate1.ok"}
 
 
 def test_auto_gate_writes_marker(tmp_path):

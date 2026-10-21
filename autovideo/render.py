@@ -5,9 +5,9 @@ from autovideo.hf import HF, ToolError, run
 from autovideo.media import integrated_lufs, normalize_final
 from autovideo.project import Project
 
-# Com color-grading o shader demora ~40 s para inicializar nesta máquina (Intel Iris): os timeouts padrão de
-# prontidão (3 s check, 5 s snapshot, 45 s render) estouram. São tetos de espera, não atrasos fixos.
 FORMATS = {"9:16": (1080, 1920, "portrait")}  # (largura, altura, resolução do hyperframes init)
+# READY_MS: teto de espera de prontidão do player (os padrões de 3 s check, 5 s snapshot e 45 s render estouram
+# em máquina lenta); é teto, não atraso fixo.
 READY_MS = "240000"
 CHECK_CATEGORIES = ("lint", "runtime", "layout", "motion", "contrast")
 

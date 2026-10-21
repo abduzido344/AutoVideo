@@ -11,12 +11,11 @@ import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/toast"
+import { STATUS } from "@/lib/etapas"
+import { go } from "@/lib/route"
 import { usePoll } from "@/lib/usePoll"
 import { Pagina, Secao } from "@/pages/Pagina"
 
-const STATUS: Record<string, string> = {
-  queued: "Na fila", in_progress: "Em andamento", awaiting_approval: "Aguardando aprovação", completed: "Concluído", failed: "Falhou",
-}
 const HORA = /^([01]\d|2[0-3]):[0-5]\d$/
 const erro = (message: string) => (e: Error) => toast({ message, description: e.message, state: "error" })
 
@@ -40,7 +39,7 @@ function Series({ d, refresh }: { d: PerfilDetalhe; refresh: () => void }) {
       {d.series.map(({ path_rel, serie, episodios }) => (
         <Card key={path_rel} className="gap-3 p-4">
           <div className="flex items-center justify-between gap-2">
-            <h3 className="font-medium">{serie.titulo}</h3>
+            <h3 className="font-medium"><button type="button" className="text-left hover:underline" onClick={() => go({ name: "serie", path_rel })}>{serie.titulo}</button></h3>
             <Button variant="outline" size="sm" onClick={() => pausar(path_rel, !serie.paused)}>{serie.paused ? "Continuar série" : "Pausar série"}</Button>
           </div>
           {serie.logline && <p className="text-sm text-muted-foreground">{serie.logline}</p>}

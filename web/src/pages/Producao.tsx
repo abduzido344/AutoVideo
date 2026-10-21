@@ -133,6 +133,7 @@ function Revisao({ jid }: { jid: number }) {
       <SheetHeader className="pr-12">
         <SheetTitle className="font-serif text-[22px] font-medium">{ep.titulo ?? `Episódio ${jid}`}</SheetTitle>
         <SheetDescription>{[ep.serie, ep.perfil, ep.n && `Parte ${ep.n}`].filter(Boolean).join(" · ")}</SheetDescription>
+        <Button variant="link" size="sm" className="h-auto w-fit px-0" onClick={() => go({ name: "episodio", jid })}>Abrir página completa</Button>
       </SheetHeader>
       <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-6">
         <div className="grid gap-6 sm:grid-cols-[minmax(0,240px)_1fr]">

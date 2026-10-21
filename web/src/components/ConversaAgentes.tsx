@@ -1,8 +1,7 @@
 import type { Decision } from "@/api"
 import { Message, MessageBubble, MessageBubbleContent, MessageContent } from "@/components/agents/message"
+import { usd } from "@/lib/etapas"
 import { cn } from "@/lib/utils"
-
-const usd = (v: number) => `US$ ${v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
 
 export function ConversaAgentes({ decisions, etapa }: { decisions: Decision[]; etapa: string }) {
   if (!decisions.length) return <p className="text-sm text-muted-foreground">Nenhum agente falou ainda. Etapa atual: {etapa}.</p>

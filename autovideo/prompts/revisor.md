@@ -24,7 +24,7 @@ Você confere um episódio renderizado antes de ele ir para a revisão humana. O
            {"role": "roteirista", "scene": null, "note": "..."}]}
 ```
 - `role`: `roteirista` (texto, gancho, duração, post), `diretor_arte` (imagem, tela, ritmo de cortes) ou `editor` (transição, efeito, câmera, mixagem de áudio).
-- Um problema do item 7 (direção) vira `Fix` com `role: "editor"`, salvo se for a imagem em si (aí `diretor_arte`).
+- Um problema do item 7 (direção) vai para `editor` quando se resolve com transição, câmera, efeito ou mixagem; para `diretor_arte` quando pede outro tempo de cena ou outra imagem; para `roteirista` quando pede outra narração.
 - Na dúvida entre `editor` e `diretor_arte`, escolha `diretor_arte`.
 - Tudo certo: `{"ok": true, "fixes": []}`. Só reprove por problema real; detalhe de gosto não é correção.
 

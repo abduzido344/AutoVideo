@@ -243,9 +243,10 @@ def test_every_role_denies_gate_out_and_stage_markers(tmp_path, role):
 def test_guias_have_license_header():
     for g in ("_direcao.md", "_roteiro.md"):
         s = (agents.PROMPTS / g).read_text(encoding="utf-8")
-        assert s.startswith("<!-- Adaptado de") and "MIT" in s
+        assert s.startswith("<!-- Adaptado de") and "MIT" in s and "b5e8ef9" in s and "THIRD_PARTY.md" in s
+        assert "THE SOFTWARE IS PROVIDED" not in s  # o texto da licença fica só no THIRD_PARTY.md
     s = (agents.PROMPTS / "_roteiro.md").read_text(encoding="utf-8")
-    assert "Apache-2.0" in s and "modificado" in s
+    assert "Apache-2.0" in s and "modificado" in s and "v0.8.163" in s
 
 
 def test_role_guias():

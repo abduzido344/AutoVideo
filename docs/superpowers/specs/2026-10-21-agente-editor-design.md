@@ -178,7 +178,7 @@ O `estilo.md` deixa de ser texto livre e passa a seguir as seções do `STYLE.md
 - **Estilos existentes:** o Benji é reescrito no formato novo a partir das notas do spec principal. Um estilo antigo sem as seções continua aceito, e o editor trata como "sem orientação de motion".
 
 ### Crédito e licença
-- `_direcao.md` e o modelo do `estilo.md` (no prompt do Analista) começam com um cabeçalho: "Adaptado de lemo-opuscar (github.com/lemomo-ai/lemo-opuscar, commit b5e8ef9), MIT, Copyright (c) 2026 LemoLab", seguido do texto da licença MIT.
+- `_direcao.md` e o modelo do `estilo.md` (no prompt do Analista) começam com um cabeçalho: "Adaptado de lemo-opuscar (github.com/lemomo-ai/lemo-opuscar, commit b5e8ef9), MIT, Copyright (c) 2026 LemoLab"; o texto completo da licença MIT fica no `THIRD_PARTY.md`.
 - Um `THIRD_PARTY.md` na raiz do repositório registra a origem, o commit e a licença.
 - **Só texto adaptado.** Nenhum filme, still ou asset dos demos (CC BY 4.0 e licenças de terceiros) entra no projeto.
 

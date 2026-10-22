@@ -97,12 +97,22 @@ def test_estilo_chat_creates_dir_and_validates(monkeypatch):
         d = data.home() / "estilos" / "meu-estilo"
         (d / "estilo.json").write_text(json.dumps({"titulo": "Meu", "paleta": ["#000"], "imagem_prefixo": "cartoon"}),
                                        encoding="utf-8")
-        (d / "estilo.md").write_text("tom seco", encoding="utf-8")
+        (d / "estilo.md").write_text("\n".join(f"## {i}. {t}" for i, t in enumerate(data.ESTILO_SECOES, 1)),
+                                     encoding="utf-8")
         return "pronto"
     fake(monkeypatch, [write])
     out = chat.send("estilo", "Meu Estilo", "vamos")
     assert out["etapa"] == 1
     assert "meu-estilo" in {e["slug"] for e in data.list_estilos()}
+
+
+def test_check_estilo_md_missing_sections(tmp_path):
+    (tmp_path / "estilo.json").write_text(json.dumps({"titulo": "Meu", "paleta": [], "imagem_prefixo": "x"}),
+                                          encoding="utf-8")
+    assert chat._check("estilo", tmp_path, "meu") is None  # sem estilo.md ainda: ok
+    (tmp_path / "estilo.md").write_text("tom seco", encoding="utf-8")
+    err = chat._check("estilo", tmp_path, "meu")
+    assert "Armadilhas" in err and "Essência e o que não é" in err
 
 
 def test_endpoints(monkeypatch):

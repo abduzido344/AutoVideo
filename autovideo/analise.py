@@ -117,6 +117,16 @@ def _folha(video: Path) -> None:
          "-vf", f"tile=4x{rows}", "-frames:v", "1", "-q:v", "3", str(video.parent / "folha.jpg")])
 
 
+def _valida(json_path: Path) -> None:
+    """estilo.json no schema e estilo.md com as 10 seções; falha aqui ganha a nova tentativa do run_role."""
+    agents.validate_model(Estilo)(json_path)
+    md = json_path.parent / "estilo.md"
+    if not md.exists():
+        raise FileNotFoundError("o analista não gravou estilo.md")
+    if falta := data.secoes_faltando(md.read_text(encoding="utf-8")):
+        raise ValueError(f"estilo.md sem as seções: {', '.join(falta)}")
+
+
 def run_job(store, jid: int, client: httpx.Client | None = None) -> str:
     job = store.get(jid)
     work = Path(job["project_dir"])
@@ -134,9 +144,7 @@ def run_job(store, jid: int, client: httpx.Client | None = None) -> str:
         saida = work / "saida"  # staging: o estilo existente só é trocado depois da validação
         shutil.rmtree(saida, ignore_errors=True)
         saida.mkdir()
-        agents.run_role(agents.ROLES["analista"], est, task, saida / "estilo.json", validate=agents.validate_model(Estilo))
-        if not (saida / "estilo.md").exists():
-            raise RuntimeError("o analista não gravou estilo.md")
+        agents.run_role(agents.ROLES["analista"], est, task, saida / "estilo.json", validate=_valida)
         (saida / "estilo.md").replace(est / "estilo.md")
         (saida / "estilo.json").replace(est / "estilo.json")
         status, err = "completed", ""

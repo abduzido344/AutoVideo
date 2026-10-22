@@ -47,8 +47,11 @@ def _check(kind: str, cwd: Path, slug: str, fixed: dict | None = None) -> str | 
                 raw.update(keep)
                 data._write_json(f, raw)
             data.Perfil.model_validate(raw)
-        elif (cwd / "estilo.json").exists():
-            data.Estilo.model_validate_json((cwd / "estilo.json").read_text(encoding="utf-8"))
+        else:
+            if (cwd / "estilo.json").exists():
+                data.Estilo.model_validate_json((cwd / "estilo.json").read_text(encoding="utf-8"))
+            if (md := cwd / "estilo.md").exists() and (falta := data.secoes_faltando(md.read_text(encoding="utf-8"))):
+                return f"estilo.md sem as seções: {', '.join(falta)}"
     except Exception as e:  # noqa: BLE001 — JSON quebrado também volta ao agente
         return str(e)
     return None

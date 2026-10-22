@@ -7,6 +7,7 @@ from autovideo.jobs import JobStore
 from conftest import needs_ffmpeg
 
 ESTILO = {"titulo": "Analisado", "paleta": ["#001122"], "imagem_prefixo": "flat cartoon"}
+MD = "\n".join(f"## {i}. {t}" for i, t in enumerate(data.ESTILO_SECOES, 1))
 
 
 @pytest.fixture(autouse=True)
@@ -50,7 +51,7 @@ def test_analise_pipeline_with_fakes(env, media_dir, monkeypatch):
         assert role.name == "analista"
         v1 = cwd / ".analise" / "v1"
         assert (v1 / "folha.jpg").stat().st_size > 0 and (v1 / "transcricao.txt").read_text(encoding="utf-8") == "olá mundo"
-        (output.parent / "estilo.md").write_text("estilo", encoding="utf-8")
+        (output.parent / "estilo.md").write_text(MD, encoding="utf-8")
         output.write_text(json.dumps(ESTILO), encoding="utf-8")
         validate(output)
 
@@ -121,6 +122,31 @@ def test_failed_agent_keeps_existing_style(env, monkeypatch):
     assert analise.run_job(env, jid) == "failed"
     assert (est / "estilo.md").read_text(encoding="utf-8") == "antigo"
     assert json.loads((est / "estilo.json").read_text(encoding="utf-8"))["titulo"] == "Analisado"
+
+
+def test_estilo_md_without_sections_retries_then_fails(env, monkeypatch):
+    from autovideo.project import home
+
+    class Res:  # imita ResultMessage
+        session_id, result, is_error, total_cost_usd, num_turns = "s1", "fim", False, 0.01, 1
+    prompts = []
+
+    def q(*, prompt, options):
+        prompts.append(prompt)
+        saida = home() / "estilos" / "abc" / ".analise" / "saida"
+        (saida / "estilo.md").write_text("só texto livre", encoding="utf-8")
+        (saida / "estilo.json").write_text(json.dumps(ESTILO), encoding="utf-8")
+
+        async def gen():
+            yield Res()
+        return gen()
+
+    monkeypatch.setattr(analise, "_baixar", lambda *a: [])
+    monkeypatch.setattr(agents, "_query", q)
+    jid = analise.criar_job(env, "abc")
+    assert analise.run_job(env, jid) == "failed"
+    assert len(prompts) == 2 and "Armadilhas" in prompts[1]  # a 2ª tentativa recebe as seções que faltam
+    assert "Armadilhas" in env.get(jid)["error"]
 
 
 def test_invalid_estilo_json_skipped_by_list(env):

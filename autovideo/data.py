@@ -237,7 +237,19 @@ def estilo_dir(slug: str) -> Path:
     raise KeyError(slug)
 
 
-def load_estilo(slug: str) -> tuple[str, Estilo]:
+# seções fixas do estilo.md, no formato STYLE.md do lemo-opuscar (ver o modelo em prompts/analista.md)
+ESTILO_SECOES = ("Essência e o que não é", "Materiais e acabamento", "Lógica de cor", "Tipografia e legenda",
+                 "Qualidade do movimento", "Gramática de câmera", "Paleta sonora", "Movimentos típicos",
+                 "Armadilhas", "Espaço de variação")
+
+
+def secoes_faltando(md: str) -> list[str]:
+    """Títulos de ESTILO_SECOES sem a linha `## <n>. <título>` no md (sem caixa)."""
+    achadas = {ln[3:].strip().casefold() for ln in md.splitlines() if ln.startswith("## ")}
+    return [t for n, t in enumerate(ESTILO_SECOES, 1) if f"{n}. {t}".casefold() not in achadas]
+
+
+def load_estilo(slug: str) -> tuple[str, Estilo]:  # não confere as seções: estilos antigos seguem valendo
     d = estilo_dir(slug)
     md = (d / "estilo.md").read_text(encoding="utf-8") if (d / "estilo.md").exists() else ""
     return md, Estilo.model_validate_json((d / "estilo.json").read_text(encoding="utf-8"))

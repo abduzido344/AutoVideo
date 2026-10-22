@@ -36,6 +36,24 @@ def test_benji_valid():
         data.estilo_dir("nao-existe")
 
 
+def test_secoes_faltando():
+    linhas = [f"## {i}. {t.upper()}" for i, t in enumerate(data.ESTILO_SECOES, 1)]
+    assert data.secoes_faltando("\n\ntexto\n".join(linhas)) == []
+    assert data.secoes_faltando("\n".join(linhas[:8] + linhas[9:])) == ["Armadilhas"]
+
+
+def test_benji_has_all_sections():
+    assert data.secoes_faltando((data.FABRICA / "benji" / "estilo.md").read_text(encoding="utf-8")) == []
+
+
+def test_load_estilo_accepts_old_style_without_sections(tmp_path):
+    d = tmp_path / "estilos" / "velho"
+    d.mkdir(parents=True)
+    (d / "estilo.json").write_text(json.dumps({"titulo": "Velho", "paleta": [], "imagem_prefixo": "x"}), encoding="utf-8")
+    (d / "estilo.md").write_text("texto livre", encoding="utf-8")
+    assert data.load_estilo("velho")[0] == "texto livre"
+
+
 def test_create_serie_writes_synopses():
     p = data.create_perfil("Canal")
     path = data.create_serie(p.slug, "Apagão", "log", [("A", "sa"), ("B", "sb"), ("C", "sc")])

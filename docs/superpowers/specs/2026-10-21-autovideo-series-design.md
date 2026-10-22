@@ -83,6 +83,8 @@ O **Diretor** é o orquestrador. Ele dispara subagentes, cada um com uma funçã
 | Montador | tudo acima | composição HyperFrames 9:16 renderizada (`final.mp4`, capa) |
 | Revisor | roteiro, cenas, frames do render | veredito + correções endereçadas |
 
+**Editor (adendo):** uma etapa `edicao` entre a montagem e o render, com fallback para a montagem determinística. Ver `2026-10-21-agente-editor-design.md`.
+
 **Fora do episódio** existem mais dois agentes:
 - **Showrunner:** cria ideias para o banco e planeja a série (arco com N sinopses).
 - **Analista de estilo:** extrai um estilo de um perfil ou conduz a conversa de criação de estilo.

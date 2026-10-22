@@ -4,7 +4,8 @@ import shutil
 import subprocess
 from pathlib import Path
 
-HF_VERSION = "0.8.158"
+HF_VERSION = "0.8.163"
+NO_TELEMETRY = {"HYPERFRAMES_NO_TELEMETRY": "1", "DO_NOT_TRACK": "1"}
 
 
 class ToolError(RuntimeError):
@@ -45,7 +46,7 @@ def run(args: list[str], cwd: Path | None = None, timeout: int = 1800,
     argv = argv_for(which(args[0]), args[1:])
     try:
         proc = subprocess.run(argv, cwd=cwd, capture_output=True, text=True,
-                              encoding="utf-8", errors="replace", timeout=timeout, env={**os.environ, **(env or {})})
+                              encoding="utf-8", errors="replace", timeout=timeout, env={**os.environ, **NO_TELEMETRY, **(env or {})})
     except subprocess.TimeoutExpired as e:
         raise ToolError(f"{args[0]} {' '.join(args[1:4])}... excedeu {timeout}s") from e
     if proc.returncode not in ok_codes:

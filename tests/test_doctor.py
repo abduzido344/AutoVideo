@@ -37,7 +37,7 @@ def test_doctor_skills_checks_required_skills(tmp_path, monkeypatch):
     monkeypatch.setattr(Path, "home", lambda: tmp_path)
     for n in doctor.SKILLS[:-1]:
         (tmp_path / ".claude" / "skills" / n).mkdir(parents=True)
-    with pytest.raises(ToolError, match=r"hyperframes-animation\. Rode: npx --yes hyperframes@0\.8\.158 skills update hyperframes-animation$"):
+    with pytest.raises(ToolError, match=r"hyperframes-animation\. Rode: npx --yes hyperframes@0.8.163 skills update hyperframes-animation$"):
         doctor.skills()
     (tmp_path / ".claude" / "skills" / doctor.SKILLS[-1]).mkdir()
     assert str(len(doctor.SKILLS)) in doctor.skills()

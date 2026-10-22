@@ -62,4 +62,9 @@ def test_cmd_shim_pointing_to_exe_runs_exe_directly(tmp_path):
 
 def test_plain_exe_unchanged():
     assert hf.argv_for(sys.executable, ["-c", "1"]) == [sys.executable, "-c", "1"]
-    assert hf.HF == ["npx", "--yes", "hyperframes@0.8.158"]
+    assert hf.HF == ["npx", "--yes", "hyperframes@0.8.163"]
+
+
+def test_run_disables_hyperframes_telemetry():
+    p = hf.run([sys.executable, "-c", "import os;print(os.environ['HYPERFRAMES_NO_TELEMETRY'], os.environ['DO_NOT_TRACK'])"])
+    assert p.stdout.split() == ["1", "1"]

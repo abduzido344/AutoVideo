@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Callable
 from pydantic import BaseModel
 from claude_agent_sdk import ClaudeAgentOptions, query
-from autovideo.hf import HF
+from autovideo import skills_sync
 from autovideo.project import Project
 
 _query = query
@@ -69,16 +69,14 @@ def options_for(role: Role, cwd: Path, context: str = "") -> ClaudeAgentOptions:
 
 
 def missing_skills(names) -> str | None:
-    """Mensagem com as skills ausentes de ~/.claude/skills e o comando que as instala (None se nada falta)."""
-    src = Path.home() / ".claude" / "skills"
-    missing = [n for n in names if not (src / n).is_dir()]
-    if missing:
-        return f"skills não instaladas: {', '.join(missing)}. Rode: {' '.join(HF)} skills update {' '.join(missing)}"
+    """Mensagem com as skills ausentes da pasta da tag fixada e o comando que as baixa (None se nada falta)."""
+    if missing := skills_sync.missing(names):
+        return f"skills não instaladas: {', '.join(missing)}. Rode: autovideo skills"
     return None
 
 
 def install_skills(cwd: Path, names) -> None:
-    src = Path.home() / ".claude" / "skills"
+    src = skills_sync.skills_dir()
     if err := missing_skills(names):
         raise AgentOutputError(err)
     for n in names:

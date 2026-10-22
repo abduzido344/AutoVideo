@@ -4,7 +4,7 @@ import time
 import pytest
 from pathlib import Path
 from pydantic import BaseModel
-from autovideo import agents
+from autovideo import agents, skills_sync
 from autovideo.agents import run_role, AgentOutputError, Role, ROLES, UsageLimit
 
 T = Role("teste", "haiku", max_turns=7, max_usd=0.5)
@@ -174,11 +174,10 @@ def test_validator_arbitrary_exception_goes_to_retry(tmp_path, monkeypatch):
 
 
 def _skills_home(tmp_path, monkeypatch, names):
-    home = tmp_path / "home"
+    monkeypatch.setenv("AUTOVIDEO_HOME", str(tmp_path / "home"))
     for n in names:
-        (home / ".claude" / "skills" / n).mkdir(parents=True)
-        (home / ".claude" / "skills" / n / "SKILL.md").write_text("# " + n, encoding="utf-8")
-    monkeypatch.setattr(Path, "home", lambda: home)
+        (skills_sync.skills_dir() / n).mkdir(parents=True)
+        (skills_sync.skills_dir() / n / "SKILL.md").write_text("# " + n, encoding="utf-8")
 
 
 def test_install_skills_copies_into_cwd(tmp_path, monkeypatch):
@@ -191,7 +190,7 @@ def test_install_skills_copies_into_cwd(tmp_path, monkeypatch):
 
 def test_install_skills_lists_missing(tmp_path, monkeypatch):
     _skills_home(tmp_path, monkeypatch, ["a-skill"])
-    with pytest.raises(AgentOutputError, match=r"x1, x2.*skills update x1 x2"):
+    with pytest.raises(AgentOutputError, match=r"x1, x2.*autovideo skills"):
         agents.install_skills(tmp_path / "proj", ("a-skill", "x1", "x2"))
 
 

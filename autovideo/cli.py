@@ -14,6 +14,7 @@ def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="autovideo")
     sub = p.add_subparsers(dest="cmd", required=True)
     sub.add_parser("doctor")
+    sub.add_parser("skills")
     sv = sub.add_parser("serve")
     sv.add_argument("--port", type=int, default=8765)
     sub.add_parser("fila")
@@ -30,6 +31,10 @@ def main(argv: list[str] | None = None) -> int:
         for name, ok, info in results:
             print(f"{'OK ' if ok else 'ERR'} {name}: {info}")
         return 0 if all(ok for _, ok, _ in results) else 1
+    if a.cmd == "skills":
+        from autovideo.skills_sync import sync
+        print(sync())
+        return 0
     if a.cmd == "serve":
         import uvicorn
         from autovideo.server import create_app

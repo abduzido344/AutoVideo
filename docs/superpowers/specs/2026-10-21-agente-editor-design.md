@@ -29,8 +29,8 @@ O catálogo tem 448 itens: 210 blocks e 238 components. Só 12 blocks já vêm e
 **Passos:**
 1. Trocar `HF_VERSION` para `0.8.163`.
 2. Rodar a suíte de testes e o `check` numa composição de episódio real já montada. A 0.8.158 tem comportamentos tratados no código (`transcribe.py`: "0.8.158: o stdout é só um resumo"; `render.check`: JSON depois de linhas de log), e cada um precisa ser revisto.
-3. `npx --yes hyperframes@0.8.163 skills update` mais as skills do editor (lista abaixo), na versão fixada.
-4. O `doctor` deixa de checar só a presença (`SKILLS` em `doctor.py`). Ele passa a ler `skills check --json` da versão fixada e reprova se uma skill do editor estiver `outdated`, `missing` ou `removed`.
+3. As skills do editor vêm da tag `v0.8.163`, não do `skills update`. O `skills check` da 0.8.163 compara com o `HEAD` do GitHub e marca `hyperframes-core`, `-animation`, `-creative`, `-keyframes`, `-audio` e `-studio` como `removed` (testado em 2026-10-21), e o `update` faria o prune delas. O `autovideo skills` baixa arquivo por arquivo da tag para `AUTOVIDEO_HOME/skills/0.8.163/`, tudo ou nada (`skills_sync.py`).
+4. O `doctor` (`EDITOR_SKILLS` em `skills_sync.py`) confere essa pasta e reprova se faltar o `SKILL.md` de alguma skill do editor, com a mensagem "Rode: autovideo skills".
 
 A 0.8.163 também é a última tag pública que ainda traz `hyperframes-core`, `-creative` e os workflows dentro de `skills/` (ver "Guia de roteiro" abaixo), o que reforça a escolha.
 

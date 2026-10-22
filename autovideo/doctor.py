@@ -4,10 +4,10 @@ import re
 import shutil
 import subprocess
 import sys
-from pathlib import Path
 from autovideo import hf
 from autovideo import config
 from autovideo.agents import missing_skills
+from autovideo.skills_sync import EDITOR_SKILLS, skills_dir
 from autovideo.project import home
 
 
@@ -25,7 +25,6 @@ def parakeet() -> str:
     return found["model"]
 
 
-SKILLS = ("hyperframes", "hyperframes-core", "hyperframes-animation")
 AUTH_HINT = "rode `claude auth login` (uso pessoal) ou defina ANTHROPIC_API_KEY"
 LOGIN = ["claude", "auth", "login"]
 
@@ -62,9 +61,9 @@ def open_login_terminal() -> None:
 
 
 def skills() -> str:
-    if err := missing_skills(SKILLS):
+    if err := missing_skills(EDITOR_SKILLS):
         raise hf.ToolError(err)
-    return f"{len(SKILLS)} skills em {Path.home() / '.claude' / 'skills'}"
+    return f"{len(EDITOR_SKILLS)} skills em {skills_dir()}"
 
 
 def key(name: str) -> str:

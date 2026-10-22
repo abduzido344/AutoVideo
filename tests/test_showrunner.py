@@ -5,7 +5,8 @@ from autovideo import agents, data, showrunner
 
 
 class Fake:
-    def __init__(self, plans=None):
+    def __init__(self, plans=None, candidatas=("x", "y", "z")):
+        self.candidatas = list(candidatas)
         self.roles = []
         self.tasks = []
         self.plans = plans or []  # nº de episódios por tentativa
@@ -19,7 +20,8 @@ class Fake:
             out.write_text(json.dumps({"ideias": ["a", "b", "c"]}), encoding="utf-8")
         elif out.name == "plano.json":
             for eps in self.plans:  # simula a retentativa do run_role
-                out.write_text(json.dumps({"titulo": "Apagão", "logline": "log", "episodios": [
+                out.write_text(json.dumps({"titulo": "Apagão", "logline": "log", "candidatas": self.candidatas,
+                    "estrutura": "contagem regressiva, porque aperta o tempo", "episodios": [
                     {"titulo": f"t{i}", "sinopse": f"s{i}"} for i in range(eps)]}), encoding="utf-8")
                 try:
                     validate(out)
@@ -91,3 +93,12 @@ def test_rewrite_keeps_changes_made_while_agent_ran(perfil, monkeypatch):
     showrunner.rewrite_synopsis(path, 2)
     s = data.series(perfil.slug)[0][1]
     assert s.paused and s.episodios[0].postado == ["tiktok"] and s.episodios[1].sinopse == "outra abordagem"
+
+
+def test_plan_requires_three_candidates(perfil, monkeypatch):
+    monkeypatch.setattr(agents, "run_role", Fake([3], candidatas=["x", "y"]))
+    with pytest.raises(agents.AgentOutputError):
+        showrunner.plan_series(perfil.slug)
+    monkeypatch.setattr(agents, "run_role", Fake([3]))
+    path = showrunner.plan_series(perfil.slug)
+    assert "contagem regressiva" in data.Serie.model_validate_json((path / "serie.json").read_text(encoding="utf-8")).estrutura

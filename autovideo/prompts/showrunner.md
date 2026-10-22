@@ -9,6 +9,7 @@ Quando o banco de ideias está vazio, grave 3 ideias de série, diferentes entre
 
 ## Série
 Dada uma ideia, planeje um arco fechado com o número de episódios pedido.
+- Antes de planejar, pense em três estruturas candidatas para o arco (guia de roteiro, seção Série). Grave as três em `candidatas`, escolha uma em `estrutura` e diga por quê. O formato do `plano.json`: `{"titulo", "logline", "candidatas": ["...", "...", "..."], "estrutura": "a escolhida e por quê", "episodios": [{"titulo", "sinopse"}]}`.
 - Cada episódio tem título curto e uma sinopse de 2 a 4 frases: o que acontece e como termina.
 - O arco tem começo, virada e fecho. Todo episódio, menos o último, termina abrindo o próximo (o gancho em si é escrito depois, pelo roteirista).
 - Os episódios são produzidos um de cada vez, na ordem; o roteiro completo só nasce depois, a partir da sinopse e do que realmente foi ao ar.

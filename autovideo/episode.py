@@ -75,6 +75,7 @@ def roteiro(ctx: Ctx) -> None:
     else:
         fim = f'Termine com o gancho do estilo: "{_estilo(r["perfil"]).gancho.replace("{n}", str(r["n"] + 1))}".'
     task = (f"Escreva o roteiro da Parte {r['n']} de {total}. A sinopse está em sinopse.md. {fim}\n"
+            "Confira no histórico a estratégia de gancho do episódio anterior e use outra, salvo se o estilo fixar a abertura.\n"
             "Grave roteiro.md e episodio.json." + _ajustes(ep))
     ok_json = agents.validate_model(EpisodioOut)
 
@@ -82,6 +83,8 @@ def roteiro(ctx: Ctx) -> None:
         ok_json(p)
         if not (ep / "roteiro.md").is_file() or not _read(ep / "roteiro.md").strip():
             raise ValueError("roteiro.md não foi gravado ou está vazio")
+        if any(re.search(r"\d", l) for l in _read(ep / "roteiro.md").splitlines() if not l.lstrip().startswith("#")):
+            raise ValueError("o roteiro tem dígitos: escreva todos os números, horas e siglas por extenso, como se leem")
 
     agents.run_role(agents.ROLES["roteirista"], ep, task, ep / "episodio.json", valida,
                     context=data.context_for(r["perfil"]))
@@ -378,6 +381,8 @@ def approve(store: JobStore, jid: int) -> None:
     jobs.approve(store, jid, STAGES)
     with (data.perfis_dir() / ctx.recipe["perfil"] / "universo" / "historico.md").open("a", encoding="utf-8") as f:
         f.write(f"\n## Parte {ctx.recipe['n']} — {out.titulo}\n{out.resumo}\n")
+        if out.gancho:
+            f.write(f"Gancho: {out.gancho}\n")
 
 
 def adjust(store: JobStore, jid: int, texto: str) -> None:

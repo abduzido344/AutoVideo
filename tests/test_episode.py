@@ -7,7 +7,7 @@ from autovideo import agents, config, data, eleven, episode, images, jobs, monta
 from autovideo.jobs import JobStore
 
 ALERTA = {"titulo": "Tempestade", "orgao": "Defesa Civil", "texto": "Procure abrigo.", "hora": "14:02"}
-ROTEIRO = "# Apagão\nÀs 3h47, a luz cai.\n\nVocê acorda no escuro.\nO celular grita."
+ROTEIRO = "# Apagão\nÀs três e quarenta e sete, a luz cai.\n\nVocê acorda no escuro.\nO celular grita."
 
 
 class Fake:
@@ -28,10 +28,10 @@ class Fake:
         self.tasks.setdefault(role.name, []).append(task)
         cwd = Path(cwd)
         if role.name == "roteirista":
-            (cwd / "roteiro.md").write_text(ROTEIRO, encoding="utf-8")
-            out = {"titulo": "Apagão", "resumo": "A luz caiu no prédio.", "post": {"caption": "c", "hashtags": ["#x"]}}
+            (cwd / "roteiro.md").write_text(getattr(self, "roteiro", ROTEIRO), encoding="utf-8")
+            out = {"titulo": "Apagão", "resumo": "A luz caiu no prédio.", "gancho": "pergunta", "post": {"caption": "c", "hashtags": ["#x"]}}
         elif role.name == "diretor_arte":
-            cenas = [{"id": "s01", "kind": "image", "narration": "Às 3h47, a luz cai.", "prompt": "dark building",
+            cenas = [{"id": "s01", "kind": "image", "narration": "Às três e quarenta e sete, a luz cai.", "prompt": "dark building",
                       "characters": ["benji"], "sfx": "thunder"},
                      {"id": "s02", "kind": "image", "narration": "Você acorda no escuro.", "prompt": f"bedroom v{k}"},
                      {"id": "s03", "kind": "screen", "narration": "O celular grita.",
@@ -230,6 +230,20 @@ def test_approve_appends_history(env):
     h = (data.perfis_dir() / env.perfil / "universo" / "historico.md").read_text(encoding="utf-8")
     assert "## Parte 1 — Apagão\nA luz caiu no prédio." in h
     assert episode.produce(env.store, env.jid) == "completed"
+
+
+def test_approve_records_hook_strategy(env):
+    episode.produce(env.store, env.jid)
+    episode.approve(env.store, env.jid)
+    h = (data.perfis_dir() / env.perfil / "universo" / "historico.md").read_text(encoding="utf-8")
+    assert "Gancho: pergunta" in h
+
+
+def test_digits_in_script_go_back_to_writer(env):
+    ctx = episode.make_ctx(env.store.get(env.jid))
+    env.fake.roteiro = "# T\nÀs 9h14, a luz cai."
+    with pytest.raises(ValueError, match="por extenso"):
+        episode.roteiro(ctx)
 
 
 def test_adjust_routes_by_triage(env):

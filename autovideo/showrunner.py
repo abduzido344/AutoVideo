@@ -13,7 +13,23 @@ class PlanoEp(BaseModel):
 class Plano(BaseModel):
     titulo: str
     logline: str
+    candidatas: list[str]
+    estrutura: str
     episodios: list[PlanoEp]
+
+    @field_validator("candidatas")
+    @classmethod
+    def _tres(cls, v):
+        if len(v) != 3 or not all(i.strip() for i in v):
+            raise ValueError(f"preciso de exatamente 3 estruturas candidatas não vazias, vieram {len(v)}")
+        return v
+
+    @field_validator("estrutura")
+    @classmethod
+    def _escolhida(cls, v):
+        if not v.strip():
+            raise ValueError("estrutura vazia: diga qual das candidatas escolheu e por quê")
+        return v
 
 
 class NovasIdeias(BaseModel):
@@ -66,10 +82,10 @@ def plan_series(perfil: str) -> Path:
 
     task = (f"Tarefa: série. Ideia escolhida:\n\"\"\"\n{ideia.texto}\n\"\"\"\n"
             f"Planeje um arco fechado de exatamente {n} episódios e grave {out.name} neste formato: "
-            '{"titulo": "...", "logline": "...", "episodios": [{"titulo": "...", "sinopse": "..."}]}.')
+            '{"titulo": "...", "logline": "...", "candidatas": ["...", "...", "..."], "estrutura": "a escolhida e por quê", "episodios": [{"titulo": "...", "sinopse": "..."}]}.')
     _run(perfil, work, task, out, valida)
     plano = Plano.model_validate_json(out.read_text(encoding="utf-8"))
-    path = data.create_serie(perfil, plano.titulo, plano.logline, [(e.titulo, e.sinopse) for e in plano.episodios], ideia=ideia.id)
+    path = data.create_serie(perfil, plano.titulo, plano.logline, [(e.titulo, e.sinopse) for e in plano.episodios], ideia=ideia.id, estrutura=plano.estrutura)
     with data.IDEIAS_LOCK:
         data.save_ideias(perfil, [i.model_copy(update={"usada": True}) if i.id == ideia.id else i for i in data.load_ideias(perfil)])
     return path

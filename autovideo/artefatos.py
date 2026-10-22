@@ -14,6 +14,7 @@ class Post(BaseModel):
 class EpisodioOut(BaseModel):
     titulo: str
     resumo: str
+    gancho: str = ""  # estratégia de gancho usada, para o próximo episódio variar
     post: Post
 
 

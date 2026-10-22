@@ -91,6 +91,7 @@ class Serie(BaseModel):
     titulo: str
     logline: str
     ideia: str | None = None
+    estrutura: str = ""
     paused: bool = False
     episodios: list[EpisodioRef]
 
@@ -254,7 +255,7 @@ def series(slug: str) -> list[tuple[Path, Serie]]:
             for d in sorted(base.iterdir()) if (d / "serie.json").exists()]
 
 
-def create_serie(perfil: str, titulo: str, logline: str, episodios: list[tuple[str, str]], ideia: str | None = None) -> Path:
+def create_serie(perfil: str, titulo: str, logline: str, episodios: list[tuple[str, str]], ideia: str | None = None, estrutura: str = "") -> Path:
     base = _series_dir(perfil)
     base.mkdir(parents=True, exist_ok=True)
     nn = max((int(d.name[:2]) for d in base.iterdir() if d.name[:2].isdigit()), default=0) + 1
@@ -264,7 +265,7 @@ def create_serie(perfil: str, titulo: str, logline: str, episodios: list[tuple[s
     for n, (_, sinopse) in enumerate(episodios, 1):
         _write(ep_dir(path, n) / "sinopse.md", sinopse)
     refs = [EpisodioRef(n=n, titulo=t, sinopse=s) for n, (t, s) in enumerate(episodios, 1)]
-    save_serie(path, Serie(slug=slug, titulo=titulo, logline=logline, ideia=ideia, episodios=refs))
+    save_serie(path, Serie(slug=slug, titulo=titulo, logline=logline, ideia=ideia, estrutura=estrutura, episodios=refs))
     return path
 
 

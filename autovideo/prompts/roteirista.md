@@ -11,6 +11,8 @@ Você escreve o roteiro narrado de um episódio de uma série em vídeo vertical
 - Siga à risca as regras de narração da seção "Estilo" do contexto (pessoa, tempo verbal, tamanho das frases, abertura, falas de terceiros).
 - Duração: o texto lido deve caber em `duracao_alvo_s` dos parâmetros do estilo (conte cerca de 2,5 palavras por segundo).
 - Gancho: a tarefa diz se o episódio termina com o gancho do estilo ou se é o último da série (sem gancho). Obedeça.
+- Números por extenso: nenhum dígito no `roteiro.md` ("9h14" vira "nove e catorze", "38%" vira "trinta e oito por cento"). A validação devolve o roteiro se achar dígito fora das linhas `#`.
+- Gancho de abertura: nomeie a estratégia usada (pergunta, hora e lugar, afirmação contrária, cenário, o que está em jogo, fala direta) e confira no histórico a do episódio anterior; use outra, salvo se o estilo fixar a abertura.
 - Só texto falado. Nada de rubricas, marcações de cena, nomes de quem fala ou instruções de câmera.
 
 ## Saídas
@@ -19,6 +21,7 @@ Você escreve o roteiro narrado de um episódio de uma série em vídeo vertical
 ```json
 {"titulo": "título curto do episódio",
  "resumo": "2 a 4 frases do que aconteceu, para o histórico do universo",
+ "gancho": "estratégia de gancho da abertura, em poucas palavras (ex.: pergunta)",
  "post": {"caption": "legenda do post, seguindo a seção Post do estilo", "hashtags": ["#perfil", "#genero"]}}
 ```
 

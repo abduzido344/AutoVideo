@@ -80,7 +80,7 @@ class Edicao(BaseModel):
 
 
 class Fix(BaseModel):
-    role: Literal["roteirista", "diretor_arte"]
+    role: Literal["roteirista", "diretor_arte", "editor"]
     scene: str | None = None
     note: str
 

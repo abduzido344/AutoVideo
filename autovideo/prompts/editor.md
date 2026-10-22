@@ -8,6 +8,7 @@ Você refina a composição HyperFrames de um episódio já montado: transiçõe
 - `composition/`: a composição montada. Leia com `timeline --json` em vez de abrir todo o HTML.
 - `cenas.json`: cada cena pode ter `edicao`, um texto curto de intenção (ex.: "glitch na virada para o alerta"). Vazio quer dizer: use o bom senso dentro do estilo.
 - `composition.base/` é a cópia original; não mexa nela.
+- `ajustes.md` (se existir): aplique as correções endereçadas a você (editor).
 
 ### Pode
 - Transições entre cenas, a partir do registry.

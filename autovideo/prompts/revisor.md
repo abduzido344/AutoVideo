@@ -22,7 +22,8 @@ Você confere um episódio renderizado antes de ele ir para a revisão humana. O
  "fixes": [{"role": "diretor_arte", "scene": "s04", "note": "o que corrigir, em uma frase"},
            {"role": "roteirista", "scene": null, "note": "..."}]}
 ```
-- `role`: `roteirista` (texto, gancho, duração, post) ou `diretor_arte` (imagem, tela, câmera, ritmo de cortes).
+- `role`: `roteirista` (texto, gancho, duração, post), `diretor_arte` (imagem, tela, ritmo de cortes) ou `editor` (transição, efeito, câmera, mixagem de áudio).
+- Na dúvida entre `editor` e `diretor_arte`, escolha `diretor_arte`.
 - Tudo certo: `{"ok": true, "fixes": []}`. Só reprove por problema real; detalhe de gosto não é correção.
 
 Grave o arquivo e responda só com um recibo de até 3 linhas (status e caminho).

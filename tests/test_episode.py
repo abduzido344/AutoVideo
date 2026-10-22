@@ -454,3 +454,21 @@ def test_cena_edicao_changes_cache_key(env):
     jobs.invalidate_from(env.ep, episode.STAGES, "edicao")
     assert episode.produce(env.store, env.jid) == "awaiting_approval"
     assert env.fake.calls["editor"] == 2 and _edicao(env)["cache"] is False
+
+
+def test_reviewer_fix_to_editor_redoes_only_edicao(env):
+    env.fake.reviews = [{"ok": False, "fixes": [{"role": "editor", "scene": "s02", "note": "transição seca demais"}]},
+                        {"ok": True}]
+    assert episode.produce(env.store, env.jid) == "awaiting_approval"
+    assert env.fake.calls == {"roteirista": 1, "diretor_arte": 1, "editor": 2, "revisor": 2}
+    assert len(env.calls["tts"]) == 3 and len(env.calls["gen"]) == 2
+    assert _edicao(env)["cache"] is False                         # ajustes.md mudou: o cache da edição não vale
+    assert "ajustes.md" in env.fake.tasks["editor"][1] and "transição seca demais" in (env.ep / "ajustes.md").read_text(encoding="utf-8")
+
+
+def test_adjust_to_editor(env):
+    episode.produce(env.store, env.jid)
+    env.fake.triagem = {"role": "editor", "scene": "s02", "note": "transição mais suave"}
+    episode.adjust(env.store, env.jid, "a transição da cena 2 está dura")
+    assert done(env.ep, "montagem", "composition/index.html") and not done(env.ep, "edicao", "edicao.json")
+    assert "usuário → editor" in (env.ep / "ajustes.md").read_text(encoding="utf-8")

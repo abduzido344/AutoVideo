@@ -14,7 +14,7 @@ from autovideo.edicao import fora_do_escopo, foto_arvore, invariantes, restaurar
 from autovideo.jobs import Ctx, GateError, JobStore, Stage
 from autovideo.project import Project
 
-REDO = {"roteirista": "roteiro", "diretor_arte": "cenas"}
+REDO = {"roteirista": "roteiro", "diretor_arte": "cenas", "editor": "edicao"}
 REVIEW_ROUNDS = 2
 AMBIENTE_S = 22  # o ElevenLabs gera no máximo 22 s; a montagem emenda em loop
 _ROUND = re.compile(r"^## Ajuste \(revisor", re.M)

@@ -66,3 +66,29 @@ def test_restaurar_base_replaces_partial_edit(tmp_path):
     edicao.restaurar_base(tmp_path)
     assert (tmp_path / "composition" / "index.html").read_text() == "base"
     assert not (tmp_path / "composition" / "novo.html").exists()
+
+
+def test_missing_index_returns_message(tmp_path):
+    b, c = par(tmp_path, BASE)
+    (c / "index.html").unlink()
+    assert edicao.invariantes(b, c) == ["index.html da edição ausente ou ilegível."]
+    (c / "index.html").write_bytes(b"\xff\xfe\x00\xff")
+    assert edicao.invariantes(b, c) == ["index.html da edição ausente ou ilegível."]
+
+
+def test_restaurar_base_without_composition_dir(tmp_path):
+    (tmp_path / "composition.base").mkdir()
+    (tmp_path / "composition.base" / "index.html").write_text("base")
+    edicao.restaurar_base(tmp_path)
+    assert (tmp_path / "composition" / "index.html").read_text() == "base"
+
+
+def test_timed_wrapper_with_inner_unchanged_fails(tmp_path):
+    img = '<img id="img-s01" class="clip cena" src="assets/a.png" alt="" data-start="0" data-duration="2" data-track-index="0" />'
+    erros = edicao.invariantes(*par(tmp_path, BASE.replace(img, f'<div data-start="1" data-duration="2">{img}</div>')))
+    assert len(erros) == 1 and "img-s01" in erros[0] and "wrapper" in erros[0]
+
+
+def test_untimed_wrapper_passes(tmp_path):
+    img = '<img id="img-s01" class="clip cena" src="assets/a.png" alt="" data-start="0" data-duration="2" data-track-index="0" />'
+    assert edicao.invariantes(*par(tmp_path, BASE.replace(img, f'<div style="transform:scale(1.1)">{img}<br></div>'))) == []

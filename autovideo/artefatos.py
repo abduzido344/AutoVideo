@@ -58,6 +58,8 @@ class VozCena(BaseModel):
     file: str
     dur: float
     sha: str
+    asr_ok: bool = True  # a voz transcrita bate com a narração (voz_check)
+    ouvido: str = ""
 
 
 class Voz(BaseModel):

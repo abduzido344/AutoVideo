@@ -8,7 +8,7 @@ import shutil
 import time
 from contextlib import contextmanager
 from pathlib import Path
-from autovideo import agents, config, data, eleven, hf, images, jobs, montage, render
+from autovideo import agents, config, data, eleven, hf, images, jobs, montage, render, transcribe, voz_check
 from autovideo.artefatos import Cenas, Edicao, EpisodioOut, Fix, Revisao, Voz
 from autovideo.edicao import fora_do_escopo, foto_arvore, invariantes, restaurar_base
 from autovideo.jobs import Ctx, GateError, JobStore, Stage
@@ -135,15 +135,37 @@ def voz(ctx: Ctx) -> None:
         raise RuntimeError("defina a voz do perfil (nem o perfil nem o estilo têm voz)")
     cs, cp = _cenas(ep).cenas, ep / "voz" / "cache.json"
     cache, out = _cache(cp), []
+    asr = ep / "voz" / ".asr"
+
+    def ouvir(f: str, c) -> tuple[float, str]:
+        """Transcreve o áudio e devolve (semelhança, texto ouvido); falha da transcrição não trava o episódio."""
+        try:
+            asr.mkdir(parents=True, exist_ok=True)
+            ws = transcribe.transcribe(ep / f, f, asr)
+        except hf.ToolError as e:
+            ctx.project.log({"stage": "voz", "scene": c.id, "asr": "não checado", "erro": str(e)[:200]})
+            return 1.0, c.narration
+        _save(ep / f.replace(".mp3", ".words.json"), [w.model_dump() for w in ws])
+        ouvido = " ".join(w.text for w in ws)
+        return voz_check.semelhanca(c.narration, ouvido), ouvido
+
     for i, c in enumerate(cs):
         sha = _sha(c.narration, voz_id)
         if sha not in cache or not (ep / cache[sha]["file"]).exists():
             f = f"voz/{sha[:16]}.mp3"
-            dur = eleven.tts(c.narration, voz_id, ep / f, previous_text=cs[i - 1].narration if i else "",
-                             next_text=cs[i + 1].narration if i + 1 < len(cs) else "")
-            cache[sha] = {"file": f, "dur": dur}
+            vizinhos = dict(previous_text=cs[i - 1].narration if i else "",
+                            next_text=cs[i + 1].narration if i + 1 < len(cs) else "")
+            dur = eleven.tts(c.narration, voz_id, ep / f, **vizinhos)
+            r, ouvido = ouvir(f, c)
+            if voz_check.precisa_checar(c.narration) and r < voz_check.LIMITE:  # uma regeração só
+                dur = eleven.tts(c.narration, voz_id, ep / f, **vizinhos)
+                r, ouvido = ouvir(f, c)
+            ok = r >= voz_check.LIMITE or not voz_check.precisa_checar(c.narration)
+            cache[sha] = {"file": f, "dur": dur, "asr": {"ratio": r, "ouvido": ouvido, "ok": ok}}
             _save(cp, cache)  # a cada cena: um limite no meio não perde o que já foi pago
-        out.append({"id": c.id, "file": cache[sha]["file"], "dur": cache[sha]["dur"], "sha": sha})
+        a = cache[sha].get("asr", {})
+        out.append({"id": c.id, "file": cache[sha]["file"], "dur": cache[sha]["dur"], "sha": sha,
+                    "asr_ok": a.get("ok", True), "ouvido": a.get("ouvido", "")})
     _save(ep / "voz.json", {"cenas": out})
 
 
@@ -292,6 +314,8 @@ def revisar(ctx: Ctx) -> None:
     task = (f"Revise o episódio. Duração total: {total:.1f} s; o alvo do estilo é entre {lo} e {hi} s. Leia roteiro.md, episodio.json e cenas.json; "
             f"frames do meio de cada cena, na ordem: {lista}. Folhas aprovadas dos personagens em cena: {folhas}. "
             "Grave revisao.json.")
+    if ruins := [v for v in _voz(ep).cenas if not v.asr_ok]:
+        task += " A voz não bateu com a narração na transcrição de volta (confira se a fala está correta): " +                 "; ".join(f"{v.id} ouvido: \"{v.ouvido}\"" for v in ruins) + "."
     agents.run_role(agents.ROLES["revisor"], ep, task, ep / "revisao.json", agents.validate_model(Revisao),
                     context=data.context_for(ctx.recipe["perfil"]))
 

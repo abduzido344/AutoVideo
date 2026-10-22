@@ -3,7 +3,7 @@ import re
 import types
 from pathlib import Path
 import pytest
-from autovideo import agents, config, data, eleven, episode, images, jobs, montage, render
+from autovideo import agents, config, data, eleven, episode, hf, images, jobs, montage, render, transcribe
 from autovideo.jobs import JobStore
 
 ALERTA = {"titulo": "Tempestade", "orgao": "Defesa Civil", "texto": "Procure abrigo.", "hora": "14:02"}
@@ -77,10 +77,12 @@ def env(tmp_path, monkeypatch):
     serie = data.create_serie(p.slug, "Apagão", "log", [("t1", "sinopse 1"), ("t2", "sinopse 2"), ("t3", "sinopse 3")])
     fake = Fake()
     monkeypatch.setattr(agents, "run_role", fake)
-    calls = {"tts": [], "gen": [], "sfx": []}
+    calls = {"tts": [], "gen": [], "sfx": [], "asr": []}
+    spoken = {}  # arquivo -> texto sintetizado nele; o ASR fake ouve exatamente isso
 
     def tts(text, voice_id, out, previous_text="", next_text="", client=None):
         calls["tts"].append(text)
+        spoken[out] = text
         out.parent.mkdir(parents=True, exist_ok=True); out.write_bytes(b"mp3")
         return 2.0
 
@@ -109,6 +111,11 @@ def env(tmp_path, monkeypatch):
         calls["snaps"] = times
         return []
 
+    def asr(media, src, workdir, language="pt", model="small"):
+        calls["asr"].append(media)
+        return [transcribe.Word(text=w, start=i * 0.3, end=i * 0.3 + 0.2, src=src) for i, w in enumerate(spoken[media].split())]
+
+    monkeypatch.setattr(transcribe, "transcribe", asr)
     monkeypatch.setattr(eleven, "tts", tts)
     monkeypatch.setattr(eleven, "sfx", sfx)
     monkeypatch.setattr(images, "generate", gen)
@@ -486,3 +493,46 @@ def test_adjust_to_editor(env):
     episode.adjust(env.store, env.jid, "a transição da cena 2 está dura")
     assert done(env.ep, "montagem", "composition/index.html") and not done(env.ep, "edicao", "edicao.json")
     assert "usuário → editor" in (env.ep / "ajustes.md").read_text(encoding="utf-8")
+
+
+def _voz_json(env):
+    return json.loads((env.ep / "voz.json").read_text(encoding="utf-8"))["cenas"]
+
+
+def test_bad_asr_regenerates_once_then_flags(env, monkeypatch):
+    monkeypatch.setattr(transcribe, "transcribe", lambda media, src, workdir, **k: [
+        transcribe.Word(text=t, start=i, end=i + .5, src=src) for i, t in enumerate("nove agá catorze".split())])
+    episode.produce(env.store, env.jid)
+    assert env.calls["tts"].count("Você acorda no escuro.") == 2
+    s2 = _voz_json(env)[1]
+    assert s2["asr_ok"] is False and s2["ouvido"] == "nove agá catorze"
+    assert "s02" in env.fake.tasks["revisor"][0] and "nove agá catorze" in env.fake.tasks["revisor"][0]
+
+
+def test_good_asr_not_listed_for_revisor(env):
+    episode.produce(env.store, env.jid)
+    assert all(v["asr_ok"] for v in _voz_json(env)) and "transcrição" not in env.fake.tasks["revisor"][0]
+    assert len(env.calls["asr"]) == 3
+
+
+def test_cached_voice_not_retranscribed(env):
+    episode.produce(env.store, env.jid)
+    env.store.set(env.jid, status="queued", stage="")
+    jobs.invalidate_from(env.ep, episode.STAGES, "voz")
+    episode.produce(env.store, env.jid)
+    assert len(env.calls["asr"]) == 3 and len(env.calls["tts"]) == 3
+
+
+def test_words_json_written(env):
+    episode.produce(env.store, env.jid)
+    w = json.loads((env.ep / _voz_json(env)[0]["file"]).with_suffix(".words.json").read_text(encoding="utf-8"))
+    assert w[0]["text"] == "Às"
+
+
+def test_transcription_error_does_not_block(env, monkeypatch):
+    def quebra(*a, **k):
+        raise hf.ToolError("sem modelo")
+
+    monkeypatch.setattr(transcribe, "transcribe", quebra)
+    assert episode.produce(env.store, env.jid) == "awaiting_approval"
+    assert all(v["asr_ok"] for v in _voz_json(env)) and len(env.calls["tts"]) == 3

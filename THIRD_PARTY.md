@@ -6,6 +6,8 @@ Os guias de prompt abaixo são **textos adaptados**: traduzidos para o portuguê
 |---|---|---|---|
 | `autovideo/prompts/_direcao.md` | [lemomo-ai/lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar), `DIRECTOR.md` §3, §6–§11 | commit `b5e8ef9` | MIT, Copyright (c) 2026 LemoLab |
 | `autovideo/prompts/_roteiro.md` | [lemomo-ai/lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar), `DIRECTOR.md` §3–4 | commit `b5e8ef9` | MIT, Copyright (c) 2026 LemoLab |
+| `autovideo/prompts/analista.md` | [lemomo-ai/lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar), `STYLE.md` e `MY-STYLES.md` (modelo do `estilo.md`; seção "Engine" removida) | commit `b5e8ef9` | MIT, Copyright (c) 2026 LemoLab |
+| `autovideo/prompts/estilo_chat.md` | [lemomo-ai/lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar), `STYLE.md` e `MY-STYLES.md` (modelo do `estilo.md`; seção "Engine" removida) | commit `b5e8ef9` | MIT, Copyright (c) 2026 LemoLab |
 | `autovideo/prompts/_roteiro.md` | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes), `skills/hyperframes-creative/references/narration.md` e `skills/faceless-explainer/references/story-design.md` | tag `v0.8.163` | Apache-2.0, Copyright 2026 HeyGen, Inc. |
 
 **Aviso de modificação (Apache-2.0, §4b):** os trechos vindos de heygen-com/hyperframes foram modificados: traduzidos, resumidos e adaptados. O repositório de origem não tem arquivo `NOTICE` na raiz.

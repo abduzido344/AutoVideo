@@ -27,15 +27,15 @@ Cada chave vem da variável de ambiente ou é salva em **Configurações** no pa
 ## Setup
 ```bash
 uv venv && uv pip install -e ".[dev]"
-npx --yes hyperframes@0.8.158 models install parakeet
-npx --yes hyperframes@0.8.158 skills update hyperframes hyperframes-core hyperframes-animation
+npx --yes hyperframes@0.8.163 models install parakeet
+uv run python -m autovideo skills
 uv run python -m autovideo doctor
 ```
 
 O `doctor` mostra a pasta dos projetos (`AUTOVIDEO_HOME`) e confere ffmpeg, ffprobe, Node 22+, HyperFrames, o modelo Parakeet,
 o Claude CLI, a autenticação do Claude, as skills e as chaves `ELEVENLABS_API_KEY` e `OPENROUTER_API_KEY`. Sai com código 1 se algum item falhar.
 - **claude auth:** passa se `claude auth status` disser `loggedIn: true` ou se `ANTHROPIC_API_KEY` estiver definida. Se falhar: rode `claude auth login` (uso pessoal) ou defina `ANTHROPIC_API_KEY`.
-- **skills:** confere `hyperframes`, `hyperframes-core` e `hyperframes-animation` em `~/.claude/skills` e, se faltar alguma, mostra o `npx --yes hyperframes@0.8.158 skills update ...` que as instala.
+- **skills:** confere as 8 skills do editor (`hyperframes`, `hyperframes-core`, `hyperframes-animation`, `hyperframes-keyframes`, `hyperframes-registry`, `hyperframes-audio`, `hyperframes-creative`, `hyperframes-cli`) em `AUTOVIDEO_HOME/skills/0.8.163`, baixadas da tag fixada. Se faltar alguma, rode `uv run python -m autovideo skills`.
 
 ## Painel / UI
 O painel precisa de build antes do `serve`, porque o servidor só serve o painel se `web/dist` existir:

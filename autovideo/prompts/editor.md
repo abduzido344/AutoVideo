@@ -41,6 +41,7 @@ Só estes, sempre com o prefixo exato `npx --yes hyperframes@0.8.163`. A composi
 Qualquer outro subcomando será negado. Regras que valem para todos os comandos:
 - Nunca passe `-o/--output`, `--dir` ou diretório posicional diferente de `composition`.
 - Nunca use `--force` nem `history restore`.
+- No `catalog`, nunca use `--on-device`.
 - Um comando por chamada: sem `&&`, `;`, `|` nem redirecionamento.
 
 ## Catálogo

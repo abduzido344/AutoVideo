@@ -133,8 +133,8 @@ def test_montagem_saves_base(env):
     base = env.ep / "composition.base" / "index.html"
     assert base.read_text() == "<html>"
     (env.ep / "composition" / "index.html").write_text("<html>editada", encoding="utf-8")
-    (env.ep / "composition.base" / "velho.txt").write_text("x")
-    episode.montagem(episode.make_ctx(env.store.get(env.jid)))   # nova montagem substitui a base
+    (env.ep / "composition" / "velho.txt").write_text("x")
+    episode.montagem(episode.make_ctx(env.store.get(env.jid)))   # nova montagem parte da base, não da edição
     assert base.read_text() == "<html>" and not (env.ep / "composition.base" / "velho.txt").exists()
 
 
@@ -372,6 +372,27 @@ def test_editor_writing_outside_scope_falls_back(env):
     assert "approvals/x.txt" in (env.ep / "decisions.log").read_text(encoding="utf-8")
 
 
+def test_editor_writing_into_edicao_cache_falls_back(env):
+    def envenena(cwd):
+        (cwd / "edicao").mkdir(exist_ok=True)
+        (cwd / "edicao/cache.json").write_text("{}")
+
+    env.fake.editor = envenena
+    assert episode.produce(env.store, env.jid) == "awaiting_approval"
+    assert _edicao(env)["fallback"] is True and "edicao/cache.json" in _edicao(env)["motivo"]
+
+
+def test_rebuilt_montagem_drops_editor_files_from_base(env):
+    # a montagem refeita parte da base, não da composição editada: arquivos do editor não vazam para a base nova
+    env.fake.editor = lambda cwd: (cwd / "composition/extra.txt").write_text("do editor")
+    episode.produce(env.store, env.jid)
+    assert (env.ep / "composition/extra.txt").exists()
+    env.store.set(env.jid, status="queued", stage="")
+    jobs.invalidate_from(env.ep, episode.STAGES, "montagem")
+    assert episode.produce(env.store, env.jid) == "awaiting_approval"
+    assert not (env.ep / "composition.base/extra.txt").exists()
+
+
 def test_editor_usage_limit_pauses_at_edicao(env):
     def limite(cwd):
         raise agents.UsageLimit("limite", 123)
@@ -388,6 +409,7 @@ def test_edicao_cache_skips_editor(env):
     episode.produce(env.store, env.jid)
     env.store.set(env.jid, status="queued", stage="")
     jobs.invalidate_from(env.ep, episode.STAGES, "edicao")
+    (env.ep / "composition/index.html").write_text("<html>lixo")      # só o cache pode trazer a edição de volta
     assert episode.produce(env.store, env.jid) == "awaiting_approval"
     assert env.fake.calls["editor"] == 1
     assert _edicao(env)["cache"] is True and _edicao(env)["mudancas"][0]["o_que"] == "whip-pan"

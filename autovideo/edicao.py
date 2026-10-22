@@ -88,8 +88,9 @@ def restaurar_base(ep: Path) -> None:
     shutil.copytree(ep / "composition.base", ep / "composition")
 
 
-# o que o editor pode escrever (Edit e flags do Bash) e o que o próprio pipeline escreve durante a etapa
-_ESCOPO_DIRS = ("composition", ".claude", "edicao")
+# o que o editor pode escrever (Edit e flags do Bash) e o que o próprio pipeline escreve durante a etapa;
+# edicao/ (o cache) fica de fora de propósito: um editor escapado não pode envenenar o cache
+_ESCOPO_DIRS = ("composition", ".claude")
 _ESCOPO_ARQS = ("edicao.json", "decisions.log")
 
 

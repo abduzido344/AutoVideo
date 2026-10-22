@@ -197,6 +197,8 @@ def sons(ctx: Ctx) -> None:
 def montagem(ctx: Ctx) -> None:
     ep = ctx.project.root
     sfx = json.loads(_read(ep / "sfx" / "manifest.json"))
+    if (ep / "composition.base").is_dir():  # refeita: parte da base, senão arquivos do editor vazam para a base nova
+        restaurar_base(ep)
     render.init_composition(ctx.project, "9:16")
     montage.build(ep, _cenas(ep), _voz(ep), json.loads(_read(ep / "img" / "manifest.json")), sfx["cenas"],
                   sfx["ambiente"], legenda=_estilo(ctx.recipe["perfil"]).legenda)

@@ -99,8 +99,8 @@ def test_tree_check_ignores_editor_scope_and_flags_the_rest(tmp_path):
         (tmp_path / f).parent.mkdir(parents=True, exist_ok=True)
         (tmp_path / f).write_text("x")
     antes = edicao.foto_arvore(tmp_path)
-    assert set(antes) == {"cenas.json", "approvals/a.txt"}
-    for f in ("composition/novo.html", "edicao.json", "decisions.log", ".claude/y", "edicao/d"):
+    assert set(antes) == {"cenas.json", "approvals/a.txt", "edicao/c.json"}   # o cache da edição é vigiado
+    for f in ("composition/novo.html", "edicao.json", "decisions.log", ".claude/y"):
         (tmp_path / f).write_text("y")
     assert edicao.fora_do_escopo(antes, edicao.foto_arvore(tmp_path)) == []
     (tmp_path / "cenas.json").write_text("mudou")

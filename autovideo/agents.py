@@ -41,12 +41,13 @@ EDITOR_CMDS = ("lint", "check", "snapshot", "timeline", "compositions", "catalog
                "history")
 
 ROLES: dict[str, Role] = {r.name: r for r in (
-    *(Role(n, "opus") for n in ("roteirista", "revisor", "showrunner", "analista")),
+    *(Role(n, "opus", guias=("_roteiro.md",)) for n in ("roteirista", "showrunner")),
+    Role("revisor", "opus", guias=("_direcao.md",)),
+    Role("analista", "opus"),
     *(Role(n, "sonnet") for n in ("diretor_arte", "onboarding", "estilo_chat")),
     Role("triagem", "haiku", max_turns=5, max_usd=0.2),
-    # ponytail: guias=() até a Task 10 criar _direcao.md; ela passa a ("_direcao.md",)
     Role("editor", "opus", max_turns=60, max_usd=5.0, skills=skills_sync.EDITOR_SKILLS,
-         edit=("./composition/**", "./edicao.json"), bash=EDITOR_CMDS))}
+         edit=("./composition/**", "./edicao.json"), bash=EDITOR_CMDS, guias=("_direcao.md",)))}
 
 
 def validate_model(model: type[BaseModel]) -> Callable[[Path], None]:

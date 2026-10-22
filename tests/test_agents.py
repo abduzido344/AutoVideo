@@ -238,3 +238,21 @@ def test_every_role_denies_gate_out_and_stage_markers(tmp_path, role):
     for d in (".claude", "approvals", "out", ".stages"):
         assert f"Edit(./{d}/**)" in o.disallowed_tools and f"Edit(./**/{d}/**)" in o.disallowed_tools
     assert ("Edit(./series/**)" in o.disallowed_tools) == (role.name in ("onboarding", "estilo_chat"))
+
+
+def test_guias_have_license_header():
+    for g in ("_direcao.md", "_roteiro.md"):
+        s = (agents.PROMPTS / g).read_text(encoding="utf-8")
+        assert s.startswith("<!-- Adaptado de") and "MIT" in s
+    s = (agents.PROMPTS / "_roteiro.md").read_text(encoding="utf-8")
+    assert "Apache-2.0" in s and "modificado" in s
+
+
+def test_role_guias():
+    assert ROLES["revisor"].guias == ROLES["editor"].guias == ("_direcao.md",)
+    assert ROLES["roteirista"].guias == ROLES["showrunner"].guias == ("_roteiro.md",)
+
+
+def test_third_party_lists_sources():
+    s = (Path(__file__).parent.parent / "THIRD_PARTY.md").read_text(encoding="utf-8")
+    assert all(x in s for x in ("b5e8ef9", "v0.8.163", "MIT License", "Apache License"))

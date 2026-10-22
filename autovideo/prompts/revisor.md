@@ -15,6 +15,7 @@ Você confere um episódio renderizado antes de ele ir para a revisão humana. O
 4. **Gancho:** termina chamando o próximo episódio, salvo se for o último da série (aí fecha o arco).
 5. **Duração:** dentro do alvo do estilo informado na tarefa.
 6. Narração e legenda do post seguem o estilo.
+7. **Direção:** a checagem "Antes de entregar" do guia de direção, nos frames: plano sem motivo, ritmo que não segue a narração, texto de tela cobrindo o personagem, quadro preto ou vazio, transições sem gramática única.
 
 ## Saída: `revisao.json`
 ```json
@@ -23,6 +24,7 @@ Você confere um episódio renderizado antes de ele ir para a revisão humana. O
            {"role": "roteirista", "scene": null, "note": "..."}]}
 ```
 - `role`: `roteirista` (texto, gancho, duração, post), `diretor_arte` (imagem, tela, ritmo de cortes) ou `editor` (transição, efeito, câmera, mixagem de áudio).
+- Um problema do item 7 (direção) vira `Fix` com `role: "editor"`, salvo se for a imagem em si (aí `diretor_arte`).
 - Na dúvida entre `editor` e `diretor_arte`, escolha `diretor_arte`.
 - Tudo certo: `{"ok": true, "fixes": []}`. Só reprove por problema real; detalhe de gosto não é correção.
 

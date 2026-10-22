@@ -90,8 +90,10 @@ def restaurar_base(ep: Path) -> None:
 
 # o que o editor pode escrever (Edit e flags do Bash) e o que o próprio pipeline escreve durante a etapa;
 # edicao/ (o cache) fica de fora de propósito: um editor escapado não pode envenenar o cache
-_ESCOPO_DIRS = ("composition", ".claude")
+_ESCOPO_DIRS = ("composition/", ".claude/skills/")
 _ESCOPO_ARQS = ("edicao.json", "decisions.log")
+# mexer aqui não tem conserto por fallback: a base, os marcadores e as aprovações decidem o que roda e o que posta
+_PROTEGIDOS = ("composition.base/", ".stages/", "approvals/")
 
 
 def foto_arvore(ep: Path) -> dict[str, tuple[int, int]]:
@@ -99,7 +101,7 @@ def foto_arvore(ep: Path) -> dict[str, tuple[int, int]]:
     out = {}
     for f in ep.rglob("*"):
         rel = f.relative_to(ep).as_posix()
-        if f.is_file() and rel.split("/")[0] not in _ESCOPO_DIRS and rel not in _ESCOPO_ARQS:
+        if f.is_file() and not rel.startswith(_ESCOPO_DIRS) and rel not in _ESCOPO_ARQS:
             st = f.stat()
             out[rel] = (st.st_size, st.st_mtime_ns)
     return out
@@ -108,3 +110,17 @@ def foto_arvore(ep: Path) -> dict[str, tuple[int, int]]:
 def fora_do_escopo(antes: dict, depois: dict) -> list[str]:
     """Arquivos criados, apagados ou alterados entre as duas fotos."""
     return sorted(k for k in antes.keys() | depois.keys() if antes.get(k) != depois.get(k))
+
+
+def conferir_escopo(ep: Path, antes: dict, log) -> list[str]:
+    """Compara com a foto de antes, registra em log(dict) e apaga os arquivos criados fora do escopo; devolve tudo
+    que mudou. Levanta RuntimeError se algo protegido mudou (a etapa falha em vez de cair no fallback)."""
+    depois = foto_arvore(ep)
+    fora = fora_do_escopo(antes, depois)
+    if fora:
+        log({"stage": "edicao", "fora_do_escopo": fora})
+    for k in depois.keys() - antes.keys():
+        (ep / k).unlink(missing_ok=True)
+    if prot := [k for k in fora if k.startswith(_PROTEGIDOS)]:
+        raise RuntimeError("o editor alterou arquivos protegidos: " + ", ".join(prot[:5]))
+    return fora

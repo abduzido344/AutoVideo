@@ -10,7 +10,7 @@ from contextlib import contextmanager
 from pathlib import Path
 from autovideo import agents, config, data, eleven, hf, images, jobs, montage, render, transcribe, voz_check
 from autovideo.artefatos import Cenas, Edicao, EpisodioOut, Fix, Revisao, Voz
-from autovideo.edicao import fora_do_escopo, foto_arvore, invariantes, restaurar_base
+from autovideo.edicao import conferir_escopo, foto_arvore, invariantes, restaurar_base
 from autovideo.jobs import Ctx, GateError, JobStore, Stage
 from autovideo.project import Project
 
@@ -73,7 +73,7 @@ def roteiro(ctx: Ctx) -> None:
     if r["n"] >= total:
         fim = "Este é o último episódio da série: feche o arco, sem gancho."
     else:
-        fim = f'Termine com o gancho do estilo: "{_estilo(r["perfil"]).gancho.replace("{n}", str(r["n"] + 1))}".'
+        fim = f'Termine com o gancho do estilo: "{_estilo(r["perfil"]).gancho.replace("{n}", voz_check.extenso(r["n"] + 1))}".'  # por extenso: o roteiro não aceita dígitos
     task = (f"Escreva o roteiro da Parte {r['n']} de {total}. A sinopse está em sinopse.md. {fim}\n"
             "Confira no histórico a estratégia de gancho do episódio anterior e use outra, salvo se o estilo fixar a abertura.\n"
             "Grave roteiro.md e episodio.json." + _ajustes(ep))
@@ -142,7 +142,7 @@ def voz(ctx: Ctx) -> None:
         try:
             asr.mkdir(parents=True, exist_ok=True)
             ws = transcribe.transcribe(ep / f, f, asr)
-        except hf.ToolError as e:
+        except Exception as e:  # noqa: BLE001 — ToolError, JSON ruim, disco: qualquer falha da checagem é "não checado"
             ctx.project.log({"stage": "voz", "scene": c.id, "asr": "não checado", "erro": str(e)[:200]})
             return None
         _save(ep / f.replace(".mp3", ".words.json"), [w.model_dump() for w in ws])
@@ -151,24 +151,25 @@ def voz(ctx: Ctx) -> None:
 
     for i, c in enumerate(cs):
         sha = _sha(c.narration, voz_id)
+        vizinhos = dict(previous_text=cs[i - 1].narration if i else "",
+                        next_text=cs[i + 1].narration if i + 1 < len(cs) else "")
         if sha not in cache or not (ep / cache[sha]["file"]).exists():
             f = f"voz/{sha[:16]}.mp3"
-            vizinhos = dict(previous_text=cs[i - 1].narration if i else "",
-                            next_text=cs[i + 1].narration if i + 1 < len(cs) else "")
-            checar = voz_check.precisa_checar(c.narration)
-            dur = eleven.tts(c.narration, voz_id, ep / f, **vizinhos)
-            res = ouvir(f, c)
+            cache[sha] = {"file": f, "dur": eleven.tts(c.narration, voz_id, ep / f, **vizinhos)}
+            _save(cp, cache)  # logo após o TTS pago: um limite ou kill no meio não paga de novo
+        e = cache[sha]
+        if "asr" not in e:  # sem checagem gravada (morreu entre o TTS e a checagem): checa agora
+            res = ouvir(e["file"], c)
             ok = True  # não checada (curta ou transcrição falhou) conta como ok
-            if checar and res and res[0] < voz_check.LIMITE:  # uma regeração só
-                dur = eleven.tts(c.narration, voz_id, ep / f, **vizinhos)
-                res = ouvir(f, c) or res  # se a nova checagem falhar, vale o primeiro resultado (ruim)
+            if voz_check.precisa_checar(c.narration) and res and res[0] < voz_check.LIMITE:  # uma regeração só
+                e["dur"] = eleven.tts(c.narration, voz_id, ep / e["file"], **vizinhos)
+                res = ouvir(e["file"], c) or res  # se a nova checagem falhar, vale o primeiro resultado (ruim)
                 ok = res[0] >= voz_check.LIMITE
             r, ouvido = res or (1.0, c.narration)
-            cache[sha] = {"file": f, "dur": dur, "asr": {"ratio": r, "ouvido": ouvido, "ok": ok}}
-            _save(cp, cache)  # a cada cena: um limite no meio não perde o que já foi pago
-        a = cache[sha].get("asr", {})
-        out.append({"id": c.id, "file": cache[sha]["file"], "dur": cache[sha]["dur"], "sha": sha,
-                    "asr_ok": a.get("ok", True), "ouvido": a.get("ouvido", "")})
+            e["asr"] = {"ratio": r, "ouvido": ouvido, "ok": ok}
+            _save(cp, cache)
+        out.append({"id": c.id, "file": e["file"], "dur": e["dur"], "sha": sha,
+                    "asr_ok": e["asr"]["ok"], "ouvido": e["asr"]["ouvido"]})
     _save(ep / "voz.json", {"cenas": out})
 
 
@@ -238,10 +239,12 @@ def montagem(ctx: Ctx) -> None:
 def edicao(ctx: Ctx) -> None:
     ep, perfil = ctx.project.root, ctx.recipe["perfil"]
     base, comp, out = ep / "composition.base", ep / "composition", ep / "edicao.json"
+    if not base.is_dir() and comp.is_dir():  # montado antes do editor existir: a montagem vira a base
+        shutil.copytree(comp, base)
     ajustes = _read(ep / "ajustes.md") if (ep / "ajustes.md").exists() else ""
     sha = _sha((base / "index.html").read_bytes(), json.dumps([c.edicao for c in _cenas(ep).cenas]),
                data.load_estilo(data.load_perfil(perfil).estilo)[0], ajustes, hf.HF_VERSION,
-               _read(agents.PROMPTS / "editor.md"))
+               _read(agents.PROMPTS / "editor.md"), _read(agents.PROMPTS / "_direcao.md"))
     cp = ep / "edicao" / "cache.json"
     cache = _cache(cp)
     if sha in cache and (ep / cache[sha]["dir"]).is_dir():
@@ -258,24 +261,29 @@ def edicao(ctx: Ctx) -> None:
 
     task = ("Melhore a edição da composição montada em composition/. As cenas, com a intenção de edição de cada uma, "
             "estão em cenas.json; o estilo está no contexto. Grave edicao.json." + _ajustes(ep))
+    restaurar_base(ep)  # sempre parte da base: retentativa ou retomada não acumula edição velha
+    antes, erro = foto_arvore(ep), None
     try:
-        restaurar_base(ep)  # sempre parte da base: retentativa ou retomada não acumula edição velha
-        antes = foto_arvore(ep)
         agents.run_role(agents.ROLES["editor"], ep, task, out, valida, context=data.context_for(perfil))
-        if fora := fora_do_escopo(antes, foto_arvore(ep)):  # as flags do Bash escapam do escopo do Edit
-            ctx.project.log({"stage": "edicao", "fora_do_escopo": fora})
-            raise agents.AgentOutputError("o editor alterou arquivos fora do escopo: " + ", ".join(fora[:5]))
     except agents.UsageLimit:  # subclasse de AgentOutputError: não é fallback, a fila pausa e retoma aqui
+        conferir_escopo(ep, antes, ctx.project.log)
         raise
     except (agents.AgentOutputError, hf.ToolError) as e:
+        erro = e
+    # em todo caminho: as flags do Bash escapam do escopo do Edit
+    if (fora := conferir_escopo(ep, antes, ctx.project.log)) and erro is None:
+        erro = agents.AgentOutputError("o editor alterou arquivos fora do escopo: " + ", ".join(fora[:5]))
+    if erro is not None:
         restaurar_base(ep)
-        _save(out, Edicao(fallback=True, motivo=str(e)[:300], sha=sha).model_dump())
-        ctx.project.log({"stage": "edicao", "fallback": True, "motivo": str(e)[:300]})
+        _save(out, Edicao(fallback=True, motivo=str(erro)[:300], sha=sha).model_dump())
+        ctx.project.log({"stage": "edicao", "fallback": True, "motivo": str(erro)[:300]})
         return
-    recibo = Edicao.model_validate_json(_read(out)).model_copy(update={"sha": sha}).model_dump()
+    recibo = Edicao.model_validate_json(_read(out)).model_copy(
+        update={"sha": sha, "fallback": False, "motivo": "", "cache": False}).model_dump()
     d = f"edicao/{sha[:16]}"
     shutil.rmtree(ep / d, ignore_errors=True)
-    shutil.copytree(comp, ep / d)
+    # os snapshots do editor não entram no cache
+    shutil.copytree(comp, ep / d, ignore=lambda p, names: ["artifacts"] if Path(p).name == ".hyperframes" else [])
     cache[sha] = {"dir": d, "recibo": recibo}
     _save(cp, cache)
     _save(out, recibo)
@@ -404,7 +412,13 @@ def _awaiting(store: JobStore, jid: int, ok=("awaiting_approval",)) -> dict:
 
 def approve(store: JobStore, jid: int) -> None:
     ctx = make_ctx(_awaiting(store, jid))
-    out = EpisodioOut.model_validate_json(_read(ctx.project.root / "episodio.json"))  # lê/valida antes de mudar o estado
+    ep = ctx.project.root
+    out = EpisodioOut.model_validate_json(_read(ep / "episodio.json"))  # lê/valida antes de mudar o estado
+    if jobs.stage_done(ep, "render", "out/final.mp4") and not jobs.stage_done(ep, "edicao", "edicao.json"):
+        # renderizado antes da etapa edicao existir: conta como pulada, senão o approve trava e o worker rodaria o editor depois do render
+        _save(ep / "edicao.json", Edicao(fallback=True, motivo="episódio renderizado antes do editor").model_dump())
+        if (ep / ".stages").exists():  # no legado o artefato basta; criar .stages/ tiraria o projeto do legado
+            jobs._commit(ep, "edicao")
     jobs.approve(store, jid, STAGES)
     with (data.perfis_dir() / ctx.recipe["perfil"] / "universo" / "historico.md").open("a", encoding="utf-8") as f:
         f.write(f"\n## Parte {ctx.recipe['n']} — {out.titulo}\n{out.resumo}\n")

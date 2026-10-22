@@ -1,5 +1,6 @@
 import json
 import re
+import shutil
 import types
 from pathlib import Path
 import pytest
@@ -46,7 +47,7 @@ class Fake:
             self.seen.append(idx.read_text(encoding="utf-8"))
             idx.write_text(idx.read_text(encoding="utf-8") + "<!-- editada -->", encoding="utf-8")
             self.editor(cwd)
-            out = {"mudancas": [{"scene": "s01", "o_que": "whip-pan", "motivo": "virada"}]}
+            out = {"mudancas": [{"scene": "s01", "o_que": "whip-pan", "motivo": "virada"}], **getattr(self, "recibo", {})}
             # como o run_role de verdade: uma retentativa com o erro, depois AgentOutputError
             for _ in (1, 2):
                 Path(output).write_text(json.dumps(out), encoding="utf-8")
@@ -288,7 +289,8 @@ def test_last_episode_has_no_hook_instruction(env):
         jid = env.jid if n == 1 else episode.new_episode_job(env.store, env.serie, 3)
         episode.roteiro(episode.make_ctx(env.store.get(jid)))
     first, last = env.fake.tasks["roteirista"]
-    assert "gancho" in first and "Segue pra ver a Parte 2" in first and "sem gancho" not in first
+    assert "gancho" in first and "Segue pra ver a Parte dois" in first and "sem gancho" not in first
+    assert not re.search(r"\d", first.split("gancho do estilo:")[1].split("\n")[0])   # o roteiro não aceita dígitos
     assert "sem gancho" in last and "Parte 3 de 3" in last
 
 
@@ -382,15 +384,39 @@ def test_invariant_violation_feeds_retry(env):
 
 
 def test_editor_writing_outside_scope_falls_back(env):
-    def fora(cwd):
-        (cwd / "approvals").mkdir(exist_ok=True)
-        (cwd / "approvals/x.txt").write_text("aprovado")
-
-    env.fake.editor = fora
+    env.fake.editor = lambda cwd: (cwd / "x.txt").write_text("fora")
     assert episode.produce(env.store, env.jid) == "awaiting_approval"
     _fallback_ok(env)
-    assert "approvals/x.txt" in _edicao(env)["motivo"]
-    assert "approvals/x.txt" in (env.ep / "decisions.log").read_text(encoding="utf-8")
+    assert "x.txt" in _edicao(env)["motivo"] and not (env.ep / "x.txt").exists()   # criado fora do escopo: apagado
+    assert '"fora_do_escopo": ["x.txt"]' in (env.ep / "decisions.log").read_text(encoding="utf-8")
+
+
+def test_failing_editor_out_of_scope_file_removed(env):
+    def falha(cwd):
+        (cwd / "x.txt").write_text("fora")
+        raise agents.AgentOutputError("editor: estourou os turnos")
+
+    env.fake.editor = falha
+    assert episode.produce(env.store, env.jid) == "awaiting_approval"
+    _fallback_ok(env)
+    assert not (env.ep / "x.txt").exists()
+    assert '"fora_do_escopo": ["x.txt"]' in (env.ep / "decisions.log").read_text(encoding="utf-8")
+
+
+@pytest.mark.parametrize("rel", ["approvals/x.txt", ".stages/x.ok", "composition.base/x.html"])
+@pytest.mark.parametrize("falha", [False, True])
+def test_editor_touching_protected_paths_fails_stage(env, rel, falha):
+    def fora(cwd):
+        (cwd / rel).parent.mkdir(exist_ok=True)
+        (cwd / rel).write_text("aprovado")
+        if falha:
+            raise agents.AgentOutputError("editor: estourou os turnos")
+
+    env.fake.editor = fora
+    assert episode.produce(env.store, env.jid) == "failed"
+    job = env.store.get(env.jid)
+    assert job["stage"] == "edicao" and rel in job["error"]
+    assert not (env.ep / rel).exists() and not (env.ep / "edicao.json").exists() and "lufs" not in env.calls
 
 
 def test_editor_writing_into_edicao_cache_falls_back(env):
@@ -495,6 +521,66 @@ def test_adjust_to_editor(env):
     assert "usuário → editor" in (env.ep / "ajustes.md").read_text(encoding="utf-8")
 
 
+def test_edicao_recreates_missing_base(env):
+    # episódio montado antes do editor existir: não tem composition.base/
+    episode.produce(env.store, env.jid)
+    env.store.set(env.jid, status="queued", stage="")
+    jobs.invalidate_from(env.ep, episode.STAGES, "edicao")
+    shutil.rmtree(env.ep / "composition.base")
+    (env.ep / "composition/index.html").write_text("<html>", encoding="utf-8")
+    assert episode.produce(env.store, env.jid) == "awaiting_approval"
+    assert (env.ep / "composition.base/index.html").read_text() == "<html>"
+    assert _edicao(env)["fallback"] is False   # mesma base: a edição volta do cache
+
+
+def test_approve_episode_rendered_before_editor(env):
+    episode.produce(env.store, env.jid)
+    (env.ep / ".stages/edicao.ok").unlink()   # renderizado antes da etapa edicao existir
+    (env.ep / "edicao.json").unlink()
+    episode.approve(env.store, env.jid)
+    assert episode.produce(env.store, env.jid) == "completed"
+    assert env.fake.calls["editor"] == 1    # aprovar não roda o editor depois do render
+    assert _edicao(env)["fallback"] is True
+
+
+def test_editor_cannot_forge_pipeline_fields(env):
+    env.fake.recibo = {"fallback": True, "motivo": "forjado", "cache": True}
+    episode.produce(env.store, env.jid)
+    ed = _edicao(env)
+    assert ed["fallback"] is False and ed["motivo"] == "" and ed["cache"] is False
+
+
+def test_direcao_guide_changes_edicao_cache_key(env, tmp_path, monkeypatch):
+    episode.produce(env.store, env.jid)
+    prompts = tmp_path / "prompts"
+    shutil.copytree(agents.PROMPTS, prompts)
+    (prompts / "_direcao.md").write_text("guia novo", encoding="utf-8")
+    monkeypatch.setattr(agents, "PROMPTS", prompts)
+    env.store.set(env.jid, status="queued", stage="")
+    jobs.invalidate_from(env.ep, episode.STAGES, "edicao")
+    assert episode.produce(env.store, env.jid) == "awaiting_approval"
+    assert env.fake.calls["editor"] == 2 and _edicao(env)["cache"] is False
+
+
+def test_edicao_cache_skips_hyperframes_artifacts(env):
+    def art(cwd):
+        (cwd / "composition/.hyperframes/artifacts").mkdir(parents=True)
+        (cwd / "composition/.hyperframes/artifacts/snap.png").write_bytes(b"png")
+        (cwd / "composition/.hyperframes/history.json").write_text("{}")
+
+    env.fake.editor = art
+    episode.produce(env.store, env.jid)
+    d = env.ep / "edicao" / _edicao(env)["sha"][:16]
+    assert (d / ".hyperframes/history.json").exists() and not (d / ".hyperframes/artifacts").exists()
+
+
+def test_stage_duration_logged(env):
+    episode.produce(env.store, env.jid)
+    log = [json.loads(l) for l in (env.ep / "decisions.log").read_text(encoding="utf-8").splitlines()]
+    assert {e["stage"] for e in log if "dur_s" in e} == {"roteiro", "cenas", "voz", "imagens", "sfx", "montagem",
+                                                         "edicao", "render", "revisao"}
+
+
 def _voz_json(env):
     return json.loads((env.ep / "voz.json").read_text(encoding="utf-8"))["cenas"]
 
@@ -529,13 +615,32 @@ def test_words_json_written(env):
     assert w[0]["text"] == "Às"
 
 
-def test_transcription_error_does_not_block(env, monkeypatch):
+@pytest.mark.parametrize("erro", [hf.ToolError("sem modelo"), ValueError("json ruim"), KeyError("words"), OSError("disco")])
+def test_transcription_error_does_not_block(env, monkeypatch, erro):
     def quebra(*a, **k):
-        raise hf.ToolError("sem modelo")
+        raise erro
 
     monkeypatch.setattr(transcribe, "transcribe", quebra)
     assert episode.produce(env.store, env.jid) == "awaiting_approval"
     assert all(v["asr_ok"] for v in _voz_json(env)) and len(env.calls["tts"]) == 3
+    assert '"asr": "não checado"' in (env.ep / "decisions.log").read_text(encoding="utf-8")
+
+
+def test_crash_after_paid_tts_does_not_rebill(env, monkeypatch):
+    asr = transcribe.transcribe
+
+    def morre(*a, **k):
+        raise KeyboardInterrupt  # processo morto entre o TTS pago e a checagem
+
+    monkeypatch.setattr(transcribe, "transcribe", morre)
+    with pytest.raises(KeyboardInterrupt):
+        episode.produce(env.store, env.jid)
+    assert len(env.calls["tts"]) == 1
+    monkeypatch.setattr(transcribe, "transcribe", asr)
+    env.store.set(env.jid, status="queued")
+    assert episode.produce(env.store, env.jid) == "awaiting_approval"
+    assert len(env.calls["tts"]) == 3 and len(env.calls["asr"]) == 3   # a cena paga é checada na retomada, sem novo TTS
+    assert all(v["asr_ok"] for v in _voz_json(env))
 
 
 def test_usage_limit_on_regeneration_propagates_without_cache(env, monkeypatch):
@@ -554,7 +659,8 @@ def test_usage_limit_on_regeneration_propagates_without_cache(env, monkeypatch):
         episode.produce(env.store, env.jid)
     job = env.store.get(env.jid)
     assert job["status"] == "queued" and job["stage"] == "voz"
-    assert not (env.ep / "voz" / "cache.json").exists()  # a primeira cena não chegou a gravar cache
+    cache = json.loads((env.ep / "voz" / "cache.json").read_text(encoding="utf-8"))
+    assert [("asr" in e) for e in cache.values()] == [False]  # o TTS pago fica; a checagem refaz na retomada
 
 
 def test_recheck_failure_keeps_first_bad_result(env, monkeypatch):

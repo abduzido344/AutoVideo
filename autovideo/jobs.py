@@ -3,6 +3,7 @@ import shutil
 import sqlite3
 import threading
 import time
+from contextlib import suppress
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable
@@ -175,6 +176,7 @@ def run_job(store: JobStore, jid: int, stages: list[Stage], make_ctx: Callable[[
             p.parent.mkdir(parents=True, exist_ok=True); p.write_text("auto")
             _commit(root, name)
             continue
+        t0 = time.monotonic()
         try:
             fn(ctx)
         except BaseException as e:  # noqa: BLE001 — erro ou interrupção: nunca deixa artefato parcial
@@ -183,6 +185,9 @@ def run_job(store: JobStore, jid: int, stages: list[Stage], make_ctx: Callable[[
             if isinstance(e, Exception):
                 return "failed"
             raise
+        finally:
+            with suppress(OSError):  # tempo é só registro: pasta sumida não derruba o job
+                ctx.project.log({"stage": name, "dur_s": round(time.monotonic() - t0, 1)})
         _commit(root, name)
     store.set(jid, status="completed")
     return "completed"

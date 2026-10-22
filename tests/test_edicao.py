@@ -100,10 +100,12 @@ def test_tree_check_ignores_editor_scope_and_flags_the_rest(tmp_path):
         (tmp_path / f).write_text("x")
     antes = edicao.foto_arvore(tmp_path)
     assert set(antes) == {"cenas.json", "approvals/a.txt", "edicao/c.json"}   # o cache da edição é vigiado
-    for f in ("composition/novo.html", "edicao.json", "decisions.log", ".claude/y"):
+    for f in ("composition/novo.html", "edicao.json", "decisions.log", ".claude/skills/y"):
         (tmp_path / f).write_text("y")
     assert edicao.fora_do_escopo(antes, edicao.foto_arvore(tmp_path)) == []
     (tmp_path / "cenas.json").write_text("mudou")
     (tmp_path / "approvals/a.txt").unlink()
     (tmp_path / "out.mp4").write_text("z")
-    assert edicao.fora_do_escopo(antes, edicao.foto_arvore(tmp_path)) == ["approvals/a.txt", "cenas.json", "out.mp4"]
+    (tmp_path / ".claude/settings.json").write_text("{}")   # só .claude/skills é do pipeline
+    assert edicao.fora_do_escopo(antes, edicao.foto_arvore(tmp_path)) == [
+        ".claude/settings.json", "approvals/a.txt", "cenas.json", "out.mp4"]

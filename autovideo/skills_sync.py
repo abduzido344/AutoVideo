@@ -2,6 +2,7 @@
 e apaga skills que só existem na tag)."""
 import os
 import shutil
+import sys
 from pathlib import Path
 import httpx
 from autovideo import hf
@@ -53,3 +54,13 @@ def sync(names=EDITOR_SKILLS, client: httpx.Client | None = None) -> Path:
         if own:
             c.close()
     return dest
+
+
+def ensure() -> None:
+    """Na inicialização do servidor: baixa as skills se faltar alguma. Falha só vai pro log; o doctor
+    continua acusando e mostra o comando."""
+    if missing(EDITOR_SKILLS):
+        try:
+            sync()
+        except hf.ToolError as e:
+            print(f"skills: {e}", file=sys.stderr)

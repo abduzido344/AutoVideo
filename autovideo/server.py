@@ -12,7 +12,7 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, ValidationError
 from starlette.middleware.trustedhost import TrustedHostMiddleware
-from autovideo import agents, analise, chat, config, data, doctor, episode, fila, images, personagem
+from autovideo import agents, analise, chat, config, data, doctor, episode, fila, images, personagem, skills_sync
 from autovideo.eleven import MissingKey, vozes
 from autovideo.images import ImageError
 from autovideo.jobs import GateError, JobStore
@@ -506,6 +506,7 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
 
     if start_worker:
         threading.Thread(target=fila.loop, args=(store,), daemon=True, name="fila").start()
+        threading.Thread(target=skills_sync.ensure, daemon=True, name="skills").start()
     data.perfis_dir().mkdir(parents=True, exist_ok=True)
     # só perfis/: home() tem config.json (chaves), jobs.db e fila.json que não podem sair pela rede
     app.mount("/projects", StaticFiles(directory=data.perfis_dir()), name="projects")

@@ -46,6 +46,23 @@ def test_missing_lists_absent(tmp_path, monkeypatch):
     assert skills_sync.missing(("a", "b")) == ["b"]
 
 
+def test_ensure_syncs_only_when_missing_and_never_raises(tmp_path, monkeypatch):
+    monkeypatch.setenv("AUTOVIDEO_HOME", str(tmp_path))
+    calls = []
+
+    def boom():
+        calls.append(1)
+        raise hf.ToolError("sem rede")
+    monkeypatch.setattr(skills_sync, "sync", boom)
+    skills_sync.ensure()  # faltando: tenta e engole o erro
+    assert calls == [1]
+    for n in skills_sync.EDITOR_SKILLS:
+        (skills_sync.skills_dir() / n).mkdir(parents=True)
+        (skills_sync.skills_dir() / n / "SKILL.md").write_text("x", encoding="utf-8")
+    skills_sync.ensure()  # completas: não baixa
+    assert calls == [1]
+
+
 @pytest.mark.parametrize("resp", [httpx.Response(200, json={"truncated": True, "tree": []}),
                                   httpx.Response(200, text="<html>não é json</html>")])
 def test_bad_tree_response_is_tool_error(tmp_path, monkeypatch, resp):

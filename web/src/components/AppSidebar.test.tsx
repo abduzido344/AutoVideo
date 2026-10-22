@@ -80,6 +80,11 @@ describe("AppSidebar", () => {
     expect(screen.getByText("Corrija e recarregue a página")).toBeTruthy()
     expect(screen.getByText("conectada")).toBeTruthy()
   })
+  it("mostra o detalhe da falha, com o comando para corrigir", () => {
+    setup({ doctor: { ok: false, checks: [{ name: "hyperframes skills", ok: false, detail: "skills não instaladas: hyperframes. Rode: autovideo skills" }] } })
+    expect(screen.getByText("Falta: hyperframes skills")).toBeTruthy()
+    expect(screen.getByText("skills não instaladas: hyperframes. Rode: autovideo skills")).toBeTruthy()
+  })
   it("o gatilho vive no cabeçalho da sidebar; fechada, a página ganha o seu para reabrir", async () => {
     setup()
     const fechar = screen.getByRole("button", { name: "Fechar o menu" })

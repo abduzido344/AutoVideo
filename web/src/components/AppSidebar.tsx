@@ -111,6 +111,9 @@ export function AppSidebar({ perfis, perfilSlug, onPerfil, aguardando, route, do
               sys.ok === null ? "bg-input" : sys.ok ? "bg-success" : "bg-destructive")} />
             <span className="truncate">{sys.ok === false ? sys.text.split(" — ")[0] : sys.text}</span>
           </p>
+          {sys.ok === false && sys.text.includes(" — ") && (
+            <p className="mt-0.5 break-words pl-4">{sys.text.split(" — ").slice(1).join(" — ")}</p>
+          )}
           {sys.ok === false && <p className="mt-0.5 pl-4">Corrija e recarregue a página</p>}
         </div>
       </SidebarFooter>

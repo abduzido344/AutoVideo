@@ -442,3 +442,15 @@ def test_new_base_misses_edicao_cache(env, monkeypatch):
     assert episode.produce(env.store, env.jid) == "awaiting_approval"
     assert env.fake.calls["editor"] == 2 and _edicao(env)["cache"] is False
     assert (env.ep / "composition/index.html").read_text() == "<html>v2<!-- editada -->"
+
+
+def test_cena_edicao_changes_cache_key(env):
+    episode.produce(env.store, env.jid)
+    cj = env.ep / "cenas.json"
+    d = json.loads(cj.read_text(encoding="utf-8"))
+    d["cenas"][0]["edicao"] = "glitch na virada"
+    cj.write_text(json.dumps(d), encoding="utf-8")
+    env.store.set(env.jid, status="queued", stage="")
+    jobs.invalidate_from(env.ep, episode.STAGES, "edicao")
+    assert episode.produce(env.store, env.jid) == "awaiting_approval"
+    assert env.fake.calls["editor"] == 2 and _edicao(env)["cache"] is False

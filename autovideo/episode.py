@@ -211,7 +211,7 @@ def edicao(ctx: Ctx) -> None:
     ep, perfil = ctx.project.root, ctx.recipe["perfil"]
     base, comp, out = ep / "composition.base", ep / "composition", ep / "edicao.json"
     ajustes = _read(ep / "ajustes.md") if (ep / "ajustes.md").exists() else ""
-    sha = _sha((base / "index.html").read_bytes(), json.dumps([getattr(c, "edicao", "") for c in _cenas(ep).cenas]),
+    sha = _sha((base / "index.html").read_bytes(), json.dumps([c.edicao for c in _cenas(ep).cenas]),
                data.load_estilo(data.load_perfil(perfil).estilo)[0], ajustes, hf.HF_VERSION,
                _read(agents.PROMPTS / "editor.md"))
     cp = ep / "edicao" / "cache.json"

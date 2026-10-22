@@ -36,6 +36,7 @@ class Cena(BaseModel):
     screen: Screen | None = None  # obrigatório se kind=screen
     sfx: str = ""  # descrição em inglês do efeito; "" = sem efeito
     characters: list[str] = []  # slugs de personagens do perfil presentes na imagem
+    edicao: str = ""  # intenção de edição (ex.: "glitch na virada para o alerta"); "" = bom senso do editor dentro do estilo
 
     @model_validator(mode="after")
     def _kind(self):

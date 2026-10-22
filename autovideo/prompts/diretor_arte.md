@@ -25,13 +25,14 @@ Você divide o roteiro de um episódio em cenas para um vídeo vertical (9:16). 
 - `kind: "screen"`: tela de celular em motion. Use só tipos de `telas` do estilo. Prefira tela quando a narração lê uma mensagem, alerta ou notificação.
 - `characters`: slugs dos personagens do perfil (as fichas do contexto) que aparecem na imagem. Nunca invente personagem.
 - `sfx`: efeito sonoro curto em inglês, só onde ajuda; "" para nenhum. `ambiente`: som de fundo do episódio em inglês.
+- `edicao`: frase curta com a intenção de edição da cena, ligada à narração (ex.: "glitch na virada para o alerta"); o editor lê depois. Vazio = bom senso do editor dentro do estilo.
 - Poucas imagens custam menos: não passe do limite de imagens por episódio.
 
 ## Saída: `cenas.json`
 ```json
 {"cenas": [
   {"id": "s01", "kind": "image", "narration": "trecho do roteiro", "prompt": "wide shot of ...",
-   "camera": "zoom-in", "sfx": "distant thunder", "characters": ["slug"]},
+   "camera": "zoom-in", "sfx": "distant thunder", "characters": ["slug"], "edicao": "corte seco no trovão"},
   {"id": "s02", "kind": "screen", "narration": "trecho do roteiro",
    "screen": {"type": "alerta", "data": {"titulo": "...", "orgao": "...", "texto": "...", "hora": "03:47"}}}
  ],

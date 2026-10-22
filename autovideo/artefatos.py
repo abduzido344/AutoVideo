@@ -1,4 +1,4 @@
-"""Modelos dos artefatos de um episódio (episodio.json, cenas.json, voz.json, revisao.json).
+"""Modelos dos artefatos de um episódio (episodio.json, cenas.json, voz.json, edicao.json, revisao.json).
 Só validação de schema; as checagens entre arquivos (roteiro, personagens, limite de imagens) ficam no episode."""
 from typing import Literal
 from pydantic import BaseModel, Field, model_validator
@@ -60,6 +60,22 @@ class VozCena(BaseModel):
 
 class Voz(BaseModel):
     cenas: list[VozCena]
+
+
+class MudancaEdicao(BaseModel):
+    scene: str | None = None  # None = vale para o episódio todo
+    o_que: str
+    motivo: str = Field(min_length=1)
+
+
+class Edicao(BaseModel):
+    """Recibo do editor; fallback, motivo, sha e cache são do pipeline."""
+    fallback: bool = False
+    motivo: str = ""
+    itens: list[str] = []
+    mudancas: list[MudancaEdicao] = []
+    sha: str = ""
+    cache: bool = False
 
 
 class Fix(BaseModel):

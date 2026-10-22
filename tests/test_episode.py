@@ -19,6 +19,9 @@ class Fake:
         self.reviews = [{"ok": True}]
         self.images = 2
         self.triagem = {"role": "roteirista", "note": "texto"}
+        self.editor = lambda cwd: None  # o que o editor faz na pasta antes de gravar o recibo (pode levantar)
+        self.seen = []  # composition/index.html que o editor encontrou a cada chamada
+        self.erros = []  # erros de validação devolvidos ao editor
 
     def __call__(self, role, cwd, task, output, validate=None, context=""):
         k = self.calls[role.name] = self.calls.get(role.name, 0) + 1
@@ -38,6 +41,21 @@ class Fake:
             out = {"cenas": cenas, "ambiente": "rain"}
         elif role.name == "revisor":
             out = self.reviews[min(k, len(self.reviews)) - 1]
+        elif role.name == "editor":
+            idx = cwd / "composition" / "index.html"
+            self.seen.append(idx.read_text(encoding="utf-8"))
+            idx.write_text(idx.read_text(encoding="utf-8") + "<!-- editada -->", encoding="utf-8")
+            self.editor(cwd)
+            out = {"mudancas": [{"scene": "s01", "o_que": "whip-pan", "motivo": "virada"}]}
+            # como o run_role de verdade: uma retentativa com o erro, depois AgentOutputError
+            for _ in (1, 2):
+                Path(output).write_text(json.dumps(out), encoding="utf-8")
+                try:
+                    validate(Path(output))
+                    return
+                except ValueError as e:
+                    self.erros.append(str(e))
+            raise agents.AgentOutputError(f"editor: saída inválida após retentativa: {self.erros[-1]}")
         else:
             out = self.triagem
         Path(output).write_text(json.dumps(out), encoding="utf-8")
@@ -128,7 +146,7 @@ def test_full_run_stops_at_approval(env):
     assert (env.ep / "out/capa.jpg").exists()
     imgs, sfx, amb, leg = env.calls["build"]
     assert set(imgs) == {"s01", "s02"} and set(sfx) == {"s01"} and amb and leg is False
-    assert env.calls["lufs"] == -14 and env.calls["check"] == ["9:16"]
+    assert env.calls["lufs"] == -14 and env.calls["check"] == ["9:16", "9:16"]   # validação da edição e render
     assert "150 e 180 s" in env.fake.tasks["revisor"][0]          # alvo de duração vem do estilo
     assert (env.ep / "review/refs/benji.png").read_bytes() == b"png"   # folha aprovada ao alcance do revisor
     assert "review/refs/benji.png" in env.fake.tasks["revisor"][0]
@@ -139,6 +157,9 @@ def test_full_run_stops_at_approval(env):
     assert "Character" not in env.calls["gen"][1][0]             # cena sem personagem não ganha aparência
     s = json.loads(data.ep_dir(env.serie, 1).parent.joinpath("serie.json").read_text(encoding="utf-8"))
     assert s["episodios"][0]["job"] == env.jid
+    ed = json.loads((env.ep / "edicao.json").read_text(encoding="utf-8"))
+    assert ed["fallback"] is False and ed["mudancas"][0]["o_que"] == "whip-pan" and len(ed["sha"]) == 64
+    assert (env.ep / "composition/index.html").read_text() == "<html><!-- editada -->"
     log = (env.ep / "decisions.log").read_text(encoding="utf-8")
     assert '"stage": "imagens"' in log and '"cost_usd": 0.01' in log
 
@@ -147,7 +168,7 @@ def test_reviewer_fix_redoes_from_cenas_only(env):
     env.fake.reviews = [{"ok": False, "fixes": [{"role": "diretor_arte", "scene": "s02", "note": "mais escuro"}]},
                         {"ok": True}]
     assert episode.produce(env.store, env.jid) == "awaiting_approval"
-    assert env.fake.calls == {"roteirista": 1, "diretor_arte": 2, "revisor": 2}
+    assert env.fake.calls == {"roteirista": 1, "diretor_arte": 2, "editor": 2, "revisor": 2}
     assert [p for p, _ in env.calls["gen"][2:]] == [env.calls["gen"][1][0].replace("v1", "v2")]
     assert len(env.calls["tts"]) == 3                             # voz em cache
     assert "mais escuro" in (env.ep / "ajustes.md").read_text(encoding="utf-8")
@@ -307,3 +328,95 @@ def test_ajuste_do_roteirista_descarta_cenas_anterior(tmp_path):
     assert not (tmp_path / "cenas.anterior.json").exists()
     episode._write_ajuste(tmp_path, "usuário → diretor_arte", "x", "cenas")
     assert (tmp_path / "cenas.anterior.json").read_text(encoding="utf-8") == "{}"
+
+
+def _edicao(env) -> dict:
+    return json.loads((env.ep / "edicao.json").read_text(encoding="utf-8"))
+
+
+def _fallback_ok(env):
+    assert env.store.get(env.jid)["status"] == "awaiting_approval"
+    assert _edicao(env)["fallback"] is True
+    assert (env.ep / "composition/index.html").read_text() == (env.ep / "composition.base/index.html").read_text()
+    assert '"fallback": true' in (env.ep / "decisions.log").read_text(encoding="utf-8")
+    assert not (env.ep / "edicao" / "cache.json").exists()           # nada é cacheado no fallback
+
+
+def test_editor_failure_falls_back_to_base(env):
+    def falha(cwd):
+        raise agents.AgentOutputError("editor: estourou os turnos")
+
+    env.fake.editor = falha
+    assert episode.produce(env.store, env.jid) == "awaiting_approval"
+    _fallback_ok(env)
+    assert "estourou os turnos" in _edicao(env)["motivo"]
+
+
+def test_invariant_violation_feeds_retry(env):
+    env.fake.editor = lambda cwd: (cwd / "composition/index.html").write_text('<html><div id="legenda-s01"></div>')
+    assert episode.produce(env.store, env.jid) == "awaiting_approval"
+    assert len(env.fake.erros) == 2 and all("legenda" in e for e in env.fake.erros)
+    _fallback_ok(env)
+    assert "legenda" in _edicao(env)["motivo"]
+
+
+def test_editor_writing_outside_scope_falls_back(env):
+    def fora(cwd):
+        (cwd / "approvals").mkdir(exist_ok=True)
+        (cwd / "approvals/x.txt").write_text("aprovado")
+
+    env.fake.editor = fora
+    assert episode.produce(env.store, env.jid) == "awaiting_approval"
+    _fallback_ok(env)
+    assert "approvals/x.txt" in _edicao(env)["motivo"]
+    assert "approvals/x.txt" in (env.ep / "decisions.log").read_text(encoding="utf-8")
+
+
+def test_editor_usage_limit_pauses_at_edicao(env):
+    def limite(cwd):
+        raise agents.UsageLimit("limite", 123)
+
+    env.fake.editor = limite
+    with pytest.raises(agents.UsageLimit):
+        episode.produce(env.store, env.jid)
+    job = env.store.get(env.jid)
+    assert job["status"] == "queued" and job["stage"] == "edicao"
+    assert not (env.ep / "edicao.json").exists()
+
+
+def test_edicao_cache_skips_editor(env):
+    episode.produce(env.store, env.jid)
+    env.store.set(env.jid, status="queued", stage="")
+    jobs.invalidate_from(env.ep, episode.STAGES, "edicao")
+    assert episode.produce(env.store, env.jid) == "awaiting_approval"
+    assert env.fake.calls["editor"] == 1
+    assert _edicao(env)["cache"] is True and _edicao(env)["mudancas"][0]["o_que"] == "whip-pan"
+    assert (env.ep / "composition/index.html").read_text() == "<html><!-- editada -->"
+
+
+def test_edicao_resume_starts_from_base(env, monkeypatch):
+    # Review Focus 2: processo morto no meio da edição, com composition/ meio editada e sem edicao.json
+    def morre(cwd):
+        (cwd / "composition/index.html").write_text("<html>meio editada")
+        raise KeyboardInterrupt
+
+    env.fake.editor = morre
+    with pytest.raises(KeyboardInterrupt):
+        episode.produce(env.store, env.jid)
+    env.store.set(env.jid, status="in_progress")
+    assert env.store.requeue_stale() == 1 and not (env.ep / "edicao.json").exists()
+    env.fake.editor = lambda cwd: None
+    assert episode.produce(env.store, env.jid) == "awaiting_approval"
+    assert env.fake.seen[1] == "<html>"                                # o editor partiu da base
+    assert (env.ep / "composition/index.html").read_text() == "<html><!-- editada -->"
+
+
+def test_new_base_misses_edicao_cache(env, monkeypatch):
+    # Review Focus 3: montagem refeita troca a base; a edição da base antiga não é reaproveitada
+    episode.produce(env.store, env.jid)
+    monkeypatch.setattr(montage, "build", lambda ep, *a, **k: (ep / "composition/index.html").write_text("<html>v2"))
+    env.store.set(env.jid, status="queued", stage="")
+    jobs.invalidate_from(env.ep, episode.STAGES, "montagem")
+    assert episode.produce(env.store, env.jid) == "awaiting_approval"
+    assert env.fake.calls["editor"] == 2 and _edicao(env)["cache"] is False
+    assert (env.ep / "composition/index.html").read_text() == "<html>v2<!-- editada -->"

@@ -8,8 +8,9 @@ import shutil
 import time
 from contextlib import contextmanager
 from pathlib import Path
-from autovideo import agents, config, data, eleven, images, jobs, montage, render
-from autovideo.artefatos import Cenas, EpisodioOut, Fix, Revisao, Voz
+from autovideo import agents, config, data, eleven, hf, images, jobs, montage, render
+from autovideo.artefatos import Cenas, Edicao, EpisodioOut, Fix, Revisao, Voz
+from autovideo.edicao import fora_do_escopo, foto_arvore, invariantes, restaurar_base
 from autovideo.jobs import Ctx, GateError, JobStore, Stage
 from autovideo.project import Project
 
@@ -204,6 +205,52 @@ def montagem(ctx: Ctx) -> None:
     shutil.copytree(ep / "composition", base)
 
 
+def edicao(ctx: Ctx) -> None:
+    ep, perfil = ctx.project.root, ctx.recipe["perfil"]
+    base, comp, out = ep / "composition.base", ep / "composition", ep / "edicao.json"
+    ajustes = _read(ep / "ajustes.md") if (ep / "ajustes.md").exists() else ""
+    sha = _sha((base / "index.html").read_bytes(), json.dumps([getattr(c, "edicao", "") for c in _cenas(ep).cenas]),
+               data.load_estilo(data.load_perfil(perfil).estilo)[0], ajustes, hf.HF_VERSION,
+               _read(agents.PROMPTS / "editor.md"))
+    cp = ep / "edicao" / "cache.json"
+    cache = _cache(cp)
+    if sha in cache and (ep / cache[sha]["dir"]).is_dir():
+        shutil.rmtree(comp, ignore_errors=True)
+        shutil.copytree(ep / cache[sha]["dir"], comp)
+        _save(out, {**cache[sha]["recibo"], "cache": True})
+        return
+
+    def valida(p: Path) -> None:
+        Edicao.model_validate_json(_read(p))
+        erros = [f"{i['category']}: {i['message']}" for i in render.check(comp, "9:16")] + invariantes(base, comp)
+        if erros:
+            raise ValueError("\n".join(erros))
+
+    task = ("Melhore a edição da composição montada em composition/. As cenas, com a intenção de edição de cada uma, "
+            "estão em cenas.json; o estilo está no contexto. Grave edicao.json." + _ajustes(ep))
+    try:
+        restaurar_base(ep)  # sempre parte da base: retentativa ou retomada não acumula edição velha
+        antes = foto_arvore(ep)
+        agents.run_role(agents.ROLES["editor"], ep, task, out, valida, context=data.context_for(perfil))
+        if fora := fora_do_escopo(antes, foto_arvore(ep)):  # as flags do Bash escapam do escopo do Edit
+            ctx.project.log({"stage": "edicao", "fora_do_escopo": fora})
+            raise agents.AgentOutputError("o editor alterou arquivos fora do escopo: " + ", ".join(fora[:5]))
+    except agents.UsageLimit:  # subclasse de AgentOutputError: não é fallback, a fila pausa e retoma aqui
+        raise
+    except (agents.AgentOutputError, hf.ToolError) as e:
+        restaurar_base(ep)
+        _save(out, Edicao(fallback=True, motivo=str(e)[:300], sha=sha).model_dump())
+        ctx.project.log({"stage": "edicao", "fallback": True, "motivo": str(e)[:300]})
+        return
+    recibo = Edicao.model_validate_json(_read(out)).model_copy(update={"sha": sha}).model_dump()
+    d = f"edicao/{sha[:16]}"
+    shutil.rmtree(ep / d, ignore_errors=True)
+    shutil.copytree(comp, ep / d)
+    cache[sha] = {"dir": d, "recibo": recibo}
+    _save(cp, cache)
+    _save(out, recibo)
+
+
 def _tempos(ep: Path) -> list[tuple[str, float, float]]:
     """(kind, início, duração) de cada cena, pelo mesmo cálculo da montagem."""
     ts = [(c.kind, t, d) for c, (t, d) in zip(_cenas(ep).cenas, montage.timeline(_voz(ep)))]
@@ -247,7 +294,8 @@ def revisar(ctx: Ctx) -> None:
 STAGES: list[Stage] = [
     ("roteiro", "episodio.json", roteiro), ("cenas", "cenas.json", cenas), ("voz", "voz.json", voz),
     ("imagens", "img/manifest.json", imagens), ("sfx", "sfx/manifest.json", sons),
-    ("montagem", "composition/index.html", montagem), ("render", "out/final.mp4", render_ep),
+    ("montagem", "composition/index.html", montagem), ("edicao", "edicao.json", edicao),
+    ("render", "out/final.mp4", render_ep),
     ("revisao", "revisao.json", revisar), ("aprovacao", "approvals/aprovado.ok", None)]
 
 

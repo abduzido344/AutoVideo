@@ -92,3 +92,18 @@ def test_timed_wrapper_with_inner_unchanged_fails(tmp_path):
 def test_untimed_wrapper_passes(tmp_path):
     img = '<img id="img-s01" class="clip cena" src="assets/a.png" alt="" data-start="0" data-duration="2" data-track-index="0" />'
     assert edicao.invariantes(*par(tmp_path, BASE.replace(img, f'<div style="transform:scale(1.1)">{img}<br></div>'))) == []
+
+
+def test_tree_check_ignores_editor_scope_and_flags_the_rest(tmp_path):
+    for f in ("composition/index.html", "cenas.json", "approvals/a.txt", ".claude/skills/x.md", "edicao/c.json"):
+        (tmp_path / f).parent.mkdir(parents=True, exist_ok=True)
+        (tmp_path / f).write_text("x")
+    antes = edicao.foto_arvore(tmp_path)
+    assert set(antes) == {"cenas.json", "approvals/a.txt"}
+    for f in ("composition/novo.html", "edicao.json", "decisions.log", ".claude/y", "edicao/d"):
+        (tmp_path / f).write_text("y")
+    assert edicao.fora_do_escopo(antes, edicao.foto_arvore(tmp_path)) == []
+    (tmp_path / "cenas.json").write_text("mudou")
+    (tmp_path / "approvals/a.txt").unlink()
+    (tmp_path / "out.mp4").write_text("z")
+    assert edicao.fora_do_escopo(antes, edicao.foto_arvore(tmp_path)) == ["approvals/a.txt", "cenas.json", "out.mp4"]

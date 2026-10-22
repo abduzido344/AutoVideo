@@ -86,3 +86,24 @@ def invariantes(base: Path, comp: Path) -> list[str]:
 def restaurar_base(ep: Path) -> None:
     shutil.rmtree(ep / "composition", ignore_errors=True)
     shutil.copytree(ep / "composition.base", ep / "composition")
+
+
+# o que o editor pode escrever (Edit e flags do Bash) e o que o próprio pipeline escreve durante a etapa
+_ESCOPO_DIRS = ("composition", ".claude", "edicao")
+_ESCOPO_ARQS = ("edicao.json", "decisions.log")
+
+
+def foto_arvore(ep: Path) -> dict[str, tuple[int, int]]:
+    """{caminho relativo: (tamanho, mtime_ns)} de todo arquivo do episódio fora do escopo do editor."""
+    out = {}
+    for f in ep.rglob("*"):
+        rel = f.relative_to(ep).as_posix()
+        if f.is_file() and rel.split("/")[0] not in _ESCOPO_DIRS and rel not in _ESCOPO_ARQS:
+            st = f.stat()
+            out[rel] = (st.st_size, st.st_mtime_ns)
+    return out
+
+
+def fora_do_escopo(antes: dict, depois: dict) -> list[str]:
+    """Arquivos criados, apagados ou alterados entre as duas fotos."""
+    return sorted(k for k in antes.keys() | depois.keys() if antes.get(k) != depois.get(k))

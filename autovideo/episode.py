@@ -199,6 +199,9 @@ def montagem(ctx: Ctx) -> None:
     render.init_composition(ctx.project, "9:16")
     montage.build(ep, _cenas(ep), _voz(ep), json.loads(_read(ep / "img" / "manifest.json")), sfx["cenas"],
                   sfx["ambiente"], legenda=_estilo(ctx.recipe["perfil"]).legenda)
+    base = ep / "composition.base"  # cópia da montagem determinística, para a edição restaurar/comparar
+    shutil.rmtree(base, ignore_errors=True)
+    shutil.copytree(ep / "composition", base)
 
 
 def _tempos(ep: Path) -> list[tuple[str, float, float]]:

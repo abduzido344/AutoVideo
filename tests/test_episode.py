@@ -110,6 +110,16 @@ def done(ep, name, rel):
     return jobs.stage_done(ep, name, rel, legacy=False)
 
 
+def test_montagem_saves_base(env):
+    episode.produce(env.store, env.jid)
+    base = env.ep / "composition.base" / "index.html"
+    assert base.read_text() == "<html>"
+    (env.ep / "composition" / "index.html").write_text("<html>editada", encoding="utf-8")
+    (env.ep / "composition.base" / "velho.txt").write_text("x")
+    episode.montagem(episode.make_ctx(env.store.get(env.jid)))   # nova montagem substitui a base
+    assert base.read_text() == "<html>" and not (env.ep / "composition.base" / "velho.txt").exists()
+
+
 def test_full_run_stops_at_approval(env):
     assert episode.produce(env.store, env.jid) == "awaiting_approval"
     assert env.store.get(env.jid)["stage"] == "aprovacao"

@@ -44,3 +44,13 @@ def test_missing_lists_absent(tmp_path, monkeypatch):
     (skills_sync.skills_dir() / "a").mkdir(parents=True)
     (skills_sync.skills_dir() / "a" / "SKILL.md").write_text("x", encoding="utf-8")
     assert skills_sync.missing(("a", "b")) == ["b"]
+
+
+@pytest.mark.parametrize("resp", [httpx.Response(200, json={"truncated": True, "tree": []}),
+                                  httpx.Response(200, text="<html>não é json</html>")])
+def test_bad_tree_response_is_tool_error(tmp_path, monkeypatch, resp):
+    monkeypatch.setenv("AUTOVIDEO_HOME", str(tmp_path))
+    c = httpx.Client(transport=httpx.MockTransport(lambda req: resp))
+    with pytest.raises(hf.ToolError):
+        skills_sync.sync(("hyperframes-core",), client=c)
+    assert not list((tmp_path / "skills").glob("*.tmp*"))

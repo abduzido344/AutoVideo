@@ -31,6 +31,8 @@ def sync(names=EDITOR_SKILLS, client: httpx.Client | None = None) -> Path:
         tag = f"v{hf.HF_VERSION}"
         r = c.get(f"https://api.github.com/repos/{REPO}/git/trees/{tag}?recursive=1")
         r.raise_for_status()
+        if r.json().get("truncated"):  # a API corta árvores grandes em silêncio: faltariam arquivos
+            raise hf.ToolError(f"árvore da tag {tag} truncada pela API do GitHub")
         prefixes = tuple(f"skills/{n}/" for n in names)
         for e in r.json()["tree"]:
             if e["type"] != "blob" or not e["path"].startswith(prefixes):
@@ -44,7 +46,7 @@ def sync(names=EDITOR_SKILLS, client: httpx.Client | None = None) -> Path:
             raise hf.ToolError(f"skills ausentes na tag {tag}: {', '.join(gone)}")
         shutil.rmtree(dest, ignore_errors=True)
         os.replace(tmp, dest)
-    except (httpx.HTTPError, KeyError) as e:
+    except (httpx.HTTPError, KeyError, ValueError, OSError) as e:
         raise hf.ToolError(f"falha ao baixar as skills da tag v{hf.HF_VERSION}: {e}") from e
     finally:
         shutil.rmtree(tmp, ignore_errors=True)

@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { api } from "@/api"
 import { COR, ICONE } from "@/components/secoes"
 import { Badge } from "@/components/ui/badge"
@@ -12,14 +13,20 @@ import { Pagina } from "@/pages/Pagina"
 
 export function Serie({ path_rel }: { path_rel: string }) {
   const { data: d, error, refresh } = usePoll(() => api.serieDetalhe(path_rel), 5000)
+  const [busy, setBusy] = useState(false)
   const total = d?.episodios.length ?? 0
   const noAr = d?.episodios.filter((e) => e.aprovado).length ?? 0
-  const pausar = (paused: boolean) => api.pausarSerie(path_rel, paused).then(refresh, (e: Error) =>
-    toast({ message: paused ? "Não consegui pausar a série" : "Não consegui continuar a série", description: e.message, state: "error" }))
+  const pausar = (paused: boolean) => {
+    if (busy) return
+    setBusy(true)
+    api.pausarSerie(path_rel, paused).then(refresh, (e: Error) =>
+      toast({ message: paused ? "Não consegui pausar a série" : "Não consegui continuar a série", description: e.message, state: "error" }))
+      .finally(() => setBusy(false))
+  }
   return (
     <Pagina titulo={d?.serie.titulo ?? "Série"} icone={ICONE.producao} cor={COR.producao.caixa} largo
       sub={d ? undefined : error ? "Não consegui carregar a série" : "Carregando…"}
-      acoes={d && <Button variant="outline" onClick={() => pausar(!d.serie.paused)}>{d.serie.paused ? "Continuar série" : "Pausar série"}</Button>}>
+      acoes={d && <Button variant="outline" disabled={busy} onClick={() => pausar(!d.serie.paused)}>{d.serie.paused ? "Continuar série" : "Pausar série"}</Button>}>
       {d && (
         <div className="space-y-6">
           <div className="max-w-2xl space-y-2">
@@ -30,6 +37,7 @@ export function Serie({ path_rel }: { path_rel: string }) {
             </div>
             <Progress value={total ? (noAr / total) * 100 : 0} />
           </div>
+          {total === 0 && <p className="text-sm text-muted-foreground">Esta série ainda não tem episódios planejados.</p>}
           <div className="flex gap-3 overflow-x-auto pb-2">
             {d.episodios.map((ep) => {
               const corpo = (

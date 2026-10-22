@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/toast"
-import { STATUS } from "@/lib/etapas"
+import { ETAPAS, STATUS } from "@/lib/etapas"
 import { go } from "@/lib/route"
 import { usePoll } from "@/lib/usePoll"
 import { Pagina, Secao } from "@/pages/Pagina"
@@ -22,6 +22,7 @@ const erro = (message: string) => (e: Error) => toast({ message, description: e.
 function Gerar({ slug }: { slug: string }) {
   const [gerando, setGerando] = useState(false)
   const gerar = () => {
+    if (gerando) return
     setGerando(true)
     api.gerar(slug).then(
       () => toast({ message: "Episódio na fila", description: "Acompanhe o andamento em Produção.", state: "success" }),
@@ -31,8 +32,13 @@ function Gerar({ slug }: { slug: string }) {
 }
 
 function Series({ d, refresh }: { d: PerfilDetalhe; refresh: () => void }) {
-  const pausar = (path_rel: string, paused: boolean) =>
+  const [busy, setBusy] = useState(false)
+  const pausar = (path_rel: string, paused: boolean) => {
+    if (busy) return
+    setBusy(true)
     api.pausarSerie(path_rel, paused).then(refresh, erro(paused ? "Não consegui pausar a série" : "Não consegui continuar a série"))
+      .finally(() => setBusy(false))
+  }
   return (
     <div className="space-y-4">
       {d.series.length === 0 && <p className="text-sm text-muted-foreground">Nenhuma série ainda. Aprove uma ideia para o Claude criar a primeira.</p>}
@@ -40,7 +46,7 @@ function Series({ d, refresh }: { d: PerfilDetalhe; refresh: () => void }) {
         <Card key={path_rel} className="gap-3 p-4">
           <div className="flex items-center justify-between gap-2">
             <h3 className="font-medium"><button type="button" className="text-left hover:underline" onClick={() => go({ name: "serie", path_rel })}>{serie.titulo}</button></h3>
-            <Button variant="outline" size="sm" onClick={() => pausar(path_rel, !serie.paused)}>{serie.paused ? "Continuar série" : "Pausar série"}</Button>
+            <Button variant="outline" size="sm" disabled={busy} onClick={() => pausar(path_rel, !serie.paused)}>{serie.paused ? "Continuar série" : "Pausar série"}</Button>
           </div>
           {serie.logline && <p className="text-sm text-muted-foreground">{serie.logline}</p>}
           <ul className="space-y-1 text-sm">
@@ -48,7 +54,7 @@ function Series({ d, refresh }: { d: PerfilDetalhe; refresh: () => void }) {
               <li key={ep.n} className="flex items-center justify-between gap-2">
                 <span>{ep.n}. {ep.titulo}</span>
                 <span className="text-xs text-muted-foreground">
-                  {ep.status ? STATUS[ep.status] ?? ep.status : "Planejado"}{ep.stage ? ` · ${ep.stage}` : ""}
+                  {ep.status ? STATUS[ep.status] ?? ep.status : "Planejado"}{ep.stage ? ` · ${ETAPAS.find(([k]) => k === ep.stage)?.[1] ?? ep.stage}` : ""}
                 </span>
               </li>
             ))}
@@ -106,9 +112,11 @@ function Universo({ slug, d, refresh }: { slug: string; d: PerfilDetalhe; refres
 function Ativo({ slug, d, refresh }: { slug: string; d: PerfilDetalhe; refresh: () => void }) {
   const [busy, setBusy] = useState(false)
   // o servidor recusa (409) ativar perfil sem estilo válido ou com folha de personagem não aprovada
+  // o Switch é controlado por d.perfil.ativo: se falhar, o refresh devolve o valor real
   const mudar = (ativo: boolean) => {
+    if (busy) return
     setBusy(true)
-    api.salvarPerfil(slug, { ativo }).then(refresh, erro(ativo ? "Não consegui ativar o perfil" : "Não consegui pausar o perfil"))
+    api.salvarPerfil(slug, { ativo }).then(refresh, (e: Error) => { erro(ativo ? "Não consegui ativar o perfil" : "Não consegui pausar o perfil")(e); refresh() })
       .finally(() => setBusy(false))
   }
   return (
@@ -124,6 +132,7 @@ function AgendaForm({ slug, d, refresh }: { slug: string; d: PerfilDetalhe; refr
   const { data: estilos } = usePoll(api.estilos, 60000)
   const [a, setA] = useState({ gerar_as: p.agenda.gerar_as, por_dia: String(p.agenda.por_dia), postar_as: p.agenda.postar_as.join(", "), eps: String(p.agenda.episodios_por_serie) })
   const [estilo, setEstilo] = useState(p.estilo)
+  const [salvando, setSalvando] = useState(false)
   const set = (k: keyof typeof a) => (e: { target: { value: string } }) => setA((v) => ({ ...v, [k]: e.target.value }))
 
   function salvar() {
@@ -134,7 +143,10 @@ function AgendaForm({ slug, d, refresh }: { slug: string; d: PerfilDetalhe; refr
     if (!HORA.test(a.gerar_as)) return toast({ message: "Horário de gerar inválido", description: "Use HH:MM, por exemplo 03:00.", state: "error" })
     if (postar.length === 0 || !postar.every((h) => HORA.test(h))) return toast({ message: "Horários de postar inválidos", description: "Informe ao menos um, em HH:MM, separados por vírgula.", state: "error" })
     const agenda: Agenda = { gerar_as: a.gerar_as, por_dia: porDia, postar_as: postar, episodios_por_serie: eps }
+    if (salvando) return
+    setSalvando(true)
     api.salvarPerfil(slug, { agenda, estilo }).then(() => toast({ message: "Agenda salva", state: "success" }), erro("Não consegui salvar a agenda"))
+      .finally(() => setSalvando(false))
   }
   const lista = estilos ?? []
   return (
@@ -151,13 +163,13 @@ function AgendaForm({ slug, d, refresh }: { slug: string; d: PerfilDetalhe; refr
           {lista.map((s) => <option key={s.slug} value={s.slug}>{s.titulo}</option>)}
         </select>
       </label>
-      <Button type="submit" className="w-fit">Salvar agenda</Button>
+      <Button type="submit" className="w-fit" disabled={salvando}>Salvar agenda</Button>
     </form>
   )
 }
 
 export function Perfil({ slug, aba }: { slug: string; aba?: string }) {
-  const { data, refresh } = usePoll(() => api.perfil(slug), 5000)
+  const { data, error, refresh } = usePoll(() => api.perfil(slug), 5000)
   const sec = ABAS_PERFIL.find((a) => a.aba === aba) ?? ABAS_PERFIL[0]
   const atual = sec.aba
   // as seções já estão na sidebar: o título é a seção, e o perfil vai no subtítulo
@@ -165,7 +177,7 @@ export function Perfil({ slug, aba }: { slug: string; aba?: string }) {
   return (
     <Pagina titulo={sec.label} icone={sec.icon} cor={COR.perfil.caixa} sub={sub || undefined}
       acoes={data && <><Ativo slug={slug} d={data} refresh={refresh} /><Gerar slug={slug} /></>}>
-      {!data ? <p className="text-sm text-muted-foreground">Carregando…</p>
+      {!data ? <p className="text-sm text-muted-foreground">{error ? "Não encontrei este perfil ou não consegui carregá-lo." : "Carregando…"}</p>
         : atual === "series" ? <Series d={data} refresh={refresh} />
         : atual === "ideias" ? <Ideias slug={slug} d={data} refresh={refresh} />
         : atual === "universo" ? <Universo slug={slug} d={data} refresh={refresh} />

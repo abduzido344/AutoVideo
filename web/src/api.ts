@@ -66,7 +66,7 @@ export type Episodio = {
 }
 
 export type Cena = {
-  id: string; kind: string; narration: string; prompt: string; camera: string; sfx: string
+  id: string | null; kind: string; narration: string; prompt: string; camera: string; sfx: string
   imagem: string | null; audio: string | null; dur: number | null // URLs /projects/...
 }
 export type SerieDetalhe = {
@@ -81,14 +81,17 @@ export class ApiError extends Error {
 }
 
 async function j<T>(path: string, init?: RequestInit): Promise<T> {
-  const r = await fetch(path, init)
+  const r = await fetch(path, { signal: AbortSignal.timeout(15000), ...init })
   if (!r.ok) {
     const body = await r.text()
     let msg: unknown = body
     try { msg = JSON.parse(body).detail ?? body } catch { /* corpo não é JSON */ }
+    if (Array.isArray(msg)) { // 422 do FastAPI: lista de {loc, msg}
+      msg = msg.map((x: { loc?: unknown[]; msg?: string }) => [x.loc?.slice(1).join("."), x.msg].filter(Boolean).join(": ")).join("; ")
+    }
     throw new ApiError(typeof msg === "string" ? msg : JSON.stringify(msg), r.status)
   }
-  return r.json() as Promise<T>
+  try { return await r.json() as T } catch { throw new ApiError(`Resposta inválida de ${path}`, r.status) }
 }
 const send = <T>(method: string, path: string, body?: unknown) =>
   j<T>(path, body === undefined ? { method } : { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })

@@ -25,6 +25,8 @@ export function Video(props: LoomixPlayerProps) {
 
       if (controller.signal.aborted) teardown()
       else detach = teardown
+    }).catch(() => {
+      hostEl.querySelector('[data-glass]')?.removeAttribute('data-glass')
     })
 
     return () => {
@@ -40,7 +42,7 @@ export function Video(props: LoomixPlayerProps) {
         {...props}
 
         className={cn(
-          'video-player aspect-video w-full overflow-hidden rounded-xl border [&:not([data-glass=live])>div>button]:invisible [&>div>button[aria-label=Pause]>svg]:size-8 md:[&>div>button[aria-label=Pause]>svg]:size-10 [&>div>button[aria-label=Play]>svg]:size-8 md:[&>div>button[aria-label=Play]>svg]:size-10',
+          'video-player aspect-video w-full overflow-hidden rounded-xl border [&[data-glass=pending]>div>button]:invisible [&>div>button[aria-label=Pause]>svg]:size-8 md:[&>div>button[aria-label=Pause]>svg]:size-10 [&>div>button[aria-label=Play]>svg]:size-8 md:[&>div>button[aria-label=Play]>svg]:size-10',
           props.className,
         )}
       />

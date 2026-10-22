@@ -11,6 +11,7 @@ export function SeletorVoz({ slug, vozId, onSaved }: { slug: string; vozId: stri
   const [semChave, setSemChave] = useState(false)
   const [escolhida, setEscolhida] = useState<string | null>(null) // até o refresh trazer o voz_id salvo
   const atual = escolhida ?? vozId
+  useEffect(() => { setEscolhida(null) }, [vozId]) // o voz_id salvo voltou de fora: ele manda
   const audio = useRef<HTMLAudioElement>(null)
 
   useEffect(() => {

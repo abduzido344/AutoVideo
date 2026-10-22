@@ -16,6 +16,7 @@ log = logging.getLogger("autovideo.data")
 # read-modify-write de serie.json (postado, pausa, sinopse): um por vez no processo
 # ponytail: lock global, por série se a contenção aparecer
 SERIE_LOCK = threading.Lock()
+IDEIAS_LOCK = threading.RLock()  # read-modify-write de ideias.json
 
 
 class Estilo(BaseModel):
@@ -170,7 +171,8 @@ def save_ideias(slug: str, ideias: list[Ideia]) -> None:
 
 def add_ideia(slug: str, texto: str, origem: str = "usuario") -> Ideia:
     i = Ideia(id=uuid.uuid4().hex[:8], texto=texto, origem=origem)
-    save_ideias(slug, [*load_ideias(slug), i])
+    with IDEIAS_LOCK:
+        save_ideias(slug, [*load_ideias(slug), i])
     return i
 
 

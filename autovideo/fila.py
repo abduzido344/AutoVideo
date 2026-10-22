@@ -122,7 +122,7 @@ def paused_series(perfil: str) -> str | None:
     return pend[1].titulo if pend and pend[1].paused else None
 
 
-def next_episode(perfil: str) -> tuple[Path, int] | None:
+def next_episode(perfil: str, store: JobStore | None = None) -> tuple[Path, int] | None:
     if pend := _pendente(perfil):
         path, s = pend
     else:
@@ -131,6 +131,11 @@ def next_episode(perfil: str) -> tuple[Path, int] | None:
     if s.paused:
         return None
     e = next(e for e in s.episodios if not _approved(path, e.n))  # os anteriores a ele estão aprovados
+    if e.job is not None and store is not None:
+        try:
+            store.get(e.job)
+        except KeyError:  # job sumiu do jobs.db: trata como ausente, religa o episódio
+            return path, e.n
     return None if e.job is not None else (path, e.n)  # já tem job: espera ele (revisão, falha, fila)
 
 
@@ -158,7 +163,7 @@ def tick(store: JobStore, now: datetime, force: str | None = None) -> int | None
             if now.strftime("%H:%M") < p.agenda.gerar_as or today >= p.agenda.por_dia:
                 continue
         try:
-            if nxt := next_episode(p.slug):
+            if nxt := next_episode(p.slug, store):
                 created = episode.new_episode_job(store, *nxt)
         except agents.UsageLimit as e:
             _limit(e, ts)

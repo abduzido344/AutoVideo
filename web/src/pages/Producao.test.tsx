@@ -135,13 +135,13 @@ describe("Produção: painel de revisão", () => {
     await userEvent.keyboard("{Escape}")
     expect(go).toHaveBeenCalledWith({ name: "producao" })
   })
-  it("Exportar aponta para final e copia legenda + hashtags", async () => {
+  it("Exportar aponta para o final e não copia a legenda sozinho", async () => {
     render(<Producao jid={5} />)
     const link = await screen.findByRole("link", { name: /Exportar/ })
     expect(link.getAttribute("href")).toBe("/projects/x/out/final.mp4")
     expect(link.hasAttribute("download")).toBe(true)
     await userEvent.click(link)
-    expect(navigator.clipboard.writeText).toHaveBeenCalledWith("Legenda boa\n\n#a #b")
+    expect(navigator.clipboard.writeText).not.toHaveBeenCalled()
   })
   it("Aprovar fecha o painel", async () => {
     vi.mocked(api.aprovar).mockResolvedValue({ ok: true })

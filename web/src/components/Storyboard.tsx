@@ -1,7 +1,8 @@
 import { Smartphone } from "lucide-react"
 import type { Cena } from "@/api"
 
-function Quadro({ c }: { c: Cena }) {
+function Quadro({ c: cena, i }: { c: Cena; i: number }) {
+  const c = { ...cena, id: cena.id ?? String(i + 1) }
   return (
     <figure className="space-y-1.5">
       <div className="grid aspect-[9/16] place-items-center overflow-hidden rounded-lg border bg-muted text-xs text-muted-foreground">
@@ -22,5 +23,5 @@ function Quadro({ c }: { c: Cena }) {
 export function Storyboard({ cenas, erro }: { cenas: Cena[]; erro?: boolean }) {
   if (erro) return <p className="text-sm text-destructive">Não consegui carregar as cenas</p>
   if (!cenas.length) return <p className="text-sm text-muted-foreground">As cenas aparecem aqui quando o roteiro for dividido.</p>
-  return <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">{cenas.map((c) => <Quadro key={c.id} c={c} />)}</div>
+  return <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">{cenas.map((c, i) => <Quadro key={c.id ?? i} c={c} i={i} />)}</div>
 }

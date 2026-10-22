@@ -24,7 +24,7 @@ function Links({ itens }: { itens: Item[] }) {
               <Icon className={cor} />
               <span>{label}</span>
               {badge ? (
-                <span aria-label={`${badge} aguardando`} className="ml-auto rounded-full bg-pink px-1.5 font-mono text-[11px] leading-5 text-white">{badge}</span>
+                <span role="img" aria-label={`${badge} aguardando`} className="ml-auto rounded-full bg-pink px-1.5 font-mono text-xs font-bold leading-5 text-black">{badge}</span>
               ) : null}
             </a>
           </SidebarMenuButton>

@@ -43,6 +43,7 @@ export function Perfis({ perfis, onNovo }: { perfis: Perfil[] | null; onNovo: ()
   return (
     <Pagina titulo="Perfis" icone={ICONE.perfis} cor={COR.perfil.caixa} largo acoes={<Button onClick={onNovo}>Novo perfil</Button>}
       sub="Cada perfil é uma conta de conteúdo com assunto, estilo e personagens.">
+      {!perfis && <p className="text-sm text-muted-foreground">Carregando…</p>}
       {perfis && perfis.length === 0 && <p className="text-sm text-muted-foreground">Nenhum perfil ainda. Crie o primeiro.</p>}
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
         {(perfis ?? []).map((p) => (
@@ -50,7 +51,7 @@ export function Perfis({ perfis, onNovo }: { perfis: Perfil[] | null; onNovo: ()
             <Card className="gap-1 p-4 hover:bg-muted/50">
               <div className="flex items-center justify-between">
                 <h3 className="font-medium">{p.nome}</h3>
-                <span className={p.ativo ? "text-xs text-success" : "text-xs text-muted-foreground"}>{p.ativo ? "ativo" : "pausado"}</span>
+                <span className={p.ativo ? "text-xs text-success" : "text-xs text-muted-foreground"}>{p.ativo ? "ativo" : p.onboarding < 6 ? "em configuração" : "pausado"}</span>
               </div>
               <p className="text-sm text-muted-foreground">{p.assunto || "Sem assunto"}</p>
               <p className="text-sm">Estilo: {p.estilo || "não definido"}</p>

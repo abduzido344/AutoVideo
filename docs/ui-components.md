@@ -77,9 +77,8 @@ Nota: o `liquidglass` vai duas vezes no bundle: a lib vendorizada em `src/lib/li
 | `components/SeletorVoz.tsx` | Seletor de voz do perfil (Agenda e voz e Onboarding): `select` do shadcn com as vozes de `/api/vozes`, botão ▶ com `<audio>` para a prévia, aviso com link quando falta a chave da ElevenLabs |
 | `components/FolhaPersonagem.tsx` | Card do personagem (ficha, imagem da folha, gerar/aprovar); composição de `card` + `button`, sem equivalente pronto |
 | `pages/Perfis.tsx`, `pages/Onboarding.tsx` | Telas: cards de perfil + `dialog` de Novo perfil; chat + painel de etapas |
-| `components/StatusPill.tsx` | Pílula de status do doctor; `badge` do shadcn não tem o estado "verificando" com ponto |
 | `pages/Perfil.tsx`, `pages/Estilos.tsx` | Telas: `tabs` + `card` + `input`/`textarea`; `<select>` nativo na Agenda (estilo); dialog "Novo estilo" abre a conversa (`Chat` kind estilo) |
-| `pages/Producao.tsx` | Tela: esteira kanban à mão (colunas = `section` com rolagem própria, cartões `card`, barra curta de etapas; Kobra `task-list`/`grouped-table` exigem Pro); erro truncado em 2 linhas + `dialog` "ver detalhes"; revisão (Kobra `video` + `card` + `textarea`) num `sheet` do shadcn |
+| `pages/Producao.tsx` | Tela: esteira kanban à mão (colunas = `section` com rolagem própria, cartões `card`, barra curta de etapas; Kobra `task-list`/`grouped-table` exigem Pro); erro truncado em 2 linhas + `dialog` "ver detalhes"; revisão (Kobra `video` + `card` + `textarea`) num `dialog` do shadcn |
 | `pages/Configuracoes.tsx` | Tela com `tabs` (Chaves API, Conexões, Imagens): `input` para as chaves, `card` de Claude/Codex e de contas de cada perfil, `select` de provedor; Salvar por aba |
 | `components/Storyboard.tsx` | Cenas do episódio com status de geração (imagem, celular, narração); nenhum registry tem storyboard de cenas com status de geração |
 | `components/ConversaAgentes.tsx` | Decisões e custo de cada chamada de agente; composição do beui `message` (+ bubble), sem equivalente pronto para log de agentes |

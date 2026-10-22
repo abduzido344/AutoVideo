@@ -2,9 +2,11 @@
 O Diretor só lê recibos e JSONs pequenos; roteiro, imagens e áudio ficam com os subagentes e as APIs."""
 import hashlib
 import json
+import os
 import re
 import shutil
 import time
+from contextlib import contextmanager
 from pathlib import Path
 from autovideo import agents, config, data, eleven, images, jobs, montage, render
 from autovideo.artefatos import Cenas, EpisodioOut, Fix, Revisao, Voz
@@ -42,12 +44,18 @@ def _sha(*parts: str | bytes) -> str:
 
 
 def _cache(p: Path) -> dict:
-    return json.loads(_read(p)) if p.exists() else {}
+    try:
+        c = json.loads(_read(p))
+    except (OSError, ValueError):  # ausente ou truncado (kill no meio da gravação): cache vazio, regera
+        return {}
+    return c if isinstance(c, dict) else {}
 
 
 def _save(p: Path, obj) -> None:
     p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(obj, ensure_ascii=False, indent=2), encoding="utf-8")
+    tmp = p.with_name(p.name + ".tmp")
+    tmp.write_text(json.dumps(obj, ensure_ascii=False, indent=2), encoding="utf-8")
+    os.replace(tmp, p)
 
 
 def _ajustes(ep: Path) -> str:
@@ -67,7 +75,14 @@ def roteiro(ctx: Ctx) -> None:
         fim = f'Termine com o gancho do estilo: "{_estilo(r["perfil"]).gancho.replace("{n}", str(r["n"] + 1))}".'
     task = (f"Escreva o roteiro da Parte {r['n']} de {total}. A sinopse está em sinopse.md. {fim}\n"
             "Grave roteiro.md e episodio.json." + _ajustes(ep))
-    agents.run_role(agents.ROLES["roteirista"], ep, task, ep / "episodio.json", agents.validate_model(EpisodioOut),
+    ok_json = agents.validate_model(EpisodioOut)
+
+    def valida(p: Path) -> None:
+        ok_json(p)
+        if not (ep / "roteiro.md").is_file() or not _read(ep / "roteiro.md").strip():
+            raise ValueError("roteiro.md não foi gravado ou está vazio")
+
+    agents.run_role(agents.ROLES["roteirista"], ep, task, ep / "episodio.json", valida,
                     context=data.context_for(r["perfil"]))
 
 
@@ -233,9 +248,12 @@ STAGES: list[Stage] = [
     ("revisao", "revisao.json", revisar), ("aprovacao", "approvals/aprovado.ok", None)]
 
 
-def _write_ajuste(ep: Path, origem: str, body: str) -> None:
+def _write_ajuste(ep: Path, origem: str, body: str, start: str = "cenas") -> None:
     # o invalidate_from apaga cenas.json: sem a cópia o diretor_arte refaz tudo do zero, muda todo prompt e perde o cache de imagens
-    if (ep / "cenas.json").exists():
+    # roteiro novo: as cenas antigas não casam mais com o texto, então a cópia é descartada
+    if start == "roteiro":
+        (ep / "cenas.anterior.json").unlink(missing_ok=True)
+    elif (ep / "cenas.json").exists():
         shutil.copy2(ep / "cenas.json", ep / "cenas.anterior.json")
     with (ep / "ajustes.md").open("a", encoding="utf-8") as f:
         f.write(f"\n## Ajuste ({origem})\n{body}\n")
@@ -286,10 +304,11 @@ def produce(store: JobStore, jid: int) -> str:
             job = store.get(jid)
             if (job["status"], job["stage"]) != ("awaiting_approval", "aprovacao"):
                 return job["status"]
+            start = _earliest(f.role for f in rev.fixes)
             _write_ajuste(ep, f"revisor, rodada {k + 1}",
-                          "\n".join(f"- [{f.role}{' ' + f.scene if f.scene else ''}] {f.note}" for f in rev.fixes))
-            jobs.invalidate_from(ep, STAGES, _earliest(f.role for f in rev.fixes))
-            store.set(jid, status="queued", stage="")
+                          "\n".join(f"- [{f.role}{' ' + f.scene if f.scene else ''}] {f.note}" for f in rev.fixes), start)
+            store.set(jid, status="queued", stage="")  # queued antes de invalidar: falha no meio refaz o que falta, nunca fica no gate incompleto
+            jobs.invalidate_from(ep, STAGES, start)
         Project(ep).log({"review_round": k + 1})
 
 
@@ -301,9 +320,9 @@ def _awaiting(store: JobStore, jid: int, ok=("awaiting_approval",)) -> dict:
 
 
 def approve(store: JobStore, jid: int) -> None:
+    ctx = make_ctx(_awaiting(store, jid))
+    out = EpisodioOut.model_validate_json(_read(ctx.project.root / "episodio.json"))  # lê/valida antes de mudar o estado
     jobs.approve(store, jid, STAGES)
-    ctx = make_ctx(store.get(jid))
-    out = EpisodioOut.model_validate_json(_read(ctx.project.root / "episodio.json"))
     with (data.perfis_dir() / ctx.recipe["perfil"] / "universo" / "historico.md").open("a", encoding="utf-8") as f:
         f.write(f"\n## Parte {ctx.recipe['n']} — {out.titulo}\n{out.resumo}\n")
 
@@ -315,15 +334,22 @@ def adjust(store: JobStore, jid: int, texto: str) -> None:
     fix = Fix.model_validate_json(_read(ep / "triagem.json"))
     with store.lock:  # a triagem roda fora do lock; a troca de arquivos e o queued, dentro
         _awaiting(store, jid)
-        _write_ajuste(ep, f"usuário → {fix.role}", f"{texto}\n\nResumo da triagem: {fix.note}")
+        _write_ajuste(ep, f"usuário → {fix.role}", f"{texto}\n\nResumo da triagem: {fix.note}", REDO[fix.role])
+        store.set(jid, status="queued", stage="")  # queued antes de invalidar (ver produce)
         jobs.invalidate_from(ep, STAGES, REDO[fix.role])
-        store.set(jid, status="queued", stage="")
 
 
 def discard(store: JobStore, jid: int) -> None:
     from autovideo import showrunner  # import tardio evita ciclo
     ctx = make_ctx(_awaiting(store, jid, ("awaiting_approval", "failed")))
-    showrunner.rewrite_synopsis(ctx.recipe["serie"], ctx.recipe["n"])
+
+    @contextmanager
+    def guard():  # a sinopse só é gravada se o job ainda está parado no gate
+        with store.lock:
+            _awaiting(store, jid, ("awaiting_approval", "failed"))
+            yield
+
+    showrunner.rewrite_synopsis(ctx.recipe["serie"], ctx.recipe["n"], guard)
     with store.lock:
         _awaiting(store, jid, ("awaiting_approval", "failed"))
         for p in ctx.project.root.iterdir():
@@ -341,8 +367,12 @@ def new_episode_job(store: JobStore, serie_path: Path, n: int) -> int:
         raise ValueError(f"a série {s.slug} não tem o episódio {n}")
     (ep / ".stages").mkdir(parents=True, exist_ok=True)  # idem
     jid = store.create(str(ep), "episodio", False)
-    with data.SERIE_LOCK:
-        s = _serie(serie_path)
-        next(e for e in s.episodios if e.n == n).job = jid
-        data.save_serie(serie_path, s)
+    try:
+        with data.SERIE_LOCK:
+            s = _serie(serie_path)
+            next(e for e in s.episodios if e.n == n).job = jid
+            data.save_serie(serie_path, s)
+    except BaseException:
+        store.delete(jid)  # sem e.job apontando para ele, o job viraria órfão e a fila o rodaria
+        raise
     return jid

@@ -222,7 +222,7 @@ def test_adjust_to_art_keeps_script(env):
 
 def test_discard_keeps_only_synopsis(env, monkeypatch):
     seen = []
-    monkeypatch.setattr("autovideo.showrunner.rewrite_synopsis", lambda serie, n: seen.append((serie, n)))
+    monkeypatch.setattr("autovideo.showrunner.rewrite_synopsis", lambda serie, n, guard=None: seen.append((serie, n)))
     episode.produce(env.store, env.jid)
     episode.discard(env.store, env.jid)
     assert seen == [(env.serie, 1)]
@@ -279,3 +279,21 @@ def test_killed_mid_stage_resumes_and_redoes_partial(env, monkeypatch):
 
 def test_aparencia_drops_headings_and_joins_lines():
     assert data.aparencia("# Benji\nbig head,\n  dot eyes\n\n## Notas\nred cap") == "big head, dot eyes red cap"
+
+
+def test_cache_tolerates_truncated_json_and_save_is_atomic(tmp_path):
+    p = tmp_path / "c" / "cache.json"
+    p.parent.mkdir()
+    p.write_text('{"a": ', encoding="utf-8")
+    assert episode._cache(p) == {}
+    episode._save(p, {"a": 1})
+    assert episode._cache(p) == {"a": 1} and not p.with_name("cache.json.tmp").exists()
+
+
+def test_ajuste_do_roteirista_descarta_cenas_anterior(tmp_path):
+    (tmp_path / "cenas.json").write_text("{}", encoding="utf-8")
+    (tmp_path / "cenas.anterior.json").write_text("velho", encoding="utf-8")
+    episode._write_ajuste(tmp_path, "usuário → roteirista", "x", "roteiro")
+    assert not (tmp_path / "cenas.anterior.json").exists()
+    episode._write_ajuste(tmp_path, "usuário → diretor_arte", "x", "cenas")
+    assert (tmp_path / "cenas.anterior.json").read_text(encoding="utf-8") == "{}"

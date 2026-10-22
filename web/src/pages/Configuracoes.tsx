@@ -141,9 +141,12 @@ export function Configuracoes({ aba, perfis = [], auth = null, onClaude = () => 
   const [salvando, setSalvando] = useState(false)
 
   const aplica = (c: Config) => { setCfg(c); setProvedor(c.image_provider); setModelos({ openrouter: c.image_model, higgsfield: c.higgsfield_model, openai: c.openai_model }); setLimite(String(c.max_imagens)) }
-  useEffect(() => {
-    api.config().then(aplica, (e: Error) => toast({ message: "Não consegui ler as configurações", description: e.message, state: "error" }))
-  }, [])
+  const [falhou, setFalhou] = useState(false)
+  const carregar = () => {
+    setFalhou(false)
+    api.config().then(aplica, (e: Error) => { setFalhou(true); toast({ message: "Não consegui ler as configurações", description: e.message, state: "error" }) })
+  }
+  useEffect(carregar, [])
 
   // cada aba salva só o que é dela e só recarrega o que é dela (não apaga o que foi digitado na outra)
   async function enviar(patch: ConfigPatch, depois: (c: Config) => void, message = "Configurações salvas") {
@@ -160,14 +163,22 @@ export function Configuracoes({ aba, perfis = [], auth = null, onClaude = () => 
   function salvarImagens() {
     const n = Number(limite)
     if (!Number.isInteger(n) || n < 1) return toast({ message: "O limite de imagens deve ser um inteiro maior que zero", state: "error" })
-    if (Object.values(modelos).some((m) => !m.trim())) return toast({ message: "O modelo de imagem não pode ficar vazio", state: "error" })
-    void enviar({ image_provider: provedor, image_model: modelos.openrouter.trim(), higgsfield_model: modelos.higgsfield.trim(), openai_model: modelos.openai.trim(), max_imagens: n }, aplica)
+    if (!modelos[provedor as keyof typeof modelos].trim()) return toast({ message: "O modelo de imagem não pode ficar vazio", state: "error" })
+    const m = (k: keyof typeof modelos) => modelos[k].trim() // modelo vazio de provedor inativo não é enviado
+    void enviar({ image_provider: provedor, ...(m("openrouter") && { image_model: m("openrouter") }), ...(m("higgsfield") && { higgsfield_model: m("higgsfield") }),
+      ...(m("openai") && { openai_model: m("openai") }), max_imagens: n }, aplica)
   }
 
+  const tentar = falhou && !cfg && (
+    <div role="alert" className="mb-4 flex items-center gap-3 text-sm text-destructive">
+      Não consegui ler as configurações.<Button variant="outline" size="sm" onClick={carregar}>Tentar de novo</Button>
+    </div>
+  )
   const salvar = (onClick: () => void) => <Button className="mt-8" onClick={onClick} disabled={!cfg || salvando}>Salvar</Button>
   return (
     <Pagina titulo="Configurações" icone={ICONE.config} cor={COR.config.caixa} sub={SUB[atual]}
       abas={<Abas label="Seções das configurações" valor={atual} itens={ABAS} onChange={(a) => go({ name: "config", aba: a })} />}>
+      {atual !== "conexoes" && tentar}
       {atual === "chaves" && (
         <Card className="p-4">
           <ul className="divide-y">
@@ -184,9 +195,9 @@ export function Configuracoes({ aba, perfis = [], auth = null, onClaude = () => 
       {atual === "imagens" && <>
         <div className="space-y-4">
           <div className="space-y-1.5">
-            <Label>Provedor</Label>
+            <Label htmlFor="image_provider">Provedor</Label>
             <Select value={provedor} onValueChange={setProvedor}>
-              <SelectTrigger aria-label="Provedor de imagem" className="w-full"><SelectValue /></SelectTrigger>
+              <SelectTrigger id="image_provider" aria-label="Provedor de imagem" className="w-full"><SelectValue /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="openrouter">OpenRouter</SelectItem>
                 <SelectItem value="higgsfield">Higgsfield</SelectItem>

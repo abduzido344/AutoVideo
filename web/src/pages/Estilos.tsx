@@ -12,7 +12,7 @@ import { go } from "@/lib/route"
 import { usePoll } from "@/lib/usePoll"
 import { Pagina } from "@/pages/Pagina"
 
-const slugify = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")
+const slugify = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40)
 
 // "Criar conversando": o nome vira o slug do estilo e a conversa abre em #/estilo/<slug>.
 export function NovoEstilo({ open, onOpenChange }: { open: boolean; onOpenChange: (o: boolean) => void }) {
@@ -42,7 +42,7 @@ export function Estilos({ onNovo }: { onNovo: () => void }) {
     try {
       const { job } = await api.analisarEstilo(h)
       setHandle("")
-      toast({ message: "Análise iniciada", description: `Job ${job} na Fila. Quando terminar, o estilo aparece aqui.`, state: "success" })
+      toast({ message: "Análise iniciada", description: `Job ${job} em Produção. Quando terminar, o estilo aparece aqui.`, state: "success" })
     } catch (e) {
       toast({ message: "Não consegui analisar o perfil", description: (e as Error).message, state: "error" })
     } finally { setBusy(false) }

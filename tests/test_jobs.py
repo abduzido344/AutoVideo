@@ -196,3 +196,21 @@ def test_stop_pauses_at_next_stage_boundary_and_resumes(tmp_path):
     stop[0] = False
     assert run_job(store, jid, st, mk, lambda: stop[0]) == "completed"
     assert calls == ["a", "b", "c"]          # "a" não reexecuta ao continuar
+
+
+def test_approve_refuses_when_earlier_artifact_missing(tmp_path):
+    store, jid, mk = setup(tmp_path)
+    st = mk_stages([])
+    assert run_job(store, jid, st, mk) == "awaiting_approval"
+    (tmp_path / "p 1" / "a.txt").unlink()
+    with pytest.raises(GateError):
+        approve(store, jid, st)
+    assert store.get(jid)["status"] == "awaiting_approval"
+
+
+def test_make_ctx_failure_fails_job(tmp_path):
+    store, jid, _ = setup(tmp_path)
+    def boom(job):
+        raise ValueError("dir inválido")
+    assert run_job(store, jid, mk_stages([]), boom) == "failed"
+    assert store.get(jid)["status"] == "failed"

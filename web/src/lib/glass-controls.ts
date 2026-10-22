@@ -324,11 +324,17 @@ export async function attachGlassControls(
     delete root.dataset.glass
   }
 
-  if (!(await waitForVisible(signal)) || signal.aborted) return noop
-  if (!(await waitForFrame(video, signal)) || signal.aborted) return noop
+  // 'pending' esconde os botões nativos só enquanto o vidro prepara; qualquer saída sem vidro os devolve
+  root.dataset.glass = 'pending'
+  const bail = () => {
+    strip()
+    return noop
+  }
+  if (!(await waitForVisible(signal)) || signal.aborted) return bail()
+  if (!(await waitForFrame(video, signal)) || signal.aborted) return bail()
 
   const { LiquidGlass } = await import('@/lib/liquidglass')
-  if (signal.aborted) return noop
+  if (signal.aborted) return bail()
 
   const panes: Pane[] = buttons.map((button) => {
     const panel = document.createElement('div')

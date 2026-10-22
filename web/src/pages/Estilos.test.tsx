@@ -24,13 +24,13 @@ describe("Estilos", () => {
     expect(screen.getByText("fábrica")).toBeTruthy()
     expect(screen.getByText("seu")).toBeTruthy()
   })
-  it("Analisar perfil avisa que o job está na Fila", async () => {
+  it("Analisar perfil avisa que o job está em Produção", async () => {
     vi.mocked(api.analisarEstilo).mockResolvedValue({ job: 9 })
     render(<Estilos onNovo={() => {}} />)
     await userEvent.type(await screen.findByLabelText("Perfil a analisar"), "@fulano")
     await userEvent.click(screen.getByRole("button", { name: "Analisar perfil" }))
     expect(api.analisarEstilo).toHaveBeenCalledWith("@fulano")
-    expect(toast).toHaveBeenCalledWith(expect.objectContaining({ state: "success", description: expect.stringContaining("Fila") }))
+    expect(toast).toHaveBeenCalledWith(expect.objectContaining({ state: "success", description: expect.stringContaining("Produção") }))
   })
   it("Novo estilo pede o nome e abre a conversa com o slug", async () => {
     render(<NovoEstilo open onOpenChange={() => {}} />)

@@ -4,9 +4,8 @@ import { COR, ICONE } from "@/components/secoes"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/toast"
 import { Video } from "@/components/ui/video"
@@ -50,7 +49,8 @@ function Cartao({ j, nomePerfil, busy, onRetomar }: { j: FilaJob; nomePerfil: (s
   const estilo = j.recipe === "estilo"
   const titulo = j.titulo ?? (estilo ? "Análise de estilo" : `Episódio ${j.id}`)
   const sub = estilo ? "Análise de estilo" : [j.serie, nomePerfil(j.perfil)].filter(Boolean).join(" · ")
-  const abre = !falhou && (j.status === "awaiting_approval" || Boolean(j.video))
+  // falhou na aprovação: abre para descartar (o servidor aceita descartar job failed)
+  const abre = falhou ? j.stage === "aprovacao" : j.status === "awaiting_approval" || Boolean(j.video)
   const corpo = (
     <div className="flex gap-3">
       {j.capa && <img src={j.capa} alt="" className="aspect-[9/16] w-12 shrink-0 rounded-md border object-cover" />}
@@ -70,7 +70,7 @@ function Cartao({ j, nomePerfil, busy, onRetomar }: { j: FilaJob; nomePerfil: (s
         ? <button type="button" className="-m-1 rounded-md p-1 text-left outline-none hover:bg-muted/60 focus-visible:ring-3 focus-visible:ring-ring/50"
           onClick={() => go({ name: "producao", jid: j.id })}>{corpo}</button>
         : corpo}
-      {j.status === "in_progress" && (estilo ? <Badge variant="secondary">{j.stage || "iniciando"}</Badge> : <Etapas atual={j.stage} />)}
+      {j.status === "in_progress" && (estilo ? <Badge variant="secondary">{j.stage ? etapa(j.stage) : "iniciando"}</Badge> : <Etapas atual={j.stage} />)}
       {falhou && (
         <>
           {j.error && <p className="line-clamp-2 text-xs break-words text-destructive">{j.error}</p>}
@@ -102,7 +102,7 @@ async function copiar(t: string) {
   catch (e) { erro("Não consegui copiar a legenda")(e instanceof Error ? e : new Error("a área de transferência não está disponível")) }
 }
 
-// Revisão: o painel lateral que abre em #/producao/<jid>
+// Revisão: o painel central que abre em #/producao/<jid>
 function Revisao({ jid }: { jid: number }) {
   const { data: ep, error, refresh } = usePoll(() => api.episodio(jid))
   const [marcando, setMarcando] = useState<Rede | null>(null)
@@ -111,16 +111,17 @@ function Revisao({ jid }: { jid: number }) {
   const [postado, setPostado] = useState<Rede[]>([])
   const [busy, setBusy] = useState(false)
   if (!ep) return (
-    <SheetHeader>
-      <SheetTitle>Episódio {jid}</SheetTitle>
-      <SheetDescription>{error ? "Não consegui carregar o episódio" : "Carregando…"}</SheetDescription>
-    </SheetHeader>
+    <DialogHeader>
+      <DialogTitle>Episódio {jid}</DialogTitle>
+      <DialogDescription>{error ? "Não consegui carregar o episódio" : "Carregando…"}</DialogDescription>
+    </DialogHeader>
   )
   const post = postDe(ep)
   const fx = (ep.revisao as { fixes?: Fix[] } | null)?.fixes
   const fixes = Array.isArray(fx) ? fx : []
   const feitos = new Set([...(ep.postado ?? []), ...postado])
   const aguarda = ep.job.status === "awaiting_approval"
+  const falhou = ep.job.status === "failed"
   // depois da ação o episódio sai da revisão: fecha o painel
   async function acao(p: Promise<unknown>, ok: string, falha: string) {
     setBusy(true)
@@ -130,12 +131,12 @@ function Revisao({ jid }: { jid: number }) {
   }
   return (
     <>
-      <SheetHeader className="pr-12">
-        <SheetTitle className="font-serif text-[22px] font-medium">{ep.titulo ?? `Episódio ${jid}`}</SheetTitle>
-        <SheetDescription>{[ep.serie, ep.perfil, ep.n && `Parte ${ep.n}`].filter(Boolean).join(" · ")}</SheetDescription>
+      <DialogHeader className="pr-12">
+        <DialogTitle className="font-serif text-[22px] font-medium">{ep.titulo ?? `Episódio ${jid}`}</DialogTitle>
+        <DialogDescription>{[ep.serie, ep.perfil, ep.n && `Parte ${ep.n}`].filter(Boolean).join(" · ")}</DialogDescription>
         <Button variant="link" size="sm" className="h-auto w-fit px-0" onClick={() => go({ name: "episodio", jid })}>Abrir página completa</Button>
-      </SheetHeader>
-      <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-6">
+      </DialogHeader>
+      <div className="min-h-0 flex-1 overflow-y-auto pb-2">
         <div className="grid gap-6 sm:grid-cols-[minmax(0,240px)_1fr]">
           <div className="space-y-3">
             {ep.final ? <Video src={ep.final} className="aspect-[9/16]" /> : <p className="text-sm text-muted-foreground">O vídeo ainda não foi renderizado.</p>}
@@ -165,14 +166,19 @@ function Revisao({ jid }: { jid: number }) {
           </div>
         </div>
         <Secao>Decisão</Secao>
+        {!aguarda && !falhou && !ep.aprovado && (
+          <p className="mb-2 text-sm text-muted-foreground">
+            Ainda em produção (etapa: {ep.job.stage ? etapa(ep.job.stage) : "iniciando"}). O botão Aprovar aparece quando o episódio chegar em “Para revisar”.
+          </p>
+        )}
         <div className="flex flex-wrap items-center gap-2">
           {aguarda && <Button disabled={busy} onClick={() => acao(api.aprovar(jid), "Episódio aprovado", "Não consegui aprovar")}>Aprovar</Button>}
           {ep.final && (
             <Button asChild variant="outline">
-              <a href={ep.final} download={`episodio-${jid}.mp4`} onClick={() => { if (post) void copiar(textoPost(post)) }}>Exportar</a>
+              <a href={ep.final} download={`episodio-${jid}.mp4`}>Exportar</a>
             </Button>
           )}
-          {aguarda && (confirma ? (
+          {(aguarda || falhou) && (confirma ? (
             <>
               <Button variant="destructive" disabled={busy} onClick={() => acao(api.descartar(jid), "Episódio descartado", "Não consegui descartar")}>Sim, descartar</Button>
               <Button variant="ghost" onClick={() => setConfirma(false)}>Cancelar</Button>
@@ -204,7 +210,7 @@ function Revisao({ jid }: { jid: number }) {
 }
 
 export function Producao({ jid, perfis = [] }: { jid?: number; perfis?: { slug: string; nome: string }[] }) {
-  const { data, refresh } = usePoll(api.fila)
+  const { data, error, refresh } = usePoll(api.fila)
   const [busy, setBusy] = useState(false)
   const [filtro, setFiltro] = useState(TODOS)
   // uma ação por vez: evita clique duplo em Pausar/Retomar
@@ -236,6 +242,7 @@ export function Producao({ jid, perfis = [] }: { jid?: number; perfis?: { slug: 
           ? <Button disabled={busy} onClick={() => act(api.continuarFila, "Não consegui retomar a fila")}>Retomar fila</Button>
           : <Button variant="outline" disabled={busy} onClick={() => act(api.pausarFila, "Não consegui pausar a fila")}>Pausar fila</Button>)}
       </>}>
+      {error && !data && <p role="alert" className="mb-3 text-sm text-destructive">Não consegui carregar a fila. Tentando de novo…</p>}
       {/* as colunas rolam por dentro; em tela estreita a esteira rola na horizontal, nunca a página */}
       <div className="flex h-full min-h-[24rem] gap-3 overflow-x-auto pb-1">
         {COLUNAS.map(([id, titulo]) => {
@@ -255,11 +262,11 @@ export function Producao({ jid, perfis = [] }: { jid?: number; perfis?: { slug: 
           )
         })}
       </div>
-      <Sheet open={jid !== undefined} onOpenChange={(o) => { if (!o) go({ name: "producao" }) }}>
-        <SheetContent className="w-full gap-2 data-[side=right]:w-full data-[side=right]:sm:max-w-3xl">
+      <Dialog open={jid !== undefined} onOpenChange={(o) => { if (!o) go({ name: "producao" }) }}>
+        <DialogContent className="flex max-h-[90vh] flex-col gap-2 sm:max-w-4xl">
           {jid !== undefined && <Revisao key={jid} jid={jid} />}
-        </SheetContent>
-      </Sheet>
+        </DialogContent>
+      </Dialog>
     </Pagina>
   )
 }

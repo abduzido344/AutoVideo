@@ -3,12 +3,13 @@ import { Message, MessageBubble, MessageBubbleContent, MessageContent } from "@/
 import { usd } from "@/lib/etapas"
 import { cn } from "@/lib/utils"
 
-export function ConversaAgentes({ decisions, etapa }: { decisions: Decision[]; etapa: string }) {
+export function ConversaAgentes({ decisions: todas, etapa }: { decisions: Decision[]; etapa: string }) {
+  const decisions = todas.filter((d) => d.role) // linhas sem role (custo de imagem, review_round) não são falas
   if (!decisions.length) return <p className="text-sm text-muted-foreground">Nenhum agente falou ainda. Etapa atual: {etapa}.</p>
   return (
     <div className="flex flex-col gap-3">
       {decisions.map((d, i) => {
-        const papel = d.role ?? "agente"
+        const papel = d.role
         const meta = [d.model, d.cost_usd != null && usd(d.cost_usd), d.turns != null && `${d.turns} turnos`].filter(Boolean)
         return (
           <Message key={i} from="assistant" aria-label={papel}>

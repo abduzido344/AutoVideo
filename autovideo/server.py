@@ -336,7 +336,8 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
     @app.delete("/api/perfis/{slug}/ideias/{iid}")
     def del_ideia(slug: str, iid: str):
         _slug(slug)
-        data.save_ideias(slug, [i for i in data.load_ideias(slug) if i.id != iid])
+        with data.IDEIAS_LOCK:
+            data.save_ideias(slug, [i for i in data.load_ideias(slug) if i.id != iid])
         return {"ok": True}
 
     @app.post("/api/perfis/{slug}/gerar")

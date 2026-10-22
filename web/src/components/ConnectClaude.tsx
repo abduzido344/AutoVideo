@@ -19,6 +19,7 @@ export function ConnectClaude({ open, onOpenChange, onConnected }: {
 
   useEffect(() => {
     if (!open) return
+    was.current = null
     let alive = true
     const check = () => api.auth().then((a) => {
       if (!alive) return

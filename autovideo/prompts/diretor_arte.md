@@ -5,7 +5,7 @@ Você divide o roteiro de um episódio em cenas para um vídeo vertical (9:16). 
 ## Entradas (na pasta atual)
 - `roteiro.md`: a narração. Linhas que começam com `#` são títulos e não são lidas.
 - `ajustes.md` (se existir): aplique as correções endereçadas a você (diretor_arte). Mude só as cenas citadas.
-- `cenas.anterior.json` (se existir): a versão anterior do `cenas.json`. Parta dela: copie cada cena não citada nos ajustes sem alterar um caractere (principalmente o `prompt`; qualquer mudança regera a imagem e custa dinheiro) e reescreva só as citadas.
+- `cenas.anterior.json` (se existir; some quando o roteiro muda): a versão anterior do `cenas.json`. Parta dela: copie cada cena não citada nos ajustes sem alterar um caractere (principalmente o `prompt`; qualquer mudança regera a imagem e custa dinheiro) e reescreva só as citadas.
 
 ## Regras
 - A narração das cenas, juntada na ordem, é exatamente o texto do `roteiro.md` sem os títulos: não corte, não reescreva, não pule nada. Só espaços e quebras de linha podem mudar.

@@ -89,6 +89,11 @@ class JobStore:
             self.con.commit()
             return cur.rowcount
 
+    def delete(self, jid: int) -> None:
+        with self.lock:
+            self.con.execute("delete from jobs where id=?", (jid,))
+            self.con.commit()
+
     def resume(self, jid: int) -> bool:
         """failed -> queued (o worker retoma da etapa que falhou). False se o job não está failed."""
         with self.lock:
@@ -137,7 +142,7 @@ def _gate_index(jid: int, job: dict, stages: list[Stage]) -> int:
 def invalidate_from(root: Path, stages: list[Stage], start: str) -> None:
     """Apaga marcador e artefato de `start` até o fim (o próximo run_job refaz dali em diante)."""
     names = [n for n, _, _ in stages]
-    for name, rel, _ in stages[names.index(start):]:
+    for name, rel, _ in reversed(stages[names.index(start):]):  # de trás para frente: falha no meio nunca deixa gate sem etapas anteriores
         _remove(_marker(root, name))  # marcador primeiro: kill no meio deixa "artefato sem marcador" = refaz
         _remove(root / rel)
 
@@ -145,8 +150,12 @@ def invalidate_from(root: Path, stages: list[Stage], start: str) -> None:
 def run_job(store: JobStore, jid: int, stages: list[Stage], make_ctx: Callable[[dict], Ctx],
             stop: Callable[[], bool] | None = None) -> str:
     job = store.get(jid)
+    try:
+        ctx = make_ctx(job)
+    except Exception as e:  # noqa: BLE001 — project_dir inválido: falha o job em vez de deixá-lo preso em in_progress
+        store.set(jid, status="failed", error=f"{type(e).__name__}: {e}")
+        return "failed"
     store.set(jid, status="in_progress", error="")
-    ctx = make_ctx(job)
     root = Path(job["project_dir"])
     legacy = not (root / ".stages").exists()  # decidido uma vez: a migração abaixo cria .stages/ no meio do loop
     for name, rel, fn in stages:
@@ -185,6 +194,12 @@ def approve(store: JobStore, jid: int, stages: list[Stage]) -> None:
         name, rel, _ = stages[_gate_index(jid, job, stages)]
         if job["status"] != "awaiting_approval":
             raise GateError(f"job {jid} não está aguardando aprovação")
+        root = Path(job["project_dir"])
+        for n, r, f in stages:
+            if n == name:
+                break
+            if f is not None and not stage_done(root, n, r):
+                raise GateError(f"job {jid} não pode ser aprovado: falta a etapa {n} ({r})")
         p = _art(job, rel); p.parent.mkdir(parents=True, exist_ok=True); p.write_text("ok")
         if (Path(job["project_dir"]) / ".stages").exists():  # projeto legado: a regra legado aceita o gate.ok
             _commit(Path(job["project_dir"]), name)

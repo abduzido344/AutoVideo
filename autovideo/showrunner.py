@@ -1,3 +1,4 @@
+import contextlib
 from pathlib import Path
 from pydantic import BaseModel, field_validator
 from autovideo import agents, data
@@ -69,11 +70,13 @@ def plan_series(perfil: str) -> Path:
     _run(perfil, work, task, out, valida)
     plano = Plano.model_validate_json(out.read_text(encoding="utf-8"))
     path = data.create_serie(perfil, plano.titulo, plano.logline, [(e.titulo, e.sinopse) for e in plano.episodios], ideia=ideia.id)
-    data.save_ideias(perfil, [i.model_copy(update={"usada": True}) if i.id == ideia.id else i for i in data.load_ideias(perfil)])
+    with data.IDEIAS_LOCK:
+        data.save_ideias(perfil, [i.model_copy(update={"usada": True}) if i.id == ideia.id else i for i in data.load_ideias(perfil)])
     return path
 
 
-def rewrite_synopsis(serie_path: Path, n: int) -> None:
+def rewrite_synopsis(serie_path: Path, n: int, guard=None) -> None:
+    """guard: gerenciador de contexto que revalida o estado do chamador logo antes de gravar."""
     serie_path = Path(serie_path)
     perfil = serie_path.parent.parent.name
     s = data.Serie.model_validate_json((serie_path / "serie.json").read_text(encoding="utf-8"))
@@ -94,8 +97,9 @@ def rewrite_synopsis(serie_path: Path, n: int) -> None:
             f"Grave só o texto da nova sinopse em {out.name}.")
     _run(perfil, work, task, out, valida)
     novo = out.read_text(encoding="utf-8").strip()
-    data._write(data.ep_dir(serie_path, n) / "sinopse.md", novo)
-    with data.SERIE_LOCK:  # relê: o painel pode ter marcado postado ou pausado enquanto o agente rodava
-        s = data.Serie.model_validate_json((serie_path / "serie.json").read_text(encoding="utf-8"))
-        next(e for e in s.episodios if e.n == n).sinopse = novo
-        data.save_serie(serie_path, s)
+    with (guard() if guard else contextlib.nullcontext()):
+        data._write(data.ep_dir(serie_path, n) / "sinopse.md", novo)
+        with data.SERIE_LOCK:  # relê: o painel pode ter marcado postado ou pausado enquanto o agente rodava
+            s = data.Serie.model_validate_json((serie_path / "serie.json").read_text(encoding="utf-8"))
+            next(e for e in s.episodios if e.n == n).sinopse = novo
+            data.save_serie(serie_path, s)

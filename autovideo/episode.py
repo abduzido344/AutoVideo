@@ -137,14 +137,14 @@ def voz(ctx: Ctx) -> None:
     cache, out = _cache(cp), []
     asr = ep / "voz" / ".asr"
 
-    def ouvir(f: str, c) -> tuple[float, str]:
-        """Transcreve o áudio e devolve (semelhança, texto ouvido); falha da transcrição não trava o episódio."""
+    def ouvir(f: str, c) -> tuple[float, str] | None:
+        """Transcreve o áudio e devolve (semelhança, texto ouvido); None se a transcrição falhar (não trava o episódio)."""
         try:
             asr.mkdir(parents=True, exist_ok=True)
             ws = transcribe.transcribe(ep / f, f, asr)
         except hf.ToolError as e:
             ctx.project.log({"stage": "voz", "scene": c.id, "asr": "não checado", "erro": str(e)[:200]})
-            return 1.0, c.narration
+            return None
         _save(ep / f.replace(".mp3", ".words.json"), [w.model_dump() for w in ws])
         ouvido = " ".join(w.text for w in ws)
         return voz_check.semelhanca(c.narration, ouvido), ouvido
@@ -155,12 +155,15 @@ def voz(ctx: Ctx) -> None:
             f = f"voz/{sha[:16]}.mp3"
             vizinhos = dict(previous_text=cs[i - 1].narration if i else "",
                             next_text=cs[i + 1].narration if i + 1 < len(cs) else "")
+            checar = voz_check.precisa_checar(c.narration)
             dur = eleven.tts(c.narration, voz_id, ep / f, **vizinhos)
-            r, ouvido = ouvir(f, c)
-            if voz_check.precisa_checar(c.narration) and r < voz_check.LIMITE:  # uma regeração só
+            res = ouvir(f, c)
+            ok = True  # não checada (curta ou transcrição falhou) conta como ok
+            if checar and res and res[0] < voz_check.LIMITE:  # uma regeração só
                 dur = eleven.tts(c.narration, voz_id, ep / f, **vizinhos)
-                r, ouvido = ouvir(f, c)
-            ok = r >= voz_check.LIMITE or not voz_check.precisa_checar(c.narration)
+                res = ouvir(f, c) or res  # se a nova checagem falhar, vale o primeiro resultado (ruim)
+                ok = res[0] >= voz_check.LIMITE
+            r, ouvido = res or (1.0, c.narration)
             cache[sha] = {"file": f, "dur": dur, "asr": {"ratio": r, "ouvido": ouvido, "ok": ok}}
             _save(cp, cache)  # a cada cena: um limite no meio não perde o que já foi pago
         a = cache[sha].get("asr", {})

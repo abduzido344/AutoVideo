@@ -536,3 +536,39 @@ def test_transcription_error_does_not_block(env, monkeypatch):
     monkeypatch.setattr(transcribe, "transcribe", quebra)
     assert episode.produce(env.store, env.jid) == "awaiting_approval"
     assert all(v["asr_ok"] for v in _voz_json(env)) and len(env.calls["tts"]) == 3
+
+
+def test_usage_limit_on_regeneration_propagates_without_cache(env, monkeypatch):
+    ruim = lambda media, src, workdir, **k: [transcribe.Word(text="nada", start=0, end=1, src=src)]
+    monkeypatch.setattr(transcribe, "transcribe", ruim)
+    original, n = eleven.tts, {"n": 0}
+
+    def tts(text, *a, **k):
+        n["n"] += 1
+        if n["n"] == 2:  # a regeração da primeira cena
+            raise agents.UsageLimit("limite", 123)
+        return original(text, *a, **k)
+
+    monkeypatch.setattr(eleven, "tts", tts)
+    with pytest.raises(agents.UsageLimit):
+        episode.produce(env.store, env.jid)
+    job = env.store.get(env.jid)
+    assert job["status"] == "queued" and job["stage"] == "voz"
+    assert not (env.ep / "voz" / "cache.json").exists()  # a primeira cena não chegou a gravar cache
+
+
+def test_recheck_failure_keeps_first_bad_result(env, monkeypatch):
+    chamadas = {"n": 0}
+
+    def asr(media, src, workdir, **k):
+        chamadas["n"] += 1
+        if chamadas["n"] == 1:
+            return [transcribe.Word(text="nada", start=0, end=1, src=src)]
+        raise hf.ToolError("quebrou")
+
+    monkeypatch.setattr(transcribe, "transcribe", asr)
+    episode.produce(env.store, env.jid)
+    s1 = _voz_json(env)[0]
+    assert s1["asr_ok"] is False and s1["ouvido"] == "nada"
+    w = json.loads((env.ep / s1["file"]).with_suffix(".words.json").read_text(encoding="utf-8"))
+    assert [x["text"] for x in w] == ["nada"]

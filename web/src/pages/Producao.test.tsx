@@ -127,6 +127,18 @@ describe("Produção: esteira", () => {
 })
 
 describe("Produção: painel de revisão", () => {
+  it("edição em fallback mostra o aviso com o motivo; sem fallback não mostra", async () => {
+    vi.mocked(api.episodio).mockResolvedValue({ ...ep, edicao: { fallback: true, motivo: "orçamento" } } as Episodio)
+    const { unmount } = render(<Producao jid={5} />)
+    const painel = await screen.findByRole("dialog")
+    expect(await within(painel).findByText(/Edição simplificada/)).toBeTruthy()
+    expect(within(painel).getByText(/orçamento/)).toBeTruthy()
+    unmount()
+    vi.mocked(api.episodio).mockResolvedValue({ ...ep, edicao: { fallback: false } } as Episodio)
+    render(<Producao jid={5} />)
+    await within(await screen.findByRole("dialog")).findByText(/rosto torto/)
+    expect(screen.queryByText(/Edição simplificada/)).toBeNull()
+  })
   it("abre com jid, mostra o player e os fixes do revisor; fechar volta para #/producao", async () => {
     render(<Producao jid={5} />)
     const painel = await screen.findByRole("dialog")

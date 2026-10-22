@@ -58,7 +58,7 @@ export type Decision = {
 }
 export type Episodio = {
   job: Job; perfil: string | null; serie: string | null; n: number | null; titulo: string | null
-  roteiro: string; episodio: unknown; cenas: unknown; revisao: unknown; ajustes: string
+  roteiro: string; episodio: unknown; cenas: unknown; edicao: { fallback?: boolean; motivo?: string } | null; revisao: unknown; ajustes: string
   decisions: Decision[]
   postado: Rede[]
   aprovado: boolean

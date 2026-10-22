@@ -143,6 +143,12 @@ function Revisao({ jid }: { jid: number }) {
             {ep.capa && <img src={ep.capa} alt="Capa" className="w-full rounded-xl border" />}
           </div>
           <div className="min-w-0 space-y-6">
+            {ep.edicao?.fallback && (
+              <p className="flex flex-wrap items-center gap-2 text-sm">
+                <Badge variant="outline">Edição simplificada</Badge>
+                <span className="text-muted-foreground">o editor falhou e o vídeo saiu pela montagem básica.{ep.edicao.motivo && ` Motivo: ${ep.edicao.motivo}`}</span>
+              </p>
+            )}
             <section>
               <Secao>Legenda</Secao>
               <Card className="px-5 py-4 text-sm">

@@ -150,6 +150,9 @@ def test_episode_detail_urls_and_postado():
     d = c.get(f"/api/episodios/{jid}").json()
     assert d["final"].startswith("/projects/benji/") and d["n"] == 1 and d["titulo"] == "t1"
     assert c.get(d["final"]).content == b"x"
+    assert d["edicao"] is None
+    (ep / "edicao.json").write_text('{"fallback": true, "motivo": "m"}', encoding="utf-8")
+    assert c.get(f"/api/episodios/{jid}").json()["edicao"] == {"fallback": True, "motivo": "m"}
     assert c.get(f"/api/episodios/{jid}").json()["aprovado"] is False
     r = c.post(f"/api/episodios/{jid}/postado", json={"rede": "tiktok"})
     assert r.status_code == 409 and "aprovado" in r.json()["detail"]      # só depois de aprovar

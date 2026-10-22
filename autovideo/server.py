@@ -442,7 +442,7 @@ def create_app(store: JobStore, start_worker: bool = True) -> FastAPI:
         postado = _postado(ep, w["n"])
         aprovado = w["n"] is not None and fila._approved(ep.parent, w["n"])
         return {"job": job, **w, "postado": postado, "aprovado": aprovado, "roteiro": _read(ep / "roteiro.md"), "episodio": _json(ep / "episodio.json"),
-                "cenas": _json(ep / "cenas.json"), "revisao": _json(ep / "revisao.json"),
+                "cenas": _json(ep / "cenas.json"), "edicao": _json(ep / "edicao.json"), "revisao": _json(ep / "revisao.json"),
                 "ajustes": _read(ep / "ajustes.md"), "decisions": _decisions(ep),
                 "final": _url(ep / "out" / "final.mp4"), "capa": _url(ep / "out" / "capa.jpg")}
 

@@ -78,7 +78,7 @@ def options_for(role: Role, cwd: Path, context: str = "") -> ClaudeAgentOptions:
         allowed_tools=tools,
         disallowed_tools=deny,
         setting_sources=["project"],  # not "user": user hooks (e.g. rtk) would rewrite Bash and break allow rules
-        skills=list(role.skills) or None, env=dict(hf.NO_TELEMETRY),
+        skills=list(role.skills) or None, env={**hf.NO_TELEMETRY, **({"GEMINI_API_KEY": ""} if role.bash else {})},  # snapshot não manda frames ao Gemini
         max_turns=role.max_turns, max_budget_usd=role.max_usd)
 
 

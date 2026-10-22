@@ -101,7 +101,7 @@ def test_editor_tools(tmp_path):
     assert "Edit(./composition/**)" in t and "Edit(./edicao.json)" in t and "Edit(./**)" not in t
     assert "Bash(npx --yes hyperframes@0.8.163 check:*)" in t
     assert not any(w in x for x in t for w in ("render", "preview", "publish"))
-    assert o.env == {"HYPERFRAMES_NO_TELEMETRY": "1", "DO_NOT_TRACK": "1"}
+    assert o.env == {"HYPERFRAMES_NO_TELEMETRY": "1", "DO_NOT_TRACK": "1", "GEMINI_API_KEY": ""}
 
 
 def test_only_editor_has_bash(tmp_path):

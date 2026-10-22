@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Callable
 from pydantic import BaseModel
 from claude_agent_sdk import ClaudeAgentOptions, query
-from autovideo import skills_sync
+from autovideo import hf, skills_sync
 from autovideo.project import Project
 
 _query = query
@@ -31,12 +31,22 @@ class Role:
     max_turns: int = 30
     max_usd: float = 2.0
     skills: tuple[str, ...] = ()
+    edit: tuple[str, ...] = ("./**",)  # caminhos onde o papel pode escrever
+    bash: tuple[str, ...] = ()  # subcomandos do HyperFrames liberados (só o editor)
+    guias: tuple[str, ...] = ()  # prompts compartilhados (PROMPTS/<guia>), entre o contexto e o prompt do papel
 
+
+# subcomandos que o editor pode rodar; render, preview, publish e afins ficam de fora
+EDITOR_CMDS = ("lint", "check", "snapshot", "timeline", "compositions", "catalog", "add", "keyframes", "docs",
+               "history")
 
 ROLES: dict[str, Role] = {r.name: r for r in (
     *(Role(n, "opus") for n in ("roteirista", "revisor", "showrunner", "analista")),
     *(Role(n, "sonnet") for n in ("diretor_arte", "onboarding", "estilo_chat")),
-    Role("triagem", "haiku", max_turns=5, max_usd=0.2))}
+    Role("triagem", "haiku", max_turns=5, max_usd=0.2),
+    # ponytail: guias=() até a Task 10 criar _direcao.md; ela passa a ("_direcao.md",)
+    Role("editor", "opus", max_turns=60, max_usd=5.0, skills=skills_sync.EDITOR_SKILLS,
+         edit=("./composition/**", "./edicao.json"), bash=EDITOR_CMDS))}
 
 
 def validate_model(model: type[BaseModel]) -> Callable[[Path], None]:
@@ -47,10 +57,14 @@ def validate_model(model: type[BaseModel]) -> Callable[[Path], None]:
 
 def options_for(role: Role, cwd: Path, context: str = "") -> ClaudeAgentOptions:
     # contexto primeiro: prefixo estável entre chamadas aproveita o cache de prompt
-    system = (context + "\n\n" if context else "") + (PROMPTS / f"{role.name}.md").read_text(encoding="utf-8")
+    partes = [context] if context else []
+    partes += [(PROMPTS / g).read_text(encoding="utf-8") for g in role.guias]
+    system = "\n\n".join(partes + [(PROMPTS / f"{role.name}.md").read_text(encoding="utf-8")])
     # Docs: path rules on Write/Glob are never consulted (Edit/Read rules cover all edit/read tools,
     # Grep/Glob included), so Write/Glob/Grep are listed bare and scoped via Read/Edit rules + cwd.
-    tools = ["Read(./**)", "Edit(./**)", "Glob", "Grep"]  # nenhum agente roda Bash
+    # Bash só para o editor, e só os subcomandos da CLI fixada
+    tools = ["Read(./**)", *(f"Edit({p})" for p in role.edit), "Glob", "Grep",
+             *(f"Bash({' '.join(hf.HF)} {c}:*)" for c in role.bash)]
     # agentes nunca escrevem aprovação humana, saída final nem marcadores de etapa (nem a config do projeto),
     # em qualquer profundidade: o onboarding roda na raiz do perfil, acima de series/*/epNN
     deny = [f"Edit(./{d}/**)" for d in (".claude", "approvals", "out", ".stages")]
@@ -64,7 +78,7 @@ def options_for(role: Role, cwd: Path, context: str = "") -> ClaudeAgentOptions:
         allowed_tools=tools,
         disallowed_tools=deny,
         setting_sources=["project"],  # not "user": user hooks (e.g. rtk) would rewrite Bash and break allow rules
-        skills=list(role.skills) or None,
+        skills=list(role.skills) or None, env=dict(hf.NO_TELEMETRY),
         max_turns=role.max_turns, max_budget_usd=role.max_usd)
 
 

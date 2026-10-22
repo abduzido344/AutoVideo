@@ -95,8 +95,37 @@ def test_no_bash_no_skills(tmp_path):
     assert not any(t.startswith("Bash") for t in o.allowed_tools) and o.skills is None
 
 
+def test_editor_tools(tmp_path):
+    o = agents.options_for(ROLES["editor"], tmp_path)
+    t = o.allowed_tools
+    assert "Edit(./composition/**)" in t and "Edit(./edicao.json)" in t and "Edit(./**)" not in t
+    assert "Bash(npx --yes hyperframes@0.8.163 check:*)" in t
+    assert not any(w in x for x in t for w in ("render", "preview", "publish"))
+    assert o.env == {"HYPERFRAMES_NO_TELEMETRY": "1", "DO_NOT_TRACK": "1"}
+
+
+def test_only_editor_has_bash(tmp_path):
+    for n, r in ROLES.items():
+        has = any(x.startswith("Bash") for x in agents.options_for(r, tmp_path).allowed_tools)
+        assert has == (n == "editor")
+
+
+def test_guias_go_between_context_and_role_prompt(tmp_path, monkeypatch):
+    pd = tmp_path / "prompts"
+    pd.mkdir()
+    (pd / "teste.md").write_text("PAPEL", encoding="utf-8")
+    (pd / "g.md").write_text("GUIA", encoding="utf-8")
+    monkeypatch.setattr(agents, "PROMPTS", pd)
+    s = agents.options_for(Role("teste", "haiku", guias=("g.md",)), tmp_path, "CTX").system_prompt
+    assert s.index("CTX") < s.index("GUIA") < s.index("PAPEL")
+
+
+def test_options_env_disables_telemetry(tmp_path):
+    assert agents.options_for(T, tmp_path).env == {"HYPERFRAMES_NO_TELEMETRY": "1", "DO_NOT_TRACK": "1"}
+
+
 def test_roles_table():
-    assert {n for n, r in ROLES.items() if r.model == "opus"} == {"roteirista", "revisor", "showrunner", "analista"}
+    assert {n for n, r in ROLES.items() if r.model == "opus"} == {"roteirista", "revisor", "showrunner", "analista", "editor"}
     assert {n for n, r in ROLES.items() if r.model == "sonnet"} == {"diretor_arte", "onboarding", "estilo_chat"}
     assert ROLES["triagem"] == Role("triagem", "haiku", max_turns=5, max_usd=0.2)
     assert all(r.name == n for n, r in ROLES.items())

@@ -1,0 +1,22 @@
+Anexar rosto.jpg e corpo.jpg. Gerar um prompt por vez, sempre com as duas imagens.
+
+=== REGRAS (colar no fim de todos) ===
+Mesmo personagem das imagens anexadas, mesmas proporções, rosto, cabelo e roupa. Estilo vetorial flat para recorte em peças: contorno preto uniforme e fechado, preenchimentos chapados, no máximo um tom de sombra em bloco por cor, sem gradiente, sem textura, sem brilho, sem desfoque, sem sombra no chão. Fundo branco liso, sem texto, sem grade, sem rótulos. Todas as vistas na mesma escala e alinhadas pela mesma linha de chão, separadas por espaço branco, sem se tocar. Paleta fixa: pele cinza claro #D8D8D6, cabelo #2A2A2A, moletom turquesa #62B796, gola branca, cordões creme, corrente e medalhão dourado #F5C443, mãos cinza-escuro #717171, calça preta com listra lateral branca, tênis brancos com detalhe âmbar #E0A541. Sem personagens extras, membros extras, capuz levantado, acessórios novos ou aparência 3D.
+
+=== 1. TURNAROUND DE CORPO INTEIRO ===
+Folha de turnaround com cinco vistas lado a lado, da esquerda para a direita: frente, três quartos frente, perfil, três quartos costas, costas. Pose neutra em A: em pé, pernas retas levemente afastadas, braços esticados para baixo e afastados uns 20 graus do corpo, mãos abertas e relaxadas com a palma voltada para a coxa, nenhum membro cruzando o tronco. Expressão neutra, olhar para a frente da própria vista. Cotovelos e joelhos com a mesma junta arredondada da referência.
+
+=== 2. CABEÇA EM ÂNGULOS ===
+Folha só com a cabeça e o pescoço, cinco vistas lado a lado no mesmo tamanho: frente, três quartos, perfil, três quartos costas, costas. Expressão neutra, boca fechada. Cabelo com o mesmo volume e a mesma mecha lateral em todas as vistas. Orelhas visíveis onde a vista permite.
+
+=== 3. EXPRESSÕES (VISTA FRONTAL) ===
+Folha com a cabeça de frente repetida em 3 colunas e 2 linhas, mesmo tamanho e posição: neutro, feliz, preocupado, surpreso, irritado, pensativo. Só sobrancelhas, olhos e boca mudam; cabeça, cabelo e orelhas idênticos.
+
+=== 4. BOCAS PARA FALA ===
+Folha só com a parte inferior do rosto de frente, oito versões lado a lado no mesmo tamanho, cada uma com uma forma de boca: fechada, M/B/P lábios apertados, A aberta, E larga, I estreita, O redonda, U projetada, F/V dente sobre o lábio. Traço simples igual ao da referência.
+
+=== 5. MÃOS ===
+Folha com as mãos isoladas, seis poses lado a lado no mesmo tamanho: aberta de palma, aberta de costas, punho fechado, apontando com o indicador, polegar para cima, segurando um celular de lado. Dedos curtos e articulados, punho com corte reto onde encaixa na manga.
+
+=== 6. PEÇAS SEPARADAS PARA O RIG (VISTA FRONTAL) ===
+Folha de recorte do personagem de frente, cada peça desenhada solta e completa, espalhada com espaço entre elas, sem sobreposição: cabeça sem cabelo, cabelo, pescoço, tronco com moletom, braço superior esquerdo e direito, antebraço esquerdo e direito, mão esquerda e direita, coxa esquerda e direita, canela esquerda e direita, tênis esquerdo e direito. Cada peça com a ponta da junta arredondada e completa, para encaixar por baixo da peça vizinha ao girar.

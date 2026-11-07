@@ -1,0 +1,7 @@
+{
+  "enabledPlugins": {
+    "n8n-mcp-skills@n8n-skills": false,
+    "superpowers@claude-plugins-official": false,
+    "claude-security@claude-plugins-official": false
+  }
+}

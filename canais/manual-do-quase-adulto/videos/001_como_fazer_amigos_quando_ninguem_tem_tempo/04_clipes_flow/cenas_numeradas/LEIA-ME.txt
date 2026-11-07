@@ -1,0 +1,5 @@
+Os 58 vídeos foram numerados pelo nome, preservando o ZIP original.
+46 correspondências claras; 12 provisórias identificadas em correspondencia.csv.
+Dois vídeos parecem ser versões da cena 10; ambos foram preservados com os nomes originais após o prefixo.
+Cenas sem correspondência identificada: 53, 55, 57. Isso não confirma ausência: conferir os vídeos com classificação provisória.
+A numeração indica a posição no roteiro; não confirma sincronização com o áudio ElevenLabs.

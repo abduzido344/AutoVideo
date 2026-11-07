@@ -1,0 +1,9 @@
+Você abriu o app do banco, olhou o saldo e fechou de novo sem fazer nada.
+
+[dry, sarcastic, deadpan] Você abriu o app do banco, olhou o saldo e fechou de novo sem fazer nada.
+
+[excited, energetic, fast] Você abriu o app do banco, olhou o saldo e fechou de novo sem fazer nada.
+
+[low, almost confiding] Você abriu o app do banco, olhou o saldo e fechou de novo sem fazer nada.
+
+[low, almost confiding] Todo mundo faz isso no começo do mês e finge que não viu, só que o saldo não muda porque você deixou de olhar, e o dia em que você finalmente abre de verdade costuma ser o dia em que a conta já venceu, então o melhor momento para encarar esse número é hoje, enquanto ele ainda é só um número e não um problema.

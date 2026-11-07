@@ -1,0 +1,21 @@
+# mídia gerada (refeita pelos scripts)
+*.mp4
+*.wav
+!canais/*/voz/voz.wav
+
+# referências pesadas / de terceiros
+sistema/referencias/MODEL PDF.pdf
+
+# cache de sons Mixkit (sons.py baixa sob demanda)
+sistema/sons/*.wav
+
+# previews gerados
+canais/*/motion/effectcraft/prev/
+
+node_modules/
+__pycache__/
+*.pyc
+.env*
+.claude/settings.local.json
+Thumbs.db
+desktop.ini

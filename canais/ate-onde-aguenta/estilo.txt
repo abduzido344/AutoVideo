@@ -1,0 +1,13 @@
+ESTILO
+3D cartoon por código (Three.js + Remotion, `C:/Users/Abduzido/AutoVideo_local/tres/`), sem Blender. Personagem de cabeça grande, corpo arredondado, membros finos; materiais lisos com verniz; luz suave; névoa no fundo. Vertical 1080×1920 nos shorts, 1920×1080 nos longos. Regras de forma, cenário, número-objeto, rosto, gesto e câmera: `C:/Users/Abduzido/AutoVideo_local/tres/regras.md`.
+Paleta: casca #F2BE2E · juntas #1B1C1F · alvo #16171A/#F2C230 · aço #6E747C/#3E4349 · fundo #0D0F12 (nunca preto puro nem branco) · calor #FF5A14 · frio #7FD3FF.
+Luz neutra: hemisfério, key 45° à esquerda com sombra, rim atrás à direita, fill frontal fraco. A cor de frio/calor do clima vem na edição; no render só a fonte (resistência, gelo) tem cor.
+
+PERSONAGEM
+Cobaia: boneco-teste cartoon, casca amarela, juntas pretas, alvos nas têmporas e no peito, "00" no peito, rosto simples (olhos, sobrancelhas, boca). Ficha em personagem/, código em C:/Users/Abduzido/AutoVideo_local/tres/src/cobaia/.
+
+CONTINUIDADE
+Mesmo boneco, mesmo cenário e mesma luz em todos os degraus; só muda o parâmetro do degrau (temperatura, força, altura…). O número do degrau vira objeto (medidor) na palavra.
+
+RESTRIÇÕES
+Dano implícito: racha, derrete, congela, desmonta. "Cru" (casca rompida com fibras vermelhas) só no último degrau, 1–2 s, nunca na thumbnail. Sem sangue, sem rosto humano real. Nenhum texto escrito no render (só na edição). Nunca espelhar.

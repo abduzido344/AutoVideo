@@ -1,0 +1,5 @@
+Use a ficha de personagem anexada como referência obrigatória de identidade.
+
+O mesmo jovem adulto da ficha principal anexada, de corpo esguio e proporções exatamente iguais às da referência. Cabeça arredondada, rosto e pescoço em cinza claro neutro, cabelo preto curto com mecha lateral, olhos pretos ovais, sobrancelhas expressivas e boca simples; sem nariz desenhado ou barba. Moletom turquesa com capuz abaixado e cordões claros, gola branca, corrente fina dourada com medalhão redondo, mãos simplificadas cinza-escuras, calça preta com listras laterais brancas e tênis brancos com detalhes âmbar. Contornos pretos firmes, preenchimentos 2D e sombras discretas em blocos. A imagem anexada prevalece sobre esta descrição para os detalhes visuais.
+
+Recriar o personagem no ângulo e na pose solicitados, preservando todos os detalhes da referência. [DESCREVER AQUI O ÂNGULO, A POSE, A EXPRESSÃO E O ENQUADRAMENTO]. Fundo simples e sem texto, a menos que um cenário seja solicitado. Não reproduzir a prancha inteira dentro da cena. Sem personagens extras, membros extras, figurino diferente, capuz levantado, boné, mudança de cor do rosto ou aparência 3D.

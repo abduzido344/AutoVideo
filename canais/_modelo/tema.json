@@ -1,0 +1,17 @@
+{
+ "fonte": "Segoe UI",
+ "cor": "#FFFFFF",
+ "destaque": "#F2D15A",
+ "borda": "#141414",
+ "thumb_fonte": "C:/Windows/Fonts/seguibl.ttf",
+ "thumb_fonte2": "C:/Windows/Fonts/segoeuib.ttf",
+ "thumb_cores": {
+  "tinta": "#1b1b1b",
+  "turq": "#4fa383",
+  "verm": "#d9654b",
+  "branco": "#fbfaf7",
+  "creme": "#fbf3e0",
+  "fundo": "#f7efd9"
+ },
+ "trilha_db": -22
+}

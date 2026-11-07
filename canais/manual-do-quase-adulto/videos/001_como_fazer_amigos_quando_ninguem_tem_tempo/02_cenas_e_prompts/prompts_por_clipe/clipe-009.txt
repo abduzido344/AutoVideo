@@ -1,0 +1,25 @@
+# Clipe 009 · 01:04–01:12
+
+REFERÊNCIA DE IDENTIDADE
+Anexar `personagem-principal-aprovado.png` quando o protagonista aparecer. O mesmo jovem adulto da ficha principal anexada, de corpo esguio e proporções exatamente iguais às da referência. Cabeça arredondada, rosto e pescoço em cinza claro neutro, cabelo preto curto com mecha lateral, olhos pretos ovais, sobrancelhas expressivas e boca simples; sem nariz desenhado ou barba. Moletom turquesa com capuz abaixado e cordões claros, gola branca, corrente fina dourada com medalhão redondo, mãos simplificadas cinza-escuras, calça preta com listras laterais brancas e tênis brancos com detalhes âmbar. Contornos pretos firmes, preenchimentos 2D e sombras discretas em blocos. A imagem anexada prevalece sobre esta descrição para os detalhes visuais.
+
+ESTILO
+Ilustração 2D editorial horizontal 16:9. Desenho limpo, contornos pretos firmes e sombreamento discreto em blocos. Cenário simples com perspectiva coerente, sobreposição dos planos e sombras de contato. A identidade do protagonista deve permanecer igual à ficha anexada. Sem aparência 3D, fotorrealismo, mudança de roupa, duplicação do personagem, títulos, legendas, logotipos ou marcas-d’água.
+
+AMBIENTE
+Sala de aula, lembrança. Temperatura do ambiente: fria, mantendo as cores do protagonista. Ritmo: BREATHE.
+
+DURAÇÃO E PLANOS
+Clipe horizontal de 8 segundos. Câmeras fixas; cortes secos aos 4 e aos 6 segundos. Um único ambiente.
+0–4 s — WIDE: Personagem e dois colegas simplificados sentados em carteiras próximas.
+4–6 s — INSERT: Um caderno passa da mão de um colega para a mão do personagem.
+6–8 s — REACTION: Ele se vira para o colega com uma expressão receptiva.
+
+CONTINUIDADE
+Mãos com palma proporcional, punhos conectados e dedos curtos e articulados; usar apenas os dedos necessários para ler o gesto. Ao segurar um celular, a tela fica voltada para quem o utiliza: em vista frontal do personagem, mostrar a traseira do aparelho. A tela só aparece de um ponto de vista fisicamente compatível, como sobre o ombro, vista de cima ou aparelho apoiado com a tela para cima. A posição do polegar e a oclusão dos dedos acompanham a pega. Olhares acompanham o alvo da ação. Objetos, orientação e apoios continuam coerentes entre planos. Não teletransportar objetos ou membros.
+
+SOM
+Ambiente baixo e caderno sobre carteira. Sem falas, narração gerada ou boca sincronizada com o narrador. A narração do arquivo narracao-integral.txt será adicionada na edição.
+
+RESTRIÇÕES
+Sem escrita legível nos objetos ou interfaces, títulos, legendas, logotipos ou marcas-d’água. Não acrescentar objetos ou pessoas além dos necessários à ação. Personagens coadjuvantes, quando previstos, devem ser simples e visualmente distintos. Não criar o protagonista em planos que pedem apenas objeto, mãos ou coadjuvante.

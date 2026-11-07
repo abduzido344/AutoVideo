@@ -1,5 +1,19 @@
-import hashlib, json, re
+import hashlib, json, os, re
 from pathlib import Path
+
+RAIZ = Path(__file__).resolve().parents[2]
+
+
+def carregar_env(arq=RAIZ / ".env"):
+    """Lê .env da raiz (CHAVE=valor) para os.environ, sem sobrescrever o que já está no ambiente."""
+    if arq.exists():
+        for linha in arq.read_text(encoding="utf8").splitlines():
+            k, _, v = linha.partition("=")
+            if k.strip() and not k.lstrip().startswith("#") and v.strip():
+                os.environ.setdefault(k.strip(), v.strip().strip("\"'"))
+
+
+carregar_env()
 
 TEMA = {"fonte": "Segoe UI", "cor": "#FFFFFF", "destaque": "#F2D15A", "borda": "#141414",
         "thumb_fonte": "C:/Windows/Fonts/seguibl.ttf", "thumb_fonte2": "C:/Windows/Fonts/segoeuib.ttf",

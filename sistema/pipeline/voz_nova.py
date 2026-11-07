@@ -15,6 +15,7 @@ ini = len(list(saida.glob("v*.wav"))) + 1
 print(f"gerar {n} vozes ({len(texto.split())} palavras cada) na H100 · ≈ US$ {0.25 + n * 0.08:.2f}")
 if "--ok" not in sys.argv:
     sys.exit("rode de novo com --ok para gerar")
+import comum  # carrega o .env
 import modal
 from modal_tts import app, Narrador
 saida.mkdir(parents=True, exist_ok=True)

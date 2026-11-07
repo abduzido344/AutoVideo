@@ -15,7 +15,9 @@ canais/*/motion/effectcraft/prev/
 node_modules/
 __pycache__/
 *.pyc
-.env*
+.env
+.env.*
+!.env.example
 .claude/settings.local.json
 Thumbs.db
 desktop.ini

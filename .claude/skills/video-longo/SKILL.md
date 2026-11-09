@@ -5,24 +5,26 @@ description: Produz um vídeo horizontal 16:9 longo (~8 min) de um canal em cana
 
 # Vídeo longo (16:9, ~8 min)
 
-Ler `canais/<canal>/canal.md` antes. Pasta: `canais/<canal>/videos/NNN_tema/`. Cenas: `formatos.md`. Edição: `edicao.md`. Uma etapa por vez; mostrar o resultado e esperar aprovação. Estado e próximo comando: `python sistema/pipeline/ep.py <pasta>`.
+Ler `canais/<canal>/canal.md` antes. Pasta: `canais/<canal>/videos/NNN_tema/`. Cenas: `formatos.md`. Edição: `edicao.md`. Agentes e portões de aprovação: skill `producao`. Estado e próximo comando: `python sistema/pipeline/ep.py <pasta>`.
 
 ## 1. Ideia → `canais/<canal>/ideias.md`
 Fontes: vídeos gringos (busca em inglês, `&hl=en&gl=US`) do último ano com ≥500 mil views (ideal ≥1 mi) ou muito acima da média do próprio canal = tema provado; ou temas de `sistema/referencias/MODEL PDF.pdf`. Trazer a dor concreta do público com exemplos reais dele.
 Uma linha por ideia: título · prova (link, views) · gancho · ação visual (personagem + objeto). Só entra o que dá para mostrar com o personagem e um objeto.
 
 ## 2. Roteiro → `narracao.txt`
-~1100 palavras (≈133 palavras/min → ~8 min). Parágrafos separados por linha em branco, números por extenso.
+Palavras = minutos × ppm do canal (`canal.md` › Voz; sem medida, 155): 8 min ≈ 1.250. Parágrafos separados por linha em branco, números por extenso.
 - Pontuação de fala e direção de voz (ironia, entusiasmo, tom baixo, tensão…): `voz.md`. Frases corridas, poucos sinais; uma `[direção]` em cada parágrafo que tem intenção própria.
-- Abertura em 3 tempos: curiosidade de filosofia/história → fato crítico do problema → fato que aponta a solução ("guarda essa ideia", pago depois com "lembra da ideia que eu pedi para você guardar?"). Primeira frase em um padrão: contrário, pergunta, número, erro ou história.
-- Logo depois da abertura, CTA curto (~10 s, `[warm, friendly]`): like e inscrição ligados ao tema.
-- Promessa até ~30 s; re-gancho (pergunta) no meio; fecho volta à cena de abertura e ao primeiro tempo.
+- Abertura até ~1:00 (≈150 palavras) em 3 tempos: curiosidade de filosofia/história → fato crítico do problema → fato que aponta a solução ("guarda essa ideia", pago depois com "lembra da ideia que eu pedi para você guardar?"). **A promessa do vídeo é dita até 0:30**, em uma frase, logo depois do 1º tempo. Primeira frase em um padrão: contrário, pergunta, número, erro ou história.
+- CTA de inscrição (~10 s, `[warm, friendly]`, ligado ao tema) nunca antes da promessa. Em teste (`publicacao` › Teste de CTA): pasta de número ímpar, logo depois da primeira revelação (2–3 min); par, dentro da última cena.
+- Primeira revelação da promessa (uma resposta, não mais contexto) até 2:30; re-gancho (pergunta) no meio; fecho volta à cena de abertura e ao primeiro tempo.
 - Um parágrafo = uma ideia que vira cena. Segunda pessoa, situações e números concretos.
 - Variar o ritmo pela direção (`<slow>`, `<fast>`, tom baixo), não por frases picadas.
 - Nunca inventar estudo, número ou autor: conferir os estudos centrais online antes de narrar. Anedota fora do estudo entra como "a história conta". Tema de saúde mental: uma linha indicando um profissional.
+- Competição ("último que…", "um vs outro") não usa esta estrutura: `competicao.md`.
+- Marcar em `marcos.txt` o parágrafo de cada marco (`promessa 3`, `gancho 5`, `revelacao 9`, `virada 31`) e rodar `python sistema/pipeline/medir.py <pasta>` antes de pedir aprovação.
 
 ## 3. Narração → `audio/`
-`PYTHONIOENCODING=utf8 python sistema/pipeline/narrar.py canais/<canal>/videos/NNN_tema --enxuto` mostra a densidade de pontuação e o custo (~US$ 1 por 10 min); corrigir o texto se a meta não bate, pedir ok e rodar com `--ok`. `--enxuto` corta silêncios longos dentro dos parágrafos (vídeos novos; em vídeo já editado muda os tempos). Refaz só parágrafo mudado (`--refazer=3,5` força). `audio/palavras.json` sai junto. Ouvir os parágrafos com tag e os nomes estrangeiros (se a voz errar, grafar foneticamente).
+`PYTHONIOENCODING=utf8 python sistema/pipeline/narrar.py canais/<canal>/videos/NNN_tema --enxuto` mostra a densidade de pontuação e o custo (~US$ 1 por 10 min); corrigir o texto se a meta não bate, rodar com `--ok` e informar o custo depois. `--enxuto` corta silêncios longos dentro dos parágrafos (vídeos novos; em vídeo já editado muda os tempos). Refaz só parágrafo mudado (`--refazer=3,5` força). `audio/palavras.json` sai junto. Ouvir os parágrafos com tag e os nomes estrangeiros (se a voz errar, grafar foneticamente).
 
 ## 4. Storyboard → `storyboard.md`
 A partir de `audio/palavras.json`. Agrupar parágrafos em blocos; nem toda frase vira cena. ≈6–8 cenas-mestre, cada uma voltando 2–4×. Coluna Som preenchida (vira `sfx.csv`).

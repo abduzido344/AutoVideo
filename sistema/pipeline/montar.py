@@ -3,7 +3,7 @@
 Uso: python sistema/pipeline/montar.py <pasta> [ini-fim] [--acabamento] [--checar] [--vertical]
 --checar só valida a EDL. Segmentos ficam em cache: só refaz o que mudou.
 Opcional em midia/: cor.txt, sfx.csv, legendas.ass, trilha.(mp3|wav|m4a) (fica sob a voz, com ducking).
-Se todas as fontes são vídeo com o mesmo fps, mantém esse fps (senão 24). sfx.csv: tempo,som,vol[,fim] (fim corta com fade).
+Se todas as fontes são vídeo com o mesmo fps, mantém esse fps (senão 24). sfx.csv: tempo,som,vol[,fim] (fim corta com fade); som = id, apelido ou caminho de .wav em midia/.
 Vídeo sempre yuv420p, faixa TV, H.264 nível 4.1 e fps fixo (confere no fim e falha se sair diferente).
 Áudio final normalizado a -14 LUFS. Shorts (pasta shorts/) saem em 1080x1920.
 """
@@ -14,7 +14,7 @@ from comum import h, tema, vertical
 
 FPS = 24
 PADRAO = "scale=out_range=tv,format=yuv420p"
-H264 = ["-c:v", "libx264", "-profile:v", "high", "-level:v", "4.1", "-pix_fmt", "yuv420p", "-color_range", "tv"]
+H264 = ["-c:v", "libx264", "-profile:v", "high", "-level:v", "4.1", "-pix_fmt", "yuv420p", "-color_range", "tv", "-bsf:v", "h264_metadata=video_full_range_flag=0"]
 W, H = 1920, 1080
 IMAGEM = (".png", ".jpg", ".jpeg", ".webp")
 TRANS = {"", "corte", "whip", "flash", "fim"}
@@ -161,7 +161,7 @@ def main(v, so=None, acabamento=False, checar=False):
     if trilha:
         entradas += ["-stream_loop", "-1", "-ss", str(t0), "-t", f"{dur:.3f}", "-i", trilha]
         db = tema(v).get("trilha_db", -22)
-        filtro.append(f"[{entradas.count('-i') - 1}:a]aresample=48000,volume={db}dB[m];[m][k]sidechaincompress=threshold=0.02:ratio=6:attack=30:release=500[md]")
+        filtro.append(f"[{entradas.count('-i') - 1}:a]aresample=48000,volume={db}dB[m];[m][k]sidechaincompress=threshold=0.02:ratio={tema(v).get('trilha_ratio', 6)}:attack=30:release=500[md]")
         mix.append("[md]")
     else:
         filtro.append("[k]anullsink")
@@ -191,7 +191,8 @@ def conferir(f):
 def efeitos(v, saida, t0, dur, sr=48000, base=-14):
     mix = np.zeros(int(dur * sr) + sr)
     for k in csv.DictReader(open(os.path.join(v, "midia", "sfx.csv"), encoding="utf8")):
-        with wave.open(sons.obter(k["som"])) as w:
+        arq = os.path.join(v, "midia", k["som"])
+        with wave.open(arq if os.path.isfile(arq) else sons.obter(k["som"])) as w:
             y = np.frombuffer(w.readframes(w.getnframes()), "<i2").astype(float) / 32767
             if w.getnchannels() == 2:
                 y = y.reshape(-1, 2).mean(1)

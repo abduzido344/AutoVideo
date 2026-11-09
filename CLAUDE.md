@@ -11,11 +11,13 @@ sistema/pipeline/
   legendar.py   legendas.ass + .srt             montar.py   EDL → final.mp4 (--checar valida)
   corte.py      trecho de longo → short         thumb_grade.py, postar.py (--quando agenda)
   sons.py       Mixkit (buscar <termo>)         comum.py    formato, tema, cache
+  medir.py      marcos, ppm e CTA do roteiro
 sistema/sons/ (cache Mixkit) · sistema/referencias/ · sistema/arquivo/
 ```
 3D fica **fora do OneDrive**: `C:/Users/Abduzido/AutoVideo_local/tres/` (node_modules pesado; o código não tem backup na nuvem). `npx remotion` dentro dessa pasta.
 Scripts de GPU sem `--ok` só mostram o custo. Narração e imagens refazem só o que mudou. Pasta `shorts/` sai 1080×1920 sozinha.
 
+- Produção por subagentes: skill `producao`; agentes em `.claude/agents/`.
 - Canal novo: `novo-canal` (+ `criar-personagem`). Vídeo novo: `novo-video` → `video-longo` · `video-vertical` · `video-3d`. Edição: `video-longo/edicao.md`. Voz (pontuação e direção do Drama 3): `video-longo/voz.md`. Publicar: `publicacao`.
 - Motion 2D: `motion-design` (personagem em `director/personagem.md`). 3D: `video-3d` + `tres/regras.md`; um `.tsx` salvo por vídeo; nunca Blender.
 
@@ -33,6 +35,6 @@ Pasta do vídeo: `narracao.txt`, `storyboard.md`, `prompts_ia.md`, `audio/`, `mi
 - Texto na tela só na edição (motion e legenda).
 - Imagens em luz neutra; cor na edição (fria no problema → neutra → quente na solução). Nunca espelhar.
 - Prompt de imagem: anexar o personagem e descrever pose, não o personagem.
-- Modal: uma GPU sob demanda; dizer o custo e pedir ok antes de `--ok`.
+- Modal: uma GPU sob demanda; rodar com `--ok` e informar o custo depois.
 - Ver imagem/vídeo por folha de contato (uma imagem, escala reduzida), não quadro a quadro.
 - Arquivos curtos, sem comentários nem explicações que ninguém vai ler.

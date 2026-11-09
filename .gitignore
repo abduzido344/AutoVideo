@@ -21,3 +21,7 @@ __pycache__/
 .claude/settings.local.json
 Thumbs.db
 desktop.ini
+
+# cache de música Mixkit e áudios de conferência gerados
+sistema/sons/musica/
+canais/*/*/*/audio/*.mp3

@@ -1,0 +1,2 @@
+Gerado com a ferramenta integrada image_gen a partir de stickman-remendo-conceito.png.
+Pedido: preservar a identidade do Remendo; personagem único de corpo inteiro, frontal ortográfico, pose A com braços afastados e mãos abertas, pernas separadas, cabeça ereta, fundo cinza claro neutro, luz difusa, sem textos nem vistas adicionais. Regata preta, bermuda laranja, tênis marfim, membros grafite, cabeça lavanda e topete lima. Imagem de referência para Image to 3D; não é modelo 3D.

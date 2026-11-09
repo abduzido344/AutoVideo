@@ -5,7 +5,7 @@ description: Produz um vídeo vertical 9:16 curto (30–90 s; Shorts, Reels, Tik
 
 # Vídeo vertical (9:16, 30–90 s)
 
-Ler `canais/<canal>/canal.md`. Pasta `canais/<canal>/shorts/NNN_tema/`. Cenas: `../video-longo/formatos.md`; edição: `../video-longo/edicao.md` (os scripts detectam `shorts/` e saem 1080×1920). Uma etapa por vez, esperar aprovação. Estado: `python sistema/pipeline/ep.py <pasta>`.
+Ler `canais/<canal>/canal.md`. Pasta `canais/<canal>/shorts/NNN_tema/`. Cenas: `../video-longo/formatos.md`; edição: `../video-longo/edicao.md` (os scripts detectam `shorts/` e saem 1080×1920). Agentes e portões de aprovação: skill `producao`. Estado: `python sistema/pipeline/ep.py <pasta>`.
 
 ## Atalho: corte de um longo
 `python sistema/pipeline/corte.py <pasta do longo> <p_ini>-<p_fim> <nome>` (parágrafos de `audio/tempos.csv`, ≤90 s) cria o short com áudio, palavras, EDL e sons do trecho; pular para a etapa 6. Escolher um trecho que se entende sozinho e começa com gancho.
@@ -14,7 +14,7 @@ Ler `canais/<canal>/canal.md`. Pasta `canais/<canal>/shorts/NNN_tema/`. Cenas: `
 Uma ideia, entendida sem contexto. Fontes: o trecho mais forte de um longo do canal, ou Shorts muito acima da média do próprio canal.
 
 ## 2. Conta
-Duração 30, 60 ou 90 s. Palavras ≈ segundos × 2,4 (depois da primeira narração, usar a velocidade real).
+Duração 30, 60 ou 90 s. Palavras = segundos × ppm do canal ÷ 60 (`canal.md` › Voz); sem medida, × 2,4 (60 s ≈ 140–150 palavras).
 
 ## 3. Roteiro → `narracao.txt`
 - 1ª frase já é o gancho: contrário, pergunta, número, erro ou história no meio. Sem saudação, sem "neste vídeo".
@@ -22,6 +22,8 @@ Duração 30, 60 ou 90 s. Palavras ≈ segundos × 2,4 (depois da primeira narra
 - Um parágrafo por plano. Virada no meio; fim curto com a ideia-chave, de preferência emendando no começo (loop).
 - Fluido, sem pausa dramática: frases corridas de 12 a 25 palavras, poucos sinais, sem `:` `;` `—` `…`. Direção de voz em cada plano com intenção própria (gancho com energia, virada com surpresa, ironia, tom baixo). Regras e tags: `../video-longo/voz.md`.
 - Sem pedir inscrição. Nunca inventar estudo, número ou autor.
+- Competição: `../video-longo/competicao.md` (a 1ª ação é a 1ª frase).
+- Antes de narrar: `python sistema/pipeline/medir.py <pasta>` (duração estimada, palavras por sinal, sem pedido de inscrição).
 
 ## 4. Narração
 `PYTHONIOENCODING=utf8 python sistema/pipeline/narrar.py <pasta>` mostra o custo; com `--ok` gera. Shorts saem sem pausas longas; `palavras.json` sai junto.

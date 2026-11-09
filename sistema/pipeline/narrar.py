@@ -2,7 +2,7 @@
 
 Uso: python sistema/pipeline/narrar.py <pasta do vídeo> [voz.wav] [--ok] [--refazer=3,5] [--com-pausas] [--ritmo=1.2] [--enxuto]
 Sem --ok só mostra o que vai gerar, a densidade de pontuação e o custo. Refaz só parágrafos novos ou com texto mudado.
-Shorts: pausas dentro do parágrafo limitadas a ~0,2 s; --enxuto limita a ~0,3 s nos longos (a voz crua deixa até 0,6 s). --ritmo acelera a narração inteira sem mudar o tom. No fim gera audio/palavras.json (Whisper local).
+Shorts: pausas dentro do parágrafo limitadas a ~0,2 s; --enxuto limita a ~0,3 s nos longos (a voz crua deixa até 0,6 s). --ritmo acelera a narração inteira sem mudar o tom. Parágrafo só com [pausa N] vira N s de silêncio (som original de um clipe entra ali pelo sfx.csv). No fim gera audio/palavras.json (Whisper local).
 Texto enviado à voz: : ; — … e parênteses viram vírgula. [direção] no começo do parágrafo vale para o parágrafo todo (voz.md em video-longo).
 Saída: audio/partes/pNNN.wav, audio/narracao.wav, audio/tempos.csv.
 """
@@ -56,7 +56,8 @@ partes.mkdir(parents=True, exist_ok=True)
 paragrafos = [p.strip() for p in (ep / "narracao.txt").read_text(encoding="utf8").split("\n\n") if p.strip()]
 cache, hr = Cache(partes), h(ref.read_bytes(), ref_texto)
 chave = {i: h(p, hr) for i, p in enumerate(paragrafos, 1)}
-faltam = [i for i in chave if i in refazer or cache.novo(f"p{i:03d}", chave[i], (partes / f"p{i:03d}.wav").exists())]
+pausa = {i: float(m[1]) for i, p in enumerate(paragrafos, 1) if (m := re.fullmatch(r"\[pausa ([\d.]+)\]", p))}
+faltam = [i for i in chave if i not in pausa and (i in refazer or cache.novo(f"p{i:03d}", chave[i], (partes / f"p{i:03d}.wav").exists()))]
 
 if faltam:
     palavras = sum(len(paragrafos[i - 1].split()) for i in faltam)
@@ -87,18 +88,26 @@ if faltam:
             print(f"{i}/{len(paragrafos)} ok", flush=True)
 
 final = ep / "audio/narracao.wav"
-if not faltam and final.exists() and final.stat().st_mtime >= max(p.stat().st_mtime for p in partes.glob("p*.wav")):
+if not faltam and final.exists() and final.stat().st_mtime >= max([p.stat().st_mtime for p in partes.glob("p*.wav")] + [(ep / "narracao.txt").stat().st_mtime]):
     sys.exit("narração em dia, nada a gerar")
 linhas, t, lista = [], 0.0, partes / "lista.txt"
-silencio = partes / "silencio.wav"
-with wave.open(str(partes / "p001.wav")) as w:
+with wave.open(str(next(partes / f"p{i:03d}.wav" for i in chave if i not in pausa))) as w:
     taxa = w.getframerate()
-subprocess.run(["ffmpeg", "-y", "-v", "error", "-f", "lavfi", "-i", f"anullsrc=r={taxa}:cl=mono", "-t", str(PAUSA),
-                "-c:a", "pcm_s16le", str(silencio)], check=True)
+
+
+def mudo(arq, s):
+    subprocess.run(["ffmpeg", "-y", "-v", "error", "-f", "lavfi", "-i", f"anullsrc=r={taxa}:cl=mono", "-t", str(s),
+                    "-c:a", "pcm_s16le", str(arq)], check=True)
+    return arq
+
+
+silencio = mudo(partes / "silencio.wav", PAUSA)
 with lista.open("w", encoding="utf8") as f:
     for i, texto in enumerate(paragrafos, 1):
         arq = partes / f"p{i:03d}.wav"
-        if enxuto:
+        if i in pausa:
+            arq = mudo(partes / f"s{i:03d}.wav", pausa[i])
+        elif enxuto:
             e = partes / f"e{i:03d}.wav"
             subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", str(arq), "-af", FILTRO, "-c:a", "pcm_s16le", str(e)], check=True)
             arq = e

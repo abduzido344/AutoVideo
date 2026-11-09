@@ -1,0 +1,16 @@
+inicio,fim,fonte,de,ate,zoom,trans
+0.00,7.87,fontes/1_garrafa.mp4,7.13,,,corte
+7.87,12.57,fontes/1_garrafa.mp4,15.00,,,corte
+12.57,19.28,fontes/2_pokemon.mp4,23.79,,,corte
+19.28,23.98,fontes/2_pokemon.mp4,30.50,,,corte
+23.98,31.29,fontes/3_manequim.mp4,52.69,,,corte
+31.29,35.99,fontes/3_manequim.mp4,60.00,,,corte
+35.99,43.40,fontes/4_bambam_jaula.mp4,0,0.1,,corte
+43.40,48.90,fontes/4_bambam_jaula.mp4,0,,,corte
+48.90,56.55,fontes/5_olha_ela.mp4,0,2.5,,corte
+56.55,61.95,fontes/5_olha_ela.mp4,2.50,,,corte
+61.95,67.31,fontes/6_m_ta_tranquilo.mp4,47.14,,,corte
+67.31,72.51,fontes/6_m_ta_tranquilo.mp4,52.50,,,corte
+72.51,77.60,fontes/7_m_infiel.mp4,58.51,,,corte
+77.60,82.60,fontes/7_m_infiel.mp4,63.60,,,whip
+82.60,90.53,motion/CTA.png,,,1>1.05,fim

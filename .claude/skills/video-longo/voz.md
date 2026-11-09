@@ -14,13 +14,17 @@ Cada sinal vira pausa. Escrever como se fala, não como se lê.
 Antes: `Você não fez nada. E está exausto. Como pode?`
 Depois: `Você não fez nada e mesmo assim está exausto, como pode?`
 
+## Ritmo e silêncio
+- Palavras do roteiro = duração-alvo × ppm medido do canal (`medir.py` no último vídeo com a voz atual; o número fica em `canal.md` › Voz). Sem medida: 155/min.
+- Silêncio depois de uma revelação: parágrafo sozinho `[pausa 1.5]`, em 1 ou 2 revelações por vídeo. Nunca por pontuação.
+
 ## Direção
 O Drama 3 segue direção em linguagem natural entre colchetes. A referência `voz.wav` é calma, e sem direção a voz tende a ficar nela: o tom que importa tem de estar escrito.
 - Para cada parágrafo, decidir a intenção (ironia, entusiasmo, intimidade, tensão, alívio…) e escrever a tag que a pede. Só a explicação neutra fica sem tag.
 - `[direção]` no começo vale para o parágrafo todo (`narrar.py` a repete em cada pedaço que o Fish gera). Mudou o tom: novo parágrafo.
 - A direção enfraquece com o tempo: medido, o tom baixo voltou ao normal depois de ~4 s num parágrafo de 60 palavras. Parágrafo com tom marcado: até ~25 palavras (≈ 8 s). Mais longo: repetir a `[direção]` no começo das frases seguintes.
 - Em inglês, concreta: tom + ritmo + jeito, até três qualificadores. Uma emoção principal; não misturar opostas.
-- Sons no ponto exato: `[sighs]`, `[laughs]`, `[chuckles]`, `[breath]`. Nada de tag de pausa.
+- Sons no ponto exato: `[sighs]`, `[laughs]`, `[chuckles]`, `[breath]`. Nada de tag de pausa dentro da fala; para um clipe tocar com o som original, um parágrafo sozinho `[pausa N]` (N s de silêncio, sem GPU).
 - Em palavras soltas: `<emphasis>`, `<slow>`, `<fast>`, `<soft>`, `<stress>`, `<forceful>`, `<whisper>`.
 - Parênteses e asteriscos não funcionam.
 - Gancho com energia, dor mais baixa e lenta, virada com surpresa, solução calorosa, fecho calmo: acompanha a cor da edição (fria → neutra → quente).
@@ -38,3 +42,5 @@ O Drama 3 segue direção em linguagem natural entre colchetes. A referência `v
 | Alívio, virada | `[relieved, lighter]` · `[hopeful, brightening]` |
 
 A direção não saiu na prova? Mais qualificadores concretos (`[very low, almost a whisper, slow]`), parágrafo mais curto, `--refazer=N` só nele.
+
+- **Ritmo e energia vêm da referência, não da tag** (medido 08/11/2026): `[very fast…]` não muda palavras/s e `<emphasis>` alonga. Para energia alta, gerar 4 takes com a voz atual e direção forte, escolher o melhor (Whisper ok, pitch ±3 st) e acelerar 1,15–1,2× com atempo como nova referência; `--ritmo` no máximo 1,05 depois disso.

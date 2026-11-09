@@ -4,7 +4,7 @@ Uso: python sistema/pipeline/ep.py                  todos os canais
      python sistema/pipeline/ep.py canais/<canal>    um canal
      python sistema/pipeline/ep.py <pasta do vídeo>  detalhe e próximo comando
 """
-import re, sys
+import re, subprocess, sys
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[2]
@@ -19,13 +19,40 @@ ETAPAS = [
     ("final", "midia/final.mp4", ["midia/edl.csv", "midia/legendas.ass", "midia/sfx.csv", "midia/cor.txt", "audio/narracao.wav"], P + "montar.py {v}"),
     ("publicação", "midia/publicacao.md", ["midia/final.mp4"], "skill publicacao"),
 ]
+NOVAS = {
+    "imagens": ("imagens", "midia/cenas", ["storyboard.md", "prompts_ia.md"], "prompts_ia.md → midia/cenas/ (cenógrafo)"),
+    "motion": ("motion", "midia/motion", ["storyboard.md"], "midia/motion/ (clipes e cenas de motion)"),
+    "som": ("som", "midia/sfx.csv", ["storyboard.md"], "midia/sfx.csv e trilha (sons.py buscar <termo>)"),
+    "revisão": ("revisão", "passagem/revisao-final.md", ["midia/final.mp4"], "parecer em passagem/revisao-final.md"),
+}
+DONOS = {"roteiro": "roteirista", "voz": "narrador", "palavras": "narrador", "storyboard": "diretor", "imagens": "cenografo",
+         "motion": "animador-2d", "som": "sonoplasta", "edl": "montador", "legenda": "montador", "final": "montador",
+         "revisão": "revisor", "publicação": "publicador", "postado": "orquestrador"}
 
+
+def etapas(v):
+    if not (v / "brief.md").exists():
+        return ETAPAS
+    sb = (v / "storyboard.md").read_text(encoding="utf8") if (v / "storyboard.md").exists() else ""
+    tem = {"imagens": "IMAGEM" in sb or (v / "prompts_ia.md").exists(), "som": True,
+           "motion": "MOTION" in sb and not re.search(r"formato:\s*3d", (v / "brief.md").read_text(encoding="utf8"))}
+    novas = [NOVAS[n] for n in ("imagens", "motion", "som") if tem[n]]
+    return [y for e in ETAPAS for y in (novas if e[0] == "edl" else []) + [e] + ([NOVAS["revisão"]] if e[0] == "final" else [])]
+
+def pendencias(v):
+    ms = ((f, re.search(r"^estado:\s*(devolve:\S+|bloqueado)", f.read_text(encoding="utf8"), re.M)) for f in sorted((v / "passagem").glob("*.md")))
+    return [f"{f.stem}: {m.group(1)}" for f, m in ms if m]
+
+def medida(v):
+    r = subprocess.run([sys.executable, str(RAIZ / "sistema/pipeline/medir.py"), str(v)], capture_output=True, text=True, encoding="utf8", cwd=RAIZ)
+    fora = [l.split(":")[0][5:] for l in r.stdout.splitlines() if l.startswith("FORA")]
+    return f"medir: {len(fora)} FORA ({', '.join(fora)})" if fora else "medir: ok" if r.returncode == 0 else "medir: erro"
 
 def estado(v):
     out = []
-    for nome, arq, deps, cmd in ETAPAS:
+    for nome, arq, deps, cmd in etapas(v):
         a = v / arq
-        if not a.exists():
+        if not a.exists() or a.is_dir() and not any(a.iterdir()):
             out.append((nome, "falta", cmd)); continue
         velhos = [d for d in deps if (v / d).exists() and (v / d).stat().st_mtime > a.stat().st_mtime + 1]
         out.append((nome, "velho:" + ",".join(Path(d).name for d in velhos) if velhos else "ok", cmd))
@@ -59,6 +86,13 @@ def detalhe(v):
     prox = next(((n, s, c) for n, s, c in e if not s.startswith("ok")), None)
     if prox:
         print("próximo:", prox[2].format(v=rel))
+        if (v / "brief.md").exists():
+            print("dono:", DONOS[prox[0]])
+    if (v / "brief.md").exists():
+        for l in pendencias(v):
+            print("pendência:", l)
+        if (v / "narracao.txt").exists():
+            print(medida(v))
 
 
 def main(alvo=None):

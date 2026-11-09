@@ -64,7 +64,7 @@ def main(v, teste=False, quando=None, publico=False, de_novo=False):
     from googleapiclient.http import MediaFileUpload
     yt = servico()
     corpo = {"snippet": {"title": m["titulo"], "description": m["desc"], "tags": m["tags"], "categoryId": "27", "defaultLanguage": "pt-BR", "defaultAudioLanguage": "pt-BR"},
-             "status": {**st_, "selfDeclaredMadeForKids": False, "containsSyntheticMedia": True}}
+             "status": {**st_, "selfDeclaredMadeForKids": False, "containsSyntheticMedia": False}}
     req = yt.videos().insert(part="snippet,status", body=corpo, media_body=MediaFileUpload(str(v / "midia" / "final.mp4"), chunksize=8 << 20, resumable=True))
     r = None
     while r is None:

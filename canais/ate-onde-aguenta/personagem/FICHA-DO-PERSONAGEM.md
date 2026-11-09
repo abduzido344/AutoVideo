@@ -1,16 +1,35 @@
-# Cobaia
+# Remendo — host do canal
 
-Boneco-teste (crash-test dummy) cartoon que enfrenta cada degrau da escala. Não fala; reage com o rosto e o corpo (recua, abana o rosto, cambaleia, cai, racha). Volta sempre inteiro no início do vídeo — "a Cobaia de hoje vai até…".
+Referência visual aprovada pelo usuário em 08/11/2026: `referencias_aprovadas/stickman-remendo-conceito.png`. A imagem define a identidade. Nome definitivo: Remendo. Ele comanda os testes (botão, alavanca, apostas); as cobaias são os bichos e objetos testados.
 
-- Cabeça esférica grande (~35% da altura); tronco e pelve em blocos arredondados; braços e pernas em cilindros finos; esferas pretas nas juntas, mãos e pés.
-- Casca amarela #F2BE2E com verniz; juntas pretas metálicas #1B1C1F.
-- Alvos amarelo/preto (#F2C230/#16171A) nas duas têmporas e no peito, em cima à esquerda da tela; "00" preto no centro do peito.
-- Rosto: olhos brancos ovais com pupila e brilho, sobrancelhas em barra, boca desenhada; rubor e gota de suor como extras.
-- Proibido: roupa, sangue; "cru" (casca rompida com fibras) só no último degrau, 1–2 s, nunca na thumbnail.
+## Identidade
 
-Código: `C:/Users/Abduzido/AutoVideo_local/tres/src/cobaia/` — `Cobaia.tsx` (modelo), `poses.ts` (ossos e poses), `expressoes.ts` (kit de rostos). Ficha visual: `npx remotion still src/index.ts ficha` em `C:/Users/Abduzido/AutoVideo_local/tres/`.
+Humanoide adulto esguio em estilo stickman 3D. Personalidade despojada, irônica e curiosa: aceita o experimento com confiança, desconfia quando percebe o risco e reage com espanto quando passa do limite. Reações corporais e faciais, sem necessidade de fala. Volta inteiro no começo de cada vídeo.
 
-Ossos: pos, raiz, quadril, coluna, pescoco, cabeca, braco/antebraco/mao, coxa/canela/pe (E = esquerda do boneco = direita da tela; D espelhado automaticamente). Graus (x, y, z):
-- braço abre: Z positivo (90 = horizontal, 160 = mãos pra cima); para a frente: X negativo; Y negativo gira o braço pra dentro (mão no peito/garganta).
-- cotovelo dobra: antebraço X negativo. Coxa para a frente: X negativo; joelho: canela X positivo.
-- cabeça para trás: X negativo; vira: Y.
+## Aparência
+
+- Cabeça retangular alongada com cantos arredondados, pele lavanda fosca; nariz pequeno angular.
+- Olhos creme assimétricos com pálpebras expressivas, pupilas escuras, sobrancelhas grossas e sorriso torto.
+- Costura preta discreta em uma bochecha; preservar o lado escolhido no modelo em todas as cenas. A prancha tem diferenças entre vistas e não define esse lado com segurança.
+- Pequeno topete verde-lima, pontudo e assimétrico.
+- Pescoço e membros muito finos, grafite, superfície de borracha; mãos simplificadas expressivas.
+- Regata preta larga, bermuda laranja queimado e tênis grandes de cano alto em marfim gasto. Tênis sem marcas comerciais.
+- Postura relaxada, ombros baixos e leve inclinação do corpo.
+- Paleta inicial aproximada: lavanda #AA91B0; grafite #303033; lima #BEDB35; laranja #BC612D; marfim #E6DDC8. Ajustar pela referência em luz neutra.
+
+## Expressões principais
+
+De boa: pálpebras baixas, sobrancelha levantada e sorriso enviesado.
+Será?: sobrancelhas preocupadas, olhar lateral e boca tensa.
+Deu ruim: olhos arregalados, sobrancelhas altas e boca aberta.
+
+## Produção
+
+Construir identidade nova em Three.js no ambiente local `C:/Users/Abduzido/AutoVideo_local/tres/`. Não reutilizar o visual da Cobaia amarela nem a cabeça do protótipo AGU-01. Quaternius pode ajudar com rig e movimentos se as proporções permitirem; não deformar o conceito para se adequar à base.
+
+Estado: conceito visual aprovado; primeira versão procedural 3D construída em `src/remendo/Remendo.tsx`, no ambiente local. Uso e limites em `REMENDO-3D.md`. A imagem gerada não é malha, rig ou arquivo GLB. Primeiro validar corpo inteiro e perfil em render; depois movimentos e expressões. Roupa e cadarços podem ser simplificados preservando silhueta e cores.
+
+Sem sangue. Representações do corpo humano devem usar anatomia explicativa própria, sem apresentar a anatomia fictícia do mascote como humana.
+
+A ficha e o código antigos são legado; `FICHA-LEGADO-COBAIA.md` preserva a descrição anterior.
+

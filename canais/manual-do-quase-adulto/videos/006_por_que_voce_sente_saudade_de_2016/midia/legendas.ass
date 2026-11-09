@@ -1,0 +1,1617 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Normal,Segoe UI,62,&H00FFFFFF,&H00FFFFFF,&H00141414,&H80000000,-1,0,0,0,100,100,0,0,1,5,2,2,80,80,60,1
+Style: Gancho,Segoe UI,96,&H00FFFFFF,&H00FFFFFF,&H00141414,&H80000000,-1,0,0,0,100,100,0,0,1,7,3,2,80,80,150,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:00.95,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}Em{\c&H00FFFFFF} 1688 um estudante
+Dialogue: 0,0:00:00.95,0:00:01.90,Gancho,,0,0,0,,Em {\c&H005AD1F2}1688{\c&H00FFFFFF} um estudante
+Dialogue: 0,0:00:01.90,0:00:02.26,Gancho,,0,0,0,,Em 1688 {\c&H005AD1F2}um{\c&H00FFFFFF} estudante
+Dialogue: 0,0:00:02.26,0:00:02.76,Gancho,,0,0,0,,Em 1688 um {\c&H005AD1F2}estudante{\c&H00FFFFFF}
+Dialogue: 0,0:00:02.76,0:00:02.92,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}de{\c&H00FFFFFF} medicina de 19 anos
+Dialogue: 0,0:00:02.92,0:00:03.50,Gancho,,0,0,0,,de {\c&H005AD1F2}medicina{\c&H00FFFFFF} de 19 anos
+Dialogue: 0,0:00:03.50,0:00:03.89,Gancho,,0,0,0,,de medicina {\c&H005AD1F2}de{\c&H00FFFFFF} 19 anos
+Dialogue: 0,0:00:03.89,0:00:04.28,Gancho,,0,0,0,,de medicina de {\c&H005AD1F2}19{\c&H00FFFFFF} anos
+Dialogue: 0,0:00:04.28,0:00:04.70,Gancho,,0,0,0,,de medicina de 19 {\c&H005AD1F2}anos{\c&H00FFFFFF}
+Dialogue: 0,0:00:04.70,0:00:05.22,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}chamado{\c&H00FFFFFF} Johannes Hofer deu
+Dialogue: 0,0:00:05.22,0:00:05.72,Gancho,,0,0,0,,chamado {\c&H005AD1F2}Johannes{\c&H00FFFFFF} Hofer deu
+Dialogue: 0,0:00:05.72,0:00:06.54,Gancho,,0,0,0,,chamado Johannes {\c&H005AD1F2}Hofer{\c&H00FFFFFF} deu
+Dialogue: 0,0:00:06.54,0:00:07.06,Gancho,,0,0,0,,chamado Johannes Hofer {\c&H005AD1F2}deu{\c&H00FFFFFF}
+Dialogue: 0,0:00:07.06,0:00:07.42,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}nome{\c&H00FFFFFF} a uma doença
+Dialogue: 0,0:00:07.42,0:00:07.54,Gancho,,0,0,0,,nome {\c&H005AD1F2}a{\c&H00FFFFFF} uma doença
+Dialogue: 0,0:00:07.54,0:00:07.68,Gancho,,0,0,0,,nome a {\c&H005AD1F2}uma{\c&H00FFFFFF} doença
+Dialogue: 0,0:00:07.68,0:00:08.32,Gancho,,0,0,0,,nome a uma {\c&H005AD1F2}doença{\c&H00FFFFFF}
+Dialogue: 0,0:00:08.32,0:00:08.76,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}e{\c&H00FFFFFF} esse nome você usa
+Dialogue: 0,0:00:08.76,0:00:08.96,Gancho,,0,0,0,,e {\c&H005AD1F2}esse{\c&H00FFFFFF} nome você usa
+Dialogue: 0,0:00:08.96,0:00:09.34,Gancho,,0,0,0,,e esse {\c&H005AD1F2}nome{\c&H00FFFFFF} você usa
+Dialogue: 0,0:00:09.34,0:00:09.66,Gancho,,0,0,0,,e esse nome {\c&H005AD1F2}você{\c&H00FFFFFF} usa
+Dialogue: 0,0:00:09.66,0:00:09.98,Gancho,,0,0,0,,e esse nome você {\c&H005AD1F2}usa{\c&H00FFFFFF}
+Dialogue: 0,0:00:09.98,0:00:10.36,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}toda{\c&H00FFFFFF} semana sem saber
+Dialogue: 0,0:00:10.36,0:00:10.92,Gancho,,0,0,0,,toda {\c&H005AD1F2}semana{\c&H00FFFFFF} sem saber
+Dialogue: 0,0:00:10.92,0:00:11.66,Gancho,,0,0,0,,toda semana {\c&H005AD1F2}sem{\c&H00FFFFFF} saber
+Dialogue: 0,0:00:11.66,0:00:12.06,Gancho,,0,0,0,,toda semana sem {\c&H005AD1F2}saber{\c&H00FFFFFF}
+Dialogue: 0,0:00:12.06,0:00:12.30,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}que{\c&H00FFFFFF} um dia ele foi
+Dialogue: 0,0:00:12.30,0:00:12.44,Gancho,,0,0,0,,que {\c&H005AD1F2}um{\c&H00FFFFFF} dia ele foi
+Dialogue: 0,0:00:12.44,0:00:12.82,Gancho,,0,0,0,,que um {\c&H005AD1F2}dia{\c&H00FFFFFF} ele foi
+Dialogue: 0,0:00:12.82,0:00:13.34,Gancho,,0,0,0,,que um dia {\c&H005AD1F2}ele{\c&H00FFFFFF} foi
+Dialogue: 0,0:00:13.34,0:00:13.64,Gancho,,0,0,0,,que um dia ele {\c&H005AD1F2}foi{\c&H00FFFFFF}
+Dialogue: 0,0:00:13.64,0:00:14.84,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}diagnóstico.{\c&H00FFFFFF}
+Dialogue: 0,0:00:15.32,0:00:15.44,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}Ele{\c&H00FFFFFF} juntou duas palavras
+Dialogue: 0,0:00:15.44,0:00:15.84,Gancho,,0,0,0,,Ele {\c&H005AD1F2}juntou{\c&H00FFFFFF} duas palavras
+Dialogue: 0,0:00:15.84,0:00:16.18,Gancho,,0,0,0,,Ele juntou {\c&H005AD1F2}duas{\c&H00FFFFFF} palavras
+Dialogue: 0,0:00:16.18,0:00:16.60,Gancho,,0,0,0,,Ele juntou duas {\c&H005AD1F2}palavras{\c&H00FFFFFF}
+Dialogue: 0,0:00:16.60,0:00:17.70,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}gregas,{\c&H00FFFFFF} nostos que é voltar
+Dialogue: 0,0:00:17.70,0:00:18.46,Gancho,,0,0,0,,gregas, {\c&H005AD1F2}nostos{\c&H00FFFFFF} que é voltar
+Dialogue: 0,0:00:18.46,0:00:18.70,Gancho,,0,0,0,,gregas, nostos {\c&H005AD1F2}que{\c&H00FFFFFF} é voltar
+Dialogue: 0,0:00:18.70,0:00:18.80,Gancho,,0,0,0,,gregas, nostos que {\c&H005AD1F2}é{\c&H00FFFFFF} voltar
+Dialogue: 0,0:00:18.80,0:00:19.10,Gancho,,0,0,0,,gregas, nostos que é {\c&H005AD1F2}voltar{\c&H00FFFFFF}
+Dialogue: 0,0:00:19.10,0:00:19.42,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}para{\c&H00FFFFFF} casa e algos
+Dialogue: 0,0:00:19.42,0:00:19.92,Gancho,,0,0,0,,para {\c&H005AD1F2}casa{\c&H00FFFFFF} e algos
+Dialogue: 0,0:00:19.92,0:00:20.40,Gancho,,0,0,0,,para casa {\c&H005AD1F2}e{\c&H00FFFFFF} algos
+Dialogue: 0,0:00:20.40,0:00:21.00,Gancho,,0,0,0,,para casa e {\c&H005AD1F2}algos{\c&H00FFFFFF}
+Dialogue: 0,0:00:21.00,0:00:21.28,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}que{\c&H00FFFFFF} é dor,
+Dialogue: 0,0:00:21.28,0:00:21.40,Gancho,,0,0,0,,que {\c&H005AD1F2}é{\c&H00FFFFFF} dor,
+Dialogue: 0,0:00:21.40,0:00:22.20,Gancho,,0,0,0,,que é {\c&H005AD1F2}dor,{\c&H00FFFFFF}
+Dialogue: 0,0:00:22.20,0:00:22.26,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}e{\c&H00FFFFFF} chamou de nostalgia
+Dialogue: 0,0:00:22.26,0:00:22.58,Gancho,,0,0,0,,e {\c&H005AD1F2}chamou{\c&H00FFFFFF} de nostalgia
+Dialogue: 0,0:00:22.58,0:00:22.72,Gancho,,0,0,0,,e chamou {\c&H005AD1F2}de{\c&H00FFFFFF} nostalgia
+Dialogue: 0,0:00:22.72,0:00:23.64,Gancho,,0,0,0,,e chamou de {\c&H005AD1F2}nostalgia{\c&H00FFFFFF}
+Dialogue: 0,0:00:23.64,0:00:24.08,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}a{\c&H00FFFFFF} dor de querer voltar.
+Dialogue: 0,0:00:24.08,0:00:24.44,Gancho,,0,0,0,,a {\c&H005AD1F2}dor{\c&H00FFFFFF} de querer voltar.
+Dialogue: 0,0:00:24.44,0:00:24.60,Gancho,,0,0,0,,a dor {\c&H005AD1F2}de{\c&H00FFFFFF} querer voltar.
+Dialogue: 0,0:00:24.60,0:00:24.90,Gancho,,0,0,0,,a dor de {\c&H005AD1F2}querer{\c&H00FFFFFF} voltar.
+Dialogue: 0,0:00:24.90,0:00:25.86,Gancho,,0,0,0,,a dor de querer {\c&H005AD1F2}voltar.{\c&H00FFFFFF}
+Dialogue: 0,0:00:25.86,0:00:26.02,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}Um{\c&H00FFFFFF} dos casos que ele
+Dialogue: 0,0:00:26.02,0:00:26.16,Gancho,,0,0,0,,Um {\c&H005AD1F2}dos{\c&H00FFFFFF} casos que ele
+Dialogue: 0,0:00:26.16,0:00:26.54,Gancho,,0,0,0,,Um dos {\c&H005AD1F2}casos{\c&H00FFFFFF} que ele
+Dialogue: 0,0:00:26.54,0:00:26.76,Gancho,,0,0,0,,Um dos casos {\c&H005AD1F2}que{\c&H00FFFFFF} ele
+Dialogue: 0,0:00:26.76,0:00:26.86,Gancho,,0,0,0,,Um dos casos que {\c&H005AD1F2}ele{\c&H00FFFFFF}
+Dialogue: 0,0:00:26.86,0:00:27.60,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}descreve{\c&H00FFFFFF} é de um rapaz
+Dialogue: 0,0:00:27.60,0:00:27.86,Gancho,,0,0,0,,descreve {\c&H005AD1F2}é{\c&H00FFFFFF} de um rapaz
+Dialogue: 0,0:00:27.86,0:00:27.98,Gancho,,0,0,0,,descreve é {\c&H005AD1F2}de{\c&H00FFFFFF} um rapaz
+Dialogue: 0,0:00:27.98,0:00:28.08,Gancho,,0,0,0,,descreve é de {\c&H005AD1F2}um{\c&H00FFFFFF} rapaz
+Dialogue: 0,0:00:28.08,0:00:28.56,Gancho,,0,0,0,,descreve é de um {\c&H005AD1F2}rapaz{\c&H00FFFFFF}
+Dialogue: 0,0:00:28.56,0:00:28.76,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}que{\c&H00FFFFFF} definhava estudando longe
+Dialogue: 0,0:00:28.76,0:00:29.56,Gancho,,0,0,0,,que {\c&H005AD1F2}definhava{\c&H00FFFFFF} estudando longe
+Dialogue: 0,0:00:29.56,0:00:30.16,Gancho,,0,0,0,,que definhava {\c&H005AD1F2}estudando{\c&H00FFFFFF} longe
+Dialogue: 0,0:00:30.16,0:00:30.58,Gancho,,0,0,0,,que definhava estudando {\c&H005AD1F2}longe{\c&H00FFFFFF}
+Dialogue: 0,0:00:30.58,0:00:30.78,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}da{\c&H00FFFFFF} família e que começou
+Dialogue: 0,0:00:30.78,0:00:31.32,Gancho,,0,0,0,,da {\c&H005AD1F2}família{\c&H00FFFFFF} e que começou
+Dialogue: 0,0:00:31.32,0:00:31.74,Gancho,,0,0,0,,da família {\c&H005AD1F2}e{\c&H00FFFFFF} que começou
+Dialogue: 0,0:00:31.74,0:00:31.86,Gancho,,0,0,0,,da família e {\c&H005AD1F2}que{\c&H00FFFFFF} começou
+Dialogue: 0,0:00:31.86,0:00:32.28,Gancho,,0,0,0,,da família e que {\c&H005AD1F2}começou{\c&H00FFFFFF}
+Dialogue: 0,0:00:32.28,0:00:32.46,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}a{\c&H00FFFFFF} melhorar assim que foi
+Dialogue: 0,0:00:32.46,0:00:33.20,Gancho,,0,0,0,,a {\c&H005AD1F2}melhorar{\c&H00FFFFFF} assim que foi
+Dialogue: 0,0:00:33.20,0:00:33.58,Gancho,,0,0,0,,a melhorar {\c&H005AD1F2}assim{\c&H00FFFFFF} que foi
+Dialogue: 0,0:00:33.58,0:00:33.82,Gancho,,0,0,0,,a melhorar assim {\c&H005AD1F2}que{\c&H00FFFFFF} foi
+Dialogue: 0,0:00:33.82,0:00:33.98,Gancho,,0,0,0,,a melhorar assim que {\c&H005AD1F2}foi{\c&H00FFFFFF}
+Dialogue: 0,0:00:33.98,0:00:34.50,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}mandado{\c&H00FFFFFF} de volta para casa,
+Dialogue: 0,0:00:34.50,0:00:34.66,Gancho,,0,0,0,,mandado {\c&H005AD1F2}de{\c&H00FFFFFF} volta para casa,
+Dialogue: 0,0:00:34.66,0:00:34.98,Gancho,,0,0,0,,mandado de {\c&H005AD1F2}volta{\c&H00FFFFFF} para casa,
+Dialogue: 0,0:00:34.98,0:00:35.26,Gancho,,0,0,0,,mandado de volta {\c&H005AD1F2}para{\c&H00FFFFFF} casa,
+Dialogue: 0,0:00:35.26,0:00:36.12,Gancho,,0,0,0,,mandado de volta para {\c&H005AD1F2}casa,{\c&H00FFFFFF}
+Dialogue: 0,0:00:36.12,0:00:36.20,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}e{\c&H00FFFFFF} o remédio era só
+Dialogue: 0,0:00:36.20,0:00:36.28,Gancho,,0,0,0,,e {\c&H005AD1F2}o{\c&H00FFFFFF} remédio era só
+Dialogue: 0,0:00:36.28,0:00:36.90,Gancho,,0,0,0,,e o {\c&H005AD1F2}remédio{\c&H00FFFFFF} era só
+Dialogue: 0,0:00:36.90,0:00:37.18,Gancho,,0,0,0,,e o remédio {\c&H005AD1F2}era{\c&H00FFFFFF} só
+Dialogue: 0,0:00:37.18,0:00:37.64,Gancho,,0,0,0,,e o remédio era {\c&H005AD1F2}só{\c&H00FFFFFF}
+Dialogue: 0,0:00:37.64,0:00:38.46,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}esse.{\c&H00FFFFFF}
+Dialogue: 0,0:00:38.46,0:00:38.86,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}Guarda{\c&H00FFFFFF} essa história porque
+Dialogue: 0,0:00:38.86,0:00:39.00,Gancho,,0,0,0,,Guarda {\c&H005AD1F2}essa{\c&H00FFFFFF} história porque
+Dialogue: 0,0:00:39.00,0:00:39.54,Gancho,,0,0,0,,Guarda essa {\c&H005AD1F2}história{\c&H00FFFFFF} porque
+Dialogue: 0,0:00:39.54,0:00:39.96,Gancho,,0,0,0,,Guarda essa história {\c&H005AD1F2}porque{\c&H00FFFFFF}
+Dialogue: 0,0:00:39.96,0:00:40.18,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}ela{\c&H00FFFFFF} volta no fim.
+Dialogue: 0,0:00:40.18,0:00:40.66,Gancho,,0,0,0,,ela {\c&H005AD1F2}volta{\c&H00FFFFFF} no fim.
+Dialogue: 0,0:00:40.66,0:00:40.88,Gancho,,0,0,0,,ela volta {\c&H005AD1F2}no{\c&H00FFFFFF} fim.
+Dialogue: 0,0:00:40.88,0:00:41.91,Gancho,,0,0,0,,ela volta no {\c&H005AD1F2}fim.{\c&H00FFFFFF}
+Dialogue: 0,0:00:41.91,0:00:42.17,Normal,,0,0,0,,{\c&H005AD1F2}Agora{\c&H00FFFFFF} pula 338 anos.
+Dialogue: 0,0:00:42.17,0:00:43.18,Normal,,0,0,0,,Agora {\c&H005AD1F2}pula{\c&H00FFFFFF} 338 anos.
+Dialogue: 0,0:00:43.18,0:00:44.19,Normal,,0,0,0,,Agora pula {\c&H005AD1F2}338{\c&H00FFFFFF} anos.
+Dialogue: 0,0:00:44.19,0:00:45.05,Normal,,0,0,0,,Agora pula 338 {\c&H005AD1F2}anos.{\c&H00FFFFFF}
+Dialogue: 0,0:00:45.05,0:00:45.21,Normal,,0,0,0,,{\c&H005AD1F2}Em{\c&H00FFFFFF} janeiro de 2026
+Dialogue: 0,0:00:45.21,0:00:45.67,Normal,,0,0,0,,Em {\c&H005AD1F2}janeiro{\c&H00FFFFFF} de 2026
+Dialogue: 0,0:00:45.67,0:00:46.31,Normal,,0,0,0,,Em janeiro {\c&H005AD1F2}de{\c&H00FFFFFF} 2026
+Dialogue: 0,0:00:46.31,0:00:46.95,Normal,,0,0,0,,Em janeiro de {\c&H005AD1F2}2026{\c&H00FFFFFF}
+Dialogue: 0,0:00:46.95,0:00:47.39,Normal,,0,0,0,,{\c&H005AD1F2}as{\c&H00FFFFFF} buscas por 2016
+Dialogue: 0,0:00:47.39,0:00:47.87,Normal,,0,0,0,,as {\c&H005AD1F2}buscas{\c&H00FFFFFF} por 2016
+Dialogue: 0,0:00:47.87,0:00:48.63,Normal,,0,0,0,,as buscas {\c&H005AD1F2}por{\c&H00FFFFFF} 2016
+Dialogue: 0,0:00:48.63,0:00:49.39,Normal,,0,0,0,,as buscas por {\c&H005AD1F2}2016{\c&H00FFFFFF}
+Dialogue: 0,0:00:49.39,0:00:49.49,Normal,,0,0,0,,{\c&H005AD1F2}no{\c&H00FFFFFF} TikTok subiram mais
+Dialogue: 0,0:00:49.49,0:00:49.91,Normal,,0,0,0,,no {\c&H005AD1F2}TikTok{\c&H00FFFFFF} subiram mais
+Dialogue: 0,0:00:49.91,0:00:50.89,Normal,,0,0,0,,no TikTok {\c&H005AD1F2}subiram{\c&H00FFFFFF} mais
+Dialogue: 0,0:00:50.89,0:00:51.17,Normal,,0,0,0,,no TikTok subiram {\c&H005AD1F2}mais{\c&H00FFFFFF}
+Dialogue: 0,0:00:51.17,0:00:52.46,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} 450% em uma semana
+Dialogue: 0,0:00:52.46,0:00:53.75,Normal,,0,0,0,,de {\c&H005AD1F2}450%{\c&H00FFFFFF} em uma semana
+Dialogue: 0,0:00:53.75,0:00:53.99,Normal,,0,0,0,,de 450% {\c&H005AD1F2}em{\c&H00FFFFFF} uma semana
+Dialogue: 0,0:00:53.99,0:00:54.19,Normal,,0,0,0,,de 450% em {\c&H005AD1F2}uma{\c&H00FFFFFF} semana
+Dialogue: 0,0:00:54.19,0:00:54.71,Normal,,0,0,0,,de 450% em uma {\c&H005AD1F2}semana{\c&H00FFFFFF}
+Dialogue: 0,0:00:54.71,0:00:55.23,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} mais de 1,6 milhão
+Dialogue: 0,0:00:55.23,0:00:55.51,Normal,,0,0,0,,e {\c&H005AD1F2}mais{\c&H00FFFFFF} de 1,6 milhão
+Dialogue: 0,0:00:55.51,0:00:55.74,Normal,,0,0,0,,e mais {\c&H005AD1F2}de{\c&H00FFFFFF} 1,6 milhão
+Dialogue: 0,0:00:55.74,0:00:55.97,Normal,,0,0,0,,e mais de {\c&H005AD1F2}1,6{\c&H00FFFFFF} milhão
+Dialogue: 0,0:00:55.97,0:00:56.71,Normal,,0,0,0,,e mais de 1,6 {\c&H005AD1F2}milhão{\c&H00FFFFFF}
+Dialogue: 0,0:00:56.71,0:00:57.45,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} vídeos foram postados
+Dialogue: 0,0:00:57.45,0:00:57.97,Normal,,0,0,0,,de {\c&H005AD1F2}vídeos{\c&H00FFFFFF} foram postados
+Dialogue: 0,0:00:57.97,0:00:58.55,Normal,,0,0,0,,de vídeos {\c&H005AD1F2}foram{\c&H00FFFFFF} postados
+Dialogue: 0,0:00:58.55,0:00:59.27,Normal,,0,0,0,,de vídeos foram {\c&H005AD1F2}postados{\c&H00FFFFFF}
+Dialogue: 0,0:00:59.27,0:00:59.93,Normal,,0,0,0,,{\c&H005AD1F2}celebrando{\c&H00FFFFFF} um ano que já
+Dialogue: 0,0:00:59.93,0:01:00.27,Normal,,0,0,0,,celebrando {\c&H005AD1F2}um{\c&H00FFFFFF} ano que já
+Dialogue: 0,0:01:00.27,0:01:00.61,Normal,,0,0,0,,celebrando um {\c&H005AD1F2}ano{\c&H00FFFFFF} que já
+Dialogue: 0,0:01:00.61,0:01:01.03,Normal,,0,0,0,,celebrando um ano {\c&H005AD1F2}que{\c&H00FFFFFF} já
+Dialogue: 0,0:01:01.03,0:01:01.21,Normal,,0,0,0,,celebrando um ano que {\c&H005AD1F2}já{\c&H00FFFFFF}
+Dialogue: 0,0:01:01.21,0:01:01.60,Normal,,0,0,0,,{\c&H005AD1F2}tinha{\c&H00FFFFFF} 10 anos de idade.
+Dialogue: 0,0:01:01.60,0:01:01.99,Normal,,0,0,0,,tinha {\c&H005AD1F2}10{\c&H00FFFFFF} anos de idade.
+Dialogue: 0,0:01:01.99,0:01:02.43,Normal,,0,0,0,,tinha 10 {\c&H005AD1F2}anos{\c&H00FFFFFF} de idade.
+Dialogue: 0,0:01:02.43,0:01:02.65,Normal,,0,0,0,,tinha 10 anos {\c&H005AD1F2}de{\c&H00FFFFFF} idade.
+Dialogue: 0,0:01:02.65,0:01:03.81,Normal,,0,0,0,,tinha 10 anos de {\c&H005AD1F2}idade.{\c&H00FFFFFF}
+Dialogue: 0,0:01:03.81,0:01:03.89,Normal,,0,0,0,,{\c&H005AD1F2}E{\c&H00FFFFFF} o detalhe é
+Dialogue: 0,0:01:03.89,0:01:03.93,Normal,,0,0,0,,E {\c&H005AD1F2}o{\c&H00FFFFFF} detalhe é
+Dialogue: 0,0:01:03.93,0:01:04.53,Normal,,0,0,0,,E o {\c&H005AD1F2}detalhe{\c&H00FFFFFF} é
+Dialogue: 0,0:01:04.53,0:01:04.63,Normal,,0,0,0,,E o detalhe {\c&H005AD1F2}é{\c&H00FFFFFF}
+Dialogue: 0,0:01:04.63,0:01:04.75,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} no fim de 2016
+Dialogue: 0,0:01:04.75,0:01:04.87,Normal,,0,0,0,,que {\c&H005AD1F2}no{\c&H00FFFFFF} fim de 2016
+Dialogue: 0,0:01:04.87,0:01:05.15,Normal,,0,0,0,,que no {\c&H005AD1F2}fim{\c&H00FFFFFF} de 2016
+Dialogue: 0,0:01:05.15,0:01:05.86,Normal,,0,0,0,,que no fim {\c&H005AD1F2}de{\c&H00FFFFFF} 2016
+Dialogue: 0,0:01:05.86,0:01:06.57,Normal,,0,0,0,,que no fim de {\c&H005AD1F2}2016{\c&H00FFFFFF}
+Dialogue: 0,0:01:06.57,0:01:07.01,Normal,,0,0,0,,{\c&H005AD1F2}muita{\c&H00FFFFFF} gente chamava aquele
+Dialogue: 0,0:01:07.01,0:01:07.47,Normal,,0,0,0,,muita {\c&H005AD1F2}gente{\c&H00FFFFFF} chamava aquele
+Dialogue: 0,0:01:07.47,0:01:08.01,Normal,,0,0,0,,muita gente {\c&H005AD1F2}chamava{\c&H00FFFFFF} aquele
+Dialogue: 0,0:01:08.01,0:01:08.37,Normal,,0,0,0,,muita gente chamava {\c&H005AD1F2}aquele{\c&H00FFFFFF}
+Dialogue: 0,0:01:08.37,0:01:08.67,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} o pior ano
+Dialogue: 0,0:01:08.67,0:01:08.95,Normal,,0,0,0,,de {\c&H005AD1F2}o{\c&H00FFFFFF} pior ano
+Dialogue: 0,0:01:08.95,0:01:09.39,Normal,,0,0,0,,de o {\c&H005AD1F2}pior{\c&H00FFFFFF} ano
+Dialogue: 0,0:01:09.39,0:01:09.77,Normal,,0,0,0,,de o pior {\c&H005AD1F2}ano{\c&H00FFFFFF}
+Dialogue: 0,0:01:09.77,0:01:09.95,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} todos, e aqui
+Dialogue: 0,0:01:09.95,0:01:10.81,Normal,,0,0,0,,de {\c&H005AD1F2}todos,{\c&H00FFFFFF} e aqui
+Dialogue: 0,0:01:10.81,0:01:11.05,Normal,,0,0,0,,de todos, {\c&H005AD1F2}e{\c&H00FFFFFF} aqui
+Dialogue: 0,0:01:11.05,0:01:11.25,Normal,,0,0,0,,de todos, e {\c&H005AD1F2}aqui{\c&H00FFFFFF}
+Dialogue: 0,0:01:11.25,0:01:11.39,Normal,,0,0,0,,{\c&H005AD1F2}no{\c&H00FFFFFF} Brasil o desemprego fechou
+Dialogue: 0,0:01:11.39,0:01:11.79,Normal,,0,0,0,,no {\c&H005AD1F2}Brasil{\c&H00FFFFFF} o desemprego fechou
+Dialogue: 0,0:01:11.79,0:01:12.17,Normal,,0,0,0,,no Brasil {\c&H005AD1F2}o{\c&H00FFFFFF} desemprego fechou
+Dialogue: 0,0:01:12.17,0:01:12.85,Normal,,0,0,0,,no Brasil o {\c&H005AD1F2}desemprego{\c&H00FFFFFF} fechou
+Dialogue: 0,0:01:12.85,0:01:13.33,Normal,,0,0,0,,no Brasil o desemprego {\c&H005AD1F2}fechou{\c&H00FFFFFF}
+Dialogue: 0,0:01:13.33,0:01:13.49,Normal,,0,0,0,,{\c&H005AD1F2}o{\c&H00FFFFFF} ano em 12%,
+Dialogue: 0,0:01:13.49,0:01:13.69,Normal,,0,0,0,,o {\c&H005AD1F2}ano{\c&H00FFFFFF} em 12%,
+Dialogue: 0,0:01:13.69,0:01:14.66,Normal,,0,0,0,,o ano {\c&H005AD1F2}em{\c&H00FFFFFF} 12%,
+Dialogue: 0,0:01:14.66,0:01:15.63,Normal,,0,0,0,,o ano em {\c&H005AD1F2}12%,{\c&H00FFFFFF}
+Dialogue: 0,0:01:15.63,0:01:15.71,Normal,,0,0,0,,{\c&H005AD1F2}o{\c&H00FFFFFF} maior da série
+Dialogue: 0,0:01:15.71,0:01:16.05,Normal,,0,0,0,,o {\c&H005AD1F2}maior{\c&H00FFFFFF} da série
+Dialogue: 0,0:01:16.05,0:01:16.35,Normal,,0,0,0,,o maior {\c&H005AD1F2}da{\c&H00FFFFFF} série
+Dialogue: 0,0:01:16.35,0:01:16.73,Normal,,0,0,0,,o maior da {\c&H005AD1F2}série{\c&H00FFFFFF}
+Dialogue: 0,0:01:16.73,0:01:16.91,Normal,,0,0,0,,{\c&H005AD1F2}do{\c&H00FFFFFF} IBGE até então.
+Dialogue: 0,0:01:16.91,0:01:17.43,Normal,,0,0,0,,do {\c&H005AD1F2}IBGE{\c&H00FFFFFF} até então.
+Dialogue: 0,0:01:17.43,0:01:17.95,Normal,,0,0,0,,do IBGE {\c&H005AD1F2}até{\c&H00FFFFFF} então.
+Dialogue: 0,0:01:17.95,0:01:19.15,Normal,,0,0,0,,do IBGE até {\c&H005AD1F2}então.{\c&H00FFFFFF}
+Dialogue: 0,0:01:19.28,0:01:19.28,Normal,,0,0,0,,{\c&H005AD1F2}Mas{\c&H00FFFFFF} tem uma pesquisa
+Dialogue: 0,0:01:19.28,0:01:19.44,Normal,,0,0,0,,Mas {\c&H005AD1F2}tem{\c&H00FFFFFF} uma pesquisa
+Dialogue: 0,0:01:19.44,0:01:19.58,Normal,,0,0,0,,Mas tem {\c&H005AD1F2}uma{\c&H00FFFFFF} pesquisa
+Dialogue: 0,0:01:19.58,0:01:20.12,Normal,,0,0,0,,Mas tem uma {\c&H005AD1F2}pesquisa{\c&H00FFFFFF}
+Dialogue: 0,0:01:20.12,0:01:20.72,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} 2008 que mostra
+Dialogue: 0,0:01:20.72,0:01:21.32,Normal,,0,0,0,,de {\c&H005AD1F2}2008{\c&H00FFFFFF} que mostra
+Dialogue: 0,0:01:21.32,0:01:21.50,Normal,,0,0,0,,de 2008 {\c&H005AD1F2}que{\c&H00FFFFFF} mostra
+Dialogue: 0,0:01:21.50,0:01:21.82,Normal,,0,0,0,,de 2008 que {\c&H005AD1F2}mostra{\c&H00FFFFFF}
+Dialogue: 0,0:01:21.82,0:01:22.08,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} a saudade pode fazer
+Dialogue: 0,0:01:22.08,0:01:22.16,Normal,,0,0,0,,que {\c&H005AD1F2}a{\c&H00FFFFFF} saudade pode fazer
+Dialogue: 0,0:01:22.16,0:01:22.74,Normal,,0,0,0,,que a {\c&H005AD1F2}saudade{\c&H00FFFFFF} pode fazer
+Dialogue: 0,0:01:22.74,0:01:22.94,Normal,,0,0,0,,que a saudade {\c&H005AD1F2}pode{\c&H00FFFFFF} fazer
+Dialogue: 0,0:01:22.94,0:01:23.32,Normal,,0,0,0,,que a saudade pode {\c&H005AD1F2}fazer{\c&H00FFFFFF}
+Dialogue: 0,0:01:23.32,0:01:24.06,Normal,,0,0,0,,{\c&H005AD1F2}exatamente{\c&H00FFFFFF} o contrário do
+Dialogue: 0,0:01:24.06,0:01:24.52,Normal,,0,0,0,,exatamente {\c&H005AD1F2}o{\c&H00FFFFFF} contrário do
+Dialogue: 0,0:01:24.52,0:01:25.14,Normal,,0,0,0,,exatamente o {\c&H005AD1F2}contrário{\c&H00FFFFFF} do
+Dialogue: 0,0:01:25.14,0:01:25.24,Normal,,0,0,0,,exatamente o contrário {\c&H005AD1F2}do{\c&H00FFFFFF}
+Dialogue: 0,0:01:25.24,0:01:25.36,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} parece.
+Dialogue: 0,0:01:25.36,0:01:26.24,Normal,,0,0,0,,que {\c&H005AD1F2}parece.{\c&H00FFFFFF}
+Dialogue: 0,0:01:26.24,0:01:26.64,Normal,,0,0,0,,{\c&H005AD1F2}Guarda{\c&H00FFFFFF} essa ideia também,
+Dialogue: 0,0:01:26.64,0:01:26.76,Normal,,0,0,0,,Guarda {\c&H005AD1F2}essa{\c&H00FFFFFF} ideia também,
+Dialogue: 0,0:01:26.76,0:01:27.06,Normal,,0,0,0,,Guarda essa {\c&H005AD1F2}ideia{\c&H00FFFFFF} também,
+Dialogue: 0,0:01:27.06,0:01:27.78,Normal,,0,0,0,,Guarda essa ideia {\c&H005AD1F2}também,{\c&H00FFFFFF}
+Dialogue: 0,0:01:27.78,0:01:28.08,Normal,,0,0,0,,{\c&H005AD1F2}porque{\c&H00FFFFFF} ela é a parte
+Dialogue: 0,0:01:28.08,0:01:28.30,Normal,,0,0,0,,porque {\c&H005AD1F2}ela{\c&H00FFFFFF} é a parte
+Dialogue: 0,0:01:28.30,0:01:28.42,Normal,,0,0,0,,porque ela {\c&H005AD1F2}é{\c&H00FFFFFF} a parte
+Dialogue: 0,0:01:28.42,0:01:28.48,Normal,,0,0,0,,porque ela é {\c&H005AD1F2}a{\c&H00FFFFFF} parte
+Dialogue: 0,0:01:28.48,0:01:28.78,Normal,,0,0,0,,porque ela é a {\c&H005AD1F2}parte{\c&H00FFFFFF}
+Dialogue: 0,0:01:28.78,0:01:29.20,Normal,,0,0,0,,{\c&H005AD1F2}mais{\c&H00FFFFFF} útil deste vídeo.
+Dialogue: 0,0:01:29.20,0:01:29.64,Normal,,0,0,0,,mais {\c&H005AD1F2}útil{\c&H00FFFFFF} deste vídeo.
+Dialogue: 0,0:01:29.64,0:01:29.98,Normal,,0,0,0,,mais útil {\c&H005AD1F2}deste{\c&H00FFFFFF} vídeo.
+Dialogue: 0,0:01:29.98,0:01:31.17,Normal,,0,0,0,,mais útil deste {\c&H005AD1F2}vídeo.{\c&H00FFFFFF}
+Dialogue: 0,0:01:31.17,0:01:31.25,Normal,,0,0,0,,{\c&H005AD1F2}E{\c&H00FFFFFF} se você já abriu
+Dialogue: 0,0:01:31.25,0:01:31.33,Normal,,0,0,0,,E {\c&H005AD1F2}se{\c&H00FFFFFF} você já abriu
+Dialogue: 0,0:01:31.33,0:01:31.57,Normal,,0,0,0,,E se {\c&H005AD1F2}você{\c&H00FFFFFF} já abriu
+Dialogue: 0,0:01:31.57,0:01:31.79,Normal,,0,0,0,,E se você {\c&H005AD1F2}já{\c&H00FFFFFF} abriu
+Dialogue: 0,0:01:31.79,0:01:32.17,Normal,,0,0,0,,E se você já {\c&H005AD1F2}abriu{\c&H00FFFFFF}
+Dialogue: 0,0:01:32.17,0:01:32.29,Normal,,0,0,0,,{\c&H005AD1F2}uma{\c&H00FFFFFF} playlist de 2016
+Dialogue: 0,0:01:32.29,0:01:32.73,Normal,,0,0,0,,uma {\c&H005AD1F2}playlist{\c&H00FFFFFF} de 2016
+Dialogue: 0,0:01:32.73,0:01:33.63,Normal,,0,0,0,,uma playlist {\c&H005AD1F2}de{\c&H00FFFFFF} 2016
+Dialogue: 0,0:01:33.63,0:01:34.53,Normal,,0,0,0,,uma playlist de {\c&H005AD1F2}2016{\c&H00FFFFFF}
+Dialogue: 0,0:01:34.53,0:01:34.71,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} ficou meia hora olhando
+Dialogue: 0,0:01:34.71,0:01:34.99,Normal,,0,0,0,,e {\c&H005AD1F2}ficou{\c&H00FFFFFF} meia hora olhando
+Dialogue: 0,0:01:34.99,0:01:35.51,Normal,,0,0,0,,e ficou {\c&H005AD1F2}meia{\c&H00FFFFFF} hora olhando
+Dialogue: 0,0:01:35.51,0:01:35.79,Normal,,0,0,0,,e ficou meia {\c&H005AD1F2}hora{\c&H00FFFFFF} olhando
+Dialogue: 0,0:01:35.79,0:01:36.15,Normal,,0,0,0,,e ficou meia hora {\c&H005AD1F2}olhando{\c&H00FFFFFF}
+Dialogue: 0,0:01:36.15,0:01:36.37,Normal,,0,0,0,,{\c&H005AD1F2}para{\c&H00FFFFFF} o teto,
+Dialogue: 0,0:01:36.37,0:01:36.47,Normal,,0,0,0,,para {\c&H005AD1F2}o{\c&H00FFFFFF} teto,
+Dialogue: 0,0:01:36.47,0:01:37.21,Normal,,0,0,0,,para o {\c&H005AD1F2}teto,{\c&H00FFFFFF}
+Dialogue: 0,0:01:37.21,0:01:37.49,Normal,,0,0,0,,{\c&H005AD1F2}deixa{\c&H00FFFFFF} o seu like
+Dialogue: 0,0:01:37.49,0:01:37.65,Normal,,0,0,0,,deixa {\c&H005AD1F2}o{\c&H00FFFFFF} seu like
+Dialogue: 0,0:01:37.65,0:01:37.75,Normal,,0,0,0,,deixa o {\c&H005AD1F2}seu{\c&H00FFFFFF} like
+Dialogue: 0,0:01:37.75,0:01:38.15,Normal,,0,0,0,,deixa o seu {\c&H005AD1F2}like{\c&H00FFFFFF}
+Dialogue: 0,0:01:38.15,0:01:38.39,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} se inscreve no canal,
+Dialogue: 0,0:01:38.39,0:01:38.51,Normal,,0,0,0,,e {\c&H005AD1F2}se{\c&H00FFFFFF} inscreve no canal,
+Dialogue: 0,0:01:38.51,0:01:39.01,Normal,,0,0,0,,e se {\c&H005AD1F2}inscreve{\c&H00FFFFFF} no canal,
+Dialogue: 0,0:01:39.01,0:01:39.11,Normal,,0,0,0,,e se inscreve {\c&H005AD1F2}no{\c&H00FFFFFF} canal,
+Dialogue: 0,0:01:39.11,0:01:39.85,Normal,,0,0,0,,e se inscreve no {\c&H005AD1F2}canal,{\c&H00FFFFFF}
+Dialogue: 0,0:01:39.85,0:01:40.19,Normal,,0,0,0,,{\c&H005AD1F2}assim{\c&H00FFFFFF} este vídeo chega
+Dialogue: 0,0:01:40.19,0:01:40.49,Normal,,0,0,0,,assim {\c&H005AD1F2}este{\c&H00FFFFFF} vídeo chega
+Dialogue: 0,0:01:40.49,0:01:40.91,Normal,,0,0,0,,assim este {\c&H005AD1F2}vídeo{\c&H00FFFFFF} chega
+Dialogue: 0,0:01:40.91,0:01:41.25,Normal,,0,0,0,,assim este vídeo {\c&H005AD1F2}chega{\c&H00FFFFFF}
+Dialogue: 0,0:01:41.25,0:01:41.45,Normal,,0,0,0,,{\c&H005AD1F2}em{\c&H00FFFFFF} quem também está
+Dialogue: 0,0:01:41.45,0:01:41.61,Normal,,0,0,0,,em {\c&H005AD1F2}quem{\c&H00FFFFFF} também está
+Dialogue: 0,0:01:41.61,0:01:42.11,Normal,,0,0,0,,em quem {\c&H005AD1F2}também{\c&H00FFFFFF} está
+Dialogue: 0,0:01:42.11,0:01:42.43,Normal,,0,0,0,,em quem também {\c&H005AD1F2}está{\c&H00FFFFFF}
+Dialogue: 0,0:01:42.43,0:01:42.61,Normal,,0,0,0,,{\c&H005AD1F2}com{\c&H00FFFFFF} saudade agora.
+Dialogue: 0,0:01:42.61,0:01:43.21,Normal,,0,0,0,,com {\c&H005AD1F2}saudade{\c&H00FFFFFF} agora.
+Dialogue: 0,0:01:43.21,0:01:44.26,Normal,,0,0,0,,com saudade {\c&H005AD1F2}agora.{\c&H00FFFFFF}
+Dialogue: 0,0:01:44.26,0:01:44.48,Normal,,0,0,0,,{\c&H005AD1F2}Hoje{\c&H00FFFFFF} você vai entender
+Dialogue: 0,0:01:44.48,0:01:44.74,Normal,,0,0,0,,Hoje {\c&H005AD1F2}você{\c&H00FFFFFF} vai entender
+Dialogue: 0,0:01:44.74,0:01:44.94,Normal,,0,0,0,,Hoje você {\c&H005AD1F2}vai{\c&H00FFFFFF} entender
+Dialogue: 0,0:01:44.94,0:01:45.38,Normal,,0,0,0,,Hoje você vai {\c&H005AD1F2}entender{\c&H00FFFFFF}
+Dialogue: 0,0:01:45.38,0:01:45.76,Normal,,0,0,0,,{\c&H005AD1F2}por{\c&H00FFFFFF} que a sua memória
+Dialogue: 0,0:01:45.76,0:01:46.00,Normal,,0,0,0,,por {\c&H005AD1F2}que{\c&H00FFFFFF} a sua memória
+Dialogue: 0,0:01:46.00,0:01:46.10,Normal,,0,0,0,,por que {\c&H005AD1F2}a{\c&H00FFFFFF} sua memória
+Dialogue: 0,0:01:46.10,0:01:46.26,Normal,,0,0,0,,por que a {\c&H005AD1F2}sua{\c&H00FFFFFF} memória
+Dialogue: 0,0:01:46.26,0:01:46.82,Normal,,0,0,0,,por que a sua {\c&H005AD1F2}memória{\c&H00FFFFFF}
+Dialogue: 0,0:01:46.82,0:01:47.14,Normal,,0,0,0,,{\c&H005AD1F2}deixa{\c&H00FFFFFF} o passado mais bonito
+Dialogue: 0,0:01:47.14,0:01:47.26,Normal,,0,0,0,,deixa {\c&H005AD1F2}o{\c&H00FFFFFF} passado mais bonito
+Dialogue: 0,0:01:47.26,0:01:47.64,Normal,,0,0,0,,deixa o {\c&H005AD1F2}passado{\c&H00FFFFFF} mais bonito
+Dialogue: 0,0:01:47.64,0:01:48.10,Normal,,0,0,0,,deixa o passado {\c&H005AD1F2}mais{\c&H00FFFFFF} bonito
+Dialogue: 0,0:01:48.10,0:01:48.62,Normal,,0,0,0,,deixa o passado mais {\c&H005AD1F2}bonito{\c&H00FFFFFF}
+Dialogue: 0,0:01:48.62,0:01:48.82,Normal,,0,0,0,,{\c&H005AD1F2}do{\c&H00FFFFFF} que ele foi,
+Dialogue: 0,0:01:48.82,0:01:48.96,Normal,,0,0,0,,do {\c&H005AD1F2}que{\c&H00FFFFFF} ele foi,
+Dialogue: 0,0:01:48.96,0:01:49.10,Normal,,0,0,0,,do que {\c&H005AD1F2}ele{\c&H00FFFFFF} foi,
+Dialogue: 0,0:01:49.10,0:01:49.82,Normal,,0,0,0,,do que ele {\c&H005AD1F2}foi,{\c&H00FFFFFF}
+Dialogue: 0,0:01:49.82,0:01:49.92,Normal,,0,0,0,,{\c&H005AD1F2}do{\c&H00FFFFFF} que você sente falta
+Dialogue: 0,0:01:49.92,0:01:50.02,Normal,,0,0,0,,do {\c&H005AD1F2}que{\c&H00FFFFFF} você sente falta
+Dialogue: 0,0:01:50.02,0:01:50.26,Normal,,0,0,0,,do que {\c&H005AD1F2}você{\c&H00FFFFFF} sente falta
+Dialogue: 0,0:01:50.26,0:01:50.58,Normal,,0,0,0,,do que você {\c&H005AD1F2}sente{\c&H00FFFFFF} falta
+Dialogue: 0,0:01:50.58,0:01:51.00,Normal,,0,0,0,,do que você sente {\c&H005AD1F2}falta{\c&H00FFFFFF}
+Dialogue: 0,0:01:51.00,0:01:51.26,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} verdade quando sente falta
+Dialogue: 0,0:01:51.26,0:01:51.70,Normal,,0,0,0,,de {\c&H005AD1F2}verdade{\c&H00FFFFFF} quando sente falta
+Dialogue: 0,0:01:51.70,0:01:52.08,Normal,,0,0,0,,de verdade {\c&H005AD1F2}quando{\c&H00FFFFFF} sente falta
+Dialogue: 0,0:01:52.08,0:01:52.44,Normal,,0,0,0,,de verdade quando {\c&H005AD1F2}sente{\c&H00FFFFFF} falta
+Dialogue: 0,0:01:52.44,0:01:52.90,Normal,,0,0,0,,de verdade quando sente {\c&H005AD1F2}falta{\c&H00FFFFFF}
+Dialogue: 0,0:01:52.90,0:01:53.79,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} 2016 e como usar
+Dialogue: 0,0:01:53.79,0:01:54.68,Normal,,0,0,0,,de {\c&H005AD1F2}2016{\c&H00FFFFFF} e como usar
+Dialogue: 0,0:01:54.68,0:01:55.08,Normal,,0,0,0,,de 2016 {\c&H005AD1F2}e{\c&H00FFFFFF} como usar
+Dialogue: 0,0:01:55.08,0:01:55.36,Normal,,0,0,0,,de 2016 e {\c&H005AD1F2}como{\c&H00FFFFFF} usar
+Dialogue: 0,0:01:55.36,0:01:55.72,Normal,,0,0,0,,de 2016 e como {\c&H005AD1F2}usar{\c&H00FFFFFF}
+Dialogue: 0,0:01:55.72,0:01:55.94,Normal,,0,0,0,,{\c&H005AD1F2}essa{\c&H00FFFFFF} saudade a seu favor
+Dialogue: 0,0:01:55.94,0:01:56.60,Normal,,0,0,0,,essa {\c&H005AD1F2}saudade{\c&H00FFFFFF} a seu favor
+Dialogue: 0,0:01:56.60,0:01:56.70,Normal,,0,0,0,,essa saudade {\c&H005AD1F2}a{\c&H00FFFFFF} seu favor
+Dialogue: 0,0:01:56.70,0:01:56.86,Normal,,0,0,0,,essa saudade a {\c&H005AD1F2}seu{\c&H00FFFFFF} favor
+Dialogue: 0,0:01:56.86,0:01:57.38,Normal,,0,0,0,,essa saudade a seu {\c&H005AD1F2}favor{\c&H00FFFFFF}
+Dialogue: 0,0:01:57.38,0:01:57.84,Normal,,0,0,0,,{\c&H005AD1F2}em{\c&H00FFFFFF} vez de ficar preso
+Dialogue: 0,0:01:57.84,0:01:58.08,Normal,,0,0,0,,em {\c&H005AD1F2}vez{\c&H00FFFFFF} de ficar preso
+Dialogue: 0,0:01:58.08,0:01:58.24,Normal,,0,0,0,,em vez {\c&H005AD1F2}de{\c&H00FFFFFF} ficar preso
+Dialogue: 0,0:01:58.24,0:01:58.54,Normal,,0,0,0,,em vez de {\c&H005AD1F2}ficar{\c&H00FFFFFF} preso
+Dialogue: 0,0:01:58.54,0:01:59.12,Normal,,0,0,0,,em vez de ficar {\c&H005AD1F2}preso{\c&H00FFFFFF}
+Dialogue: 0,0:01:59.12,0:02:00.09,Normal,,0,0,0,,{\c&H005AD1F2}nela.{\c&H00FFFFFF}
+Dialogue: 0,0:02:00.09,0:02:00.63,Normal,,0,0,0,,{\c&H005AD1F2}São{\c&H00FFFFFF} 23h e você deveria
+Dialogue: 0,0:02:00.63,0:02:01.17,Normal,,0,0,0,,São {\c&H005AD1F2}23h{\c&H00FFFFFF} e você deveria
+Dialogue: 0,0:02:01.17,0:02:01.59,Normal,,0,0,0,,São 23h {\c&H005AD1F2}e{\c&H00FFFFFF} você deveria
+Dialogue: 0,0:02:01.59,0:02:01.79,Normal,,0,0,0,,São 23h e {\c&H005AD1F2}você{\c&H00FFFFFF} deveria
+Dialogue: 0,0:02:01.79,0:02:02.21,Normal,,0,0,0,,São 23h e você {\c&H005AD1F2}deveria{\c&H00FFFFFF}
+Dialogue: 0,0:02:02.21,0:02:02.41,Normal,,0,0,0,,{\c&H005AD1F2}estar{\c&H00FFFFFF} dormindo, mas está numa
+Dialogue: 0,0:02:02.41,0:02:03.39,Normal,,0,0,0,,estar {\c&H005AD1F2}dormindo,{\c&H00FFFFFF} mas está numa
+Dialogue: 0,0:02:03.39,0:02:03.55,Normal,,0,0,0,,estar dormindo, {\c&H005AD1F2}mas{\c&H00FFFFFF} está numa
+Dialogue: 0,0:02:03.55,0:02:03.79,Normal,,0,0,0,,estar dormindo, mas {\c&H005AD1F2}está{\c&H00FFFFFF} numa
+Dialogue: 0,0:02:03.79,0:02:03.95,Normal,,0,0,0,,estar dormindo, mas está {\c&H005AD1F2}numa{\c&H00FFFFFF}
+Dialogue: 0,0:02:03.95,0:02:04.33,Normal,,0,0,0,,{\c&H005AD1F2}foto{\c&H00FFFFFF} antiga com o filtro
+Dialogue: 0,0:02:04.33,0:02:04.93,Normal,,0,0,0,,foto {\c&H005AD1F2}antiga{\c&H00FFFFFF} com o filtro
+Dialogue: 0,0:02:04.93,0:02:05.13,Normal,,0,0,0,,foto antiga {\c&H005AD1F2}com{\c&H00FFFFFF} o filtro
+Dialogue: 0,0:02:05.13,0:02:05.23,Normal,,0,0,0,,foto antiga com {\c&H005AD1F2}o{\c&H00FFFFFF} filtro
+Dialogue: 0,0:02:05.23,0:02:05.65,Normal,,0,0,0,,foto antiga com o {\c&H005AD1F2}filtro{\c&H00FFFFFF}
+Dialogue: 0,0:02:05.65,0:02:05.77,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} cachorrinho, o cabelo
+Dialogue: 0,0:02:05.77,0:02:06.87,Normal,,0,0,0,,de {\c&H005AD1F2}cachorrinho,{\c&H00FFFFFF} o cabelo
+Dialogue: 0,0:02:06.87,0:02:06.93,Normal,,0,0,0,,de cachorrinho, {\c&H005AD1F2}o{\c&H00FFFFFF} cabelo
+Dialogue: 0,0:02:06.93,0:02:07.33,Normal,,0,0,0,,de cachorrinho, o {\c&H005AD1F2}cabelo{\c&H00FFFFFF}
+Dialogue: 0,0:02:07.33,0:02:07.45,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} você jurava que estava
+Dialogue: 0,0:02:07.45,0:02:07.69,Normal,,0,0,0,,que {\c&H005AD1F2}você{\c&H00FFFFFF} jurava que estava
+Dialogue: 0,0:02:07.69,0:02:08.31,Normal,,0,0,0,,que você {\c&H005AD1F2}jurava{\c&H00FFFFFF} que estava
+Dialogue: 0,0:02:08.31,0:02:08.47,Normal,,0,0,0,,que você jurava {\c&H005AD1F2}que{\c&H00FFFFFF} estava
+Dialogue: 0,0:02:08.47,0:02:08.77,Normal,,0,0,0,,que você jurava que {\c&H005AD1F2}estava{\c&H00FFFFFF}
+Dialogue: 0,0:02:08.77,0:02:09.19,Normal,,0,0,0,,{\c&H005AD1F2}bom{\c&H00FFFFFF} e uma música
+Dialogue: 0,0:02:09.19,0:02:09.65,Normal,,0,0,0,,bom {\c&H005AD1F2}e{\c&H00FFFFFF} uma música
+Dialogue: 0,0:02:09.65,0:02:09.83,Normal,,0,0,0,,bom e {\c&H005AD1F2}uma{\c&H00FFFFFF} música
+Dialogue: 0,0:02:09.83,0:02:10.29,Normal,,0,0,0,,bom e uma {\c&H005AD1F2}música{\c&H00FFFFFF}
+Dialogue: 0,0:02:10.29,0:02:10.47,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} tocava em todo lugar.
+Dialogue: 0,0:02:10.47,0:02:10.99,Normal,,0,0,0,,que {\c&H005AD1F2}tocava{\c&H00FFFFFF} em todo lugar.
+Dialogue: 0,0:02:10.99,0:02:11.11,Normal,,0,0,0,,que tocava {\c&H005AD1F2}em{\c&H00FFFFFF} todo lugar.
+Dialogue: 0,0:02:11.11,0:02:11.45,Normal,,0,0,0,,que tocava em {\c&H005AD1F2}todo{\c&H00FFFFFF} lugar.
+Dialogue: 0,0:02:11.45,0:02:12.65,Normal,,0,0,0,,que tocava em todo {\c&H005AD1F2}lugar.{\c&H00FFFFFF}
+Dialogue: 0,0:02:12.71,0:02:12.81,Normal,,0,0,0,,{\c&H005AD1F2}E{\c&H00FFFFFF} vem aquele aperto,
+Dialogue: 0,0:02:12.81,0:02:12.97,Normal,,0,0,0,,E {\c&H005AD1F2}vem{\c&H00FFFFFF} aquele aperto,
+Dialogue: 0,0:02:12.97,0:02:13.23,Normal,,0,0,0,,E vem {\c&H005AD1F2}aquele{\c&H00FFFFFF} aperto,
+Dialogue: 0,0:02:13.23,0:02:14.19,Normal,,0,0,0,,E vem aquele {\c&H005AD1F2}aperto,{\c&H00FFFFFF}
+Dialogue: 0,0:02:14.19,0:02:14.41,Normal,,0,0,0,,{\c&H005AD1F2}aquela{\c&H00FFFFFF} vontade estranha
+Dialogue: 0,0:02:14.41,0:02:14.83,Normal,,0,0,0,,aquela {\c&H005AD1F2}vontade{\c&H00FFFFFF} estranha
+Dialogue: 0,0:02:14.83,0:02:15.55,Normal,,0,0,0,,aquela vontade {\c&H005AD1F2}estranha{\c&H00FFFFFF}
+Dialogue: 0,0:02:15.55,0:02:15.65,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} voltar para um lugar
+Dialogue: 0,0:02:15.65,0:02:16.01,Normal,,0,0,0,,de {\c&H005AD1F2}voltar{\c&H00FFFFFF} para um lugar
+Dialogue: 0,0:02:16.01,0:02:16.27,Normal,,0,0,0,,de voltar {\c&H005AD1F2}para{\c&H00FFFFFF} um lugar
+Dialogue: 0,0:02:16.27,0:02:16.39,Normal,,0,0,0,,de voltar para {\c&H005AD1F2}um{\c&H00FFFFFF} lugar
+Dialogue: 0,0:02:16.39,0:02:16.69,Normal,,0,0,0,,de voltar para um {\c&H005AD1F2}lugar{\c&H00FFFFFF}
+Dialogue: 0,0:02:16.69,0:02:16.87,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} você nem sabe direito
+Dialogue: 0,0:02:16.87,0:02:17.13,Normal,,0,0,0,,que {\c&H005AD1F2}você{\c&H00FFFFFF} nem sabe direito
+Dialogue: 0,0:02:17.13,0:02:17.47,Normal,,0,0,0,,que você {\c&H005AD1F2}nem{\c&H00FFFFFF} sabe direito
+Dialogue: 0,0:02:17.47,0:02:17.89,Normal,,0,0,0,,que você nem {\c&H005AD1F2}sabe{\c&H00FFFFFF} direito
+Dialogue: 0,0:02:17.89,0:02:18.19,Normal,,0,0,0,,que você nem sabe {\c&H005AD1F2}direito{\c&H00FFFFFF}
+Dialogue: 0,0:02:18.19,0:02:18.51,Normal,,0,0,0,,{\c&H005AD1F2}qual{\c&H00FFFFFF} é.
+Dialogue: 0,0:02:18.51,0:02:19.47,Normal,,0,0,0,,qual {\c&H005AD1F2}é.{\c&H00FFFFFF}
+Dialogue: 0,0:02:19.47,0:02:20.15,Normal,,0,0,0,,{\c&H005AD1F2}Em{\c&H00FFFFFF} 2016 um aluno jogou
+Dialogue: 0,0:02:20.15,0:02:20.83,Normal,,0,0,0,,Em {\c&H005AD1F2}2016{\c&H00FFFFFF} um aluno jogou
+Dialogue: 0,0:02:20.83,0:02:21.05,Normal,,0,0,0,,Em 2016 {\c&H005AD1F2}um{\c&H00FFFFFF} aluno jogou
+Dialogue: 0,0:02:21.05,0:02:21.37,Normal,,0,0,0,,Em 2016 um {\c&H005AD1F2}aluno{\c&H00FFFFFF} jogou
+Dialogue: 0,0:02:21.37,0:02:21.79,Normal,,0,0,0,,Em 2016 um aluno {\c&H005AD1F2}jogou{\c&H00FFFFFF}
+Dialogue: 0,0:02:21.79,0:02:21.93,Normal,,0,0,0,,{\c&H005AD1F2}uma{\c&H00FFFFFF} garrafa de água
+Dialogue: 0,0:02:21.93,0:02:22.53,Normal,,0,0,0,,uma {\c&H005AD1F2}garrafa{\c&H00FFFFFF} de água
+Dialogue: 0,0:02:22.53,0:02:22.69,Normal,,0,0,0,,uma garrafa {\c&H005AD1F2}de{\c&H00FFFFFF} água
+Dialogue: 0,0:02:22.69,0:02:22.95,Normal,,0,0,0,,uma garrafa de {\c&H005AD1F2}água{\c&H00FFFFFF}
+Dialogue: 0,0:02:22.95,0:02:23.11,Normal,,0,0,0,,{\c&H005AD1F2}no{\c&H00FFFFFF} show de talentos
+Dialogue: 0,0:02:23.11,0:02:23.41,Normal,,0,0,0,,no {\c&H005AD1F2}show{\c&H00FFFFFF} de talentos
+Dialogue: 0,0:02:23.41,0:02:23.57,Normal,,0,0,0,,no show {\c&H005AD1F2}de{\c&H00FFFFFF} talentos
+Dialogue: 0,0:02:23.57,0:02:24.09,Normal,,0,0,0,,no show de {\c&H005AD1F2}talentos{\c&H00FFFFFF}
+Dialogue: 0,0:02:24.09,0:02:24.19,Normal,,0,0,0,,{\c&H005AD1F2}da{\c&H00FFFFFF} escola e a garrafa
+Dialogue: 0,0:02:24.19,0:02:24.65,Normal,,0,0,0,,da {\c&H005AD1F2}escola{\c&H00FFFFFF} e a garrafa
+Dialogue: 0,0:02:24.65,0:02:25.17,Normal,,0,0,0,,da escola {\c&H005AD1F2}e{\c&H00FFFFFF} a garrafa
+Dialogue: 0,0:02:25.17,0:02:25.25,Normal,,0,0,0,,da escola e {\c&H005AD1F2}a{\c&H00FFFFFF} garrafa
+Dialogue: 0,0:02:25.25,0:02:25.73,Normal,,0,0,0,,da escola e a {\c&H005AD1F2}garrafa{\c&H00FFFFFF}
+Dialogue: 0,0:02:25.73,0:02:26.13,Normal,,0,0,0,,{\c&H005AD1F2}caiu{\c&H00FFFFFF} em pé.
+Dialogue: 0,0:02:26.13,0:02:26.27,Normal,,0,0,0,,caiu {\c&H005AD1F2}em{\c&H00FFFFFF} pé.
+Dialogue: 0,0:02:26.27,0:02:27.47,Normal,,0,0,0,,caiu em {\c&H005AD1F2}pé.{\c&H00FFFFFF}
+Dialogue: 0,0:02:32.19,0:02:32.37,Normal,,0,0,0,,{\c&H005AD1F2}Teve{\c&H00FFFFFF} o Pokémon Go,
+Dialogue: 0,0:02:32.37,0:02:32.45,Normal,,0,0,0,,Teve {\c&H005AD1F2}o{\c&H00FFFFFF} Pokémon Go,
+Dialogue: 0,0:02:32.45,0:02:32.77,Normal,,0,0,0,,Teve o {\c&H005AD1F2}Pokémon{\c&H00FFFFFF} Go,
+Dialogue: 0,0:02:32.77,0:02:33.41,Normal,,0,0,0,,Teve o Pokémon {\c&H005AD1F2}Go,{\c&H00FFFFFF}
+Dialogue: 0,0:02:33.41,0:02:33.51,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} fez uma multidão sair
+Dialogue: 0,0:02:33.51,0:02:33.69,Normal,,0,0,0,,que {\c&H005AD1F2}fez{\c&H00FFFFFF} uma multidão sair
+Dialogue: 0,0:02:33.69,0:02:33.91,Normal,,0,0,0,,que fez {\c&H005AD1F2}uma{\c&H00FFFFFF} multidão sair
+Dialogue: 0,0:02:33.91,0:02:34.63,Normal,,0,0,0,,que fez uma {\c&H005AD1F2}multidão{\c&H00FFFFFF} sair
+Dialogue: 0,0:02:34.63,0:02:34.91,Normal,,0,0,0,,que fez uma multidão {\c&H005AD1F2}sair{\c&H00FFFFFF}
+Dialogue: 0,0:02:34.91,0:02:35.55,Normal,,0,0,0,,{\c&H005AD1F2}correndo{\c&H00FFFFFF} pelo Central Park
+Dialogue: 0,0:02:35.55,0:02:35.77,Normal,,0,0,0,,correndo {\c&H005AD1F2}pelo{\c&H00FFFFFF} Central Park
+Dialogue: 0,0:02:35.77,0:02:36.17,Normal,,0,0,0,,correndo pelo {\c&H005AD1F2}Central{\c&H00FFFFFF} Park
+Dialogue: 0,0:02:36.17,0:02:36.63,Normal,,0,0,0,,correndo pelo Central {\c&H005AD1F2}Park{\c&H00FFFFFF}
+Dialogue: 0,0:02:36.63,0:02:37.03,Normal,,0,0,0,,{\c&H005AD1F2}atrás{\c&H00FFFFFF} de um Vaporeon.
+Dialogue: 0,0:02:37.03,0:02:37.27,Normal,,0,0,0,,atrás {\c&H005AD1F2}de{\c&H00FFFFFF} um Vaporeon.
+Dialogue: 0,0:02:37.27,0:02:37.33,Normal,,0,0,0,,atrás de {\c&H005AD1F2}um{\c&H00FFFFFF} Vaporeon.
+Dialogue: 0,0:02:37.33,0:02:38.53,Normal,,0,0,0,,atrás de um {\c&H005AD1F2}Vaporeon.{\c&H00FFFFFF}
+Dialogue: 0,0:02:43.60,0:02:43.78,Normal,,0,0,0,,{\c&H005AD1F2}Teve{\c&H00FFFFFF} o desafio do manequim,
+Dialogue: 0,0:02:43.78,0:02:43.82,Normal,,0,0,0,,Teve {\c&H005AD1F2}o{\c&H00FFFFFF} desafio do manequim,
+Dialogue: 0,0:02:43.82,0:02:44.44,Normal,,0,0,0,,Teve o {\c&H005AD1F2}desafio{\c&H00FFFFFF} do manequim,
+Dialogue: 0,0:02:44.44,0:02:44.52,Normal,,0,0,0,,Teve o desafio {\c&H005AD1F2}do{\c&H00FFFFFF} manequim,
+Dialogue: 0,0:02:44.52,0:02:45.40,Normal,,0,0,0,,Teve o desafio do {\c&H005AD1F2}manequim,{\c&H00FFFFFF}
+Dialogue: 0,0:02:45.40,0:02:45.48,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} começou com alunos
+Dialogue: 0,0:02:45.48,0:02:45.88,Normal,,0,0,0,,que {\c&H005AD1F2}começou{\c&H00FFFFFF} com alunos
+Dialogue: 0,0:02:45.88,0:02:46.08,Normal,,0,0,0,,que começou {\c&H005AD1F2}com{\c&H00FFFFFF} alunos
+Dialogue: 0,0:02:46.08,0:02:46.58,Normal,,0,0,0,,que começou com {\c&H005AD1F2}alunos{\c&H00FFFFFF}
+Dialogue: 0,0:02:46.58,0:02:46.68,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} uma escola no Mississippi
+Dialogue: 0,0:02:46.68,0:02:46.80,Normal,,0,0,0,,de {\c&H005AD1F2}uma{\c&H00FFFFFF} escola no Mississippi
+Dialogue: 0,0:02:46.80,0:02:47.16,Normal,,0,0,0,,de uma {\c&H005AD1F2}escola{\c&H00FFFFFF} no Mississippi
+Dialogue: 0,0:02:47.16,0:02:47.36,Normal,,0,0,0,,de uma escola {\c&H005AD1F2}no{\c&H00FFFFFF} Mississippi
+Dialogue: 0,0:02:47.36,0:02:47.90,Normal,,0,0,0,,de uma escola no {\c&H005AD1F2}Mississippi{\c&H00FFFFFF}
+Dialogue: 0,0:02:47.90,0:02:48.42,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} chegou até a Casa
+Dialogue: 0,0:02:48.42,0:02:48.70,Normal,,0,0,0,,e {\c&H005AD1F2}chegou{\c&H00FFFFFF} até a Casa
+Dialogue: 0,0:02:48.70,0:02:49.14,Normal,,0,0,0,,e chegou {\c&H005AD1F2}até{\c&H00FFFFFF} a Casa
+Dialogue: 0,0:02:49.14,0:02:49.30,Normal,,0,0,0,,e chegou até {\c&H005AD1F2}a{\c&H00FFFFFF} Casa
+Dialogue: 0,0:02:49.30,0:02:49.52,Normal,,0,0,0,,e chegou até a {\c&H005AD1F2}Casa{\c&H00FFFFFF}
+Dialogue: 0,0:02:49.52,0:02:50.72,Normal,,0,0,0,,{\c&H005AD1F2}Branca.{\c&H00FFFFFF}
+Dialogue: 0,0:02:55.61,0:02:57.03,Normal,,0,0,0,,{\c&H005AD1F2}Aqui{\c&H00FFFFFF} no Brasil o Bambam
+Dialogue: 0,0:02:57.03,0:02:57.19,Normal,,0,0,0,,Aqui {\c&H005AD1F2}no{\c&H00FFFFFF} Brasil o Bambam
+Dialogue: 0,0:02:57.19,0:02:57.61,Normal,,0,0,0,,Aqui no {\c&H005AD1F2}Brasil{\c&H00FFFFFF} o Bambam
+Dialogue: 0,0:02:57.61,0:02:57.93,Normal,,0,0,0,,Aqui no Brasil {\c&H005AD1F2}o{\c&H00FFFFFF} Bambam
+Dialogue: 0,0:02:57.93,0:02:58.35,Normal,,0,0,0,,Aqui no Brasil o {\c&H005AD1F2}Bambam{\c&H00FFFFFF}
+Dialogue: 0,0:02:58.35,0:02:58.89,Normal,,0,0,0,,{\c&H005AD1F2}avisava{\c&H00FFFFFF} na academia que estava
+Dialogue: 0,0:02:58.89,0:02:59.03,Normal,,0,0,0,,avisava {\c&H005AD1F2}na{\c&H00FFFFFF} academia que estava
+Dialogue: 0,0:02:59.03,0:02:59.53,Normal,,0,0,0,,avisava na {\c&H005AD1F2}academia{\c&H00FFFFFF} que estava
+Dialogue: 0,0:02:59.53,0:02:59.75,Normal,,0,0,0,,avisava na academia {\c&H005AD1F2}que{\c&H00FFFFFF} estava
+Dialogue: 0,0:02:59.75,0:03:00.01,Normal,,0,0,0,,avisava na academia que {\c&H005AD1F2}estava{\c&H00FFFFFF}
+Dialogue: 0,0:03:00.01,0:03:00.61,Normal,,0,0,0,,{\c&H005AD1F2}saindo{\c&H00FFFFFF} da jaula o monstro.
+Dialogue: 0,0:03:00.61,0:03:00.77,Normal,,0,0,0,,saindo {\c&H005AD1F2}da{\c&H00FFFFFF} jaula o monstro.
+Dialogue: 0,0:03:00.77,0:03:01.31,Normal,,0,0,0,,saindo da {\c&H005AD1F2}jaula{\c&H00FFFFFF} o monstro.
+Dialogue: 0,0:03:01.31,0:03:01.55,Normal,,0,0,0,,saindo da jaula {\c&H005AD1F2}o{\c&H00FFFFFF} monstro.
+Dialogue: 0,0:03:01.55,0:03:02.75,Normal,,0,0,0,,saindo da jaula o {\c&H005AD1F2}monstro.{\c&H00FFFFFF}
+Dialogue: 0,0:03:09.38,0:03:09.96,Normal,,0,0,0,,{\c&H005AD1F2}A{\c&H00FFFFFF} Ana Paula voltava
+Dialogue: 0,0:03:09.96,0:03:10.16,Normal,,0,0,0,,A {\c&H005AD1F2}Ana{\c&H00FFFFFF} Paula voltava
+Dialogue: 0,0:03:10.16,0:03:10.50,Normal,,0,0,0,,A Ana {\c&H005AD1F2}Paula{\c&H00FFFFFF} voltava
+Dialogue: 0,0:03:10.50,0:03:11.08,Normal,,0,0,0,,A Ana Paula {\c&H005AD1F2}voltava{\c&H00FFFFFF}
+Dialogue: 0,0:03:11.08,0:03:11.30,Normal,,0,0,0,,{\c&H005AD1F2}para{\c&H00FFFFFF} a casa do BBB
+Dialogue: 0,0:03:11.30,0:03:11.40,Normal,,0,0,0,,para {\c&H005AD1F2}a{\c&H00FFFFFF} casa do BBB
+Dialogue: 0,0:03:11.40,0:03:11.62,Normal,,0,0,0,,para a {\c&H005AD1F2}casa{\c&H00FFFFFF} do BBB
+Dialogue: 0,0:03:11.62,0:03:11.78,Normal,,0,0,0,,para a casa {\c&H005AD1F2}do{\c&H00FFFFFF} BBB
+Dialogue: 0,0:03:11.78,0:03:12.38,Normal,,0,0,0,,para a casa do {\c&H005AD1F2}BBB{\c&H00FFFFFF}
+Dialogue: 0,0:03:12.38,0:03:12.80,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} o país inteiro gritava
+Dialogue: 0,0:03:12.80,0:03:12.88,Normal,,0,0,0,,e {\c&H005AD1F2}o{\c&H00FFFFFF} país inteiro gritava
+Dialogue: 0,0:03:12.88,0:03:13.20,Normal,,0,0,0,,e o {\c&H005AD1F2}país{\c&H00FFFFFF} inteiro gritava
+Dialogue: 0,0:03:13.20,0:03:13.80,Normal,,0,0,0,,e o país {\c&H005AD1F2}inteiro{\c&H00FFFFFF} gritava
+Dialogue: 0,0:03:13.80,0:03:14.42,Normal,,0,0,0,,e o país inteiro {\c&H005AD1F2}gritava{\c&H00FFFFFF}
+Dialogue: 0,0:03:14.42,0:03:14.70,Normal,,0,0,0,,{\c&H005AD1F2}junto{\c&H00FFFFFF} com ela.
+Dialogue: 0,0:03:14.70,0:03:14.96,Normal,,0,0,0,,junto {\c&H005AD1F2}com{\c&H00FFFFFF} ela.
+Dialogue: 0,0:03:14.96,0:03:16.16,Normal,,0,0,0,,junto com {\c&H005AD1F2}ela.{\c&H00FFFFFF}
+Dialogue: 0,0:03:21.57,0:03:21.81,Normal,,0,0,0,,{\c&H005AD1F2}Até{\c&H00FFFFFF} o Neymar e
+Dialogue: 0,0:03:21.81,0:03:21.91,Normal,,0,0,0,,Até {\c&H005AD1F2}o{\c&H00FFFFFF} Neymar e
+Dialogue: 0,0:03:21.91,0:03:22.37,Normal,,0,0,0,,Até o {\c&H005AD1F2}Neymar{\c&H00FFFFFF} e
+Dialogue: 0,0:03:22.37,0:03:22.47,Normal,,0,0,0,,Até o Neymar {\c&H005AD1F2}e{\c&H00FFFFFF}
+Dialogue: 0,0:03:22.47,0:03:22.53,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} Fátima Bernardes dançavam
+Dialogue: 0,0:03:22.53,0:03:23.01,Normal,,0,0,0,,a {\c&H005AD1F2}Fátima{\c&H00FFFFFF} Bernardes dançavam
+Dialogue: 0,0:03:23.01,0:03:23.71,Normal,,0,0,0,,a Fátima {\c&H005AD1F2}Bernardes{\c&H00FFFFFF} dançavam
+Dialogue: 0,0:03:23.71,0:03:24.35,Normal,,0,0,0,,a Fátima Bernardes {\c&H005AD1F2}dançavam{\c&H00FFFFFF}
+Dialogue: 0,0:03:24.35,0:03:24.47,Normal,,0,0,0,,{\c&H005AD1F2}o{\c&H00FFFFFF} funk do MC Bin
+Dialogue: 0,0:03:24.47,0:03:24.79,Normal,,0,0,0,,o {\c&H005AD1F2}funk{\c&H00FFFFFF} do MC Bin
+Dialogue: 0,0:03:24.79,0:03:25.01,Normal,,0,0,0,,o funk {\c&H005AD1F2}do{\c&H00FFFFFF} MC Bin
+Dialogue: 0,0:03:25.01,0:03:25.35,Normal,,0,0,0,,o funk do {\c&H005AD1F2}MC{\c&H00FFFFFF} Bin
+Dialogue: 0,0:03:25.35,0:03:25.63,Normal,,0,0,0,,o funk do MC {\c&H005AD1F2}Bin{\c&H00FFFFFF}
+Dialogue: 0,0:03:25.63,0:03:26.83,Normal,,0,0,0,,{\c&H005AD1F2}Laden.{\c&H00FFFFFF}
+Dialogue: 0,0:03:32.13,0:03:32.23,Normal,,0,0,0,,{\c&H005AD1F2}E{\c&H00FFFFFF} em todo carro
+Dialogue: 0,0:03:32.23,0:03:32.33,Normal,,0,0,0,,E {\c&H005AD1F2}em{\c&H00FFFFFF} todo carro
+Dialogue: 0,0:03:32.33,0:03:32.57,Normal,,0,0,0,,E em {\c&H005AD1F2}todo{\c&H00FFFFFF} carro
+Dialogue: 0,0:03:32.57,0:03:33.11,Normal,,0,0,0,,E em todo {\c&H005AD1F2}carro{\c&H00FFFFFF}
+Dialogue: 0,0:03:33.11,0:03:33.45,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} em toda festa tocava
+Dialogue: 0,0:03:33.45,0:03:33.63,Normal,,0,0,0,,e {\c&H005AD1F2}em{\c&H00FFFFFF} toda festa tocava
+Dialogue: 0,0:03:33.63,0:03:33.81,Normal,,0,0,0,,e em {\c&H005AD1F2}toda{\c&H00FFFFFF} festa tocava
+Dialogue: 0,0:03:33.81,0:03:34.37,Normal,,0,0,0,,e em toda {\c&H005AD1F2}festa{\c&H00FFFFFF} tocava
+Dialogue: 0,0:03:34.37,0:03:35.21,Normal,,0,0,0,,e em toda festa {\c&H005AD1F2}tocava{\c&H00FFFFFF}
+Dialogue: 0,0:03:35.21,0:03:35.33,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} Marília Mendonça.
+Dialogue: 0,0:03:35.33,0:03:35.71,Normal,,0,0,0,,a {\c&H005AD1F2}Marília{\c&H00FFFFFF} Mendonça.
+Dialogue: 0,0:03:35.71,0:03:36.91,Normal,,0,0,0,,a Marília {\c&H005AD1F2}Mendonça.{\c&H00FFFFFF}
+Dialogue: 0,0:03:42.42,0:03:42.50,Normal,,0,0,0,,{\c&H005AD1F2}E{\c&H00FFFFFF} teve uma mudança
+Dialogue: 0,0:03:42.50,0:03:42.70,Normal,,0,0,0,,E {\c&H005AD1F2}teve{\c&H00FFFFFF} uma mudança
+Dialogue: 0,0:03:42.70,0:03:42.88,Normal,,0,0,0,,E teve {\c&H005AD1F2}uma{\c&H00FFFFFF} mudança
+Dialogue: 0,0:03:42.88,0:03:43.42,Normal,,0,0,0,,E teve uma {\c&H005AD1F2}mudança{\c&H00FFFFFF}
+Dialogue: 0,0:03:43.42,0:03:43.58,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} quase ninguém percebeu
+Dialogue: 0,0:03:43.58,0:03:44.02,Normal,,0,0,0,,que {\c&H005AD1F2}quase{\c&H00FFFFFF} ninguém percebeu
+Dialogue: 0,0:03:44.02,0:03:44.44,Normal,,0,0,0,,que quase {\c&H005AD1F2}ninguém{\c&H00FFFFFF} percebeu
+Dialogue: 0,0:03:44.44,0:03:45.14,Normal,,0,0,0,,que quase ninguém {\c&H005AD1F2}percebeu{\c&H00FFFFFF}
+Dialogue: 0,0:03:45.14,0:03:45.26,Normal,,0,0,0,,{\c&H005AD1F2}na{\c&H00FFFFFF} hora, porque foi
+Dialogue: 0,0:03:45.26,0:03:45.90,Normal,,0,0,0,,na {\c&H005AD1F2}hora,{\c&H00FFFFFF} porque foi
+Dialogue: 0,0:03:45.90,0:03:46.16,Normal,,0,0,0,,na hora, {\c&H005AD1F2}porque{\c&H00FFFFFF} foi
+Dialogue: 0,0:03:46.16,0:03:46.36,Normal,,0,0,0,,na hora, porque {\c&H005AD1F2}foi{\c&H00FFFFFF}
+Dialogue: 0,0:03:46.36,0:03:47.12,Normal,,0,0,0,,{\c&H005AD1F2}em{\c&H00FFFFFF} 2016 que o Instagram
+Dialogue: 0,0:03:47.12,0:03:47.88,Normal,,0,0,0,,em {\c&H005AD1F2}2016{\c&H00FFFFFF} que o Instagram
+Dialogue: 0,0:03:47.88,0:03:48.26,Normal,,0,0,0,,em 2016 {\c&H005AD1F2}que{\c&H00FFFFFF} o Instagram
+Dialogue: 0,0:03:48.26,0:03:48.34,Normal,,0,0,0,,em 2016 que {\c&H005AD1F2}o{\c&H00FFFFFF} Instagram
+Dialogue: 0,0:03:48.34,0:03:48.68,Normal,,0,0,0,,em 2016 que o {\c&H005AD1F2}Instagram{\c&H00FFFFFF}
+Dialogue: 0,0:03:48.68,0:03:49.28,Normal,,0,0,0,,{\c&H005AD1F2}parou{\c&H00FFFFFF} de mostrar as fotos
+Dialogue: 0,0:03:49.28,0:03:49.42,Normal,,0,0,0,,parou {\c&H005AD1F2}de{\c&H00FFFFFF} mostrar as fotos
+Dialogue: 0,0:03:49.42,0:03:49.80,Normal,,0,0,0,,parou de {\c&H005AD1F2}mostrar{\c&H00FFFFFF} as fotos
+Dialogue: 0,0:03:49.80,0:03:50.04,Normal,,0,0,0,,parou de mostrar {\c&H005AD1F2}as{\c&H00FFFFFF} fotos
+Dialogue: 0,0:03:50.04,0:03:50.40,Normal,,0,0,0,,parou de mostrar as {\c&H005AD1F2}fotos{\c&H00FFFFFF}
+Dialogue: 0,0:03:50.40,0:03:50.70,Normal,,0,0,0,,{\c&H005AD1F2}na{\c&H00FFFFFF} ordem em que eram
+Dialogue: 0,0:03:50.70,0:03:51.20,Normal,,0,0,0,,na {\c&H005AD1F2}ordem{\c&H00FFFFFF} em que eram
+Dialogue: 0,0:03:51.20,0:03:51.36,Normal,,0,0,0,,na ordem {\c&H005AD1F2}em{\c&H00FFFFFF} que eram
+Dialogue: 0,0:03:51.36,0:03:51.48,Normal,,0,0,0,,na ordem em {\c&H005AD1F2}que{\c&H00FFFFFF} eram
+Dialogue: 0,0:03:51.48,0:03:51.66,Normal,,0,0,0,,na ordem em que {\c&H005AD1F2}eram{\c&H00FFFFFF}
+Dialogue: 0,0:03:51.66,0:03:52.38,Normal,,0,0,0,,{\c&H005AD1F2}postadas{\c&H00FFFFFF} e passou a escolher
+Dialogue: 0,0:03:52.38,0:03:52.90,Normal,,0,0,0,,postadas {\c&H005AD1F2}e{\c&H00FFFFFF} passou a escolher
+Dialogue: 0,0:03:52.90,0:03:53.30,Normal,,0,0,0,,postadas e {\c&H005AD1F2}passou{\c&H00FFFFFF} a escolher
+Dialogue: 0,0:03:53.30,0:03:53.44,Normal,,0,0,0,,postadas e passou {\c&H005AD1F2}a{\c&H00FFFFFF} escolher
+Dialogue: 0,0:03:53.44,0:03:54.00,Normal,,0,0,0,,postadas e passou a {\c&H005AD1F2}escolher{\c&H00FFFFFF}
+Dialogue: 0,0:03:54.00,0:03:54.08,Normal,,0,0,0,,{\c&H005AD1F2}o{\c&H00FFFFFF} que você ia ver.
+Dialogue: 0,0:03:54.08,0:03:54.22,Normal,,0,0,0,,o {\c&H005AD1F2}que{\c&H00FFFFFF} você ia ver.
+Dialogue: 0,0:03:54.22,0:03:54.58,Normal,,0,0,0,,o que {\c&H005AD1F2}você{\c&H00FFFFFF} ia ver.
+Dialogue: 0,0:03:54.58,0:03:54.88,Normal,,0,0,0,,o que você {\c&H005AD1F2}ia{\c&H00FFFFFF} ver.
+Dialogue: 0,0:03:54.88,0:03:55.93,Normal,,0,0,0,,o que você ia {\c&H005AD1F2}ver.{\c&H00FFFFFF}
+Dialogue: 0,0:03:55.93,0:03:56.01,Normal,,0,0,0,,{\c&H005AD1F2}A{\c&H00FFFFFF} revista Fortune ouviu
+Dialogue: 0,0:03:56.01,0:03:56.39,Normal,,0,0,0,,A {\c&H005AD1F2}revista{\c&H00FFFFFF} Fortune ouviu
+Dialogue: 0,0:03:56.39,0:03:56.89,Normal,,0,0,0,,A revista {\c&H005AD1F2}Fortune{\c&H00FFFFFF} ouviu
+Dialogue: 0,0:03:56.89,0:03:57.47,Normal,,0,0,0,,A revista Fortune {\c&H005AD1F2}ouviu{\c&H00FFFFFF}
+Dialogue: 0,0:03:57.47,0:03:57.99,Normal,,0,0,0,,{\c&H005AD1F2}analistas{\c&H00FFFFFF} sobre a trend
+Dialogue: 0,0:03:57.99,0:03:58.31,Normal,,0,0,0,,analistas {\c&H005AD1F2}sobre{\c&H00FFFFFF} a trend
+Dialogue: 0,0:03:58.31,0:03:58.43,Normal,,0,0,0,,analistas sobre {\c&H005AD1F2}a{\c&H00FFFFFF} trend
+Dialogue: 0,0:03:58.43,0:03:58.77,Normal,,0,0,0,,analistas sobre a {\c&H005AD1F2}trend{\c&H00FFFFFF}
+Dialogue: 0,0:03:58.77,0:03:59.27,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} a leitura deles
+Dialogue: 0,0:03:59.27,0:03:59.35,Normal,,0,0,0,,e {\c&H005AD1F2}a{\c&H00FFFFFF} leitura deles
+Dialogue: 0,0:03:59.35,0:03:59.73,Normal,,0,0,0,,e a {\c&H005AD1F2}leitura{\c&H00FFFFFF} deles
+Dialogue: 0,0:03:59.73,0:04:00.11,Normal,,0,0,0,,e a leitura {\c&H005AD1F2}deles{\c&H00FFFFFF}
+Dialogue: 0,0:04:00.11,0:04:00.45,Normal,,0,0,0,,{\c&H005AD1F2}é{\c&H00FFFFFF} que essa saudade fala
+Dialogue: 0,0:04:00.45,0:04:00.59,Normal,,0,0,0,,é {\c&H005AD1F2}que{\c&H00FFFFFF} essa saudade fala
+Dialogue: 0,0:04:00.59,0:04:00.75,Normal,,0,0,0,,é que {\c&H005AD1F2}essa{\c&H00FFFFFF} saudade fala
+Dialogue: 0,0:04:00.75,0:04:01.47,Normal,,0,0,0,,é que essa {\c&H005AD1F2}saudade{\c&H00FFFFFF} fala
+Dialogue: 0,0:04:01.47,0:04:01.71,Normal,,0,0,0,,é que essa saudade {\c&H005AD1F2}fala{\c&H00FFFFFF}
+Dialogue: 0,0:04:01.71,0:04:02.11,Normal,,0,0,0,,{\c&H005AD1F2}menos{\c&H00FFFFFF} de filtro e
+Dialogue: 0,0:04:02.11,0:04:02.35,Normal,,0,0,0,,menos {\c&H005AD1F2}de{\c&H00FFFFFF} filtro e
+Dialogue: 0,0:04:02.35,0:04:03.19,Normal,,0,0,0,,menos de {\c&H005AD1F2}filtro{\c&H00FFFFFF} e
+Dialogue: 0,0:04:03.19,0:04:03.35,Normal,,0,0,0,,menos de filtro {\c&H005AD1F2}e{\c&H00FFFFFF}
+Dialogue: 0,0:04:03.35,0:04:03.71,Normal,,0,0,0,,{\c&H005AD1F2}mais{\c&H00FFFFFF} de economia,
+Dialogue: 0,0:04:03.71,0:04:03.87,Normal,,0,0,0,,mais {\c&H005AD1F2}de{\c&H00FFFFFF} economia,
+Dialogue: 0,0:04:03.87,0:04:04.89,Normal,,0,0,0,,mais de {\c&H005AD1F2}economia,{\c&H00FFFFFF}
+Dialogue: 0,0:04:04.89,0:04:04.97,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} uma época em
+Dialogue: 0,0:04:04.97,0:04:05.13,Normal,,0,0,0,,de {\c&H005AD1F2}uma{\c&H00FFFFFF} época em
+Dialogue: 0,0:04:05.13,0:04:05.47,Normal,,0,0,0,,de uma {\c&H005AD1F2}época{\c&H00FFFFFF} em
+Dialogue: 0,0:04:05.47,0:04:05.73,Normal,,0,0,0,,de uma época {\c&H005AD1F2}em{\c&H00FFFFFF}
+Dialogue: 0,0:04:05.73,0:04:05.81,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} a corrida de aplicativo
+Dialogue: 0,0:04:05.81,0:04:05.89,Normal,,0,0,0,,que {\c&H005AD1F2}a{\c&H00FFFFFF} corrida de aplicativo
+Dialogue: 0,0:04:05.89,0:04:06.33,Normal,,0,0,0,,que a {\c&H005AD1F2}corrida{\c&H00FFFFFF} de aplicativo
+Dialogue: 0,0:04:06.33,0:04:06.45,Normal,,0,0,0,,que a corrida {\c&H005AD1F2}de{\c&H00FFFFFF} aplicativo
+Dialogue: 0,0:04:06.45,0:04:07.23,Normal,,0,0,0,,que a corrida de {\c&H005AD1F2}aplicativo{\c&H00FFFFFF}
+Dialogue: 0,0:04:07.23,0:04:07.41,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} a entrega eram baratas
+Dialogue: 0,0:04:07.41,0:04:07.47,Normal,,0,0,0,,e {\c&H005AD1F2}a{\c&H00FFFFFF} entrega eram baratas
+Dialogue: 0,0:04:07.47,0:04:08.11,Normal,,0,0,0,,e a {\c&H005AD1F2}entrega{\c&H00FFFFFF} eram baratas
+Dialogue: 0,0:04:08.11,0:04:08.27,Normal,,0,0,0,,e a entrega {\c&H005AD1F2}eram{\c&H00FFFFFF} baratas
+Dialogue: 0,0:04:08.27,0:04:08.95,Normal,,0,0,0,,e a entrega eram {\c&H005AD1F2}baratas{\c&H00FFFFFF}
+Dialogue: 0,0:04:08.95,0:04:09.49,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} a internet parecia menos
+Dialogue: 0,0:04:09.49,0:04:09.59,Normal,,0,0,0,,e {\c&H005AD1F2}a{\c&H00FFFFFF} internet parecia menos
+Dialogue: 0,0:04:09.59,0:04:09.99,Normal,,0,0,0,,e a {\c&H005AD1F2}internet{\c&H00FFFFFF} parecia menos
+Dialogue: 0,0:04:09.99,0:04:10.69,Normal,,0,0,0,,e a internet {\c&H005AD1F2}parecia{\c&H00FFFFFF} menos
+Dialogue: 0,0:04:10.69,0:04:11.05,Normal,,0,0,0,,e a internet parecia {\c&H005AD1F2}menos{\c&H00FFFFFF}
+Dialogue: 0,0:04:11.05,0:04:11.29,Normal,,0,0,0,,{\c&H005AD1F2}um{\c&H00FFFFFF} lugar para vender
+Dialogue: 0,0:04:11.29,0:04:11.59,Normal,,0,0,0,,um {\c&H005AD1F2}lugar{\c&H00FFFFFF} para vender
+Dialogue: 0,0:04:11.59,0:04:11.83,Normal,,0,0,0,,um lugar {\c&H005AD1F2}para{\c&H00FFFFFF} vender
+Dialogue: 0,0:04:11.83,0:04:12.27,Normal,,0,0,0,,um lugar para {\c&H005AD1F2}vender{\c&H00FFFFFF}
+Dialogue: 0,0:04:12.27,0:04:12.85,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} mais um lugar
+Dialogue: 0,0:04:12.85,0:04:13.15,Normal,,0,0,0,,e {\c&H005AD1F2}mais{\c&H00FFFFFF} um lugar
+Dialogue: 0,0:04:13.15,0:04:13.37,Normal,,0,0,0,,e mais {\c&H005AD1F2}um{\c&H00FFFFFF} lugar
+Dialogue: 0,0:04:13.37,0:04:13.69,Normal,,0,0,0,,e mais um {\c&H005AD1F2}lugar{\c&H00FFFFFF}
+Dialogue: 0,0:04:13.69,0:04:13.95,Normal,,0,0,0,,{\c&H005AD1F2}para{\c&H00FFFFFF} brincar.
+Dialogue: 0,0:04:13.95,0:04:15.15,Normal,,0,0,0,,para {\c&H005AD1F2}brincar.{\c&H00FFFFFF}
+Dialogue: 0,0:04:15.26,0:04:15.36,Normal,,0,0,0,,{\c&H005AD1F2}Só{\c&H00FFFFFF} que tem um problema
+Dialogue: 0,0:04:15.36,0:04:15.48,Normal,,0,0,0,,Só {\c&H005AD1F2}que{\c&H00FFFFFF} tem um problema
+Dialogue: 0,0:04:15.48,0:04:15.64,Normal,,0,0,0,,Só que {\c&H005AD1F2}tem{\c&H00FFFFFF} um problema
+Dialogue: 0,0:04:15.64,0:04:15.72,Normal,,0,0,0,,Só que tem {\c&H005AD1F2}um{\c&H00FFFFFF} problema
+Dialogue: 0,0:04:15.72,0:04:16.24,Normal,,0,0,0,,Só que tem um {\c&H005AD1F2}problema{\c&H00FFFFFF}
+Dialogue: 0,0:04:16.24,0:04:16.50,Normal,,0,0,0,,{\c&H005AD1F2}nessa{\c&H00FFFFFF} saudade toda,
+Dialogue: 0,0:04:16.50,0:04:17.02,Normal,,0,0,0,,nessa {\c&H005AD1F2}saudade{\c&H00FFFFFF} toda,
+Dialogue: 0,0:04:17.02,0:04:17.62,Normal,,0,0,0,,nessa saudade {\c&H005AD1F2}toda,{\c&H00FFFFFF}
+Dialogue: 0,0:04:17.62,0:04:17.96,Normal,,0,0,0,,{\c&H005AD1F2}porque{\c&H00FFFFFF} a sua memória não
+Dialogue: 0,0:04:17.96,0:04:18.06,Normal,,0,0,0,,porque {\c&H005AD1F2}a{\c&H00FFFFFF} sua memória não
+Dialogue: 0,0:04:18.06,0:04:18.24,Normal,,0,0,0,,porque a {\c&H005AD1F2}sua{\c&H00FFFFFF} memória não
+Dialogue: 0,0:04:18.24,0:04:18.78,Normal,,0,0,0,,porque a sua {\c&H005AD1F2}memória{\c&H00FFFFFF} não
+Dialogue: 0,0:04:18.78,0:04:19.00,Normal,,0,0,0,,porque a sua memória {\c&H005AD1F2}não{\c&H00FFFFFF}
+Dialogue: 0,0:04:19.00,0:04:19.54,Normal,,0,0,0,,{\c&H005AD1F2}funciona{\c&H00FFFFFF} como uma câmera.
+Dialogue: 0,0:04:19.54,0:04:19.94,Normal,,0,0,0,,funciona {\c&H005AD1F2}como{\c&H00FFFFFF} uma câmera.
+Dialogue: 0,0:04:19.94,0:04:20.12,Normal,,0,0,0,,funciona como {\c&H005AD1F2}uma{\c&H00FFFFFF} câmera.
+Dialogue: 0,0:04:20.12,0:04:20.94,Normal,,0,0,0,,funciona como uma {\c&H005AD1F2}câmera.{\c&H00FFFFFF}
+Dialogue: 0,0:04:20.94,0:04:21.12,Normal,,0,0,0,,{\c&H005AD1F2}Ela{\c&H00FFFFFF} funciona como uma editora.
+Dialogue: 0,0:04:21.12,0:04:21.56,Normal,,0,0,0,,Ela {\c&H005AD1F2}funciona{\c&H00FFFFFF} como uma editora.
+Dialogue: 0,0:04:21.56,0:04:22.12,Normal,,0,0,0,,Ela funciona {\c&H005AD1F2}como{\c&H00FFFFFF} uma editora.
+Dialogue: 0,0:04:22.12,0:04:22.38,Normal,,0,0,0,,Ela funciona como {\c&H005AD1F2}uma{\c&H00FFFFFF} editora.
+Dialogue: 0,0:04:22.38,0:04:23.58,Normal,,0,0,0,,Ela funciona como uma {\c&H005AD1F2}editora.{\c&H00FFFFFF}
+Dialogue: 0,0:04:24.14,0:04:25.16,Normal,,0,0,0,,{\c&H005AD1F2}Em{\c&H00FFFFFF} 1997 o psicólogo Terence
+Dialogue: 0,0:04:25.16,0:04:26.18,Normal,,0,0,0,,Em {\c&H005AD1F2}1997{\c&H00FFFFFF} o psicólogo Terence
+Dialogue: 0,0:04:26.18,0:04:26.40,Normal,,0,0,0,,Em 1997 {\c&H005AD1F2}o{\c&H00FFFFFF} psicólogo Terence
+Dialogue: 0,0:04:26.40,0:04:27.02,Normal,,0,0,0,,Em 1997 o {\c&H005AD1F2}psicólogo{\c&H00FFFFFF} Terence
+Dialogue: 0,0:04:27.02,0:04:27.56,Normal,,0,0,0,,Em 1997 o psicólogo {\c&H005AD1F2}Terence{\c&H00FFFFFF}
+Dialogue: 0,0:04:27.56,0:04:28.00,Normal,,0,0,0,,{\c&H005AD1F2}Mitchell{\c&H00FFFFFF} e colegas
+Dialogue: 0,0:04:28.00,0:04:28.36,Normal,,0,0,0,,Mitchell {\c&H005AD1F2}e{\c&H00FFFFFF} colegas
+Dialogue: 0,0:04:28.36,0:04:29.04,Normal,,0,0,0,,Mitchell e {\c&H005AD1F2}colegas{\c&H00FFFFFF}
+Dialogue: 0,0:04:29.04,0:04:29.80,Normal,,0,0,0,,{\c&H005AD1F2}acompanharam{\c&H00FFFFFF} pessoas em 3
+Dialogue: 0,0:04:29.80,0:04:30.14,Normal,,0,0,0,,acompanharam {\c&H005AD1F2}pessoas{\c&H00FFFFFF} em 3
+Dialogue: 0,0:04:30.14,0:04:30.50,Normal,,0,0,0,,acompanharam pessoas {\c&H005AD1F2}em{\c&H00FFFFFF} 3
+Dialogue: 0,0:04:30.50,0:04:30.86,Normal,,0,0,0,,acompanharam pessoas em {\c&H005AD1F2}3{\c&H00FFFFFF}
+Dialogue: 0,0:04:30.86,0:04:31.55,Normal,,0,0,0,,{\c&H005AD1F2}viagens,{\c&H00FFFFFF} 10 dias pela Europa,
+Dialogue: 0,0:04:31.55,0:04:32.24,Normal,,0,0,0,,viagens, {\c&H005AD1F2}10{\c&H00FFFFFF} dias pela Europa,
+Dialogue: 0,0:04:32.24,0:04:32.64,Normal,,0,0,0,,viagens, 10 {\c&H005AD1F2}dias{\c&H00FFFFFF} pela Europa,
+Dialogue: 0,0:04:32.64,0:04:32.88,Normal,,0,0,0,,viagens, 10 dias {\c&H005AD1F2}pela{\c&H00FFFFFF} Europa,
+Dialogue: 0,0:04:32.88,0:04:33.80,Normal,,0,0,0,,viagens, 10 dias pela {\c&H005AD1F2}Europa,{\c&H00FFFFFF}
+Dialogue: 0,0:04:33.80,0:04:33.92,Normal,,0,0,0,,{\c&H005AD1F2}um{\c&H00FFFFFF} feriado de Ação
+Dialogue: 0,0:04:33.92,0:04:34.44,Normal,,0,0,0,,um {\c&H005AD1F2}feriado{\c&H00FFFFFF} de Ação
+Dialogue: 0,0:04:34.44,0:04:34.60,Normal,,0,0,0,,um feriado {\c&H005AD1F2}de{\c&H00FFFFFF} Ação
+Dialogue: 0,0:04:34.60,0:04:34.92,Normal,,0,0,0,,um feriado de {\c&H005AD1F2}Ação{\c&H00FFFFFF}
+Dialogue: 0,0:04:34.92,0:04:35.06,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} Graças nos Estados Unidos
+Dialogue: 0,0:04:35.06,0:04:35.50,Normal,,0,0,0,,de {\c&H005AD1F2}Graças{\c&H00FFFFFF} nos Estados Unidos
+Dialogue: 0,0:04:35.50,0:04:35.68,Normal,,0,0,0,,de Graças {\c&H005AD1F2}nos{\c&H00FFFFFF} Estados Unidos
+Dialogue: 0,0:04:35.68,0:04:36.06,Normal,,0,0,0,,de Graças nos {\c&H005AD1F2}Estados{\c&H00FFFFFF} Unidos
+Dialogue: 0,0:04:36.06,0:04:36.58,Normal,,0,0,0,,de Graças nos Estados {\c&H005AD1F2}Unidos{\c&H00FFFFFF}
+Dialogue: 0,0:04:36.58,0:04:37.03,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} 3 semanas de bicicleta
+Dialogue: 0,0:04:37.03,0:04:37.48,Normal,,0,0,0,,e {\c&H005AD1F2}3{\c&H00FFFFFF} semanas de bicicleta
+Dialogue: 0,0:04:37.48,0:04:37.94,Normal,,0,0,0,,e 3 {\c&H005AD1F2}semanas{\c&H00FFFFFF} de bicicleta
+Dialogue: 0,0:04:37.94,0:04:38.18,Normal,,0,0,0,,e 3 semanas {\c&H005AD1F2}de{\c&H00FFFFFF} bicicleta
+Dialogue: 0,0:04:38.18,0:04:38.90,Normal,,0,0,0,,e 3 semanas de {\c&H005AD1F2}bicicleta{\c&H00FFFFFF}
+Dialogue: 0,0:04:38.90,0:04:39.08,Normal,,0,0,0,,{\c&H005AD1F2}pela{\c&H00FFFFFF} Califórnia, e perguntaram
+Dialogue: 0,0:04:39.08,0:04:40.12,Normal,,0,0,0,,pela {\c&H005AD1F2}Califórnia,{\c&H00FFFFFF} e perguntaram
+Dialogue: 0,0:04:40.12,0:04:40.32,Normal,,0,0,0,,pela Califórnia, {\c&H005AD1F2}e{\c&H00FFFFFF} perguntaram
+Dialogue: 0,0:04:40.32,0:04:40.92,Normal,,0,0,0,,pela Califórnia, e {\c&H005AD1F2}perguntaram{\c&H00FFFFFF}
+Dialogue: 0,0:04:40.92,0:04:41.30,Normal,,0,0,0,,{\c&H005AD1F2}como{\c&H00FFFFFF} elas se sentiam antes,
+Dialogue: 0,0:04:41.30,0:04:41.54,Normal,,0,0,0,,como {\c&H005AD1F2}elas{\c&H00FFFFFF} se sentiam antes,
+Dialogue: 0,0:04:41.54,0:04:41.74,Normal,,0,0,0,,como elas {\c&H005AD1F2}se{\c&H00FFFFFF} sentiam antes,
+Dialogue: 0,0:04:41.74,0:04:42.30,Normal,,0,0,0,,como elas se {\c&H005AD1F2}sentiam{\c&H00FFFFFF} antes,
+Dialogue: 0,0:04:42.30,0:04:43.26,Normal,,0,0,0,,como elas se sentiam {\c&H005AD1F2}antes,{\c&H00FFFFFF}
+Dialogue: 0,0:04:43.26,0:04:43.68,Normal,,0,0,0,,{\c&H005AD1F2}durante{\c&H00FFFFFF} e depois.
+Dialogue: 0,0:04:43.68,0:04:44.26,Normal,,0,0,0,,durante {\c&H005AD1F2}e{\c&H00FFFFFF} depois.
+Dialogue: 0,0:04:44.26,0:04:45.46,Normal,,0,0,0,,durante e {\c&H005AD1F2}depois.{\c&H00FFFFFF}
+Dialogue: 0,0:04:45.63,0:04:45.73,Normal,,0,0,0,,{\c&H005AD1F2}E{\c&H00FFFFFF} o padrão se repetiu
+Dialogue: 0,0:04:45.73,0:04:45.75,Normal,,0,0,0,,E {\c&H005AD1F2}o{\c&H00FFFFFF} padrão se repetiu
+Dialogue: 0,0:04:45.75,0:04:46.13,Normal,,0,0,0,,E o {\c&H005AD1F2}padrão{\c&H00FFFFFF} se repetiu
+Dialogue: 0,0:04:46.13,0:04:46.29,Normal,,0,0,0,,E o padrão {\c&H005AD1F2}se{\c&H00FFFFFF} repetiu
+Dialogue: 0,0:04:46.29,0:04:46.77,Normal,,0,0,0,,E o padrão se {\c&H005AD1F2}repetiu{\c&H00FFFFFF}
+Dialogue: 0,0:04:46.77,0:04:46.91,Normal,,0,0,0,,{\c&H005AD1F2}nas{\c&H00FFFFFF} três, porque durante
+Dialogue: 0,0:04:46.91,0:04:47.87,Normal,,0,0,0,,nas {\c&H005AD1F2}três,{\c&H00FFFFFF} porque durante
+Dialogue: 0,0:04:47.87,0:04:48.13,Normal,,0,0,0,,nas três, {\c&H005AD1F2}porque{\c&H00FFFFFF} durante
+Dialogue: 0,0:04:48.13,0:04:48.41,Normal,,0,0,0,,nas três, porque {\c&H005AD1F2}durante{\c&H00FFFFFF}
+Dialogue: 0,0:04:48.41,0:04:48.57,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} viagem a nota era
+Dialogue: 0,0:04:48.57,0:04:49.07,Normal,,0,0,0,,a {\c&H005AD1F2}viagem{\c&H00FFFFFF} a nota era
+Dialogue: 0,0:04:49.07,0:04:49.19,Normal,,0,0,0,,a viagem {\c&H005AD1F2}a{\c&H00FFFFFF} nota era
+Dialogue: 0,0:04:49.19,0:04:49.45,Normal,,0,0,0,,a viagem a {\c&H005AD1F2}nota{\c&H00FFFFFF} era
+Dialogue: 0,0:04:49.45,0:04:49.63,Normal,,0,0,0,,a viagem a nota {\c&H005AD1F2}era{\c&H00FFFFFF}
+Dialogue: 0,0:04:49.63,0:04:49.87,Normal,,0,0,0,,{\c&H005AD1F2}mais{\c&H00FFFFFF} baixa, com o cansaço
+Dialogue: 0,0:04:49.87,0:04:50.75,Normal,,0,0,0,,mais {\c&H005AD1F2}baixa,{\c&H00FFFFFF} com o cansaço
+Dialogue: 0,0:04:50.75,0:04:50.91,Normal,,0,0,0,,mais baixa, {\c&H005AD1F2}com{\c&H00FFFFFF} o cansaço
+Dialogue: 0,0:04:50.91,0:04:51.01,Normal,,0,0,0,,mais baixa, com {\c&H005AD1F2}o{\c&H00FFFFFF} cansaço
+Dialogue: 0,0:04:51.01,0:04:51.75,Normal,,0,0,0,,mais baixa, com o {\c&H005AD1F2}cansaço{\c&H00FFFFFF}
+Dialogue: 0,0:04:51.75,0:04:51.85,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} os perrengues de qualquer
+Dialogue: 0,0:04:51.85,0:04:51.97,Normal,,0,0,0,,e {\c&H005AD1F2}os{\c&H00FFFFFF} perrengues de qualquer
+Dialogue: 0,0:04:51.97,0:04:52.61,Normal,,0,0,0,,e os {\c&H005AD1F2}perrengues{\c&H00FFFFFF} de qualquer
+Dialogue: 0,0:04:52.61,0:04:52.73,Normal,,0,0,0,,e os perrengues {\c&H005AD1F2}de{\c&H00FFFFFF} qualquer
+Dialogue: 0,0:04:52.73,0:04:53.03,Normal,,0,0,0,,e os perrengues de {\c&H005AD1F2}qualquer{\c&H00FFFFFF}
+Dialogue: 0,0:04:53.03,0:04:54.15,Normal,,0,0,0,,{\c&H005AD1F2}viagem,{\c&H00FFFFFF} e depois em casa
+Dialogue: 0,0:04:54.15,0:04:54.23,Normal,,0,0,0,,viagem, {\c&H005AD1F2}e{\c&H00FFFFFF} depois em casa
+Dialogue: 0,0:04:54.23,0:04:54.51,Normal,,0,0,0,,viagem, e {\c&H005AD1F2}depois{\c&H00FFFFFF} em casa
+Dialogue: 0,0:04:54.51,0:04:54.73,Normal,,0,0,0,,viagem, e depois {\c&H005AD1F2}em{\c&H00FFFFFF} casa
+Dialogue: 0,0:04:54.73,0:04:55.15,Normal,,0,0,0,,viagem, e depois em {\c&H005AD1F2}casa{\c&H00FFFFFF}
+Dialogue: 0,0:04:55.15,0:04:55.63,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} lembrança ficava melhor
+Dialogue: 0,0:04:55.63,0:04:56.13,Normal,,0,0,0,,a {\c&H005AD1F2}lembrança{\c&H00FFFFFF} ficava melhor
+Dialogue: 0,0:04:56.13,0:04:56.53,Normal,,0,0,0,,a lembrança {\c&H005AD1F2}ficava{\c&H00FFFFFF} melhor
+Dialogue: 0,0:04:56.53,0:04:56.97,Normal,,0,0,0,,a lembrança ficava {\c&H005AD1F2}melhor{\c&H00FFFFFF}
+Dialogue: 0,0:04:56.97,0:04:57.23,Normal,,0,0,0,,{\c&H005AD1F2}do{\c&H00FFFFFF} que a própria viagem
+Dialogue: 0,0:04:57.23,0:04:57.37,Normal,,0,0,0,,do {\c&H005AD1F2}que{\c&H00FFFFFF} a própria viagem
+Dialogue: 0,0:04:57.37,0:04:57.45,Normal,,0,0,0,,do que {\c&H005AD1F2}a{\c&H00FFFFFF} própria viagem
+Dialogue: 0,0:04:57.45,0:04:57.87,Normal,,0,0,0,,do que a {\c&H005AD1F2}própria{\c&H00FFFFFF} viagem
+Dialogue: 0,0:04:57.87,0:04:58.45,Normal,,0,0,0,,do que a própria {\c&H005AD1F2}viagem{\c&H00FFFFFF}
+Dialogue: 0,0:04:58.45,0:04:58.67,Normal,,0,0,0,,{\c&H005AD1F2}tinha{\c&H00FFFFFF} sido.
+Dialogue: 0,0:04:58.67,0:04:59.49,Normal,,0,0,0,,tinha {\c&H005AD1F2}sido.{\c&H00FFFFFF}
+Dialogue: 0,0:04:59.49,0:04:59.63,Normal,,0,0,0,,{\c&H005AD1F2}Os{\c&H00FFFFFF} pesquisadores chamaram isso
+Dialogue: 0,0:04:59.63,0:05:00.23,Normal,,0,0,0,,Os {\c&H005AD1F2}pesquisadores{\c&H00FFFFFF} chamaram isso
+Dialogue: 0,0:05:00.23,0:05:00.79,Normal,,0,0,0,,Os pesquisadores {\c&H005AD1F2}chamaram{\c&H00FFFFFF} isso
+Dialogue: 0,0:05:00.79,0:05:01.07,Normal,,0,0,0,,Os pesquisadores chamaram {\c&H005AD1F2}isso{\c&H00FFFFFF}
+Dialogue: 0,0:05:01.07,0:05:01.29,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} visão cor de rosa.
+Dialogue: 0,0:05:01.29,0:05:01.75,Normal,,0,0,0,,de {\c&H005AD1F2}visão{\c&H00FFFFFF} cor de rosa.
+Dialogue: 0,0:05:01.75,0:05:02.15,Normal,,0,0,0,,de visão {\c&H005AD1F2}cor{\c&H00FFFFFF} de rosa.
+Dialogue: 0,0:05:02.15,0:05:02.33,Normal,,0,0,0,,de visão cor {\c&H005AD1F2}de{\c&H00FFFFFF} rosa.
+Dialogue: 0,0:05:02.33,0:05:03.53,Normal,,0,0,0,,de visão cor de {\c&H005AD1F2}rosa.{\c&H00FFFFFF}
+Dialogue: 0,0:05:03.56,0:05:03.66,Normal,,0,0,0,,{\c&H005AD1F2}Tem{\c&H00FFFFFF} um segundo mecanismo.
+Dialogue: 0,0:05:03.66,0:05:03.80,Normal,,0,0,0,,Tem {\c&H005AD1F2}um{\c&H00FFFFFF} segundo mecanismo.
+Dialogue: 0,0:05:03.80,0:05:04.20,Normal,,0,0,0,,Tem um {\c&H005AD1F2}segundo{\c&H00FFFFFF} mecanismo.
+Dialogue: 0,0:05:04.20,0:05:05.28,Normal,,0,0,0,,Tem um segundo {\c&H005AD1F2}mecanismo.{\c&H00FFFFFF}
+Dialogue: 0,0:05:05.28,0:05:05.54,Normal,,0,0,0,,{\c&H005AD1F2}Desde{\c&H00FFFFFF} os anos 90
+Dialogue: 0,0:05:05.54,0:05:05.80,Normal,,0,0,0,,Desde {\c&H005AD1F2}os{\c&H00FFFFFF} anos 90
+Dialogue: 0,0:05:05.80,0:05:06.23,Normal,,0,0,0,,Desde os {\c&H005AD1F2}anos{\c&H00FFFFFF} 90
+Dialogue: 0,0:05:06.23,0:05:06.66,Normal,,0,0,0,,Desde os anos {\c&H005AD1F2}90{\c&H00FFFFFF}
+Dialogue: 0,0:05:06.66,0:05:06.86,Normal,,0,0,0,,{\c&H005AD1F2}o{\c&H00FFFFFF} psicólogo Richard Walker
+Dialogue: 0,0:05:06.86,0:05:07.54,Normal,,0,0,0,,o {\c&H005AD1F2}psicólogo{\c&H00FFFFFF} Richard Walker
+Dialogue: 0,0:05:07.54,0:05:07.90,Normal,,0,0,0,,o psicólogo {\c&H005AD1F2}Richard{\c&H00FFFFFF} Walker
+Dialogue: 0,0:05:07.90,0:05:08.44,Normal,,0,0,0,,o psicólogo Richard {\c&H005AD1F2}Walker{\c&H00FFFFFF}
+Dialogue: 0,0:05:08.44,0:05:08.70,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} colegas mostram que
+Dialogue: 0,0:05:08.70,0:05:09.38,Normal,,0,0,0,,e {\c&H005AD1F2}colegas{\c&H00FFFFFF} mostram que
+Dialogue: 0,0:05:09.38,0:05:10.14,Normal,,0,0,0,,e colegas {\c&H005AD1F2}mostram{\c&H00FFFFFF} que
+Dialogue: 0,0:05:10.14,0:05:10.30,Normal,,0,0,0,,e colegas mostram {\c&H005AD1F2}que{\c&H00FFFFFF}
+Dialogue: 0,0:05:10.30,0:05:10.40,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} emoção das lembranças ruins
+Dialogue: 0,0:05:10.40,0:05:10.94,Normal,,0,0,0,,a {\c&H005AD1F2}emoção{\c&H00FFFFFF} das lembranças ruins
+Dialogue: 0,0:05:10.94,0:05:11.10,Normal,,0,0,0,,a emoção {\c&H005AD1F2}das{\c&H00FFFFFF} lembranças ruins
+Dialogue: 0,0:05:11.10,0:05:11.76,Normal,,0,0,0,,a emoção das {\c&H005AD1F2}lembranças{\c&H00FFFFFF} ruins
+Dialogue: 0,0:05:11.76,0:05:12.10,Normal,,0,0,0,,a emoção das lembranças {\c&H005AD1F2}ruins{\c&H00FFFFFF}
+Dialogue: 0,0:05:12.10,0:05:13.30,Normal,,0,0,0,,{\c&H005AD1F2}enfraquece{\c&H00FFFFFF} mais rápido do
+Dialogue: 0,0:05:13.30,0:05:13.66,Normal,,0,0,0,,enfraquece {\c&H005AD1F2}mais{\c&H00FFFFFF} rápido do
+Dialogue: 0,0:05:13.66,0:05:14.24,Normal,,0,0,0,,enfraquece mais {\c&H005AD1F2}rápido{\c&H00FFFFFF} do
+Dialogue: 0,0:05:14.24,0:05:14.48,Normal,,0,0,0,,enfraquece mais rápido {\c&H005AD1F2}do{\c&H00FFFFFF}
+Dialogue: 0,0:05:14.48,0:05:14.64,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} a emoção das lembranças
+Dialogue: 0,0:05:14.64,0:05:14.72,Normal,,0,0,0,,que {\c&H005AD1F2}a{\c&H00FFFFFF} emoção das lembranças
+Dialogue: 0,0:05:14.72,0:05:15.26,Normal,,0,0,0,,que a {\c&H005AD1F2}emoção{\c&H00FFFFFF} das lembranças
+Dialogue: 0,0:05:15.26,0:05:15.40,Normal,,0,0,0,,que a emoção {\c&H005AD1F2}das{\c&H00FFFFFF} lembranças
+Dialogue: 0,0:05:15.40,0:05:16.10,Normal,,0,0,0,,que a emoção das {\c&H005AD1F2}lembranças{\c&H00FFFFFF}
+Dialogue: 0,0:05:16.10,0:05:16.96,Normal,,0,0,0,,{\c&H005AD1F2}boas,{\c&H00FFFFFF} então o fato continua
+Dialogue: 0,0:05:16.96,0:05:17.38,Normal,,0,0,0,,boas, {\c&H005AD1F2}então{\c&H00FFFFFF} o fato continua
+Dialogue: 0,0:05:17.38,0:05:17.68,Normal,,0,0,0,,boas, então {\c&H005AD1F2}o{\c&H00FFFFFF} fato continua
+Dialogue: 0,0:05:17.68,0:05:17.98,Normal,,0,0,0,,boas, então o {\c&H005AD1F2}fato{\c&H00FFFFFF} continua
+Dialogue: 0,0:05:17.98,0:05:18.64,Normal,,0,0,0,,boas, então o fato {\c&H005AD1F2}continua{\c&H00FFFFFF}
+Dialogue: 0,0:05:18.64,0:05:18.94,Normal,,0,0,0,,{\c&H005AD1F2}lá{\c&H00FFFFFF} mas o peso dele
+Dialogue: 0,0:05:18.94,0:05:19.50,Normal,,0,0,0,,lá {\c&H005AD1F2}mas{\c&H00FFFFFF} o peso dele
+Dialogue: 0,0:05:19.50,0:05:19.60,Normal,,0,0,0,,lá mas {\c&H005AD1F2}o{\c&H00FFFFFF} peso dele
+Dialogue: 0,0:05:19.60,0:05:20.02,Normal,,0,0,0,,lá mas o {\c&H005AD1F2}peso{\c&H00FFFFFF} dele
+Dialogue: 0,0:05:20.02,0:05:20.42,Normal,,0,0,0,,lá mas o peso {\c&H005AD1F2}dele{\c&H00FFFFFF}
+Dialogue: 0,0:05:20.42,0:05:20.72,Normal,,0,0,0,,{\c&H005AD1F2}vai{\c&H00FFFFFF} sumindo.
+Dialogue: 0,0:05:20.72,0:05:21.92,Normal,,0,0,0,,vai {\c&H005AD1F2}sumindo.{\c&H00FFFFFF}
+Dialogue: 0,0:05:22.09,0:05:22.17,Normal,,0,0,0,,{\c&H005AD1F2}A{\c&H00FFFFFF} vergonha daquele dia
+Dialogue: 0,0:05:22.17,0:05:22.75,Normal,,0,0,0,,A {\c&H005AD1F2}vergonha{\c&H00FFFFFF} daquele dia
+Dialogue: 0,0:05:22.75,0:05:23.05,Normal,,0,0,0,,A vergonha {\c&H005AD1F2}daquele{\c&H00FFFFFF} dia
+Dialogue: 0,0:05:23.05,0:05:23.37,Normal,,0,0,0,,A vergonha daquele {\c&H005AD1F2}dia{\c&H00FFFFFF}
+Dialogue: 0,0:05:23.37,0:05:23.51,Normal,,0,0,0,,{\c&H005AD1F2}no{\c&H00FFFFFF} colégio, a ansiedade antes
+Dialogue: 0,0:05:23.51,0:05:24.51,Normal,,0,0,0,,no {\c&H005AD1F2}colégio,{\c&H00FFFFFF} a ansiedade antes
+Dialogue: 0,0:05:24.51,0:05:24.63,Normal,,0,0,0,,no colégio, {\c&H005AD1F2}a{\c&H00FFFFFF} ansiedade antes
+Dialogue: 0,0:05:24.63,0:05:25.43,Normal,,0,0,0,,no colégio, a {\c&H005AD1F2}ansiedade{\c&H00FFFFFF} antes
+Dialogue: 0,0:05:25.43,0:05:25.67,Normal,,0,0,0,,no colégio, a ansiedade {\c&H005AD1F2}antes{\c&H00FFFFFF}
+Dialogue: 0,0:05:25.67,0:05:25.89,Normal,,0,0,0,,{\c&H005AD1F2}da{\c&H00FFFFFF} prova e a briga
+Dialogue: 0,0:05:25.89,0:05:26.43,Normal,,0,0,0,,da {\c&H005AD1F2}prova{\c&H00FFFFFF} e a briga
+Dialogue: 0,0:05:26.43,0:05:26.95,Normal,,0,0,0,,da prova {\c&H005AD1F2}e{\c&H00FFFFFF} a briga
+Dialogue: 0,0:05:26.95,0:05:27.05,Normal,,0,0,0,,da prova e {\c&H005AD1F2}a{\c&H00FFFFFF} briga
+Dialogue: 0,0:05:27.05,0:05:27.43,Normal,,0,0,0,,da prova e a {\c&H005AD1F2}briga{\c&H00FFFFFF}
+Dialogue: 0,0:05:27.43,0:05:27.57,Normal,,0,0,0,,{\c&H005AD1F2}em{\c&H00FFFFFF} casa perdem a força
+Dialogue: 0,0:05:27.57,0:05:28.05,Normal,,0,0,0,,em {\c&H005AD1F2}casa{\c&H00FFFFFF} perdem a força
+Dialogue: 0,0:05:28.05,0:05:28.65,Normal,,0,0,0,,em casa {\c&H005AD1F2}perdem{\c&H00FFFFFF} a força
+Dialogue: 0,0:05:28.65,0:05:28.75,Normal,,0,0,0,,em casa perdem {\c&H005AD1F2}a{\c&H00FFFFFF} força
+Dialogue: 0,0:05:28.75,0:05:29.15,Normal,,0,0,0,,em casa perdem a {\c&H005AD1F2}força{\c&H00FFFFFF}
+Dialogue: 0,0:05:29.15,0:05:29.41,Normal,,0,0,0,,{\c&H005AD1F2}com{\c&H00FFFFFF} os anos,
+Dialogue: 0,0:05:29.41,0:05:29.63,Normal,,0,0,0,,com {\c&H005AD1F2}os{\c&H00FFFFFF} anos,
+Dialogue: 0,0:05:29.63,0:05:30.43,Normal,,0,0,0,,com os {\c&H005AD1F2}anos,{\c&H00FFFFFF}
+Dialogue: 0,0:05:30.43,0:05:30.51,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} o que fica
+Dialogue: 0,0:05:30.51,0:05:30.59,Normal,,0,0,0,,e {\c&H005AD1F2}o{\c&H00FFFFFF} que fica
+Dialogue: 0,0:05:30.59,0:05:30.69,Normal,,0,0,0,,e o {\c&H005AD1F2}que{\c&H00FFFFFF} fica
+Dialogue: 0,0:05:30.69,0:05:31.13,Normal,,0,0,0,,e o que {\c&H005AD1F2}fica{\c&H00FFFFFF}
+Dialogue: 0,0:05:31.13,0:05:31.51,Normal,,0,0,0,,{\c&H005AD1F2}é{\c&H00FFFFFF} a música,
+Dialogue: 0,0:05:31.51,0:05:31.61,Normal,,0,0,0,,é {\c&H005AD1F2}a{\c&H00FFFFFF} música,
+Dialogue: 0,0:05:31.61,0:05:32.79,Normal,,0,0,0,,é a {\c&H005AD1F2}música,{\c&H00FFFFFF}
+Dialogue: 0,0:05:32.79,0:05:32.79,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} luz da tarde
+Dialogue: 0,0:05:32.79,0:05:33.05,Normal,,0,0,0,,a {\c&H005AD1F2}luz{\c&H00FFFFFF} da tarde
+Dialogue: 0,0:05:33.05,0:05:33.27,Normal,,0,0,0,,a luz {\c&H005AD1F2}da{\c&H00FFFFFF} tarde
+Dialogue: 0,0:05:33.27,0:05:33.75,Normal,,0,0,0,,a luz da {\c&H005AD1F2}tarde{\c&H00FFFFFF}
+Dialogue: 0,0:05:33.75,0:05:34.21,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} o amigo do lado.
+Dialogue: 0,0:05:34.21,0:05:34.31,Normal,,0,0,0,,e {\c&H005AD1F2}o{\c&H00FFFFFF} amigo do lado.
+Dialogue: 0,0:05:34.31,0:05:34.63,Normal,,0,0,0,,e o {\c&H005AD1F2}amigo{\c&H00FFFFFF} do lado.
+Dialogue: 0,0:05:34.63,0:05:34.85,Normal,,0,0,0,,e o amigo {\c&H005AD1F2}do{\c&H00FFFFFF} lado.
+Dialogue: 0,0:05:34.85,0:05:35.95,Normal,,0,0,0,,e o amigo do {\c&H005AD1F2}lado.{\c&H00FFFFFF}
+Dialogue: 0,0:05:35.95,0:05:36.03,Normal,,0,0,0,,{\c&H005AD1F2}E{\c&H00FFFFFF} tem um terceiro
+Dialogue: 0,0:05:36.03,0:05:36.17,Normal,,0,0,0,,E {\c&H005AD1F2}tem{\c&H00FFFFFF} um terceiro
+Dialogue: 0,0:05:36.17,0:05:36.27,Normal,,0,0,0,,E tem {\c&H005AD1F2}um{\c&H00FFFFFF} terceiro
+Dialogue: 0,0:05:36.27,0:05:36.83,Normal,,0,0,0,,E tem um {\c&H005AD1F2}terceiro{\c&H00FFFFFF}
+Dialogue: 0,0:05:36.83,0:05:36.95,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} a psicologia chama
+Dialogue: 0,0:05:36.95,0:05:37.03,Normal,,0,0,0,,que {\c&H005AD1F2}a{\c&H00FFFFFF} psicologia chama
+Dialogue: 0,0:05:37.03,0:05:37.63,Normal,,0,0,0,,que a {\c&H005AD1F2}psicologia{\c&H00FFFFFF} chama
+Dialogue: 0,0:05:37.63,0:05:37.99,Normal,,0,0,0,,que a psicologia {\c&H005AD1F2}chama{\c&H00FFFFFF}
+Dialogue: 0,0:05:37.99,0:05:38.19,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} pico de reminiscência,
+Dialogue: 0,0:05:38.19,0:05:38.67,Normal,,0,0,0,,de {\c&H005AD1F2}pico{\c&H00FFFFFF} de reminiscência,
+Dialogue: 0,0:05:38.67,0:05:38.81,Normal,,0,0,0,,de pico {\c&H005AD1F2}de{\c&H00FFFFFF} reminiscência,
+Dialogue: 0,0:05:38.81,0:05:40.01,Normal,,0,0,0,,de pico de {\c&H005AD1F2}reminiscência,{\c&H00FFFFFF}
+Dialogue: 0,0:05:40.03,0:05:40.55,Normal,,0,0,0,,{\c&H005AD1F2}estudado{\c&H00FFFFFF} há décadas pelo
+Dialogue: 0,0:05:40.55,0:05:40.69,Normal,,0,0,0,,estudado {\c&H005AD1F2}há{\c&H00FFFFFF} décadas pelo
+Dialogue: 0,0:05:40.69,0:05:41.23,Normal,,0,0,0,,estudado há {\c&H005AD1F2}décadas{\c&H00FFFFFF} pelo
+Dialogue: 0,0:05:41.23,0:05:41.47,Normal,,0,0,0,,estudado há décadas {\c&H005AD1F2}pelo{\c&H00FFFFFF}
+Dialogue: 0,0:05:41.47,0:05:42.23,Normal,,0,0,0,,{\c&H005AD1F2}pesquisador{\c&H00FFFFFF} David Rubin.
+Dialogue: 0,0:05:42.23,0:05:42.73,Normal,,0,0,0,,pesquisador {\c&H005AD1F2}David{\c&H00FFFFFF} Rubin.
+Dialogue: 0,0:05:42.73,0:05:43.69,Normal,,0,0,0,,pesquisador David {\c&H005AD1F2}Rubin.{\c&H00FFFFFF}
+Dialogue: 0,0:05:43.69,0:05:43.83,Normal,,0,0,0,,{\c&H005AD1F2}Quando{\c&H00FFFFFF} se pede para pessoas
+Dialogue: 0,0:05:43.83,0:05:44.05,Normal,,0,0,0,,Quando {\c&H005AD1F2}se{\c&H00FFFFFF} pede para pessoas
+Dialogue: 0,0:05:44.05,0:05:44.39,Normal,,0,0,0,,Quando se {\c&H005AD1F2}pede{\c&H00FFFFFF} para pessoas
+Dialogue: 0,0:05:44.39,0:05:44.57,Normal,,0,0,0,,Quando se pede {\c&H005AD1F2}para{\c&H00FFFFFF} pessoas
+Dialogue: 0,0:05:44.57,0:05:44.93,Normal,,0,0,0,,Quando se pede para {\c&H005AD1F2}pessoas{\c&H00FFFFFF}
+Dialogue: 0,0:05:44.93,0:05:45.21,Normal,,0,0,0,,{\c&H005AD1F2}mais{\c&H00FFFFFF} velhas contarem
+Dialogue: 0,0:05:45.21,0:05:45.69,Normal,,0,0,0,,mais {\c&H005AD1F2}velhas{\c&H00FFFFFF} contarem
+Dialogue: 0,0:05:45.69,0:05:46.29,Normal,,0,0,0,,mais velhas {\c&H005AD1F2}contarem{\c&H00FFFFFF}
+Dialogue: 0,0:05:46.29,0:05:46.45,Normal,,0,0,0,,{\c&H005AD1F2}as{\c&H00FFFFFF} lembranças da vida,
+Dialogue: 0,0:05:46.45,0:05:47.11,Normal,,0,0,0,,as {\c&H005AD1F2}lembranças{\c&H00FFFFFF} da vida,
+Dialogue: 0,0:05:47.11,0:05:47.21,Normal,,0,0,0,,as lembranças {\c&H005AD1F2}da{\c&H00FFFFFF} vida,
+Dialogue: 0,0:05:47.21,0:05:47.99,Normal,,0,0,0,,as lembranças da {\c&H005AD1F2}vida,{\c&H00FFFFFF}
+Dialogue: 0,0:05:47.99,0:05:48.37,Normal,,0,0,0,,{\c&H005AD1F2}sobra{\c&H00FFFFFF} uma quantidade
+Dialogue: 0,0:05:48.37,0:05:48.51,Normal,,0,0,0,,sobra {\c&H005AD1F2}uma{\c&H00FFFFFF} quantidade
+Dialogue: 0,0:05:48.51,0:05:49.01,Normal,,0,0,0,,sobra uma {\c&H005AD1F2}quantidade{\c&H00FFFFFF}
+Dialogue: 0,0:05:49.01,0:05:50.29,Normal,,0,0,0,,{\c&H005AD1F2}desproporcional{\c&H00FFFFFF} de memórias
+Dialogue: 0,0:05:50.29,0:05:50.49,Normal,,0,0,0,,desproporcional {\c&H005AD1F2}de{\c&H00FFFFFF} memórias
+Dialogue: 0,0:05:50.49,0:05:51.09,Normal,,0,0,0,,desproporcional de {\c&H005AD1F2}memórias{\c&H00FFFFFF}
+Dialogue: 0,0:05:51.09,0:05:51.47,Normal,,0,0,0,,{\c&H005AD1F2}entre{\c&H00FFFFFF} mais ou menos 10
+Dialogue: 0,0:05:51.47,0:05:51.83,Normal,,0,0,0,,entre {\c&H005AD1F2}mais{\c&H00FFFFFF} ou menos 10
+Dialogue: 0,0:05:51.83,0:05:52.03,Normal,,0,0,0,,entre mais {\c&H005AD1F2}ou{\c&H00FFFFFF} menos 10
+Dialogue: 0,0:05:52.03,0:05:52.41,Normal,,0,0,0,,entre mais ou {\c&H005AD1F2}menos{\c&H00FFFFFF} 10
+Dialogue: 0,0:05:52.41,0:05:52.79,Normal,,0,0,0,,entre mais ou menos {\c&H005AD1F2}10{\c&H00FFFFFF}
+Dialogue: 0,0:05:52.79,0:05:53.25,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} 30 anos de idade.
+Dialogue: 0,0:05:53.25,0:05:53.71,Normal,,0,0,0,,e {\c&H005AD1F2}30{\c&H00FFFFFF} anos de idade.
+Dialogue: 0,0:05:53.71,0:05:54.05,Normal,,0,0,0,,e 30 {\c&H005AD1F2}anos{\c&H00FFFFFF} de idade.
+Dialogue: 0,0:05:54.05,0:05:54.23,Normal,,0,0,0,,e 30 anos {\c&H005AD1F2}de{\c&H00FFFFFF} idade.
+Dialogue: 0,0:05:54.23,0:05:55.36,Normal,,0,0,0,,e 30 anos de {\c&H005AD1F2}idade.{\c&H00FFFFFF}
+Dialogue: 0,0:05:55.36,0:05:55.48,Normal,,0,0,0,,{\c&H005AD1F2}Faz{\c&H00FFFFFF} a conta comigo.
+Dialogue: 0,0:05:55.48,0:05:55.60,Normal,,0,0,0,,Faz {\c&H005AD1F2}a{\c&H00FFFFFF} conta comigo.
+Dialogue: 0,0:05:55.60,0:05:55.78,Normal,,0,0,0,,Faz a {\c&H005AD1F2}conta{\c&H00FFFFFF} comigo.
+Dialogue: 0,0:05:55.78,0:05:56.62,Normal,,0,0,0,,Faz a conta {\c&H005AD1F2}comigo.{\c&H00FFFFFF}
+Dialogue: 0,0:05:56.62,0:05:56.78,Normal,,0,0,0,,{\c&H005AD1F2}Se{\c&H00FFFFFF} hoje você tem entre
+Dialogue: 0,0:05:56.78,0:05:56.98,Normal,,0,0,0,,Se {\c&H005AD1F2}hoje{\c&H00FFFFFF} você tem entre
+Dialogue: 0,0:05:56.98,0:05:57.24,Normal,,0,0,0,,Se hoje {\c&H005AD1F2}você{\c&H00FFFFFF} tem entre
+Dialogue: 0,0:05:57.24,0:05:57.52,Normal,,0,0,0,,Se hoje você {\c&H005AD1F2}tem{\c&H00FFFFFF} entre
+Dialogue: 0,0:05:57.52,0:05:57.89,Normal,,0,0,0,,Se hoje você tem {\c&H005AD1F2}entre{\c&H00FFFFFF}
+Dialogue: 0,0:05:57.89,0:05:58.26,Normal,,0,0,0,,{\c&H005AD1F2}20{\c&H00FFFFFF} e 30 anos,
+Dialogue: 0,0:05:58.26,0:05:58.54,Normal,,0,0,0,,20 {\c&H005AD1F2}e{\c&H00FFFFFF} 30 anos,
+Dialogue: 0,0:05:58.54,0:05:58.82,Normal,,0,0,0,,20 e {\c&H005AD1F2}30{\c&H00FFFFFF} anos,
+Dialogue: 0,0:05:58.82,0:05:59.70,Normal,,0,0,0,,20 e 30 {\c&H005AD1F2}anos,{\c&H00FFFFFF}
+Dialogue: 0,0:05:59.70,0:06:00.34,Normal,,0,0,0,,{\c&H005AD1F2}em{\c&H00FFFFFF} 2016 você tinha entre
+Dialogue: 0,0:06:00.34,0:06:00.98,Normal,,0,0,0,,em {\c&H005AD1F2}2016{\c&H00FFFFFF} você tinha entre
+Dialogue: 0,0:06:00.98,0:06:01.18,Normal,,0,0,0,,em 2016 {\c&H005AD1F2}você{\c&H00FFFFFF} tinha entre
+Dialogue: 0,0:06:01.18,0:06:01.56,Normal,,0,0,0,,em 2016 você {\c&H005AD1F2}tinha{\c&H00FFFFFF} entre
+Dialogue: 0,0:06:01.56,0:06:01.91,Normal,,0,0,0,,em 2016 você tinha {\c&H005AD1F2}entre{\c&H00FFFFFF}
+Dialogue: 0,0:06:01.91,0:06:02.26,Normal,,0,0,0,,{\c&H005AD1F2}10{\c&H00FFFFFF} e 20,
+Dialogue: 0,0:06:02.26,0:06:02.77,Normal,,0,0,0,,10 {\c&H005AD1F2}e{\c&H00FFFFFF} 20,
+Dialogue: 0,0:06:02.77,0:06:03.28,Normal,,0,0,0,,10 e {\c&H005AD1F2}20,{\c&H00FFFFFF}
+Dialogue: 0,0:06:03.28,0:06:03.38,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} é bem a fase
+Dialogue: 0,0:06:03.38,0:06:03.48,Normal,,0,0,0,,que {\c&H005AD1F2}é{\c&H00FFFFFF} bem a fase
+Dialogue: 0,0:06:03.48,0:06:03.76,Normal,,0,0,0,,que é {\c&H005AD1F2}bem{\c&H00FFFFFF} a fase
+Dialogue: 0,0:06:03.76,0:06:03.92,Normal,,0,0,0,,que é bem {\c&H005AD1F2}a{\c&H00FFFFFF} fase
+Dialogue: 0,0:06:03.92,0:06:04.26,Normal,,0,0,0,,que é bem a {\c&H005AD1F2}fase{\c&H00FFFFFF}
+Dialogue: 0,0:06:04.26,0:06:04.40,Normal,,0,0,0,,{\c&H005AD1F2}em{\c&H00FFFFFF} que tudo acontecia pela
+Dialogue: 0,0:06:04.40,0:06:04.50,Normal,,0,0,0,,em {\c&H005AD1F2}que{\c&H00FFFFFF} tudo acontecia pela
+Dialogue: 0,0:06:04.50,0:06:04.80,Normal,,0,0,0,,em que {\c&H005AD1F2}tudo{\c&H00FFFFFF} acontecia pela
+Dialogue: 0,0:06:04.80,0:06:05.48,Normal,,0,0,0,,em que tudo {\c&H005AD1F2}acontecia{\c&H00FFFFFF} pela
+Dialogue: 0,0:06:05.48,0:06:05.68,Normal,,0,0,0,,em que tudo acontecia {\c&H005AD1F2}pela{\c&H00FFFFFF}
+Dialogue: 0,0:06:05.68,0:06:06.12,Normal,,0,0,0,,{\c&H005AD1F2}primeira{\c&H00FFFFFF} vez, o primeiro
+Dialogue: 0,0:06:06.12,0:06:06.98,Normal,,0,0,0,,primeira {\c&H005AD1F2}vez,{\c&H00FFFFFF} o primeiro
+Dialogue: 0,0:06:06.98,0:06:07.08,Normal,,0,0,0,,primeira vez, {\c&H005AD1F2}o{\c&H00FFFFFF} primeiro
+Dialogue: 0,0:06:07.08,0:06:07.36,Normal,,0,0,0,,primeira vez, o {\c&H005AD1F2}primeiro{\c&H00FFFFFF}
+Dialogue: 0,0:06:07.36,0:06:08.42,Normal,,0,0,0,,{\c&H005AD1F2}celular,{\c&H00FFFFFF} a primeira festa,
+Dialogue: 0,0:06:08.42,0:06:08.46,Normal,,0,0,0,,celular, {\c&H005AD1F2}a{\c&H00FFFFFF} primeira festa,
+Dialogue: 0,0:06:08.46,0:06:08.74,Normal,,0,0,0,,celular, a {\c&H005AD1F2}primeira{\c&H00FFFFFF} festa,
+Dialogue: 0,0:06:08.74,0:06:09.80,Normal,,0,0,0,,celular, a primeira {\c&H005AD1F2}festa,{\c&H00FFFFFF}
+Dialogue: 0,0:06:09.80,0:06:09.94,Normal,,0,0,0,,{\c&H005AD1F2}o{\c&H00FFFFFF} primeiro amor e
+Dialogue: 0,0:06:09.94,0:06:10.28,Normal,,0,0,0,,o {\c&H005AD1F2}primeiro{\c&H00FFFFFF} amor e
+Dialogue: 0,0:06:10.28,0:06:10.66,Normal,,0,0,0,,o primeiro {\c&H005AD1F2}amor{\c&H00FFFFFF} e
+Dialogue: 0,0:06:10.66,0:06:11.02,Normal,,0,0,0,,o primeiro amor {\c&H005AD1F2}e{\c&H00FFFFFF}
+Dialogue: 0,0:06:11.02,0:06:11.16,Normal,,0,0,0,,{\c&H005AD1F2}o{\c&H00FFFFFF} primeiro grupo de amigos
+Dialogue: 0,0:06:11.16,0:06:11.52,Normal,,0,0,0,,o {\c&H005AD1F2}primeiro{\c&H00FFFFFF} grupo de amigos
+Dialogue: 0,0:06:11.52,0:06:11.86,Normal,,0,0,0,,o primeiro {\c&H005AD1F2}grupo{\c&H00FFFFFF} de amigos
+Dialogue: 0,0:06:11.86,0:06:12.06,Normal,,0,0,0,,o primeiro grupo {\c&H005AD1F2}de{\c&H00FFFFFF} amigos
+Dialogue: 0,0:06:12.06,0:06:12.46,Normal,,0,0,0,,o primeiro grupo de {\c&H005AD1F2}amigos{\c&H00FFFFFF}
+Dialogue: 0,0:06:12.46,0:06:12.66,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} parecia que ia durar
+Dialogue: 0,0:06:12.66,0:06:13.24,Normal,,0,0,0,,que {\c&H005AD1F2}parecia{\c&H00FFFFFF} que ia durar
+Dialogue: 0,0:06:13.24,0:06:13.44,Normal,,0,0,0,,que parecia {\c&H005AD1F2}que{\c&H00FFFFFF} ia durar
+Dialogue: 0,0:06:13.44,0:06:13.60,Normal,,0,0,0,,que parecia que {\c&H005AD1F2}ia{\c&H00FFFFFF} durar
+Dialogue: 0,0:06:13.60,0:06:14.00,Normal,,0,0,0,,que parecia que ia {\c&H005AD1F2}durar{\c&H00FFFFFF}
+Dialogue: 0,0:06:14.00,0:06:14.32,Normal,,0,0,0,,{\c&H005AD1F2}para{\c&H00FFFFFF} sempre.
+Dialogue: 0,0:06:14.32,0:06:15.52,Normal,,0,0,0,,para {\c&H005AD1F2}sempre.{\c&H00FFFFFF}
+Dialogue: 0,0:06:15.61,0:06:15.85,Normal,,0,0,0,,{\c&H005AD1F2}Então{\c&H00FFFFFF} talvez você não sinta
+Dialogue: 0,0:06:15.85,0:06:16.33,Normal,,0,0,0,,Então {\c&H005AD1F2}talvez{\c&H00FFFFFF} você não sinta
+Dialogue: 0,0:06:16.33,0:06:16.65,Normal,,0,0,0,,Então talvez {\c&H005AD1F2}você{\c&H00FFFFFF} não sinta
+Dialogue: 0,0:06:16.65,0:06:16.81,Normal,,0,0,0,,Então talvez você {\c&H005AD1F2}não{\c&H00FFFFFF} sinta
+Dialogue: 0,0:06:16.81,0:06:17.19,Normal,,0,0,0,,Então talvez você não {\c&H005AD1F2}sinta{\c&H00FFFFFF}
+Dialogue: 0,0:06:17.19,0:06:17.65,Normal,,0,0,0,,{\c&H005AD1F2}falta{\c&H00FFFFFF} de 2016.
+Dialogue: 0,0:06:17.65,0:06:18.57,Normal,,0,0,0,,falta {\c&H005AD1F2}de{\c&H00FFFFFF} 2016.
+Dialogue: 0,0:06:18.57,0:06:19.49,Normal,,0,0,0,,falta de {\c&H005AD1F2}2016.{\c&H00FFFFFF}
+Dialogue: 0,0:06:19.49,0:06:19.97,Normal,,0,0,0,,{\c&H005AD1F2}Talvez{\c&H00FFFFFF} você sinta falta
+Dialogue: 0,0:06:19.97,0:06:20.23,Normal,,0,0,0,,Talvez {\c&H005AD1F2}você{\c&H00FFFFFF} sinta falta
+Dialogue: 0,0:06:20.23,0:06:20.61,Normal,,0,0,0,,Talvez você {\c&H005AD1F2}sinta{\c&H00FFFFFF} falta
+Dialogue: 0,0:06:20.61,0:06:21.05,Normal,,0,0,0,,Talvez você sinta {\c&H005AD1F2}falta{\c&H00FFFFFF}
+Dialogue: 0,0:06:21.05,0:06:21.29,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} ter 15 anos
+Dialogue: 0,0:06:21.29,0:06:21.68,Normal,,0,0,0,,de {\c&H005AD1F2}ter{\c&H00FFFFFF} 15 anos
+Dialogue: 0,0:06:21.68,0:06:22.07,Normal,,0,0,0,,de ter {\c&H005AD1F2}15{\c&H00FFFFFF} anos
+Dialogue: 0,0:06:22.07,0:06:22.47,Normal,,0,0,0,,de ter 15 {\c&H005AD1F2}anos{\c&H00FFFFFF}
+Dialogue: 0,0:06:22.47,0:06:23.76,Normal,,0,0,0,,{\c&H005AD1F2}em{\c&H00FFFFFF} 2016.
+Dialogue: 0,0:06:23.76,0:06:24.96,Normal,,0,0,0,,em {\c&H005AD1F2}2016.{\c&H00FFFFFF}
+Dialogue: 0,0:06:25.05,0:06:25.15,Normal,,0,0,0,,{\c&H005AD1F2}De{\c&H00FFFFFF} acordar sem boleto,
+Dialogue: 0,0:06:25.15,0:06:25.79,Normal,,0,0,0,,De {\c&H005AD1F2}acordar{\c&H00FFFFFF} sem boleto,
+Dialogue: 0,0:06:25.79,0:06:25.91,Normal,,0,0,0,,De acordar {\c&H005AD1F2}sem{\c&H00FFFFFF} boleto,
+Dialogue: 0,0:06:25.91,0:06:26.91,Normal,,0,0,0,,De acordar sem {\c&H005AD1F2}boleto,{\c&H00FFFFFF}
+Dialogue: 0,0:06:26.91,0:06:26.99,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} ter os amigos
+Dialogue: 0,0:06:26.99,0:06:27.15,Normal,,0,0,0,,de {\c&H005AD1F2}ter{\c&H00FFFFFF} os amigos
+Dialogue: 0,0:06:27.15,0:06:27.31,Normal,,0,0,0,,de ter {\c&H005AD1F2}os{\c&H00FFFFFF} amigos
+Dialogue: 0,0:06:27.31,0:06:27.73,Normal,,0,0,0,,de ter os {\c&H005AD1F2}amigos{\c&H00FFFFFF}
+Dialogue: 0,0:06:27.73,0:06:27.93,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} uma rua de distância,
+Dialogue: 0,0:06:27.93,0:06:28.07,Normal,,0,0,0,,a {\c&H005AD1F2}uma{\c&H00FFFFFF} rua de distância,
+Dialogue: 0,0:06:28.07,0:06:28.45,Normal,,0,0,0,,a uma {\c&H005AD1F2}rua{\c&H00FFFFFF} de distância,
+Dialogue: 0,0:06:28.45,0:06:28.63,Normal,,0,0,0,,a uma rua {\c&H005AD1F2}de{\c&H00FFFFFF} distância,
+Dialogue: 0,0:06:28.63,0:06:29.61,Normal,,0,0,0,,a uma rua de {\c&H005AD1F2}distância,{\c&H00FFFFFF}
+Dialogue: 0,0:06:29.61,0:06:29.81,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} ainda não ter
+Dialogue: 0,0:06:29.81,0:06:30.03,Normal,,0,0,0,,de {\c&H005AD1F2}ainda{\c&H00FFFFFF} não ter
+Dialogue: 0,0:06:30.03,0:06:30.29,Normal,,0,0,0,,de ainda {\c&H005AD1F2}não{\c&H00FFFFFF} ter
+Dialogue: 0,0:06:30.29,0:06:30.59,Normal,,0,0,0,,de ainda não {\c&H005AD1F2}ter{\c&H00FFFFFF}
+Dialogue: 0,0:06:30.59,0:06:30.75,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} decidir a vida inteira
+Dialogue: 0,0:06:30.75,0:06:31.31,Normal,,0,0,0,,que {\c&H005AD1F2}decidir{\c&H00FFFFFF} a vida inteira
+Dialogue: 0,0:06:31.31,0:06:31.39,Normal,,0,0,0,,que decidir {\c&H005AD1F2}a{\c&H00FFFFFF} vida inteira
+Dialogue: 0,0:06:31.39,0:06:31.75,Normal,,0,0,0,,que decidir a {\c&H005AD1F2}vida{\c&H00FFFFFF} inteira
+Dialogue: 0,0:06:31.75,0:06:32.45,Normal,,0,0,0,,que decidir a vida {\c&H005AD1F2}inteira{\c&H00FFFFFF}
+Dialogue: 0,0:06:32.45,0:06:32.83,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} de ver um vídeo
+Dialogue: 0,0:06:32.83,0:06:33.01,Normal,,0,0,0,,e {\c&H005AD1F2}de{\c&H00FFFFFF} ver um vídeo
+Dialogue: 0,0:06:33.01,0:06:33.15,Normal,,0,0,0,,e de {\c&H005AD1F2}ver{\c&H00FFFFFF} um vídeo
+Dialogue: 0,0:06:33.15,0:06:33.29,Normal,,0,0,0,,e de ver {\c&H005AD1F2}um{\c&H00FFFFFF} vídeo
+Dialogue: 0,0:06:33.29,0:06:33.59,Normal,,0,0,0,,e de ver um {\c&H005AD1F2}vídeo{\c&H00FFFFFF}
+Dialogue: 0,0:06:33.59,0:06:34.39,Normal,,0,0,0,,{\c&H005AD1F2}engraçado{\c&H00FFFFFF} sem pensar se ele
+Dialogue: 0,0:06:34.39,0:06:34.65,Normal,,0,0,0,,engraçado {\c&H005AD1F2}sem{\c&H00FFFFFF} pensar se ele
+Dialogue: 0,0:06:34.65,0:06:35.19,Normal,,0,0,0,,engraçado sem {\c&H005AD1F2}pensar{\c&H00FFFFFF} se ele
+Dialogue: 0,0:06:35.19,0:06:35.49,Normal,,0,0,0,,engraçado sem pensar {\c&H005AD1F2}se{\c&H00FFFFFF} ele
+Dialogue: 0,0:06:35.49,0:06:35.67,Normal,,0,0,0,,engraçado sem pensar se {\c&H005AD1F2}ele{\c&H00FFFFFF}
+Dialogue: 0,0:06:35.67,0:06:35.83,Normal,,0,0,0,,{\c&H005AD1F2}ia{\c&H00FFFFFF} render alguma coisa.
+Dialogue: 0,0:06:35.83,0:06:36.21,Normal,,0,0,0,,ia {\c&H005AD1F2}render{\c&H00FFFFFF} alguma coisa.
+Dialogue: 0,0:06:36.21,0:06:36.59,Normal,,0,0,0,,ia render {\c&H005AD1F2}alguma{\c&H00FFFFFF} coisa.
+Dialogue: 0,0:06:36.59,0:06:37.79,Normal,,0,0,0,,ia render alguma {\c&H005AD1F2}coisa.{\c&H00FFFFFF}
+Dialogue: 0,0:06:37.86,0:06:37.96,Normal,,0,0,0,,{\c&H005AD1F2}E{\c&H00FFFFFF} isso não é coisa
+Dialogue: 0,0:06:37.96,0:06:38.16,Normal,,0,0,0,,E {\c&H005AD1F2}isso{\c&H00FFFFFF} não é coisa
+Dialogue: 0,0:06:38.16,0:06:38.32,Normal,,0,0,0,,E isso {\c&H005AD1F2}não{\c&H00FFFFFF} é coisa
+Dialogue: 0,0:06:38.32,0:06:38.50,Normal,,0,0,0,,E isso não {\c&H005AD1F2}é{\c&H00FFFFFF} coisa
+Dialogue: 0,0:06:38.50,0:06:38.76,Normal,,0,0,0,,E isso não é {\c&H005AD1F2}coisa{\c&H00FFFFFF}
+Dialogue: 0,0:06:38.76,0:06:39.12,Normal,,0,0,0,,{\c&H005AD1F2}só{\c&H00FFFFFF} da sua geração.
+Dialogue: 0,0:06:39.12,0:06:39.26,Normal,,0,0,0,,só {\c&H005AD1F2}da{\c&H00FFFFFF} sua geração.
+Dialogue: 0,0:06:39.26,0:06:39.52,Normal,,0,0,0,,só da {\c&H005AD1F2}sua{\c&H00FFFFFF} geração.
+Dialogue: 0,0:06:39.52,0:06:40.48,Normal,,0,0,0,,só da sua {\c&H005AD1F2}geração.{\c&H00FFFFFF}
+Dialogue: 0,0:06:40.48,0:06:41.10,Normal,,0,0,0,,{\c&H005AD1F2}Em{\c&H00FFFFFF} 2014 a psicóloga Erica
+Dialogue: 0,0:06:41.10,0:06:41.72,Normal,,0,0,0,,Em {\c&H005AD1F2}2014{\c&H00FFFFFF} a psicóloga Erica
+Dialogue: 0,0:06:41.72,0:06:41.90,Normal,,0,0,0,,Em 2014 {\c&H005AD1F2}a{\c&H00FFFFFF} psicóloga Erica
+Dialogue: 0,0:06:41.90,0:06:42.68,Normal,,0,0,0,,Em 2014 a {\c&H005AD1F2}psicóloga{\c&H00FFFFFF} Erica
+Dialogue: 0,0:06:42.68,0:06:42.98,Normal,,0,0,0,,Em 2014 a psicóloga {\c&H005AD1F2}Erica{\c&H00FFFFFF}
+Dialogue: 0,0:06:42.98,0:06:43.56,Normal,,0,0,0,,{\c&H005AD1F2}Hepper{\c&H00FFFFFF} e colegas perguntaram
+Dialogue: 0,0:06:43.56,0:06:43.84,Normal,,0,0,0,,Hepper {\c&H005AD1F2}e{\c&H00FFFFFF} colegas perguntaram
+Dialogue: 0,0:06:43.84,0:06:44.50,Normal,,0,0,0,,Hepper e {\c&H005AD1F2}colegas{\c&H00FFFFFF} perguntaram
+Dialogue: 0,0:06:44.50,0:06:45.40,Normal,,0,0,0,,Hepper e colegas {\c&H005AD1F2}perguntaram{\c&H00FFFFFF}
+Dialogue: 0,0:06:45.40,0:06:45.50,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} estudantes de 18 países
+Dialogue: 0,0:06:45.50,0:06:46.12,Normal,,0,0,0,,a {\c&H005AD1F2}estudantes{\c&H00FFFFFF} de 18 países
+Dialogue: 0,0:06:46.12,0:06:46.50,Normal,,0,0,0,,a estudantes {\c&H005AD1F2}de{\c&H00FFFFFF} 18 países
+Dialogue: 0,0:06:46.50,0:06:46.88,Normal,,0,0,0,,a estudantes de {\c&H005AD1F2}18{\c&H00FFFFFF} países
+Dialogue: 0,0:06:46.88,0:06:47.40,Normal,,0,0,0,,a estudantes de 18 {\c&H005AD1F2}países{\c&H00FFFFFF}
+Dialogue: 0,0:06:47.40,0:06:47.98,Normal,,0,0,0,,{\c&H005AD1F2}o{\c&H00FFFFFF} que era nostalgia,
+Dialogue: 0,0:06:47.98,0:06:48.16,Normal,,0,0,0,,o {\c&H005AD1F2}que{\c&H00FFFFFF} era nostalgia,
+Dialogue: 0,0:06:48.16,0:06:48.42,Normal,,0,0,0,,o que {\c&H005AD1F2}era{\c&H00FFFFFF} nostalgia,
+Dialogue: 0,0:06:48.42,0:06:49.60,Normal,,0,0,0,,o que era {\c&H005AD1F2}nostalgia,{\c&H00FFFFFF}
+Dialogue: 0,0:06:49.60,0:06:49.64,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} nos 5 continentes
+Dialogue: 0,0:06:49.64,0:06:49.89,Normal,,0,0,0,,e {\c&H005AD1F2}nos{\c&H00FFFFFF} 5 continentes
+Dialogue: 0,0:06:49.89,0:06:50.14,Normal,,0,0,0,,e nos {\c&H005AD1F2}5{\c&H00FFFFFF} continentes
+Dialogue: 0,0:06:50.14,0:06:50.98,Normal,,0,0,0,,e nos 5 {\c&H005AD1F2}continentes{\c&H00FFFFFF}
+Dialogue: 0,0:06:50.98,0:06:51.22,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} descrição foi parecida,
+Dialogue: 0,0:06:51.22,0:06:51.72,Normal,,0,0,0,,a {\c&H005AD1F2}descrição{\c&H00FFFFFF} foi parecida,
+Dialogue: 0,0:06:51.72,0:06:52.02,Normal,,0,0,0,,a descrição {\c&H005AD1F2}foi{\c&H00FFFFFF} parecida,
+Dialogue: 0,0:06:52.02,0:06:53.10,Normal,,0,0,0,,a descrição foi {\c&H005AD1F2}parecida,{\c&H00FFFFFF}
+Dialogue: 0,0:06:53.10,0:06:53.24,Normal,,0,0,0,,{\c&H005AD1F2}uma{\c&H00FFFFFF} saudade doce e amarga
+Dialogue: 0,0:06:53.24,0:06:53.80,Normal,,0,0,0,,uma {\c&H005AD1F2}saudade{\c&H00FFFFFF} doce e amarga
+Dialogue: 0,0:06:53.80,0:06:54.38,Normal,,0,0,0,,uma saudade {\c&H005AD1F2}doce{\c&H00FFFFFF} e amarga
+Dialogue: 0,0:06:54.38,0:06:54.52,Normal,,0,0,0,,uma saudade doce {\c&H005AD1F2}e{\c&H00FFFFFF} amarga
+Dialogue: 0,0:06:54.52,0:06:55.04,Normal,,0,0,0,,uma saudade doce e {\c&H005AD1F2}amarga{\c&H00FFFFFF}
+Dialogue: 0,0:06:55.04,0:06:55.16,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} pessoas, lugares e momentos
+Dialogue: 0,0:06:55.16,0:06:56.24,Normal,,0,0,0,,de {\c&H005AD1F2}pessoas,{\c&H00FFFFFF} lugares e momentos
+Dialogue: 0,0:06:56.24,0:06:56.72,Normal,,0,0,0,,de pessoas, {\c&H005AD1F2}lugares{\c&H00FFFFFF} e momentos
+Dialogue: 0,0:06:56.72,0:06:57.22,Normal,,0,0,0,,de pessoas, lugares {\c&H005AD1F2}e{\c&H00FFFFFF} momentos
+Dialogue: 0,0:06:57.22,0:06:57.70,Normal,,0,0,0,,de pessoas, lugares e {\c&H005AD1F2}momentos{\c&H00FFFFFF}
+Dialogue: 0,0:06:57.70,0:06:57.94,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} importaram.
+Dialogue: 0,0:06:57.94,0:06:59.14,Normal,,0,0,0,,que {\c&H005AD1F2}importaram.{\c&H00FFFFFF}
+Dialogue: 0,0:06:59.43,0:06:59.53,Normal,,0,0,0,,{\c&H005AD1F2}Mas{\c&H00FFFFFF} se o passado nem
+Dialogue: 0,0:06:59.53,0:06:59.69,Normal,,0,0,0,,Mas {\c&H005AD1F2}se{\c&H00FFFFFF} o passado nem
+Dialogue: 0,0:06:59.69,0:06:59.75,Normal,,0,0,0,,Mas se {\c&H005AD1F2}o{\c&H00FFFFFF} passado nem
+Dialogue: 0,0:06:59.75,0:07:00.21,Normal,,0,0,0,,Mas se o {\c&H005AD1F2}passado{\c&H00FFFFFF} nem
+Dialogue: 0,0:07:00.21,0:07:00.59,Normal,,0,0,0,,Mas se o passado {\c&H005AD1F2}nem{\c&H00FFFFFF}
+Dialogue: 0,0:07:00.59,0:07:00.87,Normal,,0,0,0,,{\c&H005AD1F2}era{\c&H00FFFFFF} tão bom assim,
+Dialogue: 0,0:07:00.87,0:07:01.05,Normal,,0,0,0,,era {\c&H005AD1F2}tão{\c&H00FFFFFF} bom assim,
+Dialogue: 0,0:07:01.05,0:07:01.29,Normal,,0,0,0,,era tão {\c&H005AD1F2}bom{\c&H00FFFFFF} assim,
+Dialogue: 0,0:07:01.29,0:07:01.99,Normal,,0,0,0,,era tão bom {\c&H005AD1F2}assim,{\c&H00FFFFFF}
+Dialogue: 0,0:07:01.99,0:07:02.23,Normal,,0,0,0,,{\c&H005AD1F2}por{\c&H00FFFFFF} que essa saudade aperta
+Dialogue: 0,0:07:02.23,0:07:02.47,Normal,,0,0,0,,por {\c&H005AD1F2}que{\c&H00FFFFFF} essa saudade aperta
+Dialogue: 0,0:07:02.47,0:07:02.65,Normal,,0,0,0,,por que {\c&H005AD1F2}essa{\c&H00FFFFFF} saudade aperta
+Dialogue: 0,0:07:02.65,0:07:03.21,Normal,,0,0,0,,por que essa {\c&H005AD1F2}saudade{\c&H00FFFFFF} aperta
+Dialogue: 0,0:07:03.21,0:07:03.67,Normal,,0,0,0,,por que essa saudade {\c&H005AD1F2}aperta{\c&H00FFFFFF}
+Dialogue: 0,0:07:03.67,0:07:04.05,Normal,,0,0,0,,{\c&H005AD1F2}justo{\c&H00FFFFFF} agora, justo nessa fase
+Dialogue: 0,0:07:04.05,0:07:05.05,Normal,,0,0,0,,justo {\c&H005AD1F2}agora,{\c&H00FFFFFF} justo nessa fase
+Dialogue: 0,0:07:05.05,0:07:05.51,Normal,,0,0,0,,justo agora, {\c&H005AD1F2}justo{\c&H00FFFFFF} nessa fase
+Dialogue: 0,0:07:05.51,0:07:05.79,Normal,,0,0,0,,justo agora, justo {\c&H005AD1F2}nessa{\c&H00FFFFFF} fase
+Dialogue: 0,0:07:05.79,0:07:06.29,Normal,,0,0,0,,justo agora, justo nessa {\c&H005AD1F2}fase{\c&H00FFFFFF}
+Dialogue: 0,0:07:06.29,0:07:06.45,Normal,,0,0,0,,{\c&H005AD1F2}da{\c&H00FFFFFF} vida?
+Dialogue: 0,0:07:06.45,0:07:07.56,Normal,,0,0,0,,da {\c&H005AD1F2}vida?{\c&H00FFFFFF}
+Dialogue: 0,0:07:07.56,0:07:07.60,Normal,,0,0,0,,{\c&H005AD1F2}O{\c&H00FFFFFF} psicólogo Tim Wildschut
+Dialogue: 0,0:07:07.60,0:07:08.20,Normal,,0,0,0,,O {\c&H005AD1F2}psicólogo{\c&H00FFFFFF} Tim Wildschut
+Dialogue: 0,0:07:08.20,0:07:08.56,Normal,,0,0,0,,O psicólogo {\c&H005AD1F2}Tim{\c&H00FFFFFF} Wildschut
+Dialogue: 0,0:07:08.56,0:07:09.32,Normal,,0,0,0,,O psicólogo Tim {\c&H005AD1F2}Wildschut{\c&H00FFFFFF}
+Dialogue: 0,0:07:09.32,0:07:09.58,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} colegas da Universidade
+Dialogue: 0,0:07:09.58,0:07:10.12,Normal,,0,0,0,,e {\c&H005AD1F2}colegas{\c&H00FFFFFF} da Universidade
+Dialogue: 0,0:07:10.12,0:07:10.22,Normal,,0,0,0,,e colegas {\c&H005AD1F2}da{\c&H00FFFFFF} Universidade
+Dialogue: 0,0:07:10.22,0:07:10.94,Normal,,0,0,0,,e colegas da {\c&H005AD1F2}Universidade{\c&H00FFFFFF}
+Dialogue: 0,0:07:10.94,0:07:11.10,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} Southampton, na Inglaterra,
+Dialogue: 0,0:07:11.10,0:07:12.12,Normal,,0,0,0,,de {\c&H005AD1F2}Southampton,{\c&H00FFFFFF} na Inglaterra,
+Dialogue: 0,0:07:12.12,0:07:12.20,Normal,,0,0,0,,de Southampton, {\c&H005AD1F2}na{\c&H00FFFFFF} Inglaterra,
+Dialogue: 0,0:07:12.20,0:07:13.16,Normal,,0,0,0,,de Southampton, na {\c&H005AD1F2}Inglaterra,{\c&H00FFFFFF}
+Dialogue: 0,0:07:13.16,0:07:13.80,Normal,,0,0,0,,{\c&H005AD1F2}estudaram{\c&H00FFFFFF} o que dispara
+Dialogue: 0,0:07:13.80,0:07:13.98,Normal,,0,0,0,,estudaram {\c&H005AD1F2}o{\c&H00FFFFFF} que dispara
+Dialogue: 0,0:07:13.98,0:07:14.06,Normal,,0,0,0,,estudaram o {\c&H005AD1F2}que{\c&H00FFFFFF} dispara
+Dialogue: 0,0:07:14.06,0:07:14.70,Normal,,0,0,0,,estudaram o que {\c&H005AD1F2}dispara{\c&H00FFFFFF}
+Dialogue: 0,0:07:14.70,0:07:14.74,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} nostalgia, e um
+Dialogue: 0,0:07:14.74,0:07:15.82,Normal,,0,0,0,,a {\c&H005AD1F2}nostalgia,{\c&H00FFFFFF} e um
+Dialogue: 0,0:07:15.82,0:07:15.92,Normal,,0,0,0,,a nostalgia, {\c&H005AD1F2}e{\c&H00FFFFFF} um
+Dialogue: 0,0:07:15.92,0:07:16.04,Normal,,0,0,0,,a nostalgia, e {\c&H005AD1F2}um{\c&H00FFFFFF}
+Dialogue: 0,0:07:16.04,0:07:16.14,Normal,,0,0,0,,{\c&H005AD1F2}dos{\c&H00FFFFFF} gatilhos que mais apareceu
+Dialogue: 0,0:07:16.14,0:07:16.76,Normal,,0,0,0,,dos {\c&H005AD1F2}gatilhos{\c&H00FFFFFF} que mais apareceu
+Dialogue: 0,0:07:16.76,0:07:16.96,Normal,,0,0,0,,dos gatilhos {\c&H005AD1F2}que{\c&H00FFFFFF} mais apareceu
+Dialogue: 0,0:07:16.96,0:07:17.26,Normal,,0,0,0,,dos gatilhos que {\c&H005AD1F2}mais{\c&H00FFFFFF} apareceu
+Dialogue: 0,0:07:17.26,0:07:18.00,Normal,,0,0,0,,dos gatilhos que mais {\c&H005AD1F2}apareceu{\c&H00FFFFFF}
+Dialogue: 0,0:07:18.00,0:07:18.36,Normal,,0,0,0,,{\c&H005AD1F2}foi{\c&H00FFFFFF} o humor ruim
+Dialogue: 0,0:07:18.36,0:07:18.50,Normal,,0,0,0,,foi {\c&H005AD1F2}o{\c&H00FFFFFF} humor ruim
+Dialogue: 0,0:07:18.50,0:07:18.84,Normal,,0,0,0,,foi o {\c&H005AD1F2}humor{\c&H00FFFFFF} ruim
+Dialogue: 0,0:07:18.84,0:07:19.28,Normal,,0,0,0,,foi o humor {\c&H005AD1F2}ruim{\c&H00FFFFFF}
+Dialogue: 0,0:07:19.28,0:07:19.72,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} em especial a solidão.
+Dialogue: 0,0:07:19.72,0:07:19.86,Normal,,0,0,0,,e {\c&H005AD1F2}em{\c&H00FFFFFF} especial a solidão.
+Dialogue: 0,0:07:19.86,0:07:20.44,Normal,,0,0,0,,e em {\c&H005AD1F2}especial{\c&H00FFFFFF} a solidão.
+Dialogue: 0,0:07:20.44,0:07:20.86,Normal,,0,0,0,,e em especial {\c&H005AD1F2}a{\c&H00FFFFFF} solidão.
+Dialogue: 0,0:07:20.86,0:07:22.06,Normal,,0,0,0,,e em especial a {\c&H005AD1F2}solidão.{\c&H00FFFFFF}
+Dialogue: 0,0:07:22.21,0:07:22.29,Normal,,0,0,0,,{\c&H005AD1F2}E{\c&H00FFFFFF} os 20 e poucos
+Dialogue: 0,0:07:22.29,0:07:22.50,Normal,,0,0,0,,E {\c&H005AD1F2}os{\c&H00FFFFFF} 20 e poucos
+Dialogue: 0,0:07:22.50,0:07:22.71,Normal,,0,0,0,,E os {\c&H005AD1F2}20{\c&H00FFFFFF} e poucos
+Dialogue: 0,0:07:22.71,0:07:22.81,Normal,,0,0,0,,E os 20 {\c&H005AD1F2}e{\c&H00FFFFFF} poucos
+Dialogue: 0,0:07:22.81,0:07:23.15,Normal,,0,0,0,,E os 20 e {\c&H005AD1F2}poucos{\c&H00FFFFFF}
+Dialogue: 0,0:07:23.15,0:07:23.51,Normal,,0,0,0,,{\c&H005AD1F2}anos{\c&H00FFFFFF} são uma fase
+Dialogue: 0,0:07:23.51,0:07:23.91,Normal,,0,0,0,,anos {\c&H005AD1F2}são{\c&H00FFFFFF} uma fase
+Dialogue: 0,0:07:23.91,0:07:24.11,Normal,,0,0,0,,anos são {\c&H005AD1F2}uma{\c&H00FFFFFF} fase
+Dialogue: 0,0:07:24.11,0:07:24.45,Normal,,0,0,0,,anos são uma {\c&H005AD1F2}fase{\c&H00FFFFFF}
+Dialogue: 0,0:07:24.45,0:07:24.59,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} muita mudança ao mesmo
+Dialogue: 0,0:07:24.59,0:07:24.97,Normal,,0,0,0,,de {\c&H005AD1F2}muita{\c&H00FFFFFF} mudança ao mesmo
+Dialogue: 0,0:07:24.97,0:07:25.57,Normal,,0,0,0,,de muita {\c&H005AD1F2}mudança{\c&H00FFFFFF} ao mesmo
+Dialogue: 0,0:07:25.57,0:07:25.69,Normal,,0,0,0,,de muita mudança {\c&H005AD1F2}ao{\c&H00FFFFFF} mesmo
+Dialogue: 0,0:07:25.69,0:07:25.85,Normal,,0,0,0,,de muita mudança ao {\c&H005AD1F2}mesmo{\c&H00FFFFFF}
+Dialogue: 0,0:07:25.85,0:07:26.63,Normal,,0,0,0,,{\c&H005AD1F2}tempo,{\c&H00FFFFFF} sair de casa,
+Dialogue: 0,0:07:26.63,0:07:26.87,Normal,,0,0,0,,tempo, {\c&H005AD1F2}sair{\c&H00FFFFFF} de casa,
+Dialogue: 0,0:07:26.87,0:07:27.07,Normal,,0,0,0,,tempo, sair {\c&H005AD1F2}de{\c&H00FFFFFF} casa,
+Dialogue: 0,0:07:27.07,0:07:27.99,Normal,,0,0,0,,tempo, sair de {\c&H005AD1F2}casa,{\c&H00FFFFFF}
+Dialogue: 0,0:07:27.99,0:07:28.35,Normal,,0,0,0,,{\c&H005AD1F2}trocar{\c&H00FFFFFF} de cidade,
+Dialogue: 0,0:07:28.35,0:07:28.51,Normal,,0,0,0,,trocar {\c&H005AD1F2}de{\c&H00FFFFFF} cidade,
+Dialogue: 0,0:07:28.51,0:07:29.49,Normal,,0,0,0,,trocar de {\c&H005AD1F2}cidade,{\c&H00FFFFFF}
+Dialogue: 0,0:07:29.49,0:07:29.77,Normal,,0,0,0,,{\c&H005AD1F2}perder{\c&H00FFFFFF} o grupo da escola
+Dialogue: 0,0:07:29.77,0:07:29.97,Normal,,0,0,0,,perder {\c&H005AD1F2}o{\c&H00FFFFFF} grupo da escola
+Dialogue: 0,0:07:29.97,0:07:30.23,Normal,,0,0,0,,perder o {\c&H005AD1F2}grupo{\c&H00FFFFFF} da escola
+Dialogue: 0,0:07:30.23,0:07:30.39,Normal,,0,0,0,,perder o grupo {\c&H005AD1F2}da{\c&H00FFFFFF} escola
+Dialogue: 0,0:07:30.39,0:07:30.95,Normal,,0,0,0,,perder o grupo da {\c&H005AD1F2}escola{\c&H00FFFFFF}
+Dialogue: 0,0:07:30.95,0:07:31.27,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} começar num emprego onde
+Dialogue: 0,0:07:31.27,0:07:31.69,Normal,,0,0,0,,e {\c&H005AD1F2}começar{\c&H00FFFFFF} num emprego onde
+Dialogue: 0,0:07:31.69,0:07:31.91,Normal,,0,0,0,,e começar {\c&H005AD1F2}num{\c&H00FFFFFF} emprego onde
+Dialogue: 0,0:07:31.91,0:07:32.47,Normal,,0,0,0,,e começar num {\c&H005AD1F2}emprego{\c&H00FFFFFF} onde
+Dialogue: 0,0:07:32.47,0:07:32.65,Normal,,0,0,0,,e começar num emprego {\c&H005AD1F2}onde{\c&H00FFFFFF}
+Dialogue: 0,0:07:32.65,0:07:33.07,Normal,,0,0,0,,{\c&H005AD1F2}ninguém{\c&H00FFFFFF} te conhece.
+Dialogue: 0,0:07:33.07,0:07:33.29,Normal,,0,0,0,,ninguém {\c&H005AD1F2}te{\c&H00FFFFFF} conhece.
+Dialogue: 0,0:07:33.29,0:07:34.49,Normal,,0,0,0,,ninguém te {\c&H005AD1F2}conhece.{\c&H00FFFFFF}
+Dialogue: 0,0:07:34.60,0:07:34.90,Normal,,0,0,0,,{\c&H005AD1F2}Então{\c&H00FFFFFF} a trend de 2016
+Dialogue: 0,0:07:34.90,0:07:35.08,Normal,,0,0,0,,Então {\c&H005AD1F2}a{\c&H00FFFFFF} trend de 2016
+Dialogue: 0,0:07:35.08,0:07:35.46,Normal,,0,0,0,,Então a {\c&H005AD1F2}trend{\c&H00FFFFFF} de 2016
+Dialogue: 0,0:07:35.46,0:07:36.30,Normal,,0,0,0,,Então a trend {\c&H005AD1F2}de{\c&H00FFFFFF} 2016
+Dialogue: 0,0:07:36.30,0:07:37.14,Normal,,0,0,0,,Então a trend de {\c&H005AD1F2}2016{\c&H00FFFFFF}
+Dialogue: 0,0:07:37.14,0:07:37.48,Normal,,0,0,0,,{\c&H005AD1F2}não{\c&H00FFFFFF} começou porque 2016 era
+Dialogue: 0,0:07:37.48,0:07:38.00,Normal,,0,0,0,,não {\c&H005AD1F2}começou{\c&H00FFFFFF} porque 2016 era
+Dialogue: 0,0:07:38.00,0:07:38.84,Normal,,0,0,0,,não começou {\c&H005AD1F2}porque{\c&H00FFFFFF} 2016 era
+Dialogue: 0,0:07:38.84,0:07:39.68,Normal,,0,0,0,,não começou porque {\c&H005AD1F2}2016{\c&H00FFFFFF} era
+Dialogue: 0,0:07:39.68,0:07:39.82,Normal,,0,0,0,,não começou porque 2016 {\c&H005AD1F2}era{\c&H00FFFFFF}
+Dialogue: 0,0:07:39.82,0:07:40.92,Normal,,0,0,0,,{\c&H005AD1F2}perfeito,{\c&H00FFFFFF} ela começou porque
+Dialogue: 0,0:07:40.92,0:07:41.04,Normal,,0,0,0,,perfeito, {\c&H005AD1F2}ela{\c&H00FFFFFF} começou porque
+Dialogue: 0,0:07:41.04,0:07:41.50,Normal,,0,0,0,,perfeito, ela {\c&H005AD1F2}começou{\c&H00FFFFFF} porque
+Dialogue: 0,0:07:41.50,0:07:41.90,Normal,,0,0,0,,perfeito, ela começou {\c&H005AD1F2}porque{\c&H00FFFFFF}
+Dialogue: 0,0:07:41.90,0:07:42.34,Normal,,0,0,0,,{\c&H005AD1F2}muita{\c&H00FFFFFF} gente está cansada
+Dialogue: 0,0:07:42.34,0:07:42.78,Normal,,0,0,0,,muita {\c&H005AD1F2}gente{\c&H00FFFFFF} está cansada
+Dialogue: 0,0:07:42.78,0:07:43.08,Normal,,0,0,0,,muita gente {\c&H005AD1F2}está{\c&H00FFFFFF} cansada
+Dialogue: 0,0:07:43.08,0:07:43.84,Normal,,0,0,0,,muita gente está {\c&H005AD1F2}cansada{\c&H00FFFFFF}
+Dialogue: 0,0:07:43.84,0:07:44.02,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} agora e a saudade
+Dialogue: 0,0:07:44.02,0:07:44.40,Normal,,0,0,0,,de {\c&H005AD1F2}agora{\c&H00FFFFFF} e a saudade
+Dialogue: 0,0:07:44.40,0:07:44.92,Normal,,0,0,0,,de agora {\c&H005AD1F2}e{\c&H00FFFFFF} a saudade
+Dialogue: 0,0:07:44.92,0:07:45.02,Normal,,0,0,0,,de agora e {\c&H005AD1F2}a{\c&H00FFFFFF} saudade
+Dialogue: 0,0:07:45.02,0:07:45.70,Normal,,0,0,0,,de agora e a {\c&H005AD1F2}saudade{\c&H00FFFFFF}
+Dialogue: 0,0:07:45.70,0:07:45.94,Normal,,0,0,0,,{\c&H005AD1F2}é{\c&H00FFFFFF} o jeito que
+Dialogue: 0,0:07:45.94,0:07:46.06,Normal,,0,0,0,,é {\c&H005AD1F2}o{\c&H00FFFFFF} jeito que
+Dialogue: 0,0:07:46.06,0:07:46.38,Normal,,0,0,0,,é o {\c&H005AD1F2}jeito{\c&H00FFFFFF} que
+Dialogue: 0,0:07:46.38,0:07:46.66,Normal,,0,0,0,,é o jeito {\c&H005AD1F2}que{\c&H00FFFFFF}
+Dialogue: 0,0:07:46.66,0:07:46.76,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} cabeça encontra de pedir
+Dialogue: 0,0:07:46.76,0:07:47.14,Normal,,0,0,0,,a {\c&H005AD1F2}cabeça{\c&H00FFFFFF} encontra de pedir
+Dialogue: 0,0:07:47.14,0:07:47.72,Normal,,0,0,0,,a cabeça {\c&H005AD1F2}encontra{\c&H00FFFFFF} de pedir
+Dialogue: 0,0:07:47.72,0:07:47.98,Normal,,0,0,0,,a cabeça encontra {\c&H005AD1F2}de{\c&H00FFFFFF} pedir
+Dialogue: 0,0:07:47.98,0:07:48.38,Normal,,0,0,0,,a cabeça encontra de {\c&H005AD1F2}pedir{\c&H00FFFFFF}
+Dialogue: 0,0:07:48.38,0:07:48.54,Normal,,0,0,0,,{\c&H005AD1F2}um{\c&H00FFFFFF} abrigo.
+Dialogue: 0,0:07:48.54,0:07:49.66,Normal,,0,0,0,,um {\c&H005AD1F2}abrigo.{\c&H00FFFFFF}
+Dialogue: 0,0:07:49.66,0:07:49.76,Normal,,0,0,0,,{\c&H005AD1F2}Só{\c&H00FFFFFF} que tem um jeito
+Dialogue: 0,0:07:49.76,0:07:49.88,Normal,,0,0,0,,Só {\c&H005AD1F2}que{\c&H00FFFFFF} tem um jeito
+Dialogue: 0,0:07:49.88,0:07:50.02,Normal,,0,0,0,,Só que {\c&H005AD1F2}tem{\c&H00FFFFFF} um jeito
+Dialogue: 0,0:07:50.02,0:07:50.14,Normal,,0,0,0,,Só que tem {\c&H005AD1F2}um{\c&H00FFFFFF} jeito
+Dialogue: 0,0:07:50.14,0:07:50.40,Normal,,0,0,0,,Só que tem um {\c&H005AD1F2}jeito{\c&H00FFFFFF}
+Dialogue: 0,0:07:50.40,0:07:50.64,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} usar esse abrigo
+Dialogue: 0,0:07:50.64,0:07:50.86,Normal,,0,0,0,,de {\c&H005AD1F2}usar{\c&H00FFFFFF} esse abrigo
+Dialogue: 0,0:07:50.86,0:07:51.12,Normal,,0,0,0,,de usar {\c&H005AD1F2}esse{\c&H00FFFFFF} abrigo
+Dialogue: 0,0:07:51.12,0:07:51.60,Normal,,0,0,0,,de usar esse {\c&H005AD1F2}abrigo{\c&H00FFFFFF}
+Dialogue: 0,0:07:51.60,0:07:51.72,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} te prende,
+Dialogue: 0,0:07:51.72,0:07:51.86,Normal,,0,0,0,,que {\c&H005AD1F2}te{\c&H00FFFFFF} prende,
+Dialogue: 0,0:07:51.86,0:07:52.76,Normal,,0,0,0,,que te {\c&H005AD1F2}prende,{\c&H00FFFFFF}
+Dialogue: 0,0:07:52.76,0:07:52.78,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} é quando a saudade
+Dialogue: 0,0:07:52.78,0:07:52.86,Normal,,0,0,0,,que {\c&H005AD1F2}é{\c&H00FFFFFF} quando a saudade
+Dialogue: 0,0:07:52.86,0:07:53.04,Normal,,0,0,0,,que é {\c&H005AD1F2}quando{\c&H00FFFFFF} a saudade
+Dialogue: 0,0:07:53.04,0:07:53.20,Normal,,0,0,0,,que é quando {\c&H005AD1F2}a{\c&H00FFFFFF} saudade
+Dialogue: 0,0:07:53.20,0:07:53.80,Normal,,0,0,0,,que é quando a {\c&H005AD1F2}saudade{\c&H00FFFFFF}
+Dialogue: 0,0:07:53.80,0:07:54.10,Normal,,0,0,0,,{\c&H005AD1F2}vira{\c&H00FFFFFF} comparação e você mede
+Dialogue: 0,0:07:54.10,0:07:54.90,Normal,,0,0,0,,vira {\c&H005AD1F2}comparação{\c&H00FFFFFF} e você mede
+Dialogue: 0,0:07:54.90,0:07:55.34,Normal,,0,0,0,,vira comparação {\c&H005AD1F2}e{\c&H00FFFFFF} você mede
+Dialogue: 0,0:07:55.34,0:07:55.58,Normal,,0,0,0,,vira comparação e {\c&H005AD1F2}você{\c&H00FFFFFF} mede
+Dialogue: 0,0:07:55.58,0:07:56.02,Normal,,0,0,0,,vira comparação e você {\c&H005AD1F2}mede{\c&H00FFFFFF}
+Dialogue: 0,0:07:56.02,0:07:56.10,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} sua vida de hoje,
+Dialogue: 0,0:07:56.10,0:07:56.22,Normal,,0,0,0,,a {\c&H005AD1F2}sua{\c&H00FFFFFF} vida de hoje,
+Dialogue: 0,0:07:56.22,0:07:56.52,Normal,,0,0,0,,a sua {\c&H005AD1F2}vida{\c&H00FFFFFF} de hoje,
+Dialogue: 0,0:07:56.52,0:07:56.74,Normal,,0,0,0,,a sua vida {\c&H005AD1F2}de{\c&H00FFFFFF} hoje,
+Dialogue: 0,0:07:56.74,0:07:57.44,Normal,,0,0,0,,a sua vida de {\c&H005AD1F2}hoje,{\c&H00FFFFFF}
+Dialogue: 0,0:07:57.44,0:07:57.62,Normal,,0,0,0,,{\c&H005AD1F2}com{\c&H00FFFFFF} todos os problemas
+Dialogue: 0,0:07:57.62,0:07:58.00,Normal,,0,0,0,,com {\c&H005AD1F2}todos{\c&H00FFFFFF} os problemas
+Dialogue: 0,0:07:58.00,0:07:58.24,Normal,,0,0,0,,com todos {\c&H005AD1F2}os{\c&H00FFFFFF} problemas
+Dialogue: 0,0:07:58.24,0:07:58.68,Normal,,0,0,0,,com todos os {\c&H005AD1F2}problemas{\c&H00FFFFFF}
+Dialogue: 0,0:07:58.68,0:07:59.84,Normal,,0,0,0,,{\c&H005AD1F2}inteiros,{\c&H00FFFFFF} contra uma lembrança
+Dialogue: 0,0:07:59.84,0:08:00.08,Normal,,0,0,0,,inteiros, {\c&H005AD1F2}contra{\c&H00FFFFFF} uma lembrança
+Dialogue: 0,0:08:00.08,0:08:00.26,Normal,,0,0,0,,inteiros, contra {\c&H005AD1F2}uma{\c&H00FFFFFF} lembrança
+Dialogue: 0,0:08:00.26,0:08:00.88,Normal,,0,0,0,,inteiros, contra uma {\c&H005AD1F2}lembrança{\c&H00FFFFFF}
+Dialogue: 0,0:08:00.88,0:08:01.04,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} já foi editada.
+Dialogue: 0,0:08:01.04,0:08:01.22,Normal,,0,0,0,,que {\c&H005AD1F2}já{\c&H00FFFFFF} foi editada.
+Dialogue: 0,0:08:01.22,0:08:01.44,Normal,,0,0,0,,que já {\c&H005AD1F2}foi{\c&H00FFFFFF} editada.
+Dialogue: 0,0:08:01.44,0:08:02.64,Normal,,0,0,0,,que já foi {\c&H005AD1F2}editada.{\c&H00FFFFFF}
+Dialogue: 0,0:08:02.78,0:08:03.02,Normal,,0,0,0,,{\c&H005AD1F2}Nessa{\c&H00FFFFFF} disputa o presente perde
+Dialogue: 0,0:08:03.02,0:08:03.72,Normal,,0,0,0,,Nessa {\c&H005AD1F2}disputa{\c&H00FFFFFF} o presente perde
+Dialogue: 0,0:08:03.72,0:08:03.84,Normal,,0,0,0,,Nessa disputa {\c&H005AD1F2}o{\c&H00FFFFFF} presente perde
+Dialogue: 0,0:08:03.84,0:08:04.26,Normal,,0,0,0,,Nessa disputa o {\c&H005AD1F2}presente{\c&H00FFFFFF} perde
+Dialogue: 0,0:08:04.26,0:08:04.64,Normal,,0,0,0,,Nessa disputa o presente {\c&H005AD1F2}perde{\c&H00FFFFFF}
+Dialogue: 0,0:08:04.64,0:08:05.52,Normal,,0,0,0,,{\c&H005AD1F2}sempre,{\c&H00FFFFFF} porque ele está
+Dialogue: 0,0:08:05.52,0:08:05.86,Normal,,0,0,0,,sempre, {\c&H005AD1F2}porque{\c&H00FFFFFF} ele está
+Dialogue: 0,0:08:05.86,0:08:06.00,Normal,,0,0,0,,sempre, porque {\c&H005AD1F2}ele{\c&H00FFFFFF} está
+Dialogue: 0,0:08:06.00,0:08:06.18,Normal,,0,0,0,,sempre, porque ele {\c&H005AD1F2}está{\c&H00FFFFFF}
+Dialogue: 0,0:08:06.18,0:08:06.88,Normal,,0,0,0,,{\c&H005AD1F2}competindo{\c&H00FFFFFF} com um filme
+Dialogue: 0,0:08:06.88,0:08:07.08,Normal,,0,0,0,,competindo {\c&H005AD1F2}com{\c&H00FFFFFF} um filme
+Dialogue: 0,0:08:07.08,0:08:07.22,Normal,,0,0,0,,competindo com {\c&H005AD1F2}um{\c&H00FFFFFF} filme
+Dialogue: 0,0:08:07.22,0:08:07.62,Normal,,0,0,0,,competindo com um {\c&H005AD1F2}filme{\c&H00FFFFFF}
+Dialogue: 0,0:08:07.62,0:08:07.84,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} a sua memória montou
+Dialogue: 0,0:08:07.84,0:08:07.94,Normal,,0,0,0,,que {\c&H005AD1F2}a{\c&H00FFFFFF} sua memória montou
+Dialogue: 0,0:08:07.94,0:08:08.16,Normal,,0,0,0,,que a {\c&H005AD1F2}sua{\c&H00FFFFFF} memória montou
+Dialogue: 0,0:08:08.16,0:08:08.68,Normal,,0,0,0,,que a sua {\c&H005AD1F2}memória{\c&H00FFFFFF} montou
+Dialogue: 0,0:08:08.68,0:08:09.26,Normal,,0,0,0,,que a sua memória {\c&H005AD1F2}montou{\c&H00FFFFFF}
+Dialogue: 0,0:08:09.26,0:08:09.46,Normal,,0,0,0,,{\c&H005AD1F2}com{\c&H00FFFFFF} as melhores cenas
+Dialogue: 0,0:08:09.46,0:08:09.64,Normal,,0,0,0,,com {\c&H005AD1F2}as{\c&H00FFFFFF} melhores cenas
+Dialogue: 0,0:08:09.64,0:08:10.10,Normal,,0,0,0,,com as {\c&H005AD1F2}melhores{\c&H00FFFFFF} cenas
+Dialogue: 0,0:08:10.10,0:08:10.76,Normal,,0,0,0,,com as melhores {\c&H005AD1F2}cenas{\c&H00FFFFFF}
+Dialogue: 0,0:08:10.76,0:08:11.26,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} uma trilha sonora boa.
+Dialogue: 0,0:08:11.26,0:08:11.40,Normal,,0,0,0,,e {\c&H005AD1F2}uma{\c&H00FFFFFF} trilha sonora boa.
+Dialogue: 0,0:08:11.40,0:08:11.92,Normal,,0,0,0,,e uma {\c&H005AD1F2}trilha{\c&H00FFFFFF} sonora boa.
+Dialogue: 0,0:08:11.92,0:08:12.42,Normal,,0,0,0,,e uma trilha {\c&H005AD1F2}sonora{\c&H00FFFFFF} boa.
+Dialogue: 0,0:08:12.42,0:08:13.47,Normal,,0,0,0,,e uma trilha sonora {\c&H005AD1F2}boa.{\c&H00FFFFFF}
+Dialogue: 0,0:08:13.47,0:08:13.73,Normal,,0,0,0,,{\c&H005AD1F2}Lembra{\c&H00FFFFFF} da ideia que
+Dialogue: 0,0:08:13.73,0:08:13.85,Normal,,0,0,0,,Lembra {\c&H005AD1F2}da{\c&H00FFFFFF} ideia que
+Dialogue: 0,0:08:13.85,0:08:14.13,Normal,,0,0,0,,Lembra da {\c&H005AD1F2}ideia{\c&H00FFFFFF} que
+Dialogue: 0,0:08:14.13,0:08:14.29,Normal,,0,0,0,,Lembra da ideia {\c&H005AD1F2}que{\c&H00FFFFFF}
+Dialogue: 0,0:08:14.29,0:08:14.33,Normal,,0,0,0,,{\c&H005AD1F2}eu{\c&H00FFFFFF} pedi para você guardar?
+Dialogue: 0,0:08:14.33,0:08:14.63,Normal,,0,0,0,,eu {\c&H005AD1F2}pedi{\c&H00FFFFFF} para você guardar?
+Dialogue: 0,0:08:14.63,0:08:14.73,Normal,,0,0,0,,eu pedi {\c&H005AD1F2}para{\c&H00FFFFFF} você guardar?
+Dialogue: 0,0:08:14.73,0:08:14.95,Normal,,0,0,0,,eu pedi para {\c&H005AD1F2}você{\c&H00FFFFFF} guardar?
+Dialogue: 0,0:08:14.95,0:08:16.15,Normal,,0,0,0,,eu pedi para você {\c&H005AD1F2}guardar?{\c&H00FFFFFF}
+Dialogue: 0,0:08:16.20,0:08:16.69,Normal,,0,0,0,,{\c&H005AD1F2}Em{\c&H00FFFFFF} 2008 uma equipe liderada
+Dialogue: 0,0:08:16.69,0:08:17.18,Normal,,0,0,0,,Em {\c&H005AD1F2}2008{\c&H00FFFFFF} uma equipe liderada
+Dialogue: 0,0:08:17.18,0:08:17.44,Normal,,0,0,0,,Em 2008 {\c&H005AD1F2}uma{\c&H00FFFFFF} equipe liderada
+Dialogue: 0,0:08:17.44,0:08:17.84,Normal,,0,0,0,,Em 2008 uma {\c&H005AD1F2}equipe{\c&H00FFFFFF} liderada
+Dialogue: 0,0:08:17.84,0:08:18.34,Normal,,0,0,0,,Em 2008 uma equipe {\c&H005AD1F2}liderada{\c&H00FFFFFF}
+Dialogue: 0,0:08:18.34,0:08:18.58,Normal,,0,0,0,,{\c&H005AD1F2}por{\c&H00FFFFFF} Xinyue Zhou,
+Dialogue: 0,0:08:18.58,0:08:19.10,Normal,,0,0,0,,por {\c&H005AD1F2}Xinyue{\c&H00FFFFFF} Zhou,
+Dialogue: 0,0:08:19.10,0:08:19.82,Normal,,0,0,0,,por Xinyue {\c&H005AD1F2}Zhou,{\c&H00FFFFFF}
+Dialogue: 0,0:08:19.82,0:08:19.92,Normal,,0,0,0,,{\c&H005AD1F2}na{\c&H00FFFFFF} China, com os psicólogos
+Dialogue: 0,0:08:19.92,0:08:20.68,Normal,,0,0,0,,na {\c&H005AD1F2}China,{\c&H00FFFFFF} com os psicólogos
+Dialogue: 0,0:08:20.68,0:08:20.86,Normal,,0,0,0,,na China, {\c&H005AD1F2}com{\c&H00FFFFFF} os psicólogos
+Dialogue: 0,0:08:20.86,0:08:20.96,Normal,,0,0,0,,na China, com {\c&H005AD1F2}os{\c&H00FFFFFF} psicólogos
+Dialogue: 0,0:08:20.96,0:08:21.76,Normal,,0,0,0,,na China, com os {\c&H005AD1F2}psicólogos{\c&H00FFFFFF}
+Dialogue: 0,0:08:21.76,0:08:22.58,Normal,,0,0,0,,{\c&H005AD1F2}Constantine{\c&H00FFFFFF} Sedikides e Tim
+Dialogue: 0,0:08:22.58,0:08:23.48,Normal,,0,0,0,,Constantine {\c&H005AD1F2}Sedikides{\c&H00FFFFFF} e Tim
+Dialogue: 0,0:08:23.48,0:08:23.88,Normal,,0,0,0,,Constantine Sedikides {\c&H005AD1F2}e{\c&H00FFFFFF} Tim
+Dialogue: 0,0:08:23.88,0:08:24.30,Normal,,0,0,0,,Constantine Sedikides e {\c&H005AD1F2}Tim{\c&H00FFFFFF}
+Dialogue: 0,0:08:24.30,0:08:25.36,Normal,,0,0,0,,{\c&H005AD1F2}Wildschut,{\c&H00FFFFFF} fez 4 estudos
+Dialogue: 0,0:08:25.36,0:08:25.69,Normal,,0,0,0,,Wildschut, {\c&H005AD1F2}fez{\c&H00FFFFFF} 4 estudos
+Dialogue: 0,0:08:25.69,0:08:26.02,Normal,,0,0,0,,Wildschut, fez {\c&H005AD1F2}4{\c&H00FFFFFF} estudos
+Dialogue: 0,0:08:26.02,0:08:26.68,Normal,,0,0,0,,Wildschut, fez 4 {\c&H005AD1F2}estudos{\c&H00FFFFFF}
+Dialogue: 0,0:08:26.68,0:08:26.80,Normal,,0,0,0,,{\c&H005AD1F2}com{\c&H00FFFFFF} crianças, universitários
+Dialogue: 0,0:08:26.80,0:08:27.78,Normal,,0,0,0,,com {\c&H005AD1F2}crianças,{\c&H00FFFFFF} universitários
+Dialogue: 0,0:08:27.78,0:08:28.74,Normal,,0,0,0,,com crianças, {\c&H005AD1F2}universitários{\c&H00FFFFFF}
+Dialogue: 0,0:08:28.74,0:08:29.06,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} operários de fábrica
+Dialogue: 0,0:08:29.06,0:08:29.64,Normal,,0,0,0,,e {\c&H005AD1F2}operários{\c&H00FFFFFF} de fábrica
+Dialogue: 0,0:08:29.64,0:08:29.76,Normal,,0,0,0,,e operários {\c&H005AD1F2}de{\c&H00FFFFFF} fábrica
+Dialogue: 0,0:08:29.76,0:08:30.40,Normal,,0,0,0,,e operários de {\c&H005AD1F2}fábrica{\c&H00FFFFFF}
+Dialogue: 0,0:08:30.40,0:08:30.84,Normal,,0,0,0,,{\c&H005AD1F2}para{\c&H00FFFFFF} entender a relação entre
+Dialogue: 0,0:08:30.84,0:08:31.26,Normal,,0,0,0,,para {\c&H005AD1F2}entender{\c&H00FFFFFF} a relação entre
+Dialogue: 0,0:08:31.26,0:08:31.50,Normal,,0,0,0,,para entender {\c&H005AD1F2}a{\c&H00FFFFFF} relação entre
+Dialogue: 0,0:08:31.50,0:08:32.00,Normal,,0,0,0,,para entender a {\c&H005AD1F2}relação{\c&H00FFFFFF} entre
+Dialogue: 0,0:08:32.00,0:08:32.34,Normal,,0,0,0,,para entender a relação {\c&H005AD1F2}entre{\c&H00FFFFFF}
+Dialogue: 0,0:08:32.34,0:08:33.18,Normal,,0,0,0,,{\c&H005AD1F2}saudade{\c&H00FFFFFF} e solidão.
+Dialogue: 0,0:08:33.18,0:08:33.42,Normal,,0,0,0,,saudade {\c&H005AD1F2}e{\c&H00FFFFFF} solidão.
+Dialogue: 0,0:08:33.42,0:08:34.62,Normal,,0,0,0,,saudade e {\c&H005AD1F2}solidão.{\c&H00FFFFFF}
+Dialogue: 0,0:08:34.72,0:08:34.80,Normal,,0,0,0,,{\c&H005AD1F2}E{\c&H00FFFFFF} eles viram duas coisas,
+Dialogue: 0,0:08:34.80,0:08:34.96,Normal,,0,0,0,,E {\c&H005AD1F2}eles{\c&H00FFFFFF} viram duas coisas,
+Dialogue: 0,0:08:34.96,0:08:35.30,Normal,,0,0,0,,E eles {\c&H005AD1F2}viram{\c&H00FFFFFF} duas coisas,
+Dialogue: 0,0:08:35.30,0:08:35.64,Normal,,0,0,0,,E eles viram {\c&H005AD1F2}duas{\c&H00FFFFFF} coisas,
+Dialogue: 0,0:08:35.64,0:08:36.54,Normal,,0,0,0,,E eles viram duas {\c&H005AD1F2}coisas,{\c&H00FFFFFF}
+Dialogue: 0,0:08:36.54,0:08:36.74,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} as pessoas mais solitárias
+Dialogue: 0,0:08:36.74,0:08:36.86,Normal,,0,0,0,,que {\c&H005AD1F2}as{\c&H00FFFFFF} pessoas mais solitárias
+Dialogue: 0,0:08:36.86,0:08:37.16,Normal,,0,0,0,,que as {\c&H005AD1F2}pessoas{\c&H00FFFFFF} mais solitárias
+Dialogue: 0,0:08:37.16,0:08:37.54,Normal,,0,0,0,,que as pessoas {\c&H005AD1F2}mais{\c&H00FFFFFF} solitárias
+Dialogue: 0,0:08:37.54,0:08:38.32,Normal,,0,0,0,,que as pessoas mais {\c&H005AD1F2}solitárias{\c&H00FFFFFF}
+Dialogue: 0,0:08:38.32,0:08:38.70,Normal,,0,0,0,,{\c&H005AD1F2}eram{\c&H00FFFFFF} as mais nostálgicas
+Dialogue: 0,0:08:38.70,0:08:38.92,Normal,,0,0,0,,eram {\c&H005AD1F2}as{\c&H00FFFFFF} mais nostálgicas
+Dialogue: 0,0:08:38.92,0:08:39.24,Normal,,0,0,0,,eram as {\c&H005AD1F2}mais{\c&H00FFFFFF} nostálgicas
+Dialogue: 0,0:08:39.24,0:08:40.22,Normal,,0,0,0,,eram as mais {\c&H005AD1F2}nostálgicas{\c&H00FFFFFF}
+Dialogue: 0,0:08:40.22,0:08:40.70,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} que quando elas lembravam
+Dialogue: 0,0:08:40.70,0:08:40.80,Normal,,0,0,0,,e {\c&H005AD1F2}que{\c&H00FFFFFF} quando elas lembravam
+Dialogue: 0,0:08:40.80,0:08:41.14,Normal,,0,0,0,,e que {\c&H005AD1F2}quando{\c&H00FFFFFF} elas lembravam
+Dialogue: 0,0:08:41.14,0:08:41.34,Normal,,0,0,0,,e que quando {\c&H005AD1F2}elas{\c&H00FFFFFF} lembravam
+Dialogue: 0,0:08:41.34,0:08:42.06,Normal,,0,0,0,,e que quando elas {\c&H005AD1F2}lembravam{\c&H00FFFFFF}
+Dialogue: 0,0:08:42.06,0:08:42.16,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} um momento querido
+Dialogue: 0,0:08:42.16,0:08:42.24,Normal,,0,0,0,,de {\c&H005AD1F2}um{\c&H00FFFFFF} momento querido
+Dialogue: 0,0:08:42.24,0:08:42.52,Normal,,0,0,0,,de um {\c&H005AD1F2}momento{\c&H00FFFFFF} querido
+Dialogue: 0,0:08:42.52,0:08:43.12,Normal,,0,0,0,,de um momento {\c&H005AD1F2}querido{\c&H00FFFFFF}
+Dialogue: 0,0:08:43.12,0:08:43.22,Normal,,0,0,0,,{\c&H005AD1F2}do{\c&H00FFFFFF} passado passavam a sentir
+Dialogue: 0,0:08:43.22,0:08:43.70,Normal,,0,0,0,,do {\c&H005AD1F2}passado{\c&H00FFFFFF} passavam a sentir
+Dialogue: 0,0:08:43.70,0:08:44.68,Normal,,0,0,0,,do passado {\c&H005AD1F2}passavam{\c&H00FFFFFF} a sentir
+Dialogue: 0,0:08:44.68,0:08:44.76,Normal,,0,0,0,,do passado passavam {\c&H005AD1F2}a{\c&H00FFFFFF} sentir
+Dialogue: 0,0:08:44.76,0:08:45.18,Normal,,0,0,0,,do passado passavam a {\c&H005AD1F2}sentir{\c&H00FFFFFF}
+Dialogue: 0,0:08:45.18,0:08:45.46,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} tinham mais gente
+Dialogue: 0,0:08:45.46,0:08:45.74,Normal,,0,0,0,,que {\c&H005AD1F2}tinham{\c&H00FFFFFF} mais gente
+Dialogue: 0,0:08:45.74,0:08:46.14,Normal,,0,0,0,,que tinham {\c&H005AD1F2}mais{\c&H00FFFFFF} gente
+Dialogue: 0,0:08:46.14,0:08:46.52,Normal,,0,0,0,,que tinham mais {\c&H005AD1F2}gente{\c&H00FFFFFF}
+Dialogue: 0,0:08:46.52,0:08:46.78,Normal,,0,0,0,,{\c&H005AD1F2}com{\c&H00FFFFFF} quem contar.
+Dialogue: 0,0:08:46.78,0:08:46.96,Normal,,0,0,0,,com {\c&H005AD1F2}quem{\c&H00FFFFFF} contar.
+Dialogue: 0,0:08:46.96,0:08:48.16,Normal,,0,0,0,,com quem {\c&H005AD1F2}contar.{\c&H00FFFFFF}
+Dialogue: 0,0:08:48.20,0:08:48.67,Normal,,0,0,0,,{\c&H005AD1F2}Em{\c&H00FFFFFF} 2011 o psicólogo Clay
+Dialogue: 0,0:08:48.67,0:08:49.14,Normal,,0,0,0,,Em {\c&H005AD1F2}2011{\c&H00FFFFFF} o psicólogo Clay
+Dialogue: 0,0:08:49.14,0:08:49.40,Normal,,0,0,0,,Em 2011 {\c&H005AD1F2}o{\c&H00FFFFFF} psicólogo Clay
+Dialogue: 0,0:08:49.40,0:08:50.02,Normal,,0,0,0,,Em 2011 o {\c&H005AD1F2}psicólogo{\c&H00FFFFFF} Clay
+Dialogue: 0,0:08:50.02,0:08:50.36,Normal,,0,0,0,,Em 2011 o psicólogo {\c&H005AD1F2}Clay{\c&H00FFFFFF}
+Dialogue: 0,0:08:50.36,0:08:51.02,Normal,,0,0,0,,{\c&H005AD1F2}Routledge{\c&H00FFFFFF} e colegas mostraram
+Dialogue: 0,0:08:51.02,0:08:51.28,Normal,,0,0,0,,Routledge {\c&H005AD1F2}e{\c&H00FFFFFF} colegas mostraram
+Dialogue: 0,0:08:51.28,0:08:51.92,Normal,,0,0,0,,Routledge e {\c&H005AD1F2}colegas{\c&H00FFFFFF} mostraram
+Dialogue: 0,0:08:51.92,0:08:52.76,Normal,,0,0,0,,Routledge e colegas {\c&H005AD1F2}mostraram{\c&H00FFFFFF}
+Dialogue: 0,0:08:52.76,0:08:53.14,Normal,,0,0,0,,{\c&H005AD1F2}outro{\c&H00FFFFFF} efeito, porque lembrar
+Dialogue: 0,0:08:53.14,0:08:53.96,Normal,,0,0,0,,outro {\c&H005AD1F2}efeito,{\c&H00FFFFFF} porque lembrar
+Dialogue: 0,0:08:53.96,0:08:54.22,Normal,,0,0,0,,outro efeito, {\c&H005AD1F2}porque{\c&H00FFFFFF} lembrar
+Dialogue: 0,0:08:54.22,0:08:54.68,Normal,,0,0,0,,outro efeito, porque {\c&H005AD1F2}lembrar{\c&H00FFFFFF}
+Dialogue: 0,0:08:54.68,0:08:54.86,Normal,,0,0,0,,{\c&H005AD1F2}com{\c&H00FFFFFF} saudade também aumentava
+Dialogue: 0,0:08:54.86,0:08:55.56,Normal,,0,0,0,,com {\c&H005AD1F2}saudade{\c&H00FFFFFF} também aumentava
+Dialogue: 0,0:08:55.56,0:08:55.84,Normal,,0,0,0,,com saudade {\c&H005AD1F2}também{\c&H00FFFFFF} aumentava
+Dialogue: 0,0:08:55.84,0:08:56.72,Normal,,0,0,0,,com saudade também {\c&H005AD1F2}aumentava{\c&H00FFFFFF}
+Dialogue: 0,0:08:56.72,0:08:56.82,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} sensação de que
+Dialogue: 0,0:08:56.82,0:08:57.40,Normal,,0,0,0,,a {\c&H005AD1F2}sensação{\c&H00FFFFFF} de que
+Dialogue: 0,0:08:57.40,0:08:57.56,Normal,,0,0,0,,a sensação {\c&H005AD1F2}de{\c&H00FFFFFF} que
+Dialogue: 0,0:08:57.56,0:08:57.70,Normal,,0,0,0,,a sensação de {\c&H005AD1F2}que{\c&H00FFFFFF}
+Dialogue: 0,0:08:57.70,0:08:57.80,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} vida tem sentido.
+Dialogue: 0,0:08:57.80,0:08:58.12,Normal,,0,0,0,,a {\c&H005AD1F2}vida{\c&H00FFFFFF} tem sentido.
+Dialogue: 0,0:08:58.12,0:08:58.44,Normal,,0,0,0,,a vida {\c&H005AD1F2}tem{\c&H00FFFFFF} sentido.
+Dialogue: 0,0:08:58.44,0:08:59.64,Normal,,0,0,0,,a vida tem {\c&H005AD1F2}sentido.{\c&H00FFFFFF}
+Dialogue: 0,0:08:59.82,0:08:59.90,Normal,,0,0,0,,{\c&H005AD1F2}Ou{\c&H00FFFFFF} seja, a saudade não
+Dialogue: 0,0:08:59.90,0:09:00.68,Normal,,0,0,0,,Ou {\c&H005AD1F2}seja,{\c&H00FFFFFF} a saudade não
+Dialogue: 0,0:09:00.68,0:09:00.76,Normal,,0,0,0,,Ou seja, {\c&H005AD1F2}a{\c&H00FFFFFF} saudade não
+Dialogue: 0,0:09:00.76,0:09:01.26,Normal,,0,0,0,,Ou seja, a {\c&H005AD1F2}saudade{\c&H00FFFFFF} não
+Dialogue: 0,0:09:01.26,0:09:01.42,Normal,,0,0,0,,Ou seja, a saudade {\c&H005AD1F2}não{\c&H00FFFFFF}
+Dialogue: 0,0:09:01.42,0:09:01.62,Normal,,0,0,0,,{\c&H005AD1F2}é{\c&H00FFFFFF} só fuga,
+Dialogue: 0,0:09:01.62,0:09:01.74,Normal,,0,0,0,,é {\c&H005AD1F2}só{\c&H00FFFFFF} fuga,
+Dialogue: 0,0:09:01.74,0:09:02.56,Normal,,0,0,0,,é só {\c&H005AD1F2}fuga,{\c&H00FFFFFF}
+Dialogue: 0,0:09:02.56,0:09:02.74,Normal,,0,0,0,,{\c&H005AD1F2}para{\c&H00FFFFFF} muita gente ela funciona
+Dialogue: 0,0:09:02.74,0:09:03.00,Normal,,0,0,0,,para {\c&H005AD1F2}muita{\c&H00FFFFFF} gente ela funciona
+Dialogue: 0,0:09:03.00,0:09:03.54,Normal,,0,0,0,,para muita {\c&H005AD1F2}gente{\c&H00FFFFFF} ela funciona
+Dialogue: 0,0:09:03.54,0:09:03.86,Normal,,0,0,0,,para muita gente {\c&H005AD1F2}ela{\c&H00FFFFFF} funciona
+Dialogue: 0,0:09:03.86,0:09:04.26,Normal,,0,0,0,,para muita gente ela {\c&H005AD1F2}funciona{\c&H00FFFFFF}
+Dialogue: 0,0:09:04.26,0:09:04.66,Normal,,0,0,0,,{\c&H005AD1F2}como{\c&H00FFFFFF} um lembrete de
+Dialogue: 0,0:09:04.66,0:09:04.80,Normal,,0,0,0,,como {\c&H005AD1F2}um{\c&H00FFFFFF} lembrete de
+Dialogue: 0,0:09:04.80,0:09:05.60,Normal,,0,0,0,,como um {\c&H005AD1F2}lembrete{\c&H00FFFFFF} de
+Dialogue: 0,0:09:05.60,0:09:05.92,Normal,,0,0,0,,como um lembrete {\c&H005AD1F2}de{\c&H00FFFFFF}
+Dialogue: 0,0:09:05.92,0:09:06.04,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} você já pertenceu
+Dialogue: 0,0:09:06.04,0:09:06.30,Normal,,0,0,0,,que {\c&H005AD1F2}você{\c&H00FFFFFF} já pertenceu
+Dialogue: 0,0:09:06.30,0:09:06.52,Normal,,0,0,0,,que você {\c&H005AD1F2}já{\c&H00FFFFFF} pertenceu
+Dialogue: 0,0:09:06.52,0:09:07.30,Normal,,0,0,0,,que você já {\c&H005AD1F2}pertenceu{\c&H00FFFFFF}
+Dialogue: 0,0:09:07.30,0:09:07.36,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} um grupo,
+Dialogue: 0,0:09:07.36,0:09:07.48,Normal,,0,0,0,,a {\c&H005AD1F2}um{\c&H00FFFFFF} grupo,
+Dialogue: 0,0:09:07.48,0:09:08.30,Normal,,0,0,0,,a um {\c&H005AD1F2}grupo,{\c&H00FFFFFF}
+Dialogue: 0,0:09:08.30,0:09:08.44,Normal,,0,0,0,,{\c&H005AD1F2}já{\c&H00FFFFFF} riu até doer
+Dialogue: 0,0:09:08.44,0:09:08.78,Normal,,0,0,0,,já {\c&H005AD1F2}riu{\c&H00FFFFFF} até doer
+Dialogue: 0,0:09:08.78,0:09:09.00,Normal,,0,0,0,,já riu {\c&H005AD1F2}até{\c&H00FFFFFF} doer
+Dialogue: 0,0:09:09.00,0:09:09.40,Normal,,0,0,0,,já riu até {\c&H005AD1F2}doer{\c&H00FFFFFF}
+Dialogue: 0,0:09:09.40,0:09:09.46,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} barriga e já foi
+Dialogue: 0,0:09:09.46,0:09:10.08,Normal,,0,0,0,,a {\c&H005AD1F2}barriga{\c&H00FFFFFF} e já foi
+Dialogue: 0,0:09:10.08,0:09:10.46,Normal,,0,0,0,,a barriga {\c&H005AD1F2}e{\c&H00FFFFFF} já foi
+Dialogue: 0,0:09:10.46,0:09:10.64,Normal,,0,0,0,,a barriga e {\c&H005AD1F2}já{\c&H00FFFFFF} foi
+Dialogue: 0,0:09:10.64,0:09:10.80,Normal,,0,0,0,,a barriga e já {\c&H005AD1F2}foi{\c&H00FFFFFF}
+Dialogue: 0,0:09:10.80,0:09:11.22,Normal,,0,0,0,,{\c&H005AD1F2}feliz{\c&H00FFFFFF} com pouco,
+Dialogue: 0,0:09:11.22,0:09:11.44,Normal,,0,0,0,,feliz {\c&H005AD1F2}com{\c&H00FFFFFF} pouco,
+Dialogue: 0,0:09:11.44,0:09:12.38,Normal,,0,0,0,,feliz com {\c&H005AD1F2}pouco,{\c&H00FFFFFF}
+Dialogue: 0,0:09:12.38,0:09:12.48,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} de que é capaz
+Dialogue: 0,0:09:12.48,0:09:12.54,Normal,,0,0,0,,e {\c&H005AD1F2}de{\c&H00FFFFFF} que é capaz
+Dialogue: 0,0:09:12.54,0:09:12.68,Normal,,0,0,0,,e de {\c&H005AD1F2}que{\c&H00FFFFFF} é capaz
+Dialogue: 0,0:09:12.68,0:09:12.78,Normal,,0,0,0,,e de que {\c&H005AD1F2}é{\c&H00FFFFFF} capaz
+Dialogue: 0,0:09:12.78,0:09:13.12,Normal,,0,0,0,,e de que é {\c&H005AD1F2}capaz{\c&H00FFFFFF}
+Dialogue: 0,0:09:13.12,0:09:13.44,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} viver isso de novo.
+Dialogue: 0,0:09:13.44,0:09:13.66,Normal,,0,0,0,,de {\c&H005AD1F2}viver{\c&H00FFFFFF} isso de novo.
+Dialogue: 0,0:09:13.66,0:09:14.08,Normal,,0,0,0,,de viver {\c&H005AD1F2}isso{\c&H00FFFFFF} de novo.
+Dialogue: 0,0:09:14.08,0:09:14.26,Normal,,0,0,0,,de viver isso {\c&H005AD1F2}de{\c&H00FFFFFF} novo.
+Dialogue: 0,0:09:14.26,0:09:15.40,Normal,,0,0,0,,de viver isso de {\c&H005AD1F2}novo.{\c&H00FFFFFF}
+Dialogue: 0,0:09:15.40,0:09:15.70,Normal,,0,0,0,,{\c&H005AD1F2}Então{\c&H00FFFFFF} em vez de tentar
+Dialogue: 0,0:09:15.70,0:09:15.94,Normal,,0,0,0,,Então {\c&H005AD1F2}em{\c&H00FFFFFF} vez de tentar
+Dialogue: 0,0:09:15.94,0:09:16.10,Normal,,0,0,0,,Então em {\c&H005AD1F2}vez{\c&H00FFFFFF} de tentar
+Dialogue: 0,0:09:16.10,0:09:16.24,Normal,,0,0,0,,Então em vez {\c&H005AD1F2}de{\c&H00FFFFFF} tentar
+Dialogue: 0,0:09:16.24,0:09:16.50,Normal,,0,0,0,,Então em vez de {\c&H005AD1F2}tentar{\c&H00FFFFFF}
+Dialogue: 0,0:09:16.50,0:09:16.98,Normal,,0,0,0,,{\c&H005AD1F2}voltar{\c&H00FFFFFF} para 2016,
+Dialogue: 0,0:09:16.98,0:09:17.92,Normal,,0,0,0,,voltar {\c&H005AD1F2}para{\c&H00FFFFFF} 2016,
+Dialogue: 0,0:09:17.92,0:09:18.86,Normal,,0,0,0,,voltar para {\c&H005AD1F2}2016,{\c&H00FFFFFF}
+Dialogue: 0,0:09:18.86,0:09:18.96,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} é impossível,
+Dialogue: 0,0:09:18.96,0:09:19.08,Normal,,0,0,0,,que {\c&H005AD1F2}é{\c&H00FFFFFF} impossível,
+Dialogue: 0,0:09:19.08,0:09:20.24,Normal,,0,0,0,,que é {\c&H005AD1F2}impossível,{\c&H00FFFFFF}
+Dialogue: 0,0:09:20.24,0:09:20.32,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} pergunta que vale fazer
+Dialogue: 0,0:09:20.32,0:09:20.70,Normal,,0,0,0,,a {\c&H005AD1F2}pergunta{\c&H00FFFFFF} que vale fazer
+Dialogue: 0,0:09:20.70,0:09:20.94,Normal,,0,0,0,,a pergunta {\c&H005AD1F2}que{\c&H00FFFFFF} vale fazer
+Dialogue: 0,0:09:20.94,0:09:21.18,Normal,,0,0,0,,a pergunta que {\c&H005AD1F2}vale{\c&H00FFFFFF} fazer
+Dialogue: 0,0:09:21.18,0:09:21.58,Normal,,0,0,0,,a pergunta que vale {\c&H005AD1F2}fazer{\c&H00FFFFFF}
+Dialogue: 0,0:09:21.58,0:09:22.06,Normal,,0,0,0,,{\c&H005AD1F2}é{\c&H00FFFFFF} do que exatamente você
+Dialogue: 0,0:09:22.06,0:09:22.60,Normal,,0,0,0,,é {\c&H005AD1F2}do{\c&H00FFFFFF} que exatamente você
+Dialogue: 0,0:09:22.60,0:09:22.88,Normal,,0,0,0,,é do {\c&H005AD1F2}que{\c&H00FFFFFF} exatamente você
+Dialogue: 0,0:09:22.88,0:09:23.32,Normal,,0,0,0,,é do que {\c&H005AD1F2}exatamente{\c&H00FFFFFF} você
+Dialogue: 0,0:09:23.32,0:09:23.90,Normal,,0,0,0,,é do que exatamente {\c&H005AD1F2}você{\c&H00FFFFFF}
+Dialogue: 0,0:09:23.90,0:09:24.30,Normal,,0,0,0,,{\c&H005AD1F2}sente{\c&H00FFFFFF} falta, porque quase
+Dialogue: 0,0:09:24.30,0:09:25.18,Normal,,0,0,0,,sente {\c&H005AD1F2}falta,{\c&H00FFFFFF} porque quase
+Dialogue: 0,0:09:25.18,0:09:25.46,Normal,,0,0,0,,sente falta, {\c&H005AD1F2}porque{\c&H00FFFFFF} quase
+Dialogue: 0,0:09:25.46,0:09:25.94,Normal,,0,0,0,,sente falta, porque {\c&H005AD1F2}quase{\c&H00FFFFFF}
+Dialogue: 0,0:09:25.94,0:09:26.40,Normal,,0,0,0,,{\c&H005AD1F2}sempre{\c&H00FFFFFF} dá para trazer
+Dialogue: 0,0:09:26.40,0:09:26.68,Normal,,0,0,0,,sempre {\c&H005AD1F2}dá{\c&H00FFFFFF} para trazer
+Dialogue: 0,0:09:26.68,0:09:26.88,Normal,,0,0,0,,sempre dá {\c&H005AD1F2}para{\c&H00FFFFFF} trazer
+Dialogue: 0,0:09:26.88,0:09:27.24,Normal,,0,0,0,,sempre dá para {\c&H005AD1F2}trazer{\c&H00FFFFFF}
+Dialogue: 0,0:09:27.24,0:09:27.40,Normal,,0,0,0,,{\c&H005AD1F2}um{\c&H00FFFFFF} pedaço disso para cá.
+Dialogue: 0,0:09:27.40,0:09:28.06,Normal,,0,0,0,,um {\c&H005AD1F2}pedaço{\c&H00FFFFFF} disso para cá.
+Dialogue: 0,0:09:28.06,0:09:28.34,Normal,,0,0,0,,um pedaço {\c&H005AD1F2}disso{\c&H00FFFFFF} para cá.
+Dialogue: 0,0:09:28.34,0:09:28.64,Normal,,0,0,0,,um pedaço disso {\c&H005AD1F2}para{\c&H00FFFFFF} cá.
+Dialogue: 0,0:09:28.64,0:09:29.63,Normal,,0,0,0,,um pedaço disso para {\c&H005AD1F2}cá.{\c&H00FFFFFF}
+Dialogue: 0,0:09:29.63,0:09:29.75,Normal,,0,0,0,,{\c&H005AD1F2}Se{\c&H00FFFFFF} é dos amigos,
+Dialogue: 0,0:09:29.75,0:09:29.85,Normal,,0,0,0,,Se {\c&H005AD1F2}é{\c&H00FFFFFF} dos amigos,
+Dialogue: 0,0:09:29.85,0:09:29.93,Normal,,0,0,0,,Se é {\c&H005AD1F2}dos{\c&H00FFFFFF} amigos,
+Dialogue: 0,0:09:29.93,0:09:30.75,Normal,,0,0,0,,Se é dos {\c&H005AD1F2}amigos,{\c&H00FFFFFF}
+Dialogue: 0,0:09:30.75,0:09:31.11,Normal,,0,0,0,,{\c&H005AD1F2}manda{\c&H00FFFFFF} hoje uma mensagem
+Dialogue: 0,0:09:31.11,0:09:31.37,Normal,,0,0,0,,manda {\c&H005AD1F2}hoje{\c&H00FFFFFF} uma mensagem
+Dialogue: 0,0:09:31.37,0:09:31.53,Normal,,0,0,0,,manda hoje {\c&H005AD1F2}uma{\c&H00FFFFFF} mensagem
+Dialogue: 0,0:09:31.53,0:09:32.15,Normal,,0,0,0,,manda hoje uma {\c&H005AD1F2}mensagem{\c&H00FFFFFF}
+Dialogue: 0,0:09:32.15,0:09:32.39,Normal,,0,0,0,,{\c&H005AD1F2}para{\c&H00FFFFFF} alguém daquela época sem
+Dialogue: 0,0:09:32.39,0:09:32.67,Normal,,0,0,0,,para {\c&H005AD1F2}alguém{\c&H00FFFFFF} daquela época sem
+Dialogue: 0,0:09:32.67,0:09:33.01,Normal,,0,0,0,,para alguém {\c&H005AD1F2}daquela{\c&H00FFFFFF} época sem
+Dialogue: 0,0:09:33.01,0:09:33.45,Normal,,0,0,0,,para alguém daquela {\c&H005AD1F2}época{\c&H00FFFFFF} sem
+Dialogue: 0,0:09:33.45,0:09:33.83,Normal,,0,0,0,,para alguém daquela época {\c&H005AD1F2}sem{\c&H00FFFFFF}
+Dialogue: 0,0:09:33.83,0:09:34.39,Normal,,0,0,0,,{\c&H005AD1F2}motivo{\c&H00FFFFFF} nenhum, só um lembrei
+Dialogue: 0,0:09:34.39,0:09:35.25,Normal,,0,0,0,,motivo {\c&H005AD1F2}nenhum,{\c&H00FFFFFF} só um lembrei
+Dialogue: 0,0:09:35.25,0:09:35.47,Normal,,0,0,0,,motivo nenhum, {\c&H005AD1F2}só{\c&H00FFFFFF} um lembrei
+Dialogue: 0,0:09:35.47,0:09:35.59,Normal,,0,0,0,,motivo nenhum, só {\c&H005AD1F2}um{\c&H00FFFFFF} lembrei
+Dialogue: 0,0:09:35.59,0:09:36.03,Normal,,0,0,0,,motivo nenhum, só um {\c&H005AD1F2}lembrei{\c&H00FFFFFF}
+Dialogue: 0,0:09:36.03,0:09:36.07,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} você, porque a maioria
+Dialogue: 0,0:09:36.07,0:09:36.73,Normal,,0,0,0,,de {\c&H005AD1F2}você,{\c&H00FFFFFF} porque a maioria
+Dialogue: 0,0:09:36.73,0:09:37.05,Normal,,0,0,0,,de você, {\c&H005AD1F2}porque{\c&H00FFFFFF} a maioria
+Dialogue: 0,0:09:37.05,0:09:37.13,Normal,,0,0,0,,de você, porque {\c&H005AD1F2}a{\c&H00FFFFFF} maioria
+Dialogue: 0,0:09:37.13,0:09:37.43,Normal,,0,0,0,,de você, porque a {\c&H005AD1F2}maioria{\c&H00FFFFFF}
+Dialogue: 0,0:09:37.43,0:09:37.73,Normal,,0,0,0,,{\c&H005AD1F2}das{\c&H00FFFFFF} amizades não acaba numa
+Dialogue: 0,0:09:37.73,0:09:38.35,Normal,,0,0,0,,das {\c&H005AD1F2}amizades{\c&H00FFFFFF} não acaba numa
+Dialogue: 0,0:09:38.35,0:09:38.61,Normal,,0,0,0,,das amizades {\c&H005AD1F2}não{\c&H00FFFFFF} acaba numa
+Dialogue: 0,0:09:38.61,0:09:39.03,Normal,,0,0,0,,das amizades não {\c&H005AD1F2}acaba{\c&H00FFFFFF} numa
+Dialogue: 0,0:09:39.03,0:09:39.27,Normal,,0,0,0,,das amizades não acaba {\c&H005AD1F2}numa{\c&H00FFFFFF}
+Dialogue: 0,0:09:39.27,0:09:39.83,Normal,,0,0,0,,{\c&H005AD1F2}briga{\c&H00FFFFFF} e sim no silêncio.
+Dialogue: 0,0:09:39.83,0:09:40.23,Normal,,0,0,0,,briga {\c&H005AD1F2}e{\c&H00FFFFFF} sim no silêncio.
+Dialogue: 0,0:09:40.23,0:09:40.55,Normal,,0,0,0,,briga e {\c&H005AD1F2}sim{\c&H00FFFFFF} no silêncio.
+Dialogue: 0,0:09:40.55,0:09:40.73,Normal,,0,0,0,,briga e sim {\c&H005AD1F2}no{\c&H00FFFFFF} silêncio.
+Dialogue: 0,0:09:40.73,0:09:41.93,Normal,,0,0,0,,briga e sim no {\c&H005AD1F2}silêncio.{\c&H00FFFFFF}
+Dialogue: 0,0:09:42.03,0:09:42.15,Normal,,0,0,0,,{\c&H005AD1F2}Se{\c&H00FFFFFF} é da internet
+Dialogue: 0,0:09:42.15,0:09:42.23,Normal,,0,0,0,,Se {\c&H005AD1F2}é{\c&H00FFFFFF} da internet
+Dialogue: 0,0:09:42.23,0:09:42.29,Normal,,0,0,0,,Se é {\c&H005AD1F2}da{\c&H00FFFFFF} internet
+Dialogue: 0,0:09:42.29,0:09:42.71,Normal,,0,0,0,,Se é da {\c&H005AD1F2}internet{\c&H00FFFFFF}
+Dialogue: 0,0:09:42.71,0:09:42.99,Normal,,0,0,0,,{\c&H005AD1F2}mais{\c&H00FFFFFF} leve, tira
+Dialogue: 0,0:09:42.99,0:09:43.93,Normal,,0,0,0,,mais {\c&H005AD1F2}leve,{\c&H00FFFFFF} tira
+Dialogue: 0,0:09:43.93,0:09:44.17,Normal,,0,0,0,,mais leve, {\c&H005AD1F2}tira{\c&H00FFFFFF}
+Dialogue: 0,0:09:44.17,0:09:44.29,Normal,,0,0,0,,{\c&H005AD1F2}as{\c&H00FFFFFF} notificações, segue menos
+Dialogue: 0,0:09:44.29,0:09:45.51,Normal,,0,0,0,,as {\c&H005AD1F2}notificações,{\c&H00FFFFFF} segue menos
+Dialogue: 0,0:09:45.51,0:09:45.81,Normal,,0,0,0,,as notificações, {\c&H005AD1F2}segue{\c&H00FFFFFF} menos
+Dialogue: 0,0:09:45.81,0:09:46.17,Normal,,0,0,0,,as notificações, segue {\c&H005AD1F2}menos{\c&H00FFFFFF}
+Dialogue: 0,0:09:46.17,0:09:46.61,Normal,,0,0,0,,{\c&H005AD1F2}gente{\c&H00FFFFFF} e tira uma foto
+Dialogue: 0,0:09:46.61,0:09:47.17,Normal,,0,0,0,,gente {\c&H005AD1F2}e{\c&H00FFFFFF} tira uma foto
+Dialogue: 0,0:09:47.17,0:09:47.41,Normal,,0,0,0,,gente e {\c&H005AD1F2}tira{\c&H00FFFFFF} uma foto
+Dialogue: 0,0:09:47.41,0:09:47.55,Normal,,0,0,0,,gente e tira {\c&H005AD1F2}uma{\c&H00FFFFFF} foto
+Dialogue: 0,0:09:47.55,0:09:47.91,Normal,,0,0,0,,gente e tira uma {\c&H005AD1F2}foto{\c&H00FFFFFF}
+Dialogue: 0,0:09:47.91,0:09:48.11,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} não vai para lugar
+Dialogue: 0,0:09:48.11,0:09:48.31,Normal,,0,0,0,,que {\c&H005AD1F2}não{\c&H00FFFFFF} vai para lugar
+Dialogue: 0,0:09:48.31,0:09:48.61,Normal,,0,0,0,,que não {\c&H005AD1F2}vai{\c&H00FFFFFF} para lugar
+Dialogue: 0,0:09:48.61,0:09:48.81,Normal,,0,0,0,,que não vai {\c&H005AD1F2}para{\c&H00FFFFFF} lugar
+Dialogue: 0,0:09:48.81,0:09:49.07,Normal,,0,0,0,,que não vai para {\c&H005AD1F2}lugar{\c&H00FFFFFF}
+Dialogue: 0,0:09:49.07,0:09:49.63,Normal,,0,0,0,,{\c&H005AD1F2}nenhum{\c&H00FFFFFF} além do seu rolo
+Dialogue: 0,0:09:49.63,0:09:50.11,Normal,,0,0,0,,nenhum {\c&H005AD1F2}além{\c&H00FFFFFF} do seu rolo
+Dialogue: 0,0:09:50.11,0:09:50.35,Normal,,0,0,0,,nenhum além {\c&H005AD1F2}do{\c&H00FFFFFF} seu rolo
+Dialogue: 0,0:09:50.35,0:09:50.53,Normal,,0,0,0,,nenhum além do {\c&H005AD1F2}seu{\c&H00FFFFFF} rolo
+Dialogue: 0,0:09:50.53,0:09:50.95,Normal,,0,0,0,,nenhum além do seu {\c&H005AD1F2}rolo{\c&H00FFFFFF}
+Dialogue: 0,0:09:50.95,0:09:51.09,Normal,,0,0,0,,{\c&H005AD1F2}da{\c&H00FFFFFF} câmera.
+Dialogue: 0,0:09:51.09,0:09:52.25,Normal,,0,0,0,,da {\c&H005AD1F2}câmera.{\c&H00FFFFFF}
+Dialogue: 0,0:09:52.25,0:09:52.37,Normal,,0,0,0,,{\c&H005AD1F2}Se{\c&H00FFFFFF} é da sensação
+Dialogue: 0,0:09:52.37,0:09:52.45,Normal,,0,0,0,,Se {\c&H005AD1F2}é{\c&H00FFFFFF} da sensação
+Dialogue: 0,0:09:52.45,0:09:52.51,Normal,,0,0,0,,Se é {\c&H005AD1F2}da{\c&H00FFFFFF} sensação
+Dialogue: 0,0:09:52.51,0:09:53.05,Normal,,0,0,0,,Se é da {\c&H005AD1F2}sensação{\c&H00FFFFFF}
+Dialogue: 0,0:09:53.05,0:09:53.19,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} primeira vez,
+Dialogue: 0,0:09:53.19,0:09:53.55,Normal,,0,0,0,,de {\c&H005AD1F2}primeira{\c&H00FFFFFF} vez,
+Dialogue: 0,0:09:53.55,0:09:54.47,Normal,,0,0,0,,de primeira {\c&H005AD1F2}vez,{\c&H00FFFFFF}
+Dialogue: 0,0:09:54.47,0:09:54.79,Normal,,0,0,0,,{\c&H005AD1F2}escolhe{\c&H00FFFFFF} uma coisa nova
+Dialogue: 0,0:09:54.79,0:09:54.91,Normal,,0,0,0,,escolhe {\c&H005AD1F2}uma{\c&H00FFFFFF} coisa nova
+Dialogue: 0,0:09:54.91,0:09:55.17,Normal,,0,0,0,,escolhe uma {\c&H005AD1F2}coisa{\c&H00FFFFFF} nova
+Dialogue: 0,0:09:55.17,0:09:55.57,Normal,,0,0,0,,escolhe uma coisa {\c&H005AD1F2}nova{\c&H00FFFFFF}
+Dialogue: 0,0:09:55.57,0:09:55.83,Normal,,0,0,0,,{\c&H005AD1F2}para{\c&H00FFFFFF} fazer neste mês,
+Dialogue: 0,0:09:55.83,0:09:56.15,Normal,,0,0,0,,para {\c&H005AD1F2}fazer{\c&H00FFFFFF} neste mês,
+Dialogue: 0,0:09:56.15,0:09:56.41,Normal,,0,0,0,,para fazer {\c&H005AD1F2}neste{\c&H00FFFFFF} mês,
+Dialogue: 0,0:09:56.41,0:09:57.19,Normal,,0,0,0,,para fazer neste {\c&H005AD1F2}mês,{\c&H00FFFFFF}
+Dialogue: 0,0:09:57.19,0:09:57.33,Normal,,0,0,0,,{\c&H005AD1F2}um{\c&H00FFFFFF} lugar, uma aula ou
+Dialogue: 0,0:09:57.33,0:09:58.13,Normal,,0,0,0,,um {\c&H005AD1F2}lugar,{\c&H00FFFFFF} uma aula ou
+Dialogue: 0,0:09:58.13,0:09:58.29,Normal,,0,0,0,,um lugar, {\c&H005AD1F2}uma{\c&H00FFFFFF} aula ou
+Dialogue: 0,0:09:58.29,0:09:58.73,Normal,,0,0,0,,um lugar, uma {\c&H005AD1F2}aula{\c&H00FFFFFF} ou
+Dialogue: 0,0:09:58.73,0:09:59.11,Normal,,0,0,0,,um lugar, uma aula {\c&H005AD1F2}ou{\c&H00FFFFFF}
+Dialogue: 0,0:09:59.11,0:09:59.27,Normal,,0,0,0,,{\c&H005AD1F2}uma{\c&H00FFFFFF} receita, porque é
+Dialogue: 0,0:09:59.27,0:10:00.17,Normal,,0,0,0,,uma {\c&H005AD1F2}receita,{\c&H00FFFFFF} porque é
+Dialogue: 0,0:10:00.17,0:10:00.43,Normal,,0,0,0,,uma receita, {\c&H005AD1F2}porque{\c&H00FFFFFF} é
+Dialogue: 0,0:10:00.43,0:10:00.55,Normal,,0,0,0,,uma receita, porque {\c&H005AD1F2}é{\c&H00FFFFFF}
+Dialogue: 0,0:10:00.55,0:10:00.59,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} novidade que faz
+Dialogue: 0,0:10:00.59,0:10:01.15,Normal,,0,0,0,,a {\c&H005AD1F2}novidade{\c&H00FFFFFF} que faz
+Dialogue: 0,0:10:01.15,0:10:01.33,Normal,,0,0,0,,a novidade {\c&H005AD1F2}que{\c&H00FFFFFF} faz
+Dialogue: 0,0:10:01.33,0:10:01.53,Normal,,0,0,0,,a novidade que {\c&H005AD1F2}faz{\c&H00FFFFFF}
+Dialogue: 0,0:10:01.53,0:10:01.75,Normal,,0,0,0,,{\c&H005AD1F2}um{\c&H00FFFFFF} mês virar lembrança
+Dialogue: 0,0:10:01.75,0:10:02.03,Normal,,0,0,0,,um {\c&H005AD1F2}mês{\c&H00FFFFFF} virar lembrança
+Dialogue: 0,0:10:02.03,0:10:02.37,Normal,,0,0,0,,um mês {\c&H005AD1F2}virar{\c&H00FFFFFF} lembrança
+Dialogue: 0,0:10:02.37,0:10:03.11,Normal,,0,0,0,,um mês virar {\c&H005AD1F2}lembrança{\c&H00FFFFFF}
+Dialogue: 0,0:10:03.11,0:10:03.43,Normal,,0,0,0,,{\c&H005AD1F2}em{\c&H00FFFFFF} vez de passar
+Dialogue: 0,0:10:03.43,0:10:03.65,Normal,,0,0,0,,em {\c&H005AD1F2}vez{\c&H00FFFFFF} de passar
+Dialogue: 0,0:10:03.65,0:10:03.81,Normal,,0,0,0,,em vez {\c&H005AD1F2}de{\c&H00FFFFFF} passar
+Dialogue: 0,0:10:03.81,0:10:04.11,Normal,,0,0,0,,em vez de {\c&H005AD1F2}passar{\c&H00FFFFFF}
+Dialogue: 0,0:10:04.11,0:10:04.33,Normal,,0,0,0,,{\c&H005AD1F2}em{\c&H00FFFFFF} branco.
+Dialogue: 0,0:10:04.33,0:10:05.41,Normal,,0,0,0,,em {\c&H005AD1F2}branco.{\c&H00FFFFFF}
+Dialogue: 0,0:10:05.41,0:10:05.53,Normal,,0,0,0,,{\c&H005AD1F2}E{\c&H00FFFFFF} se é de não
+Dialogue: 0,0:10:05.53,0:10:05.65,Normal,,0,0,0,,E {\c&H005AD1F2}se{\c&H00FFFFFF} é de não
+Dialogue: 0,0:10:05.65,0:10:05.79,Normal,,0,0,0,,E se {\c&H005AD1F2}é{\c&H00FFFFFF} de não
+Dialogue: 0,0:10:05.79,0:10:05.85,Normal,,0,0,0,,E se é {\c&H005AD1F2}de{\c&H00FFFFFF} não
+Dialogue: 0,0:10:05.85,0:10:06.01,Normal,,0,0,0,,E se é de {\c&H005AD1F2}não{\c&H00FFFFFF}
+Dialogue: 0,0:10:06.01,0:10:06.29,Normal,,0,0,0,,{\c&H005AD1F2}ter{\c&H00FFFFFF} tantas responsabilidades,
+Dialogue: 0,0:10:06.29,0:10:06.83,Normal,,0,0,0,,ter {\c&H005AD1F2}tantas{\c&H00FFFFFF} responsabilidades,
+Dialogue: 0,0:10:06.83,0:10:08.03,Normal,,0,0,0,,ter tantas {\c&H005AD1F2}responsabilidades,{\c&H00FFFFFF}
+Dialogue: 0,0:10:08.33,0:10:08.75,Normal,,0,0,0,,{\c&H005AD1F2}separa{\c&H00FFFFFF} uma parte da semana
+Dialogue: 0,0:10:08.75,0:10:08.87,Normal,,0,0,0,,separa {\c&H005AD1F2}uma{\c&H00FFFFFF} parte da semana
+Dialogue: 0,0:10:08.87,0:10:09.25,Normal,,0,0,0,,separa uma {\c&H005AD1F2}parte{\c&H00FFFFFF} da semana
+Dialogue: 0,0:10:09.25,0:10:09.41,Normal,,0,0,0,,separa uma parte {\c&H005AD1F2}da{\c&H00FFFFFF} semana
+Dialogue: 0,0:10:09.41,0:10:09.89,Normal,,0,0,0,,separa uma parte da {\c&H005AD1F2}semana{\c&H00FFFFFF}
+Dialogue: 0,0:10:09.89,0:10:10.09,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} não precisa render nada
+Dialogue: 0,0:10:10.09,0:10:10.27,Normal,,0,0,0,,que {\c&H005AD1F2}não{\c&H00FFFFFF} precisa render nada
+Dialogue: 0,0:10:10.27,0:10:10.71,Normal,,0,0,0,,que não {\c&H005AD1F2}precisa{\c&H00FFFFFF} render nada
+Dialogue: 0,0:10:10.71,0:10:11.09,Normal,,0,0,0,,que não precisa {\c&H005AD1F2}render{\c&H00FFFFFF} nada
+Dialogue: 0,0:10:11.09,0:10:11.69,Normal,,0,0,0,,que não precisa render {\c&H005AD1F2}nada{\c&H00FFFFFF}
+Dialogue: 0,0:10:11.69,0:10:12.11,Normal,,0,0,0,,{\c&H005AD1F2}nem{\c&H00FFFFFF} virar post,
+Dialogue: 0,0:10:12.11,0:10:12.47,Normal,,0,0,0,,nem {\c&H005AD1F2}virar{\c&H00FFFFFF} post,
+Dialogue: 0,0:10:12.47,0:10:13.21,Normal,,0,0,0,,nem virar {\c&H005AD1F2}post,{\c&H00FFFFFF}
+Dialogue: 0,0:10:13.21,0:10:13.51,Normal,,0,0,0,,{\c&H005AD1F2}só{\c&H00FFFFFF} para brincar do jeito
+Dialogue: 0,0:10:13.51,0:10:13.69,Normal,,0,0,0,,só {\c&H005AD1F2}para{\c&H00FFFFFF} brincar do jeito
+Dialogue: 0,0:10:13.69,0:10:14.27,Normal,,0,0,0,,só para {\c&H005AD1F2}brincar{\c&H00FFFFFF} do jeito
+Dialogue: 0,0:10:14.27,0:10:14.39,Normal,,0,0,0,,só para brincar {\c&H005AD1F2}do{\c&H00FFFFFF} jeito
+Dialogue: 0,0:10:14.39,0:10:14.73,Normal,,0,0,0,,só para brincar do {\c&H005AD1F2}jeito{\c&H00FFFFFF}
+Dialogue: 0,0:10:14.73,0:10:14.99,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} você brincava.
+Dialogue: 0,0:10:14.99,0:10:15.23,Normal,,0,0,0,,que {\c&H005AD1F2}você{\c&H00FFFFFF} brincava.
+Dialogue: 0,0:10:15.23,0:10:16.43,Normal,,0,0,0,,que você {\c&H005AD1F2}brincava.{\c&H00FFFFFF}
+Dialogue: 0,0:10:16.65,0:10:16.73,Normal,,0,0,0,,{\c&H005AD1F2}E{\c&H00FFFFFF} tem uma coisa
+Dialogue: 0,0:10:16.73,0:10:16.83,Normal,,0,0,0,,E {\c&H005AD1F2}tem{\c&H00FFFFFF} uma coisa
+Dialogue: 0,0:10:16.83,0:10:17.01,Normal,,0,0,0,,E tem {\c&H005AD1F2}uma{\c&H00FFFFFF} coisa
+Dialogue: 0,0:10:17.01,0:10:17.31,Normal,,0,0,0,,E tem uma {\c&H005AD1F2}coisa{\c&H00FFFFFF}
+Dialogue: 0,0:10:17.31,0:10:17.49,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} a foto não mostra,
+Dialogue: 0,0:10:17.49,0:10:17.57,Normal,,0,0,0,,que {\c&H005AD1F2}a{\c&H00FFFFFF} foto não mostra,
+Dialogue: 0,0:10:17.57,0:10:17.83,Normal,,0,0,0,,que a {\c&H005AD1F2}foto{\c&H00FFFFFF} não mostra,
+Dialogue: 0,0:10:17.83,0:10:18.05,Normal,,0,0,0,,que a foto {\c&H005AD1F2}não{\c&H00FFFFFF} mostra,
+Dialogue: 0,0:10:18.05,0:10:18.93,Normal,,0,0,0,,que a foto não {\c&H005AD1F2}mostra,{\c&H00FFFFFF}
+Dialogue: 0,0:10:18.93,0:10:19.05,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} em 2016 você também
+Dialogue: 0,0:10:19.05,0:10:19.68,Normal,,0,0,0,,que {\c&H005AD1F2}em{\c&H00FFFFFF} 2016 você também
+Dialogue: 0,0:10:19.68,0:10:20.31,Normal,,0,0,0,,que em {\c&H005AD1F2}2016{\c&H00FFFFFF} você também
+Dialogue: 0,0:10:20.31,0:10:20.55,Normal,,0,0,0,,que em 2016 {\c&H005AD1F2}você{\c&H00FFFFFF} também
+Dialogue: 0,0:10:20.55,0:10:21.05,Normal,,0,0,0,,que em 2016 você {\c&H005AD1F2}também{\c&H00FFFFFF}
+Dialogue: 0,0:10:21.05,0:10:21.39,Normal,,0,0,0,,{\c&H005AD1F2}estava{\c&H00FFFFFF} ansioso, também achava
+Dialogue: 0,0:10:21.39,0:10:22.43,Normal,,0,0,0,,estava {\c&H005AD1F2}ansioso,{\c&H00FFFFFF} também achava
+Dialogue: 0,0:10:22.43,0:10:22.69,Normal,,0,0,0,,estava ansioso, {\c&H005AD1F2}também{\c&H00FFFFFF} achava
+Dialogue: 0,0:10:22.69,0:10:23.21,Normal,,0,0,0,,estava ansioso, também {\c&H005AD1F2}achava{\c&H00FFFFFF}
+Dialogue: 0,0:10:23.21,0:10:23.37,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} todo mundo vivia melhor
+Dialogue: 0,0:10:23.37,0:10:23.67,Normal,,0,0,0,,que {\c&H005AD1F2}todo{\c&H00FFFFFF} mundo vivia melhor
+Dialogue: 0,0:10:23.67,0:10:24.03,Normal,,0,0,0,,que todo {\c&H005AD1F2}mundo{\c&H00FFFFFF} vivia melhor
+Dialogue: 0,0:10:24.03,0:10:24.49,Normal,,0,0,0,,que todo mundo {\c&H005AD1F2}vivia{\c&H00FFFFFF} melhor
+Dialogue: 0,0:10:24.49,0:10:24.81,Normal,,0,0,0,,que todo mundo vivia {\c&H005AD1F2}melhor{\c&H00FFFFFF}
+Dialogue: 0,0:10:24.81,0:10:25.03,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} você e também queria
+Dialogue: 0,0:10:25.03,0:10:25.45,Normal,,0,0,0,,que {\c&H005AD1F2}você{\c&H00FFFFFF} e também queria
+Dialogue: 0,0:10:25.45,0:10:25.93,Normal,,0,0,0,,que você {\c&H005AD1F2}e{\c&H00FFFFFF} também queria
+Dialogue: 0,0:10:25.93,0:10:26.27,Normal,,0,0,0,,que você e {\c&H005AD1F2}também{\c&H00FFFFFF} queria
+Dialogue: 0,0:10:26.27,0:10:26.67,Normal,,0,0,0,,que você e também {\c&H005AD1F2}queria{\c&H00FFFFFF}
+Dialogue: 0,0:10:26.67,0:10:26.89,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} o tempo passasse
+Dialogue: 0,0:10:26.89,0:10:26.99,Normal,,0,0,0,,que {\c&H005AD1F2}o{\c&H00FFFFFF} tempo passasse
+Dialogue: 0,0:10:26.99,0:10:27.25,Normal,,0,0,0,,que o {\c&H005AD1F2}tempo{\c&H00FFFFFF} passasse
+Dialogue: 0,0:10:27.25,0:10:27.87,Normal,,0,0,0,,que o tempo {\c&H005AD1F2}passasse{\c&H00FFFFFF}
+Dialogue: 0,0:10:27.87,0:10:28.13,Normal,,0,0,0,,{\c&H005AD1F2}mais{\c&H00FFFFFF} rápido.
+Dialogue: 0,0:10:28.13,0:10:29.33,Normal,,0,0,0,,mais {\c&H005AD1F2}rápido.{\c&H00FFFFFF}
+Dialogue: 0,0:10:29.40,0:10:29.64,Normal,,0,0,0,,{\c&H005AD1F2}Daqui{\c&H00FFFFFF} a 10 anos alguém
+Dialogue: 0,0:10:29.64,0:10:29.83,Normal,,0,0,0,,Daqui {\c&H005AD1F2}a{\c&H00FFFFFF} 10 anos alguém
+Dialogue: 0,0:10:29.83,0:10:30.02,Normal,,0,0,0,,Daqui a {\c&H005AD1F2}10{\c&H00FFFFFF} anos alguém
+Dialogue: 0,0:10:30.02,0:10:30.34,Normal,,0,0,0,,Daqui a 10 {\c&H005AD1F2}anos{\c&H00FFFFFF} alguém
+Dialogue: 0,0:10:30.34,0:10:30.76,Normal,,0,0,0,,Daqui a 10 anos {\c&H005AD1F2}alguém{\c&H00FFFFFF}
+Dialogue: 0,0:10:30.76,0:10:30.96,Normal,,0,0,0,,{\c&H005AD1F2}vai{\c&H00FFFFFF} postar uma foto
+Dialogue: 0,0:10:30.96,0:10:31.44,Normal,,0,0,0,,vai {\c&H005AD1F2}postar{\c&H00FFFFFF} uma foto
+Dialogue: 0,0:10:31.44,0:10:31.56,Normal,,0,0,0,,vai postar {\c&H005AD1F2}uma{\c&H00FFFFFF} foto
+Dialogue: 0,0:10:31.56,0:10:31.96,Normal,,0,0,0,,vai postar uma {\c&H005AD1F2}foto{\c&H00FFFFFF}
+Dialogue: 0,0:10:31.96,0:10:32.72,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} 2026 com uma música
+Dialogue: 0,0:10:32.72,0:10:33.48,Normal,,0,0,0,,de {\c&H005AD1F2}2026{\c&H00FFFFFF} com uma música
+Dialogue: 0,0:10:33.48,0:10:34.08,Normal,,0,0,0,,de 2026 {\c&H005AD1F2}com{\c&H00FFFFFF} uma música
+Dialogue: 0,0:10:34.08,0:10:34.26,Normal,,0,0,0,,de 2026 com {\c&H005AD1F2}uma{\c&H00FFFFFF} música
+Dialogue: 0,0:10:34.26,0:10:34.70,Normal,,0,0,0,,de 2026 com uma {\c&H005AD1F2}música{\c&H00FFFFFF}
+Dialogue: 0,0:10:34.70,0:10:34.86,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} fundo escrevendo bons
+Dialogue: 0,0:10:34.86,0:10:35.30,Normal,,0,0,0,,de {\c&H005AD1F2}fundo{\c&H00FFFFFF} escrevendo bons
+Dialogue: 0,0:10:35.30,0:10:36.10,Normal,,0,0,0,,de fundo {\c&H005AD1F2}escrevendo{\c&H00FFFFFF} bons
+Dialogue: 0,0:10:36.10,0:10:36.46,Normal,,0,0,0,,de fundo escrevendo {\c&H005AD1F2}bons{\c&H00FFFFFF}
+Dialogue: 0,0:10:36.46,0:10:37.48,Normal,,0,0,0,,{\c&H005AD1F2}tempos,{\c&H00FFFFFF} e essa pessoa pode
+Dialogue: 0,0:10:37.48,0:10:37.64,Normal,,0,0,0,,tempos, {\c&H005AD1F2}e{\c&H00FFFFFF} essa pessoa pode
+Dialogue: 0,0:10:37.64,0:10:37.82,Normal,,0,0,0,,tempos, e {\c&H005AD1F2}essa{\c&H00FFFFFF} pessoa pode
+Dialogue: 0,0:10:37.82,0:10:38.36,Normal,,0,0,0,,tempos, e essa {\c&H005AD1F2}pessoa{\c&H00FFFFFF} pode
+Dialogue: 0,0:10:38.36,0:10:38.76,Normal,,0,0,0,,tempos, e essa pessoa {\c&H005AD1F2}pode{\c&H00FFFFFF}
+Dialogue: 0,0:10:38.76,0:10:39.20,Normal,,0,0,0,,{\c&H005AD1F2}muito{\c&H00FFFFFF} bem ser você.
+Dialogue: 0,0:10:39.20,0:10:39.56,Normal,,0,0,0,,muito {\c&H005AD1F2}bem{\c&H00FFFFFF} ser você.
+Dialogue: 0,0:10:39.56,0:10:39.84,Normal,,0,0,0,,muito bem {\c&H005AD1F2}ser{\c&H00FFFFFF} você.
+Dialogue: 0,0:10:39.84,0:10:41.03,Normal,,0,0,0,,muito bem ser {\c&H005AD1F2}você.{\c&H00FFFFFF}
+Dialogue: 0,0:10:41.03,0:10:41.11,Normal,,0,0,0,,{\c&H005AD1F2}E{\c&H00FFFFFF} se a saudade virou
+Dialogue: 0,0:10:41.11,0:10:41.17,Normal,,0,0,0,,E {\c&H005AD1F2}se{\c&H00FFFFFF} a saudade virou
+Dialogue: 0,0:10:41.17,0:10:41.25,Normal,,0,0,0,,E se {\c&H005AD1F2}a{\c&H00FFFFFF} saudade virou
+Dialogue: 0,0:10:41.25,0:10:41.81,Normal,,0,0,0,,E se a {\c&H005AD1F2}saudade{\c&H00FFFFFF} virou
+Dialogue: 0,0:10:41.81,0:10:42.11,Normal,,0,0,0,,E se a saudade {\c&H005AD1F2}virou{\c&H00FFFFFF}
+Dialogue: 0,0:10:42.11,0:10:42.23,Normal,,0,0,0,,{\c&H005AD1F2}uma{\c&H00FFFFFF} tristeza que não passa
+Dialogue: 0,0:10:42.23,0:10:42.91,Normal,,0,0,0,,uma {\c&H005AD1F2}tristeza{\c&H00FFFFFF} que não passa
+Dialogue: 0,0:10:42.91,0:10:43.05,Normal,,0,0,0,,uma tristeza {\c&H005AD1F2}que{\c&H00FFFFFF} não passa
+Dialogue: 0,0:10:43.05,0:10:43.19,Normal,,0,0,0,,uma tristeza que {\c&H005AD1F2}não{\c&H00FFFFFF} passa
+Dialogue: 0,0:10:43.19,0:10:43.71,Normal,,0,0,0,,uma tristeza que não {\c&H005AD1F2}passa{\c&H00FFFFFF}
+Dialogue: 0,0:10:43.71,0:10:44.21,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} há semanas nada
+Dialogue: 0,0:10:44.21,0:10:44.31,Normal,,0,0,0,,e {\c&H005AD1F2}há{\c&H00FFFFFF} semanas nada
+Dialogue: 0,0:10:44.31,0:10:44.87,Normal,,0,0,0,,e há {\c&H005AD1F2}semanas{\c&H00FFFFFF} nada
+Dialogue: 0,0:10:44.87,0:10:45.47,Normal,,0,0,0,,e há semanas {\c&H005AD1F2}nada{\c&H00FFFFFF}
+Dialogue: 0,0:10:45.47,0:10:45.67,Normal,,0,0,0,,{\c&H005AD1F2}no{\c&H00FFFFFF} presente parece valer
+Dialogue: 0,0:10:45.67,0:10:46.11,Normal,,0,0,0,,no {\c&H005AD1F2}presente{\c&H00FFFFFF} parece valer
+Dialogue: 0,0:10:46.11,0:10:46.49,Normal,,0,0,0,,no presente {\c&H005AD1F2}parece{\c&H00FFFFFF} valer
+Dialogue: 0,0:10:46.49,0:10:46.97,Normal,,0,0,0,,no presente parece {\c&H005AD1F2}valer{\c&H00FFFFFF}
+Dialogue: 0,0:10:46.97,0:10:47.05,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} pena, isso merece
+Dialogue: 0,0:10:47.05,0:10:47.81,Normal,,0,0,0,,a {\c&H005AD1F2}pena,{\c&H00FFFFFF} isso merece
+Dialogue: 0,0:10:47.81,0:10:47.97,Normal,,0,0,0,,a pena, {\c&H005AD1F2}isso{\c&H00FFFFFF} merece
+Dialogue: 0,0:10:47.97,0:10:48.47,Normal,,0,0,0,,a pena, isso {\c&H005AD1F2}merece{\c&H00FFFFFF}
+Dialogue: 0,0:10:48.47,0:10:48.55,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} atenção de um psicólogo,
+Dialogue: 0,0:10:48.55,0:10:48.89,Normal,,0,0,0,,a {\c&H005AD1F2}atenção{\c&H00FFFFFF} de um psicólogo,
+Dialogue: 0,0:10:48.89,0:10:49.13,Normal,,0,0,0,,a atenção {\c&H005AD1F2}de{\c&H00FFFFFF} um psicólogo,
+Dialogue: 0,0:10:49.13,0:10:49.21,Normal,,0,0,0,,a atenção de {\c&H005AD1F2}um{\c&H00FFFFFF} psicólogo,
+Dialogue: 0,0:10:49.21,0:10:50.31,Normal,,0,0,0,,a atenção de um {\c&H005AD1F2}psicólogo,{\c&H00FFFFFF}
+Dialogue: 0,0:10:50.31,0:10:50.39,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} procurar ajuda também
+Dialogue: 0,0:10:50.39,0:10:50.83,Normal,,0,0,0,,e {\c&H005AD1F2}procurar{\c&H00FFFFFF} ajuda também
+Dialogue: 0,0:10:50.83,0:10:51.31,Normal,,0,0,0,,e procurar {\c&H005AD1F2}ajuda{\c&H00FFFFFF} também
+Dialogue: 0,0:10:51.31,0:10:51.79,Normal,,0,0,0,,e procurar ajuda {\c&H005AD1F2}também{\c&H00FFFFFF}
+Dialogue: 0,0:10:51.79,0:10:52.05,Normal,,0,0,0,,{\c&H005AD1F2}é{\c&H00FFFFFF} um jeito de cuidar
+Dialogue: 0,0:10:52.05,0:10:52.15,Normal,,0,0,0,,é {\c&H005AD1F2}um{\c&H00FFFFFF} jeito de cuidar
+Dialogue: 0,0:10:52.15,0:10:52.39,Normal,,0,0,0,,é um {\c&H005AD1F2}jeito{\c&H00FFFFFF} de cuidar
+Dialogue: 0,0:10:52.39,0:10:52.65,Normal,,0,0,0,,é um jeito {\c&H005AD1F2}de{\c&H00FFFFFF} cuidar
+Dialogue: 0,0:10:52.65,0:10:53.17,Normal,,0,0,0,,é um jeito de {\c&H005AD1F2}cuidar{\c&H00FFFFFF}
+Dialogue: 0,0:10:53.17,0:10:53.27,Normal,,0,0,0,,{\c&H005AD1F2}do{\c&H00FFFFFF} seu agora.
+Dialogue: 0,0:10:53.27,0:10:53.53,Normal,,0,0,0,,do {\c&H005AD1F2}seu{\c&H00FFFFFF} agora.
+Dialogue: 0,0:10:53.53,0:10:54.73,Normal,,0,0,0,,do seu {\c&H005AD1F2}agora.{\c&H00FFFFFF}
+Dialogue: 0,0:10:54.74,0:10:55.00,Normal,,0,0,0,,{\c&H005AD1F2}Lembra{\c&H00FFFFFF} do Johannes Hofer?
+Dialogue: 0,0:10:55.00,0:10:55.12,Normal,,0,0,0,,Lembra {\c&H005AD1F2}do{\c&H00FFFFFF} Johannes Hofer?
+Dialogue: 0,0:10:55.12,0:10:55.50,Normal,,0,0,0,,Lembra do {\c&H005AD1F2}Johannes{\c&H00FFFFFF} Hofer?
+Dialogue: 0,0:10:55.50,0:10:56.38,Normal,,0,0,0,,Lembra do Johannes {\c&H005AD1F2}Hofer?{\c&H00FFFFFF}
+Dialogue: 0,0:10:56.38,0:10:56.56,Normal,,0,0,0,,{\c&H005AD1F2}Para{\c&H00FFFFFF} ele a nostalgia era
+Dialogue: 0,0:10:56.56,0:10:56.82,Normal,,0,0,0,,Para {\c&H005AD1F2}ele{\c&H00FFFFFF} a nostalgia era
+Dialogue: 0,0:10:56.82,0:10:56.92,Normal,,0,0,0,,Para ele {\c&H005AD1F2}a{\c&H00FFFFFF} nostalgia era
+Dialogue: 0,0:10:56.92,0:10:57.38,Normal,,0,0,0,,Para ele a {\c&H005AD1F2}nostalgia{\c&H00FFFFFF} era
+Dialogue: 0,0:10:57.38,0:10:57.78,Normal,,0,0,0,,Para ele a nostalgia {\c&H005AD1F2}era{\c&H00FFFFFF}
+Dialogue: 0,0:10:57.78,0:10:57.92,Normal,,0,0,0,,{\c&H005AD1F2}uma{\c&H00FFFFFF} doença e o remédio
+Dialogue: 0,0:10:57.92,0:10:58.56,Normal,,0,0,0,,uma {\c&H005AD1F2}doença{\c&H00FFFFFF} e o remédio
+Dialogue: 0,0:10:58.56,0:10:58.88,Normal,,0,0,0,,uma doença {\c&H005AD1F2}e{\c&H00FFFFFF} o remédio
+Dialogue: 0,0:10:58.88,0:10:58.94,Normal,,0,0,0,,uma doença e {\c&H005AD1F2}o{\c&H00FFFFFF} remédio
+Dialogue: 0,0:10:58.94,0:10:59.56,Normal,,0,0,0,,uma doença e o {\c&H005AD1F2}remédio{\c&H00FFFFFF}
+Dialogue: 0,0:10:59.56,0:10:59.74,Normal,,0,0,0,,{\c&H005AD1F2}era{\c&H00FFFFFF} voltar para casa.
+Dialogue: 0,0:10:59.74,0:11:00.14,Normal,,0,0,0,,era {\c&H005AD1F2}voltar{\c&H00FFFFFF} para casa.
+Dialogue: 0,0:11:00.14,0:11:00.46,Normal,,0,0,0,,era voltar {\c&H005AD1F2}para{\c&H00FFFFFF} casa.
+Dialogue: 0,0:11:00.46,0:11:01.66,Normal,,0,0,0,,era voltar para {\c&H005AD1F2}casa.{\c&H00FFFFFF}
+Dialogue: 0,0:11:01.67,0:11:01.77,Normal,,0,0,0,,{\c&H005AD1F2}Só{\c&H00FFFFFF} que para 2016 não
+Dialogue: 0,0:11:01.77,0:11:01.91,Normal,,0,0,0,,Só {\c&H005AD1F2}que{\c&H00FFFFFF} para 2016 não
+Dialogue: 0,0:11:01.91,0:11:02.70,Normal,,0,0,0,,Só que {\c&H005AD1F2}para{\c&H00FFFFFF} 2016 não
+Dialogue: 0,0:11:02.70,0:11:03.49,Normal,,0,0,0,,Só que para {\c&H005AD1F2}2016{\c&H00FFFFFF} não
+Dialogue: 0,0:11:03.49,0:11:03.77,Normal,,0,0,0,,Só que para 2016 {\c&H005AD1F2}não{\c&H00FFFFFF}
+Dialogue: 0,0:11:03.77,0:11:04.19,Normal,,0,0,0,,{\c&H005AD1F2}existe{\c&H00FFFFFF} passagem de volta
+Dialogue: 0,0:11:04.19,0:11:04.89,Normal,,0,0,0,,existe {\c&H005AD1F2}passagem{\c&H00FFFFFF} de volta
+Dialogue: 0,0:11:04.89,0:11:04.97,Normal,,0,0,0,,existe passagem {\c&H005AD1F2}de{\c&H00FFFFFF} volta
+Dialogue: 0,0:11:04.97,0:11:05.33,Normal,,0,0,0,,existe passagem de {\c&H005AD1F2}volta{\c&H00FFFFFF}
+Dialogue: 0,0:11:05.33,0:11:05.85,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} talvez a casa
+Dialogue: 0,0:11:05.85,0:11:06.11,Normal,,0,0,0,,e {\c&H005AD1F2}talvez{\c&H00FFFFFF} a casa
+Dialogue: 0,0:11:06.11,0:11:06.37,Normal,,0,0,0,,e talvez {\c&H005AD1F2}a{\c&H00FFFFFF} casa
+Dialogue: 0,0:11:06.37,0:11:06.65,Normal,,0,0,0,,e talvez a {\c&H005AD1F2}casa{\c&H00FFFFFF}
+Dialogue: 0,0:11:06.65,0:11:06.81,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} você procura nem seja
+Dialogue: 0,0:11:06.81,0:11:07.03,Normal,,0,0,0,,que {\c&H005AD1F2}você{\c&H00FFFFFF} procura nem seja
+Dialogue: 0,0:11:07.03,0:11:07.65,Normal,,0,0,0,,que você {\c&H005AD1F2}procura{\c&H00FFFFFF} nem seja
+Dialogue: 0,0:11:07.65,0:11:07.97,Normal,,0,0,0,,que você procura {\c&H005AD1F2}nem{\c&H00FFFFFF} seja
+Dialogue: 0,0:11:07.97,0:11:08.39,Normal,,0,0,0,,que você procura nem {\c&H005AD1F2}seja{\c&H00FFFFFF}
+Dialogue: 0,0:11:08.39,0:11:08.61,Normal,,0,0,0,,{\c&H005AD1F2}um{\c&H00FFFFFF} ano, talvez seja gente,
+Dialogue: 0,0:11:08.61,0:11:09.21,Normal,,0,0,0,,um {\c&H005AD1F2}ano,{\c&H00FFFFFF} talvez seja gente,
+Dialogue: 0,0:11:09.21,0:11:09.53,Normal,,0,0,0,,um ano, {\c&H005AD1F2}talvez{\c&H00FFFFFF} seja gente,
+Dialogue: 0,0:11:09.53,0:11:09.85,Normal,,0,0,0,,um ano, talvez {\c&H005AD1F2}seja{\c&H00FFFFFF} gente,
+Dialogue: 0,0:11:09.85,0:11:10.87,Normal,,0,0,0,,um ano, talvez seja {\c&H005AD1F2}gente,{\c&H00FFFFFF}
+Dialogue: 0,0:11:10.87,0:11:11.57,Normal,,0,0,0,,{\c&H005AD1F2}leveza{\c&H00FFFFFF} e a sensação
+Dialogue: 0,0:11:11.57,0:11:12.01,Normal,,0,0,0,,leveza {\c&H005AD1F2}e{\c&H00FFFFFF} a sensação
+Dialogue: 0,0:11:12.01,0:11:12.09,Normal,,0,0,0,,leveza e {\c&H005AD1F2}a{\c&H00FFFFFF} sensação
+Dialogue: 0,0:11:12.09,0:11:12.81,Normal,,0,0,0,,leveza e a {\c&H005AD1F2}sensação{\c&H00FFFFFF}
+Dialogue: 0,0:11:12.81,0:11:12.97,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} estar começando.
+Dialogue: 0,0:11:12.97,0:11:13.25,Normal,,0,0,0,,de {\c&H005AD1F2}estar{\c&H00FFFFFF} começando.
+Dialogue: 0,0:11:13.25,0:11:14.45,Normal,,0,0,0,,de estar {\c&H005AD1F2}começando.{\c&H00FFFFFF}
+Dialogue: 0,0:11:14.70,0:11:14.80,Normal,,0,0,0,,{\c&H005AD1F2}E{\c&H00FFFFFF} isso, diferente de 2016,
+Dialogue: 0,0:11:14.80,0:11:15.36,Normal,,0,0,0,,E {\c&H005AD1F2}isso,{\c&H00FFFFFF} diferente de 2016,
+Dialogue: 0,0:11:15.36,0:11:15.82,Normal,,0,0,0,,E isso, {\c&H005AD1F2}diferente{\c&H00FFFFFF} de 2016,
+Dialogue: 0,0:11:15.82,0:11:16.83,Normal,,0,0,0,,E isso, diferente {\c&H005AD1F2}de{\c&H00FFFFFF} 2016,
+Dialogue: 0,0:11:16.83,0:11:17.84,Normal,,0,0,0,,E isso, diferente de {\c&H005AD1F2}2016,{\c&H00FFFFFF}
+Dialogue: 0,0:11:17.84,0:11:18.16,Normal,,0,0,0,,{\c&H005AD1F2}ainda{\c&H00FFFFFF} dá para encontrar.
+Dialogue: 0,0:11:18.16,0:11:18.70,Normal,,0,0,0,,ainda {\c&H005AD1F2}dá{\c&H00FFFFFF} para encontrar.
+Dialogue: 0,0:11:18.70,0:11:18.96,Normal,,0,0,0,,ainda dá {\c&H005AD1F2}para{\c&H00FFFFFF} encontrar.
+Dialogue: 0,0:11:18.96,0:11:20.16,Normal,,0,0,0,,ainda dá para {\c&H005AD1F2}encontrar.{\c&H00FFFFFF}

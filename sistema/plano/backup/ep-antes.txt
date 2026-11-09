@@ -1,0 +1,12 @@
+ate-onde-aguenta
+  s 001_onze_dias_sem_dormir                 publicação (falta)
+  s 002_remendo_fornalha                     palavras (velho:narracao.wav)
+  v 001_ultimo_que_derrete_ganha             voz (velho:narracao.txt)
+  v 002_cinco_trajes_dez_milhoes             publicação (falta)
+manual-do-quase-adulto
+  s 001_memes_de_2016                        storyboard (falta)
+  v 001_como_fazer_amigos_quando_ninguem_tem legado
+  v 003_por_que_voce_sonha_grande_e_nao_faz_ postado
+  v 004_morar_sozinho_pela_primeira_vez      postado
+  v 005_por_que_voce_vive_cansado_sem_ter_fe postado
+  v 006_por_que_voce_sente_saudade_de_2016   postado

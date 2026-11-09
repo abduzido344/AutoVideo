@@ -1,0 +1,152 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Normal,Segoe UI,72,&H00FFFFFF,&H00FFFFFF,&H00141414,&H80000000,-1,0,0,0,100,100,0,0,1,5,2,2,80,80,430,1
+Style: Gancho,Segoe UI,100,&H00FFFFFF,&H00FFFFFF,&H00141414,&H80000000,-1,0,0,0,100,100,0,0,1,7,3,2,80,80,470,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:00.68,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}Em{\c&H00FFFFFF} 2016 um aluno
+Dialogue: 0,0:00:00.68,0:00:01.36,Gancho,,0,0,0,,Em {\c&H005AD1F2}2016{\c&H00FFFFFF} um aluno
+Dialogue: 0,0:00:01.36,0:00:01.58,Gancho,,0,0,0,,Em 2016 {\c&H005AD1F2}um{\c&H00FFFFFF} aluno
+Dialogue: 0,0:00:01.58,0:00:01.90,Gancho,,0,0,0,,Em 2016 um {\c&H005AD1F2}aluno{\c&H00FFFFFF}
+Dialogue: 0,0:00:01.90,0:00:02.32,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}jogou{\c&H00FFFFFF} uma garrafa
+Dialogue: 0,0:00:02.32,0:00:02.46,Gancho,,0,0,0,,jogou {\c&H005AD1F2}uma{\c&H00FFFFFF} garrafa
+Dialogue: 0,0:00:02.46,0:00:03.06,Gancho,,0,0,0,,jogou uma {\c&H005AD1F2}garrafa{\c&H00FFFFFF}
+Dialogue: 0,0:00:03.06,0:00:03.22,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} água no show
+Dialogue: 0,0:00:03.22,0:00:03.48,Normal,,0,0,0,,de {\c&H005AD1F2}água{\c&H00FFFFFF} no show
+Dialogue: 0,0:00:03.48,0:00:03.64,Normal,,0,0,0,,de água {\c&H005AD1F2}no{\c&H00FFFFFF} show
+Dialogue: 0,0:00:03.64,0:00:03.94,Normal,,0,0,0,,de água no {\c&H005AD1F2}show{\c&H00FFFFFF}
+Dialogue: 0,0:00:03.94,0:00:04.10,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} talentos
+Dialogue: 0,0:00:04.10,0:00:04.62,Normal,,0,0,0,,de {\c&H005AD1F2}talentos{\c&H00FFFFFF}
+Dialogue: 0,0:00:04.62,0:00:04.72,Normal,,0,0,0,,{\c&H005AD1F2}da{\c&H00FFFFFF} escola e
+Dialogue: 0,0:00:04.72,0:00:05.18,Normal,,0,0,0,,da {\c&H005AD1F2}escola{\c&H00FFFFFF} e
+Dialogue: 0,0:00:05.18,0:00:05.70,Normal,,0,0,0,,da escola {\c&H005AD1F2}e{\c&H00FFFFFF}
+Dialogue: 0,0:00:05.70,0:00:05.78,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} garrafa caiu
+Dialogue: 0,0:00:05.78,0:00:06.26,Normal,,0,0,0,,a {\c&H005AD1F2}garrafa{\c&H00FFFFFF} caiu
+Dialogue: 0,0:00:06.26,0:00:06.66,Normal,,0,0,0,,a garrafa {\c&H005AD1F2}caiu{\c&H00FFFFFF}
+Dialogue: 0,0:00:06.66,0:00:06.80,Normal,,0,0,0,,{\c&H005AD1F2}em{\c&H00FFFFFF} pé.
+Dialogue: 0,0:00:06.80,0:00:08.00,Normal,,0,0,0,,em {\c&H005AD1F2}pé.{\c&H00FFFFFF}
+Dialogue: 0,0:00:12.72,0:00:12.90,Normal,,0,0,0,,{\c&H005AD1F2}Teve{\c&H00FFFFFF} o Pokémon Go,
+Dialogue: 0,0:00:12.90,0:00:12.98,Normal,,0,0,0,,Teve {\c&H005AD1F2}o{\c&H00FFFFFF} Pokémon Go,
+Dialogue: 0,0:00:12.98,0:00:13.30,Normal,,0,0,0,,Teve o {\c&H005AD1F2}Pokémon{\c&H00FFFFFF} Go,
+Dialogue: 0,0:00:13.30,0:00:13.94,Normal,,0,0,0,,Teve o Pokémon {\c&H005AD1F2}Go,{\c&H00FFFFFF}
+Dialogue: 0,0:00:13.94,0:00:14.04,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} fez uma multidão
+Dialogue: 0,0:00:14.04,0:00:14.22,Normal,,0,0,0,,que {\c&H005AD1F2}fez{\c&H00FFFFFF} uma multidão
+Dialogue: 0,0:00:14.22,0:00:14.44,Normal,,0,0,0,,que fez {\c&H005AD1F2}uma{\c&H00FFFFFF} multidão
+Dialogue: 0,0:00:14.44,0:00:15.16,Normal,,0,0,0,,que fez uma {\c&H005AD1F2}multidão{\c&H00FFFFFF}
+Dialogue: 0,0:00:15.16,0:00:15.44,Normal,,0,0,0,,{\c&H005AD1F2}sair{\c&H00FFFFFF} correndo pelo
+Dialogue: 0,0:00:15.44,0:00:16.08,Normal,,0,0,0,,sair {\c&H005AD1F2}correndo{\c&H00FFFFFF} pelo
+Dialogue: 0,0:00:16.08,0:00:16.30,Normal,,0,0,0,,sair correndo {\c&H005AD1F2}pelo{\c&H00FFFFFF}
+Dialogue: 0,0:00:16.30,0:00:16.70,Normal,,0,0,0,,{\c&H005AD1F2}Central{\c&H00FFFFFF} Park atrás
+Dialogue: 0,0:00:16.70,0:00:17.16,Normal,,0,0,0,,Central {\c&H005AD1F2}Park{\c&H00FFFFFF} atrás
+Dialogue: 0,0:00:17.16,0:00:17.56,Normal,,0,0,0,,Central Park {\c&H005AD1F2}atrás{\c&H00FFFFFF}
+Dialogue: 0,0:00:17.56,0:00:17.80,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} um Vaporeon.
+Dialogue: 0,0:00:17.80,0:00:17.86,Normal,,0,0,0,,de {\c&H005AD1F2}um{\c&H00FFFFFF} Vaporeon.
+Dialogue: 0,0:00:17.86,0:00:19.06,Normal,,0,0,0,,de um {\c&H005AD1F2}Vaporeon.{\c&H00FFFFFF}
+Dialogue: 0,0:00:24.13,0:00:24.31,Normal,,0,0,0,,{\c&H005AD1F2}Teve{\c&H00FFFFFF} o desafio
+Dialogue: 0,0:00:24.31,0:00:24.35,Normal,,0,0,0,,Teve {\c&H005AD1F2}o{\c&H00FFFFFF} desafio
+Dialogue: 0,0:00:24.35,0:00:24.97,Normal,,0,0,0,,Teve o {\c&H005AD1F2}desafio{\c&H00FFFFFF}
+Dialogue: 0,0:00:24.97,0:00:25.05,Normal,,0,0,0,,{\c&H005AD1F2}do{\c&H00FFFFFF} manequim,
+Dialogue: 0,0:00:25.05,0:00:25.93,Normal,,0,0,0,,do {\c&H005AD1F2}manequim,{\c&H00FFFFFF}
+Dialogue: 0,0:00:25.93,0:00:26.01,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} começou
+Dialogue: 0,0:00:26.01,0:00:26.41,Normal,,0,0,0,,que {\c&H005AD1F2}começou{\c&H00FFFFFF}
+Dialogue: 0,0:00:26.41,0:00:26.61,Normal,,0,0,0,,{\c&H005AD1F2}com{\c&H00FFFFFF} alunos de
+Dialogue: 0,0:00:26.61,0:00:27.11,Normal,,0,0,0,,com {\c&H005AD1F2}alunos{\c&H00FFFFFF} de
+Dialogue: 0,0:00:27.11,0:00:27.21,Normal,,0,0,0,,com alunos {\c&H005AD1F2}de{\c&H00FFFFFF}
+Dialogue: 0,0:00:27.21,0:00:27.33,Normal,,0,0,0,,{\c&H005AD1F2}uma{\c&H00FFFFFF} escola
+Dialogue: 0,0:00:27.33,0:00:27.69,Normal,,0,0,0,,uma {\c&H005AD1F2}escola{\c&H00FFFFFF}
+Dialogue: 0,0:00:27.69,0:00:27.89,Normal,,0,0,0,,{\c&H005AD1F2}no{\c&H00FFFFFF} Mississippi
+Dialogue: 0,0:00:27.89,0:00:28.43,Normal,,0,0,0,,no {\c&H005AD1F2}Mississippi{\c&H00FFFFFF}
+Dialogue: 0,0:00:28.43,0:00:28.95,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} chegou até
+Dialogue: 0,0:00:28.95,0:00:29.23,Normal,,0,0,0,,e {\c&H005AD1F2}chegou{\c&H00FFFFFF} até
+Dialogue: 0,0:00:29.23,0:00:29.67,Normal,,0,0,0,,e chegou {\c&H005AD1F2}até{\c&H00FFFFFF}
+Dialogue: 0,0:00:29.67,0:00:29.83,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} Casa Branca.
+Dialogue: 0,0:00:29.83,0:00:30.05,Normal,,0,0,0,,a {\c&H005AD1F2}Casa{\c&H00FFFFFF} Branca.
+Dialogue: 0,0:00:30.05,0:00:31.25,Normal,,0,0,0,,a Casa {\c&H005AD1F2}Branca.{\c&H00FFFFFF}
+Dialogue: 0,0:00:36.14,0:00:37.56,Normal,,0,0,0,,{\c&H005AD1F2}Aqui{\c&H00FFFFFF} no Brasil
+Dialogue: 0,0:00:37.56,0:00:37.72,Normal,,0,0,0,,Aqui {\c&H005AD1F2}no{\c&H00FFFFFF} Brasil
+Dialogue: 0,0:00:37.72,0:00:38.14,Normal,,0,0,0,,Aqui no {\c&H005AD1F2}Brasil{\c&H00FFFFFF}
+Dialogue: 0,0:00:38.14,0:00:38.46,Normal,,0,0,0,,{\c&H005AD1F2}o{\c&H00FFFFFF} Bambam avisava
+Dialogue: 0,0:00:38.46,0:00:38.88,Normal,,0,0,0,,o {\c&H005AD1F2}Bambam{\c&H00FFFFFF} avisava
+Dialogue: 0,0:00:38.88,0:00:39.42,Normal,,0,0,0,,o Bambam {\c&H005AD1F2}avisava{\c&H00FFFFFF}
+Dialogue: 0,0:00:39.42,0:00:39.56,Normal,,0,0,0,,{\c&H005AD1F2}na{\c&H00FFFFFF} academia
+Dialogue: 0,0:00:39.56,0:00:40.06,Normal,,0,0,0,,na {\c&H005AD1F2}academia{\c&H00FFFFFF}
+Dialogue: 0,0:00:40.06,0:00:40.28,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} estava saindo
+Dialogue: 0,0:00:40.28,0:00:40.54,Normal,,0,0,0,,que {\c&H005AD1F2}estava{\c&H00FFFFFF} saindo
+Dialogue: 0,0:00:40.54,0:00:41.14,Normal,,0,0,0,,que estava {\c&H005AD1F2}saindo{\c&H00FFFFFF}
+Dialogue: 0,0:00:41.14,0:00:41.30,Normal,,0,0,0,,{\c&H005AD1F2}da{\c&H00FFFFFF} jaula o monstro.
+Dialogue: 0,0:00:41.30,0:00:41.84,Normal,,0,0,0,,da {\c&H005AD1F2}jaula{\c&H00FFFFFF} o monstro.
+Dialogue: 0,0:00:41.84,0:00:42.08,Normal,,0,0,0,,da jaula {\c&H005AD1F2}o{\c&H00FFFFFF} monstro.
+Dialogue: 0,0:00:42.08,0:00:43.28,Normal,,0,0,0,,da jaula o {\c&H005AD1F2}monstro.{\c&H00FFFFFF}
+Dialogue: 0,0:00:49.91,0:00:50.49,Normal,,0,0,0,,{\c&H005AD1F2}A{\c&H00FFFFFF} Ana Paula voltava
+Dialogue: 0,0:00:50.49,0:00:50.69,Normal,,0,0,0,,A {\c&H005AD1F2}Ana{\c&H00FFFFFF} Paula voltava
+Dialogue: 0,0:00:50.69,0:00:51.03,Normal,,0,0,0,,A Ana {\c&H005AD1F2}Paula{\c&H00FFFFFF} voltava
+Dialogue: 0,0:00:51.03,0:00:51.61,Normal,,0,0,0,,A Ana Paula {\c&H005AD1F2}voltava{\c&H00FFFFFF}
+Dialogue: 0,0:00:51.61,0:00:51.83,Normal,,0,0,0,,{\c&H005AD1F2}para{\c&H00FFFFFF} a casa
+Dialogue: 0,0:00:51.83,0:00:51.93,Normal,,0,0,0,,para {\c&H005AD1F2}a{\c&H00FFFFFF} casa
+Dialogue: 0,0:00:51.93,0:00:52.15,Normal,,0,0,0,,para a {\c&H005AD1F2}casa{\c&H00FFFFFF}
+Dialogue: 0,0:00:52.15,0:00:52.31,Normal,,0,0,0,,{\c&H005AD1F2}do{\c&H00FFFFFF} BBB e
+Dialogue: 0,0:00:52.31,0:00:52.91,Normal,,0,0,0,,do {\c&H005AD1F2}BBB{\c&H00FFFFFF} e
+Dialogue: 0,0:00:52.91,0:00:53.33,Normal,,0,0,0,,do BBB {\c&H005AD1F2}e{\c&H00FFFFFF}
+Dialogue: 0,0:00:53.33,0:00:53.41,Normal,,0,0,0,,{\c&H005AD1F2}o{\c&H00FFFFFF} país inteiro
+Dialogue: 0,0:00:53.41,0:00:53.73,Normal,,0,0,0,,o {\c&H005AD1F2}país{\c&H00FFFFFF} inteiro
+Dialogue: 0,0:00:53.73,0:00:54.33,Normal,,0,0,0,,o país {\c&H005AD1F2}inteiro{\c&H00FFFFFF}
+Dialogue: 0,0:00:54.33,0:00:54.95,Normal,,0,0,0,,{\c&H005AD1F2}gritava{\c&H00FFFFFF} junto
+Dialogue: 0,0:00:54.95,0:00:55.23,Normal,,0,0,0,,gritava {\c&H005AD1F2}junto{\c&H00FFFFFF}
+Dialogue: 0,0:00:55.23,0:00:55.49,Normal,,0,0,0,,{\c&H005AD1F2}com{\c&H00FFFFFF} ela.
+Dialogue: 0,0:00:55.49,0:00:56.69,Normal,,0,0,0,,com {\c&H005AD1F2}ela.{\c&H00FFFFFF}
+Dialogue: 0,0:01:02.10,0:01:02.34,Normal,,0,0,0,,{\c&H005AD1F2}Até{\c&H00FFFFFF} o Neymar
+Dialogue: 0,0:01:02.34,0:01:02.44,Normal,,0,0,0,,Até {\c&H005AD1F2}o{\c&H00FFFFFF} Neymar
+Dialogue: 0,0:01:02.44,0:01:02.90,Normal,,0,0,0,,Até o {\c&H005AD1F2}Neymar{\c&H00FFFFFF}
+Dialogue: 0,0:01:02.90,0:01:03.00,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} a Fátima Bernardes
+Dialogue: 0,0:01:03.00,0:01:03.06,Normal,,0,0,0,,e {\c&H005AD1F2}a{\c&H00FFFFFF} Fátima Bernardes
+Dialogue: 0,0:01:03.06,0:01:03.54,Normal,,0,0,0,,e a {\c&H005AD1F2}Fátima{\c&H00FFFFFF} Bernardes
+Dialogue: 0,0:01:03.54,0:01:04.24,Normal,,0,0,0,,e a Fátima {\c&H005AD1F2}Bernardes{\c&H00FFFFFF}
+Dialogue: 0,0:01:04.24,0:01:04.88,Normal,,0,0,0,,{\c&H005AD1F2}dançavam{\c&H00FFFFFF} o funk
+Dialogue: 0,0:01:04.88,0:01:05.00,Normal,,0,0,0,,dançavam {\c&H005AD1F2}o{\c&H00FFFFFF} funk
+Dialogue: 0,0:01:05.00,0:01:05.32,Normal,,0,0,0,,dançavam o {\c&H005AD1F2}funk{\c&H00FFFFFF}
+Dialogue: 0,0:01:05.32,0:01:05.54,Normal,,0,0,0,,{\c&H005AD1F2}do{\c&H00FFFFFF} MC Bin Laden.
+Dialogue: 0,0:01:05.54,0:01:05.88,Normal,,0,0,0,,do {\c&H005AD1F2}MC{\c&H00FFFFFF} Bin Laden.
+Dialogue: 0,0:01:05.88,0:01:06.16,Normal,,0,0,0,,do MC {\c&H005AD1F2}Bin{\c&H00FFFFFF} Laden.
+Dialogue: 0,0:01:06.16,0:01:07.36,Normal,,0,0,0,,do MC Bin {\c&H005AD1F2}Laden.{\c&H00FFFFFF}
+Dialogue: 0,0:01:12.66,0:01:12.76,Normal,,0,0,0,,{\c&H005AD1F2}E{\c&H00FFFFFF} em todo carro
+Dialogue: 0,0:01:12.76,0:01:12.86,Normal,,0,0,0,,E {\c&H005AD1F2}em{\c&H00FFFFFF} todo carro
+Dialogue: 0,0:01:12.86,0:01:13.10,Normal,,0,0,0,,E em {\c&H005AD1F2}todo{\c&H00FFFFFF} carro
+Dialogue: 0,0:01:13.10,0:01:13.64,Normal,,0,0,0,,E em todo {\c&H005AD1F2}carro{\c&H00FFFFFF}
+Dialogue: 0,0:01:13.64,0:01:13.98,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} em toda festa
+Dialogue: 0,0:01:13.98,0:01:14.16,Normal,,0,0,0,,e {\c&H005AD1F2}em{\c&H00FFFFFF} toda festa
+Dialogue: 0,0:01:14.16,0:01:14.34,Normal,,0,0,0,,e em {\c&H005AD1F2}toda{\c&H00FFFFFF} festa
+Dialogue: 0,0:01:14.34,0:01:14.90,Normal,,0,0,0,,e em toda {\c&H005AD1F2}festa{\c&H00FFFFFF}
+Dialogue: 0,0:01:14.90,0:01:15.74,Normal,,0,0,0,,{\c&H005AD1F2}tocava{\c&H00FFFFFF} a Marília
+Dialogue: 0,0:01:15.74,0:01:15.86,Normal,,0,0,0,,tocava {\c&H005AD1F2}a{\c&H00FFFFFF} Marília
+Dialogue: 0,0:01:15.86,0:01:16.24,Normal,,0,0,0,,tocava a {\c&H005AD1F2}Marília{\c&H00FFFFFF}
+Dialogue: 0,0:01:16.24,0:01:17.44,Normal,,0,0,0,,{\c&H005AD1F2}Mendonça.{\c&H00FFFFFF}
+Dialogue: 0,0:01:22.60,0:01:22.72,Normal,,0,0,0,,{\c&H005AD1F2}Mas{\c&H00FFFFFF} por que
+Dialogue: 0,0:01:22.72,0:01:22.90,Normal,,0,0,0,,Mas {\c&H005AD1F2}por{\c&H00FFFFFF} que
+Dialogue: 0,0:01:22.90,0:01:23.16,Normal,,0,0,0,,Mas por {\c&H005AD1F2}que{\c&H00FFFFFF}
+Dialogue: 0,0:01:23.16,0:01:23.26,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} gente sente tanta
+Dialogue: 0,0:01:23.26,0:01:23.42,Normal,,0,0,0,,a {\c&H005AD1F2}gente{\c&H00FFFFFF} sente tanta
+Dialogue: 0,0:01:23.42,0:01:23.74,Normal,,0,0,0,,a gente {\c&H005AD1F2}sente{\c&H00FFFFFF} tanta
+Dialogue: 0,0:01:23.74,0:01:24.12,Normal,,0,0,0,,a gente sente {\c&H005AD1F2}tanta{\c&H00FFFFFF}
+Dialogue: 0,0:01:24.12,0:01:24.62,Normal,,0,0,0,,{\c&H005AD1F2}falta{\c&H00FFFFFF} disso tudo?
+Dialogue: 0,0:01:24.62,0:01:24.90,Normal,,0,0,0,,falta {\c&H005AD1F2}disso{\c&H00FFFFFF} tudo?
+Dialogue: 0,0:01:24.90,0:01:25.56,Normal,,0,0,0,,falta disso {\c&H005AD1F2}tudo?{\c&H00FFFFFF}
+Dialogue: 0,0:01:25.56,0:01:25.64,Normal,,0,0,0,,{\c&H005AD1F2}A{\c&H00FFFFFF} psicologia explica
+Dialogue: 0,0:01:25.64,0:01:26.26,Normal,,0,0,0,,A {\c&H005AD1F2}psicologia{\c&H00FFFFFF} explica
+Dialogue: 0,0:01:26.26,0:01:26.78,Normal,,0,0,0,,A psicologia {\c&H005AD1F2}explica{\c&H00FFFFFF}
+Dialogue: 0,0:01:26.78,0:01:26.92,Normal,,0,0,0,,{\c&H005AD1F2}no{\c&H00FFFFFF} vídeo completo
+Dialogue: 0,0:01:26.92,0:01:27.16,Normal,,0,0,0,,no {\c&H005AD1F2}vídeo{\c&H00FFFFFF} completo
+Dialogue: 0,0:01:27.16,0:01:28.14,Normal,,0,0,0,,no vídeo {\c&H005AD1F2}completo{\c&H00FFFFFF}
+Dialogue: 0,0:01:28.14,0:01:28.22,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} é só tocar
+Dialogue: 0,0:01:28.22,0:01:28.28,Normal,,0,0,0,,e {\c&H005AD1F2}é{\c&H00FFFFFF} só tocar
+Dialogue: 0,0:01:28.28,0:01:28.52,Normal,,0,0,0,,e é {\c&H005AD1F2}só{\c&H00FFFFFF} tocar
+Dialogue: 0,0:01:28.52,0:01:28.82,Normal,,0,0,0,,e é só {\c&H005AD1F2}tocar{\c&H00FFFFFF}
+Dialogue: 0,0:01:28.82,0:01:29.04,Normal,,0,0,0,,{\c&H005AD1F2}no{\c&H00FFFFFF} link aqui
+Dialogue: 0,0:01:29.04,0:01:29.30,Normal,,0,0,0,,no {\c&H005AD1F2}link{\c&H00FFFFFF} aqui
+Dialogue: 0,0:01:29.30,0:01:29.58,Normal,,0,0,0,,no link {\c&H005AD1F2}aqui{\c&H00FFFFFF}
+Dialogue: 0,0:01:29.58,0:01:30.78,Normal,,0,0,0,,{\c&H005AD1F2}embaixo.{\c&H00FFFFFF}

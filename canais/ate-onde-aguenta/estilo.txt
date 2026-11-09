@@ -4,7 +4,7 @@ Paleta: casca #F2BE2E · juntas #1B1C1F · alvo #16171A/#F2C230 · aço #6E747C/
 Luz neutra: hemisfério, key 45° à esquerda com sombra, rim atrás à direita, fill frontal fraco. A cor de frio/calor do clima vem na edição; no render só a fonte (resistência, gelo) tem cor.
 
 PERSONAGEM
-Cobaia: boneco-teste cartoon, casca amarela, juntas pretas, alvos nas têmporas e no peito, "00" no peito, rosto simples (olhos, sobrancelhas, boca). Ficha em personagem/, código em C:/Users/Abduzido/AutoVideo_local/tres/src/cobaia/.
+Remendo (host): stickman 3D esguio, cabeça retangular lavanda #AA91B0, topete lima #BEDB35, membros grafite #303033, regata preta, bermuda laranja #BC612D, tênis marfim #E6DDC8; costura na bochecha esquerda dele. Código em C:/Users/Abduzido/AutoVideo_local/tres/src/remendo/. Cobaias: os bichos e objetos testados (src/cobaia/).
 
 CONTINUIDADE
 Mesmo boneco, mesmo cenário e mesma luz em todos os degraus; só muda o parâmetro do degrau (temperatura, força, altura…). O número do degrau vira objeto (medidor) na palavra.

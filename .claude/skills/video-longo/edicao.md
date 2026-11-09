@@ -27,7 +27,7 @@ Vale para longo e vertical. Tudo em código (SVG → resvg → ffmpeg, Python); 
 - Gera também `.srt` para o YouTube.
 
 ## Som (`midia/sfx.csv`: tempo,som,vol)
-Um efeito por acontecimento da coluna Som do storyboard. Trilha opcional: `midia/trilha.mp3` fica sob a voz com ducking (volume em `tema.json` › `trilha_db`, padrão −22). Saída normalizada a −14 LUFS.
+Um efeito por acontecimento da coluna Som do storyboard. Som original de clipe (meme, música): extrair o trecho para `.wav` em `midia/` e pôr o caminho na coluna `som`, no tempo de um `[pausa N]` da narração. Trilha opcional: `midia/trilha.mp3` fica sob a voz com ducking (volume em `tema.json` › `trilha_db`, padrão −22). Saída normalizada a −14 LUFS.
 Base −14 dB, sempre abaixo da voz; ~15 sons/min. Whoosh 0,3 s antes do whip · pop quando algo aparece · clique em botão/aba · ding em check (−8 a −10) · baque em peso · tique em tempo passando · sobe antes do flash · blip em sequência.
 Biblioteca Mixkit (licença Mixkit: uso comercial, conferir termos em mixkit.co/license), baixada só quando usada: `python sistema/pipeline/sons.py buscar <termo em inglês>` (nome e categoria em `sistema/sons/indice.tsv`) → id; no `sfx.csv`, coluna `som` = id numérico ou apelido de `sistema/sons/alias.tsv` (whoosh, baque, pop…). `montar.py` baixa e converte sozinho (mono 48 kHz, pico 0,9) na primeira vez; `python sistema/pipeline/sons.py pegar <id>` antecipa. Prévias são MP3 com cauda longa: conferir duração e o lead do pico. Ao escolher, buscar 2–3 candidatos por função e registrar no `sfx.csv` só o id; sons novos úteis vão para `alias.tsv`.
 

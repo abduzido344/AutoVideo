@@ -1,0 +1,554 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Normal,Segoe UI,62,&H00FFFFFF,&H00FFFFFF,&H00141414,&H80000000,-1,0,0,0,100,100,0,0,1,5,2,2,80,80,60,1
+Style: Gancho,Segoe UI,96,&H00FFFFFF,&H00FFFFFF,&H00141414,&H80000000,-1,0,0,0,100,100,0,0,1,7,3,2,80,80,150,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:00.44,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}9{\c&H00FFFFFF} bichos entram nessa fornalha
+Dialogue: 0,0:00:00.44,0:00:01.08,Gancho,,0,0,0,,9 {\c&H005AD1F2}bichos{\c&H00FFFFFF} entram nessa fornalha
+Dialogue: 0,0:00:01.08,0:00:01.50,Gancho,,0,0,0,,9 bichos {\c&H005AD1F2}entram{\c&H00FFFFFF} nessa fornalha
+Dialogue: 0,0:00:01.50,0:00:01.82,Gancho,,0,0,0,,9 bichos entram {\c&H005AD1F2}nessa{\c&H00FFFFFF} fornalha
+Dialogue: 0,0:00:01.82,0:00:02.68,Gancho,,0,0,0,,9 bichos entram nessa {\c&H005AD1F2}fornalha{\c&H00FFFFFF}
+Dialogue: 0,0:00:02.68,0:00:03.10,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}e{\c&H00FFFFFF} quem derreter está fora,
+Dialogue: 0,0:00:03.10,0:00:03.42,Gancho,,0,0,0,,e {\c&H005AD1F2}quem{\c&H00FFFFFF} derreter está fora,
+Dialogue: 0,0:00:03.42,0:00:04.00,Gancho,,0,0,0,,e quem {\c&H005AD1F2}derreter{\c&H00FFFFFF} está fora,
+Dialogue: 0,0:00:04.00,0:00:04.32,Gancho,,0,0,0,,e quem derreter {\c&H005AD1F2}está{\c&H00FFFFFF} fora,
+Dialogue: 0,0:00:04.32,0:00:05.36,Gancho,,0,0,0,,e quem derreter está {\c&H005AD1F2}fora,{\c&H00FFFFFF}
+Dialogue: 0,0:00:05.36,0:00:05.44,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}a{\c&H00FFFFFF} temperatura só sobe
+Dialogue: 0,0:00:05.44,0:00:06.10,Gancho,,0,0,0,,a {\c&H005AD1F2}temperatura{\c&H00FFFFFF} só sobe
+Dialogue: 0,0:00:06.10,0:00:06.54,Gancho,,0,0,0,,a temperatura {\c&H005AD1F2}só{\c&H00FFFFFF} sobe
+Dialogue: 0,0:00:06.54,0:00:07.14,Gancho,,0,0,0,,a temperatura só {\c&H005AD1F2}sobe{\c&H00FFFFFF}
+Dialogue: 0,0:00:07.14,0:00:07.62,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}e{\c&H00FFFFFF} o último que ficar
+Dialogue: 0,0:00:07.62,0:00:07.82,Gancho,,0,0,0,,e {\c&H005AD1F2}o{\c&H00FFFFFF} último que ficar
+Dialogue: 0,0:00:07.82,0:00:08.18,Gancho,,0,0,0,,e o {\c&H005AD1F2}último{\c&H00FFFFFF} que ficar
+Dialogue: 0,0:00:08.18,0:00:08.42,Gancho,,0,0,0,,e o último {\c&H005AD1F2}que{\c&H00FFFFFF} ficar
+Dialogue: 0,0:00:08.42,0:00:08.78,Gancho,,0,0,0,,e o último que {\c&H005AD1F2}ficar{\c&H00FFFFFF}
+Dialogue: 0,0:00:08.78,0:00:09.00,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}de{\c&H00FFFFFF} pé leva o troféu!
+Dialogue: 0,0:00:09.00,0:00:09.34,Gancho,,0,0,0,,de {\c&H005AD1F2}pé{\c&H00FFFFFF} leva o troféu!
+Dialogue: 0,0:00:09.34,0:00:10.06,Gancho,,0,0,0,,de pé {\c&H005AD1F2}leva{\c&H00FFFFFF} o troféu!
+Dialogue: 0,0:00:10.06,0:00:10.28,Gancho,,0,0,0,,de pé leva {\c&H005AD1F2}o{\c&H00FFFFFF} troféu!
+Dialogue: 0,0:00:10.28,0:00:11.48,Gancho,,0,0,0,,de pé leva o {\c&H005AD1F2}troféu!{\c&H00FFFFFF}
+Dialogue: 0,0:00:11.71,0:00:11.87,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}Os{\c&H00FFFFFF} competidores são o pinguim
+Dialogue: 0,0:00:11.87,0:00:12.65,Gancho,,0,0,0,,Os {\c&H005AD1F2}competidores{\c&H00FFFFFF} são o pinguim
+Dialogue: 0,0:00:12.65,0:00:12.99,Gancho,,0,0,0,,Os competidores {\c&H005AD1F2}são{\c&H00FFFFFF} o pinguim
+Dialogue: 0,0:00:12.99,0:00:13.15,Gancho,,0,0,0,,Os competidores são {\c&H005AD1F2}o{\c&H00FFFFFF} pinguim
+Dialogue: 0,0:00:13.15,0:00:13.71,Gancho,,0,0,0,,Os competidores são o {\c&H005AD1F2}pinguim{\c&H00FFFFFF}
+Dialogue: 0,0:00:13.71,0:00:13.83,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}de{\c&H00FFFFFF} gelo, o coelho
+Dialogue: 0,0:00:13.83,0:00:14.69,Gancho,,0,0,0,,de {\c&H005AD1F2}gelo,{\c&H00FFFFFF} o coelho
+Dialogue: 0,0:00:14.69,0:00:14.81,Gancho,,0,0,0,,de gelo, {\c&H005AD1F2}o{\c&H00FFFFFF} coelho
+Dialogue: 0,0:00:14.81,0:00:15.33,Gancho,,0,0,0,,de gelo, o {\c&H005AD1F2}coelho{\c&H00FFFFFF}
+Dialogue: 0,0:00:15.33,0:00:15.45,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}de{\c&H00FFFFFF} chocolate, o ursinho
+Dialogue: 0,0:00:15.45,0:00:16.67,Gancho,,0,0,0,,de {\c&H005AD1F2}chocolate,{\c&H00FFFFFF} o ursinho
+Dialogue: 0,0:00:16.67,0:00:16.77,Gancho,,0,0,0,,de chocolate, {\c&H005AD1F2}o{\c&H00FFFFFF} ursinho
+Dialogue: 0,0:00:16.77,0:00:17.29,Gancho,,0,0,0,,de chocolate, o {\c&H005AD1F2}ursinho{\c&H00FFFFFF}
+Dialogue: 0,0:00:17.29,0:00:17.49,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}de{\c&H00FFFFFF} vela, o soldadinho
+Dialogue: 0,0:00:17.49,0:00:18.37,Gancho,,0,0,0,,de {\c&H005AD1F2}vela,{\c&H00FFFFFF} o soldadinho
+Dialogue: 0,0:00:18.37,0:00:18.43,Gancho,,0,0,0,,de vela, {\c&H005AD1F2}o{\c&H00FFFFFF} soldadinho
+Dialogue: 0,0:00:18.43,0:00:19.19,Gancho,,0,0,0,,de vela, o {\c&H005AD1F2}soldadinho{\c&H00FFFFFF}
+Dialogue: 0,0:00:19.19,0:00:19.37,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}de{\c&H00FFFFFF} chumbo e o robô
+Dialogue: 0,0:00:19.37,0:00:19.93,Gancho,,0,0,0,,de {\c&H005AD1F2}chumbo{\c&H00FFFFFF} e o robô
+Dialogue: 0,0:00:19.93,0:00:20.35,Gancho,,0,0,0,,de chumbo {\c&H005AD1F2}e{\c&H00FFFFFF} o robô
+Dialogue: 0,0:00:20.35,0:00:20.47,Gancho,,0,0,0,,de chumbo e {\c&H005AD1F2}o{\c&H00FFFFFF} robô
+Dialogue: 0,0:00:20.47,0:00:20.97,Gancho,,0,0,0,,de chumbo e o {\c&H005AD1F2}robô{\c&H00FFFFFF}
+Dialogue: 0,0:00:20.97,0:00:21.11,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}de{\c&H00FFFFFF} alumínio.
+Dialogue: 0,0:00:21.11,0:00:22.19,Gancho,,0,0,0,,de {\c&H005AD1F2}alumínio.{\c&H00FFFFFF}
+Dialogue: 0,0:00:22.19,0:00:22.27,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}E{\c&H00FFFFFF} ainda o porco
+Dialogue: 0,0:00:22.27,0:00:22.63,Gancho,,0,0,0,,E {\c&H005AD1F2}ainda{\c&H00FFFFFF} o porco
+Dialogue: 0,0:00:22.63,0:00:22.83,Gancho,,0,0,0,,E ainda {\c&H005AD1F2}o{\c&H00FFFFFF} porco
+Dialogue: 0,0:00:22.83,0:00:23.33,Gancho,,0,0,0,,E ainda o {\c&H005AD1F2}porco{\c&H00FFFFFF}
+Dialogue: 0,0:00:23.33,0:00:23.47,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}de{\c&H00FFFFFF} bronze, o pato
+Dialogue: 0,0:00:23.47,0:00:24.39,Gancho,,0,0,0,,de {\c&H005AD1F2}bronze,{\c&H00FFFFFF} o pato
+Dialogue: 0,0:00:24.39,0:00:24.49,Gancho,,0,0,0,,de bronze, {\c&H005AD1F2}o{\c&H00FFFFFF} pato
+Dialogue: 0,0:00:24.49,0:00:25.01,Gancho,,0,0,0,,de bronze, o {\c&H005AD1F2}pato{\c&H00FFFFFF}
+Dialogue: 0,0:00:25.01,0:00:25.19,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}de{\c&H00FFFFFF} ouro, o touro
+Dialogue: 0,0:00:25.19,0:00:25.95,Gancho,,0,0,0,,de {\c&H005AD1F2}ouro,{\c&H00FFFFFF} o touro
+Dialogue: 0,0:00:25.95,0:00:26.01,Gancho,,0,0,0,,de ouro, {\c&H005AD1F2}o{\c&H00FFFFFF} touro
+Dialogue: 0,0:00:26.01,0:00:26.49,Gancho,,0,0,0,,de ouro, o {\c&H005AD1F2}touro{\c&H00FFFFFF}
+Dialogue: 0,0:00:26.49,0:00:26.65,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}de{\c&H00FFFFFF} ferro e a coruja
+Dialogue: 0,0:00:26.65,0:00:27.21,Gancho,,0,0,0,,de {\c&H005AD1F2}ferro{\c&H00FFFFFF} e a coruja
+Dialogue: 0,0:00:27.21,0:00:27.59,Gancho,,0,0,0,,de ferro {\c&H005AD1F2}e{\c&H00FFFFFF} a coruja
+Dialogue: 0,0:00:27.59,0:00:27.71,Gancho,,0,0,0,,de ferro e {\c&H005AD1F2}a{\c&H00FFFFFF} coruja
+Dialogue: 0,0:00:27.71,0:00:28.29,Gancho,,0,0,0,,de ferro e a {\c&H005AD1F2}coruja{\c&H00FFFFFF}
+Dialogue: 0,0:00:28.29,0:00:28.45,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}de{\c&H00FFFFFF} tungstênio, então escolhe
+Dialogue: 0,0:00:28.45,0:00:29.69,Gancho,,0,0,0,,de {\c&H005AD1F2}tungstênio,{\c&H00FFFFFF} então escolhe
+Dialogue: 0,0:00:29.69,0:00:30.07,Gancho,,0,0,0,,de tungstênio, {\c&H005AD1F2}então{\c&H00FFFFFF} escolhe
+Dialogue: 0,0:00:30.07,0:00:30.77,Gancho,,0,0,0,,de tungstênio, então {\c&H005AD1F2}escolhe{\c&H00FFFFFF}
+Dialogue: 0,0:00:30.77,0:00:30.83,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}o{\c&H00FFFFFF} seu campeão agora
+Dialogue: 0,0:00:30.83,0:00:31.01,Gancho,,0,0,0,,o {\c&H005AD1F2}seu{\c&H00FFFFFF} campeão agora
+Dialogue: 0,0:00:31.01,0:00:31.73,Gancho,,0,0,0,,o seu {\c&H005AD1F2}campeão{\c&H00FFFFFF} agora
+Dialogue: 0,0:00:31.73,0:00:32.15,Gancho,,0,0,0,,o seu campeão {\c&H005AD1F2}agora{\c&H00FFFFFF}
+Dialogue: 0,0:00:32.15,0:00:32.47,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}nos{\c&H00FFFFFF} comentários!
+Dialogue: 0,0:00:32.47,0:00:33.67,Gancho,,0,0,0,,nos {\c&H005AD1F2}comentários!{\c&H00FFFFFF}
+Dialogue: 0,0:00:34.17,0:00:34.27,Normal,,0,0,0,,{\c&H005AD1F2}E{\c&H00FFFFFF} lá no meio dessa
+Dialogue: 0,0:00:34.27,0:00:34.49,Normal,,0,0,0,,E {\c&H005AD1F2}lá{\c&H00FFFFFF} no meio dessa
+Dialogue: 0,0:00:34.49,0:00:34.67,Normal,,0,0,0,,E lá {\c&H005AD1F2}no{\c&H00FFFFFF} meio dessa
+Dialogue: 0,0:00:34.67,0:00:34.99,Normal,,0,0,0,,E lá no {\c&H005AD1F2}meio{\c&H00FFFFFF} dessa
+Dialogue: 0,0:00:34.99,0:00:35.31,Normal,,0,0,0,,E lá no meio {\c&H005AD1F2}dessa{\c&H00FFFFFF}
+Dialogue: 0,0:00:35.31,0:00:36.17,Normal,,0,0,0,,{\c&H005AD1F2}competição{\c&H00FFFFFF} a gente vai abrir
+Dialogue: 0,0:00:36.17,0:00:36.67,Normal,,0,0,0,,competição {\c&H005AD1F2}a{\c&H00FFFFFF} gente vai abrir
+Dialogue: 0,0:00:36.67,0:00:36.91,Normal,,0,0,0,,competição a {\c&H005AD1F2}gente{\c&H00FFFFFF} vai abrir
+Dialogue: 0,0:00:36.91,0:00:37.17,Normal,,0,0,0,,competição a gente {\c&H005AD1F2}vai{\c&H00FFFFFF} abrir
+Dialogue: 0,0:00:37.17,0:00:37.55,Normal,,0,0,0,,competição a gente vai {\c&H005AD1F2}abrir{\c&H00FFFFFF}
+Dialogue: 0,0:00:37.55,0:00:37.85,Normal,,0,0,0,,{\c&H005AD1F2}essa{\c&H00FFFFFF} porta e deixar entrar
+Dialogue: 0,0:00:37.85,0:00:38.37,Normal,,0,0,0,,essa {\c&H005AD1F2}porta{\c&H00FFFFFF} e deixar entrar
+Dialogue: 0,0:00:38.37,0:00:38.83,Normal,,0,0,0,,essa porta {\c&H005AD1F2}e{\c&H00FFFFFF} deixar entrar
+Dialogue: 0,0:00:38.83,0:00:39.27,Normal,,0,0,0,,essa porta e {\c&H005AD1F2}deixar{\c&H00FFFFFF} entrar
+Dialogue: 0,0:00:39.27,0:00:39.67,Normal,,0,0,0,,essa porta e deixar {\c&H005AD1F2}entrar{\c&H00FFFFFF}
+Dialogue: 0,0:00:39.67,0:00:40.31,Normal,,0,0,0,,{\c&H005AD1F2}lava{\c&H00FFFFFF} de vulcão de verdade,
+Dialogue: 0,0:00:40.31,0:00:40.55,Normal,,0,0,0,,lava {\c&H005AD1F2}de{\c&H00FFFFFF} vulcão de verdade,
+Dialogue: 0,0:00:40.55,0:00:41.11,Normal,,0,0,0,,lava de {\c&H005AD1F2}vulcão{\c&H00FFFFFF} de verdade,
+Dialogue: 0,0:00:41.11,0:00:41.33,Normal,,0,0,0,,lava de vulcão {\c&H005AD1F2}de{\c&H00FFFFFF} verdade,
+Dialogue: 0,0:00:41.33,0:00:42.35,Normal,,0,0,0,,lava de vulcão de {\c&H005AD1F2}verdade,{\c&H00FFFFFF}
+Dialogue: 0,0:00:42.35,0:00:42.77,Normal,,0,0,0,,{\c&H005AD1F2}então{\c&H00FFFFFF} segura a sua aposta.
+Dialogue: 0,0:00:42.77,0:00:43.57,Normal,,0,0,0,,então {\c&H005AD1F2}segura{\c&H00FFFFFF} a sua aposta.
+Dialogue: 0,0:00:43.57,0:00:43.73,Normal,,0,0,0,,então segura {\c&H005AD1F2}a{\c&H00FFFFFF} sua aposta.
+Dialogue: 0,0:00:43.73,0:00:43.85,Normal,,0,0,0,,então segura a {\c&H005AD1F2}sua{\c&H00FFFFFF} aposta.
+Dialogue: 0,0:00:43.85,0:00:45.05,Normal,,0,0,0,,então segura a sua {\c&H005AD1F2}aposta.{\c&H00FFFFFF}
+Dialogue: 0,0:00:45.26,0:00:45.40,Normal,,0,0,0,,{\c&H005AD1F2}No{\c&H00FFFFFF} botão está o Remendo,
+Dialogue: 0,0:00:45.40,0:00:45.90,Normal,,0,0,0,,No {\c&H005AD1F2}botão{\c&H00FFFFFF} está o Remendo,
+Dialogue: 0,0:00:45.90,0:00:46.16,Normal,,0,0,0,,No botão {\c&H005AD1F2}está{\c&H00FFFFFF} o Remendo,
+Dialogue: 0,0:00:46.16,0:00:46.34,Normal,,0,0,0,,No botão está {\c&H005AD1F2}o{\c&H00FFFFFF} Remendo,
+Dialogue: 0,0:00:46.34,0:00:47.28,Normal,,0,0,0,,No botão está o {\c&H005AD1F2}Remendo,{\c&H00FFFFFF}
+Dialogue: 0,0:00:47.28,0:00:47.38,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} não tem dó
+Dialogue: 0,0:00:47.38,0:00:47.62,Normal,,0,0,0,,que {\c&H005AD1F2}não{\c&H00FFFFFF} tem dó
+Dialogue: 0,0:00:47.62,0:00:47.88,Normal,,0,0,0,,que não {\c&H005AD1F2}tem{\c&H00FFFFFF} dó
+Dialogue: 0,0:00:47.88,0:00:48.24,Normal,,0,0,0,,que não tem {\c&H005AD1F2}dó{\c&H00FFFFFF}
+Dialogue: 0,0:00:48.24,0:00:48.42,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} ninguém, e a gente
+Dialogue: 0,0:00:48.42,0:00:49.28,Normal,,0,0,0,,de {\c&H005AD1F2}ninguém,{\c&H00FFFFFF} e a gente
+Dialogue: 0,0:00:49.28,0:00:49.46,Normal,,0,0,0,,de ninguém, {\c&H005AD1F2}e{\c&H00FFFFFF} a gente
+Dialogue: 0,0:00:49.46,0:00:49.58,Normal,,0,0,0,,de ninguém, e {\c&H005AD1F2}a{\c&H00FFFFFF} gente
+Dialogue: 0,0:00:49.58,0:00:49.82,Normal,,0,0,0,,de ninguém, e a {\c&H005AD1F2}gente{\c&H00FFFFFF}
+Dialogue: 0,0:00:49.82,0:00:50.32,Normal,,0,0,0,,{\c&H005AD1F2}começa{\c&H00FFFFFF} a -20 °C
+Dialogue: 0,0:00:50.32,0:00:51.10,Normal,,0,0,0,,começa {\c&H005AD1F2}a{\c&H00FFFFFF} -20 °C
+Dialogue: 0,0:00:51.10,0:00:51.88,Normal,,0,0,0,,começa a {\c&H005AD1F2}-20{\c&H00FFFFFF} °C
+Dialogue: 0,0:00:51.88,0:00:52.66,Normal,,0,0,0,,começa a -20 {\c&H005AD1F2}°C{\c&H00FFFFFF}
+Dialogue: 0,0:00:52.66,0:00:53.14,Normal,,0,0,0,,{\c&H005AD1F2}com{\c&H00FFFFFF} todo mundo tranquilo
+Dialogue: 0,0:00:53.14,0:00:53.58,Normal,,0,0,0,,com {\c&H005AD1F2}todo{\c&H00FFFFFF} mundo tranquilo
+Dialogue: 0,0:00:53.58,0:00:54.02,Normal,,0,0,0,,com todo {\c&H005AD1F2}mundo{\c&H00FFFFFF} tranquilo
+Dialogue: 0,0:00:54.02,0:00:54.92,Normal,,0,0,0,,com todo mundo {\c&H005AD1F2}tranquilo{\c&H00FFFFFF}
+Dialogue: 0,0:00:54.92,0:00:55.06,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} sorrindo.
+Dialogue: 0,0:00:55.06,0:00:56.26,Normal,,0,0,0,,e {\c&H005AD1F2}sorrindo.{\c&H00FFFFFF}
+Dialogue: 0,0:00:56.47,0:00:56.91,Normal,,0,0,0,,{\c&H005AD1F2}Primeira{\c&H00FFFFFF} rodada é só até
+Dialogue: 0,0:00:56.91,0:00:57.45,Normal,,0,0,0,,Primeira {\c&H005AD1F2}rodada{\c&H00FFFFFF} é só até
+Dialogue: 0,0:00:57.45,0:00:57.61,Normal,,0,0,0,,Primeira rodada {\c&H005AD1F2}é{\c&H00FFFFFF} só até
+Dialogue: 0,0:00:57.61,0:00:57.91,Normal,,0,0,0,,Primeira rodada é {\c&H005AD1F2}só{\c&H00FFFFFF} até
+Dialogue: 0,0:00:57.91,0:00:58.32,Normal,,0,0,0,,Primeira rodada é só {\c&H005AD1F2}até{\c&H00FFFFFF}
+Dialogue: 0,0:00:58.32,0:00:58.74,Normal,,0,0,0,,{\c&H005AD1F2}0{\c&H00FFFFFF} °C e parece moleza,
+Dialogue: 0,0:00:58.74,0:00:59.15,Normal,,0,0,0,,0 {\c&H005AD1F2}°C{\c&H00FFFFFF} e parece moleza,
+Dialogue: 0,0:00:59.15,0:00:59.47,Normal,,0,0,0,,0 °C {\c&H005AD1F2}e{\c&H00FFFFFF} parece moleza,
+Dialogue: 0,0:00:59.47,0:00:59.85,Normal,,0,0,0,,0 °C e {\c&H005AD1F2}parece{\c&H00FFFFFF} moleza,
+Dialogue: 0,0:00:59.85,0:01:00.95,Normal,,0,0,0,,0 °C e parece {\c&H005AD1F2}moleza,{\c&H00FFFFFF}
+Dialogue: 0,0:01:00.95,0:01:01.17,Normal,,0,0,0,,{\c&H005AD1F2}só{\c&H00FFFFFF} que olha o pinguim
+Dialogue: 0,0:01:01.17,0:01:01.37,Normal,,0,0,0,,só {\c&H005AD1F2}que{\c&H00FFFFFF} olha o pinguim
+Dialogue: 0,0:01:01.37,0:01:01.65,Normal,,0,0,0,,só que {\c&H005AD1F2}olha{\c&H00FFFFFF} o pinguim
+Dialogue: 0,0:01:01.65,0:01:01.79,Normal,,0,0,0,,só que olha {\c&H005AD1F2}o{\c&H00FFFFFF} pinguim
+Dialogue: 0,0:01:01.79,0:01:02.31,Normal,,0,0,0,,só que olha o {\c&H005AD1F2}pinguim{\c&H00FFFFFF}
+Dialogue: 0,0:01:02.31,0:01:03.01,Normal,,0,0,0,,{\c&H005AD1F2}pingando{\c&H00FFFFFF} o bico e
+Dialogue: 0,0:01:03.01,0:01:03.13,Normal,,0,0,0,,pingando {\c&H005AD1F2}o{\c&H00FFFFFF} bico e
+Dialogue: 0,0:01:03.13,0:01:03.57,Normal,,0,0,0,,pingando o {\c&H005AD1F2}bico{\c&H00FFFFFF} e
+Dialogue: 0,0:01:03.57,0:01:03.71,Normal,,0,0,0,,pingando o bico {\c&H005AD1F2}e{\c&H00FFFFFF}
+Dialogue: 0,0:01:03.71,0:01:03.95,Normal,,0,0,0,,{\c&H005AD1F2}as{\c&H00FFFFFF} asas até virar poça,
+Dialogue: 0,0:01:03.95,0:01:04.35,Normal,,0,0,0,,as {\c&H005AD1F2}asas{\c&H00FFFFFF} até virar poça,
+Dialogue: 0,0:01:04.35,0:01:04.71,Normal,,0,0,0,,as asas {\c&H005AD1F2}até{\c&H00FFFFFF} virar poça,
+Dialogue: 0,0:01:04.71,0:01:05.19,Normal,,0,0,0,,as asas até {\c&H005AD1F2}virar{\c&H00FFFFFF} poça,
+Dialogue: 0,0:01:05.19,0:01:06.17,Normal,,0,0,0,,as asas até virar {\c&H005AD1F2}poça,{\c&H00FFFFFF}
+Dialogue: 0,0:01:06.17,0:01:07.06,Normal,,0,0,0,,{\c&H005AD1F2}sobram{\c&H00FFFFFF} 8!
+Dialogue: 0,0:01:07.06,0:01:07.94,Normal,,0,0,0,,sobram {\c&H005AD1F2}8!{\c&H00FFFFFF}
+Dialogue: 0,0:01:07.94,0:01:08.42,Normal,,0,0,0,,{\c&H005AD1F2}Ninguém{\c&H00FFFFFF} aguentou tão pouco,
+Dialogue: 0,0:01:08.42,0:01:09.12,Normal,,0,0,0,,Ninguém {\c&H005AD1F2}aguentou{\c&H00FFFFFF} tão pouco,
+Dialogue: 0,0:01:09.12,0:01:09.44,Normal,,0,0,0,,Ninguém aguentou {\c&H005AD1F2}tão{\c&H00FFFFFF} pouco,
+Dialogue: 0,0:01:09.44,0:01:10.32,Normal,,0,0,0,,Ninguém aguentou tão {\c&H005AD1F2}pouco,{\c&H00FFFFFF}
+Dialogue: 0,0:01:10.32,0:01:10.56,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} o próximo é tão
+Dialogue: 0,0:01:10.56,0:01:10.68,Normal,,0,0,0,,e {\c&H005AD1F2}o{\c&H00FFFFFF} próximo é tão
+Dialogue: 0,0:01:10.68,0:01:11.12,Normal,,0,0,0,,e o {\c&H005AD1F2}próximo{\c&H00FFFFFF} é tão
+Dialogue: 0,0:01:11.12,0:01:11.38,Normal,,0,0,0,,e o próximo {\c&H005AD1F2}é{\c&H00FFFFFF} tão
+Dialogue: 0,0:01:11.38,0:01:11.68,Normal,,0,0,0,,e o próximo é {\c&H005AD1F2}tão{\c&H00FFFFFF}
+Dialogue: 0,0:01:11.68,0:01:12.34,Normal,,0,0,0,,{\c&H005AD1F2}fraco{\c&H00FFFFFF} que derrete na palma
+Dialogue: 0,0:01:12.34,0:01:12.72,Normal,,0,0,0,,fraco {\c&H005AD1F2}que{\c&H00FFFFFF} derrete na palma
+Dialogue: 0,0:01:12.72,0:01:13.44,Normal,,0,0,0,,fraco que {\c&H005AD1F2}derrete{\c&H00FFFFFF} na palma
+Dialogue: 0,0:01:13.44,0:01:13.64,Normal,,0,0,0,,fraco que derrete {\c&H005AD1F2}na{\c&H00FFFFFF} palma
+Dialogue: 0,0:01:13.64,0:01:14.18,Normal,,0,0,0,,fraco que derrete na {\c&H005AD1F2}palma{\c&H00FFFFFF}
+Dialogue: 0,0:01:14.18,0:01:14.30,Normal,,0,0,0,,{\c&H005AD1F2}da{\c&H00FFFFFF} sua mão!
+Dialogue: 0,0:01:14.30,0:01:14.56,Normal,,0,0,0,,da {\c&H005AD1F2}sua{\c&H00FFFFFF} mão!
+Dialogue: 0,0:01:14.56,0:01:15.74,Normal,,0,0,0,,da sua {\c&H005AD1F2}mão!{\c&H00FFFFFF}
+Dialogue: 0,0:01:15.74,0:01:16.74,Normal,,0,0,0,,{\c&H005AD1F2}Duvida?{\c&H00FFFFFF}
+Dialogue: 0,0:01:16.74,0:01:16.86,Normal,,0,0,0,,{\c&H005AD1F2}O{\c&H00FFFFFF} Remendo segura uma barra
+Dialogue: 0,0:01:16.86,0:01:17.36,Normal,,0,0,0,,O {\c&H005AD1F2}Remendo{\c&H00FFFFFF} segura uma barra
+Dialogue: 0,0:01:17.36,0:01:17.88,Normal,,0,0,0,,O Remendo {\c&H005AD1F2}segura{\c&H00FFFFFF} uma barra
+Dialogue: 0,0:01:17.88,0:01:18.06,Normal,,0,0,0,,O Remendo segura {\c&H005AD1F2}uma{\c&H00FFFFFF} barra
+Dialogue: 0,0:01:18.06,0:01:18.54,Normal,,0,0,0,,O Remendo segura uma {\c&H005AD1F2}barra{\c&H00FFFFFF}
+Dialogue: 0,0:01:18.54,0:01:18.66,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} chocolate e ela já
+Dialogue: 0,0:01:18.66,0:01:19.14,Normal,,0,0,0,,de {\c&H005AD1F2}chocolate{\c&H00FFFFFF} e ela já
+Dialogue: 0,0:01:19.14,0:01:19.92,Normal,,0,0,0,,de chocolate {\c&H005AD1F2}e{\c&H00FFFFFF} ela já
+Dialogue: 0,0:01:19.92,0:01:20.14,Normal,,0,0,0,,de chocolate e {\c&H005AD1F2}ela{\c&H00FFFFFF} já
+Dialogue: 0,0:01:20.14,0:01:20.32,Normal,,0,0,0,,de chocolate e ela {\c&H005AD1F2}já{\c&H00FFFFFF}
+Dialogue: 0,0:01:20.32,0:01:20.80,Normal,,0,0,0,,{\c&H005AD1F2}começa{\c&H00FFFFFF} a entortar,
+Dialogue: 0,0:01:20.80,0:01:21.10,Normal,,0,0,0,,começa {\c&H005AD1F2}a{\c&H00FFFFFF} entortar,
+Dialogue: 0,0:01:21.10,0:01:22.10,Normal,,0,0,0,,começa a {\c&H005AD1F2}entortar,{\c&H00FFFFFF}
+Dialogue: 0,0:01:22.10,0:01:22.32,Normal,,0,0,0,,{\c&H005AD1F2}aí{\c&H00FFFFFF} a fornalha vai
+Dialogue: 0,0:01:22.32,0:01:22.50,Normal,,0,0,0,,aí {\c&H005AD1F2}a{\c&H00FFFFFF} fornalha vai
+Dialogue: 0,0:01:22.50,0:01:23.14,Normal,,0,0,0,,aí a {\c&H005AD1F2}fornalha{\c&H00FFFFFF} vai
+Dialogue: 0,0:01:23.14,0:01:23.34,Normal,,0,0,0,,aí a fornalha {\c&H005AD1F2}vai{\c&H00FFFFFF}
+Dialogue: 0,0:01:23.34,0:01:23.99,Normal,,0,0,0,,{\c&H005AD1F2}para{\c&H00FFFFFF} 34 °C e
+Dialogue: 0,0:01:23.99,0:01:24.65,Normal,,0,0,0,,para {\c&H005AD1F2}34{\c&H00FFFFFF} °C e
+Dialogue: 0,0:01:24.65,0:01:25.30,Normal,,0,0,0,,para 34 {\c&H005AD1F2}°C{\c&H00FFFFFF} e
+Dialogue: 0,0:01:25.30,0:01:25.70,Normal,,0,0,0,,para 34 °C {\c&H005AD1F2}e{\c&H00FFFFFF}
+Dialogue: 0,0:01:25.70,0:01:25.84,Normal,,0,0,0,,{\c&H005AD1F2}o{\c&H00FFFFFF} coelho perde as orelhas
+Dialogue: 0,0:01:25.84,0:01:26.28,Normal,,0,0,0,,o {\c&H005AD1F2}coelho{\c&H00FFFFFF} perde as orelhas
+Dialogue: 0,0:01:26.28,0:01:26.64,Normal,,0,0,0,,o coelho {\c&H005AD1F2}perde{\c&H00FFFFFF} as orelhas
+Dialogue: 0,0:01:26.64,0:01:26.92,Normal,,0,0,0,,o coelho perde {\c&H005AD1F2}as{\c&H00FFFFFF} orelhas
+Dialogue: 0,0:01:26.92,0:01:27.48,Normal,,0,0,0,,o coelho perde as {\c&H005AD1F2}orelhas{\c&H00FFFFFF}
+Dialogue: 0,0:01:27.48,0:01:27.86,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} cai de cara
+Dialogue: 0,0:01:27.86,0:01:28.22,Normal,,0,0,0,,e {\c&H005AD1F2}cai{\c&H00FFFFFF} de cara
+Dialogue: 0,0:01:28.22,0:01:28.42,Normal,,0,0,0,,e cai {\c&H005AD1F2}de{\c&H00FFFFFF} cara
+Dialogue: 0,0:01:28.42,0:01:28.80,Normal,,0,0,0,,e cai de {\c&H005AD1F2}cara{\c&H00FFFFFF}
+Dialogue: 0,0:01:28.80,0:01:29.02,Normal,,0,0,0,,{\c&H005AD1F2}no{\c&H00FFFFFF} chão, sobram 7!
+Dialogue: 0,0:01:29.02,0:01:29.76,Normal,,0,0,0,,no {\c&H005AD1F2}chão,{\c&H00FFFFFF} sobram 7!
+Dialogue: 0,0:01:29.76,0:01:30.73,Normal,,0,0,0,,no chão, {\c&H005AD1F2}sobram{\c&H00FFFFFF} 7!
+Dialogue: 0,0:01:30.73,0:01:31.70,Normal,,0,0,0,,no chão, sobram {\c&H005AD1F2}7!{\c&H00FFFFFF}
+Dialogue: 0,0:01:31.70,0:01:31.82,Normal,,0,0,0,,{\c&H005AD1F2}O{\c&H00FFFFFF} ursinho de vela faz
+Dialogue: 0,0:01:31.82,0:01:32.32,Normal,,0,0,0,,O {\c&H005AD1F2}ursinho{\c&H00FFFFFF} de vela faz
+Dialogue: 0,0:01:32.32,0:01:32.50,Normal,,0,0,0,,O ursinho {\c&H005AD1F2}de{\c&H00FFFFFF} vela faz
+Dialogue: 0,0:01:32.50,0:01:32.98,Normal,,0,0,0,,O ursinho de {\c&H005AD1F2}vela{\c&H00FFFFFF} faz
+Dialogue: 0,0:01:32.98,0:01:33.28,Normal,,0,0,0,,O ursinho de vela {\c&H005AD1F2}faz{\c&H00FFFFFF}
+Dialogue: 0,0:01:33.28,0:01:33.74,Normal,,0,0,0,,{\c&H005AD1F2}pose{\c&H00FFFFFF} de durão e aos
+Dialogue: 0,0:01:33.74,0:01:33.96,Normal,,0,0,0,,pose {\c&H005AD1F2}de{\c&H00FFFFFF} durão e aos
+Dialogue: 0,0:01:33.96,0:01:34.46,Normal,,0,0,0,,pose de {\c&H005AD1F2}durão{\c&H00FFFFFF} e aos
+Dialogue: 0,0:01:34.46,0:01:34.92,Normal,,0,0,0,,pose de durão {\c&H005AD1F2}e{\c&H00FFFFFF} aos
+Dialogue: 0,0:01:34.92,0:01:35.41,Normal,,0,0,0,,pose de durão e {\c&H005AD1F2}aos{\c&H00FFFFFF}
+Dialogue: 0,0:01:35.41,0:01:35.91,Normal,,0,0,0,,{\c&H005AD1F2}60{\c&H00FFFFFF} °C ele não cai,
+Dialogue: 0,0:01:35.91,0:01:36.40,Normal,,0,0,0,,60 {\c&H005AD1F2}°C{\c&H00FFFFFF} ele não cai,
+Dialogue: 0,0:01:36.40,0:01:36.68,Normal,,0,0,0,,60 °C {\c&H005AD1F2}ele{\c&H00FFFFFF} não cai,
+Dialogue: 0,0:01:36.68,0:01:37.02,Normal,,0,0,0,,60 °C ele {\c&H005AD1F2}não{\c&H00FFFFFF} cai,
+Dialogue: 0,0:01:37.02,0:01:37.98,Normal,,0,0,0,,60 °C ele não {\c&H005AD1F2}cai,{\c&H00FFFFFF}
+Dialogue: 0,0:01:37.98,0:01:38.08,Normal,,0,0,0,,{\c&H005AD1F2}ele{\c&H00FFFFFF} vai murchando devagar
+Dialogue: 0,0:01:38.08,0:01:38.32,Normal,,0,0,0,,ele {\c&H005AD1F2}vai{\c&H00FFFFFF} murchando devagar
+Dialogue: 0,0:01:38.32,0:01:39.10,Normal,,0,0,0,,ele vai {\c&H005AD1F2}murchando{\c&H00FFFFFF} devagar
+Dialogue: 0,0:01:39.10,0:01:39.86,Normal,,0,0,0,,ele vai murchando {\c&H005AD1F2}devagar{\c&H00FFFFFF}
+Dialogue: 0,0:01:39.86,0:01:40.56,Normal,,0,0,0,,{\c&H005AD1F2}igual{\c&H00FFFFFF} vela de jantar
+Dialogue: 0,0:01:40.56,0:01:41.28,Normal,,0,0,0,,igual {\c&H005AD1F2}vela{\c&H00FFFFFF} de jantar
+Dialogue: 0,0:01:41.28,0:01:41.42,Normal,,0,0,0,,igual vela {\c&H005AD1F2}de{\c&H00FFFFFF} jantar
+Dialogue: 0,0:01:41.42,0:01:41.92,Normal,,0,0,0,,igual vela de {\c&H005AD1F2}jantar{\c&H00FFFFFF}
+Dialogue: 0,0:01:41.92,0:01:43.06,Normal,,0,0,0,,{\c&H005AD1F2}romântico,{\c&H00FFFFFF} sobram 6!
+Dialogue: 0,0:01:43.06,0:01:44.09,Normal,,0,0,0,,romântico, {\c&H005AD1F2}sobram{\c&H00FFFFFF} 6!
+Dialogue: 0,0:01:44.09,0:01:45.12,Normal,,0,0,0,,romântico, sobram {\c&H005AD1F2}6!{\c&H00FFFFFF}
+Dialogue: 0,0:01:45.12,0:01:45.24,Normal,,0,0,0,,{\c&H005AD1F2}E{\c&H00FFFFFF} isso foi só
+Dialogue: 0,0:01:45.24,0:01:45.56,Normal,,0,0,0,,E {\c&H005AD1F2}isso{\c&H00FFFFFF} foi só
+Dialogue: 0,0:01:45.56,0:01:45.80,Normal,,0,0,0,,E isso {\c&H005AD1F2}foi{\c&H00FFFFFF} só
+Dialogue: 0,0:01:45.80,0:01:46.12,Normal,,0,0,0,,E isso foi {\c&H005AD1F2}só{\c&H00FFFFFF}
+Dialogue: 0,0:01:46.12,0:01:46.26,Normal,,0,0,0,,{\c&H005AD1F2}o{\c&H00FFFFFF} aquecimento, porque agora
+Dialogue: 0,0:01:46.26,0:01:47.32,Normal,,0,0,0,,o {\c&H005AD1F2}aquecimento,{\c&H00FFFFFF} porque agora
+Dialogue: 0,0:01:47.32,0:01:47.70,Normal,,0,0,0,,o aquecimento, {\c&H005AD1F2}porque{\c&H00FFFFFF} agora
+Dialogue: 0,0:01:47.70,0:01:48.14,Normal,,0,0,0,,o aquecimento, porque {\c&H005AD1F2}agora{\c&H00FFFFFF}
+Dialogue: 0,0:01:48.14,0:01:48.38,Normal,,0,0,0,,{\c&H005AD1F2}o{\c&H00FFFFFF} Remendo segura o botão
+Dialogue: 0,0:01:48.38,0:01:48.90,Normal,,0,0,0,,o {\c&H005AD1F2}Remendo{\c&H00FFFFFF} segura o botão
+Dialogue: 0,0:01:48.90,0:01:49.50,Normal,,0,0,0,,o Remendo {\c&H005AD1F2}segura{\c&H00FFFFFF} o botão
+Dialogue: 0,0:01:49.50,0:01:49.60,Normal,,0,0,0,,o Remendo segura {\c&H005AD1F2}o{\c&H00FFFFFF} botão
+Dialogue: 0,0:01:49.60,0:01:50.12,Normal,,0,0,0,,o Remendo segura o {\c&H005AD1F2}botão{\c&H00FFFFFF}
+Dialogue: 0,0:01:50.12,0:01:50.52,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} não solta mais,
+Dialogue: 0,0:01:50.52,0:01:50.80,Normal,,0,0,0,,e {\c&H005AD1F2}não{\c&H00FFFFFF} solta mais,
+Dialogue: 0,0:01:50.80,0:01:51.38,Normal,,0,0,0,,e não {\c&H005AD1F2}solta{\c&H00FFFFFF} mais,
+Dialogue: 0,0:01:51.38,0:01:52.20,Normal,,0,0,0,,e não solta {\c&H005AD1F2}mais,{\c&H00FFFFFF}
+Dialogue: 0,0:01:52.20,0:01:53.16,Normal,,0,0,0,,{\c&H005AD1F2}cem,{\c&H00FFFFFF} duzentos, 300 °C!
+Dialogue: 0,0:01:53.16,0:01:54.26,Normal,,0,0,0,,cem, {\c&H005AD1F2}duzentos,{\c&H00FFFFFF} 300 °C!
+Dialogue: 0,0:01:54.26,0:01:55.36,Normal,,0,0,0,,cem, duzentos, {\c&H005AD1F2}300{\c&H00FFFFFF} °C!
+Dialogue: 0,0:01:55.36,0:01:56.46,Normal,,0,0,0,,cem, duzentos, 300 {\c&H005AD1F2}°C!{\c&H00FFFFFF}
+Dialogue: 0,0:01:56.46,0:01:56.64,Normal,,0,0,0,,{\c&H005AD1F2}Todo{\c&H00FFFFFF} mundo aposta que
+Dialogue: 0,0:01:56.64,0:01:56.98,Normal,,0,0,0,,Todo {\c&H005AD1F2}mundo{\c&H00FFFFFF} aposta que
+Dialogue: 0,0:01:56.98,0:01:57.60,Normal,,0,0,0,,Todo mundo {\c&H005AD1F2}aposta{\c&H00FFFFFF} que
+Dialogue: 0,0:01:57.60,0:01:57.80,Normal,,0,0,0,,Todo mundo aposta {\c&H005AD1F2}que{\c&H00FFFFFF}
+Dialogue: 0,0:01:57.80,0:01:57.94,Normal,,0,0,0,,{\c&H005AD1F2}o{\c&H00FFFFFF} próximo é o robô
+Dialogue: 0,0:01:57.94,0:01:58.30,Normal,,0,0,0,,o {\c&H005AD1F2}próximo{\c&H00FFFFFF} é o robô
+Dialogue: 0,0:01:58.30,0:01:58.62,Normal,,0,0,0,,o próximo {\c&H005AD1F2}é{\c&H00FFFFFF} o robô
+Dialogue: 0,0:01:58.62,0:01:58.72,Normal,,0,0,0,,o próximo é {\c&H005AD1F2}o{\c&H00FFFFFF} robô
+Dialogue: 0,0:01:58.72,0:01:59.18,Normal,,0,0,0,,o próximo é o {\c&H005AD1F2}robô{\c&H00FFFFFF}
+Dialogue: 0,0:01:59.18,0:01:59.30,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} alumínio, só que quem
+Dialogue: 0,0:01:59.30,0:02:00.24,Normal,,0,0,0,,de {\c&H005AD1F2}alumínio,{\c&H00FFFFFF} só que quem
+Dialogue: 0,0:02:00.24,0:02:00.48,Normal,,0,0,0,,de alumínio, {\c&H005AD1F2}só{\c&H00FFFFFF} que quem
+Dialogue: 0,0:02:00.48,0:02:00.64,Normal,,0,0,0,,de alumínio, só {\c&H005AD1F2}que{\c&H00FFFFFF} quem
+Dialogue: 0,0:02:00.64,0:02:00.92,Normal,,0,0,0,,de alumínio, só que {\c&H005AD1F2}quem{\c&H00FFFFFF}
+Dialogue: 0,0:02:00.92,0:02:01.42,Normal,,0,0,0,,{\c&H005AD1F2}começa{\c&H00FFFFFF} a brilhar é
+Dialogue: 0,0:02:01.42,0:02:01.58,Normal,,0,0,0,,começa {\c&H005AD1F2}a{\c&H00FFFFFF} brilhar é
+Dialogue: 0,0:02:01.58,0:02:02.08,Normal,,0,0,0,,começa a {\c&H005AD1F2}brilhar{\c&H00FFFFFF} é
+Dialogue: 0,0:02:02.08,0:02:02.46,Normal,,0,0,0,,começa a brilhar {\c&H005AD1F2}é{\c&H00FFFFFF}
+Dialogue: 0,0:02:02.46,0:02:02.58,Normal,,0,0,0,,{\c&H005AD1F2}o{\c&H00FFFFFF} soldadinho de chumbo,
+Dialogue: 0,0:02:02.58,0:02:03.40,Normal,,0,0,0,,o {\c&H005AD1F2}soldadinho{\c&H00FFFFFF} de chumbo,
+Dialogue: 0,0:02:03.40,0:02:03.56,Normal,,0,0,0,,o soldadinho {\c&H005AD1F2}de{\c&H00FFFFFF} chumbo,
+Dialogue: 0,0:02:03.56,0:02:04.46,Normal,,0,0,0,,o soldadinho de {\c&H005AD1F2}chumbo,{\c&H00FFFFFF}
+Dialogue: 0,0:02:04.46,0:02:04.86,Normal,,0,0,0,,{\c&H005AD1F2}firme{\c&H00FFFFFF} em posição de sentido
+Dialogue: 0,0:02:04.86,0:02:05.04,Normal,,0,0,0,,firme {\c&H005AD1F2}em{\c&H00FFFFFF} posição de sentido
+Dialogue: 0,0:02:05.04,0:02:05.56,Normal,,0,0,0,,firme em {\c&H005AD1F2}posição{\c&H00FFFFFF} de sentido
+Dialogue: 0,0:02:05.56,0:02:05.80,Normal,,0,0,0,,firme em posição {\c&H005AD1F2}de{\c&H00FFFFFF} sentido
+Dialogue: 0,0:02:05.80,0:02:06.44,Normal,,0,0,0,,firme em posição de {\c&H005AD1F2}sentido{\c&H00FFFFFF}
+Dialogue: 0,0:02:06.44,0:02:07.18,Normal,,0,0,0,,{\c&H005AD1F2}até{\c&H00FFFFFF} escorrer inteiro,
+Dialogue: 0,0:02:07.18,0:02:07.90,Normal,,0,0,0,,até {\c&H005AD1F2}escorrer{\c&H00FFFFFF} inteiro,
+Dialogue: 0,0:02:07.90,0:02:08.86,Normal,,0,0,0,,até escorrer {\c&H005AD1F2}inteiro,{\c&H00FFFFFF}
+Dialogue: 0,0:02:08.86,0:02:09.80,Normal,,0,0,0,,{\c&H005AD1F2}sobram{\c&H00FFFFFF} 5!
+Dialogue: 0,0:02:09.80,0:02:10.74,Normal,,0,0,0,,sobram {\c&H005AD1F2}5!{\c&H00FFFFFF}
+Dialogue: 0,0:02:10.74,0:02:11.18,Normal,,0,0,0,,{\c&H005AD1F2}Agora{\c&H00FFFFFF} o robô está
+Dialogue: 0,0:02:11.18,0:02:11.34,Normal,,0,0,0,,Agora {\c&H005AD1F2}o{\c&H00FFFFFF} robô está
+Dialogue: 0,0:02:11.34,0:02:11.76,Normal,,0,0,0,,Agora o {\c&H005AD1F2}robô{\c&H00FFFFFF} está
+Dialogue: 0,0:02:11.76,0:02:12.02,Normal,,0,0,0,,Agora o robô {\c&H005AD1F2}está{\c&H00FFFFFF}
+Dialogue: 0,0:02:12.02,0:02:12.24,Normal,,0,0,0,,{\c&H005AD1F2}se{\c&H00FFFFFF} achando, porque panela
+Dialogue: 0,0:02:12.24,0:02:13.18,Normal,,0,0,0,,se {\c&H005AD1F2}achando,{\c&H00FFFFFF} porque panela
+Dialogue: 0,0:02:13.18,0:02:13.42,Normal,,0,0,0,,se achando, {\c&H005AD1F2}porque{\c&H00FFFFFF} panela
+Dialogue: 0,0:02:13.42,0:02:14.10,Normal,,0,0,0,,se achando, porque {\c&H005AD1F2}panela{\c&H00FFFFFF}
+Dialogue: 0,0:02:14.10,0:02:14.26,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} alumínio entra no forno
+Dialogue: 0,0:02:14.26,0:02:14.86,Normal,,0,0,0,,de {\c&H005AD1F2}alumínio{\c&H00FFFFFF} entra no forno
+Dialogue: 0,0:02:14.86,0:02:15.22,Normal,,0,0,0,,de alumínio {\c&H005AD1F2}entra{\c&H00FFFFFF} no forno
+Dialogue: 0,0:02:15.22,0:02:15.42,Normal,,0,0,0,,de alumínio entra {\c&H005AD1F2}no{\c&H00FFFFFF} forno
+Dialogue: 0,0:02:15.42,0:02:15.96,Normal,,0,0,0,,de alumínio entra no {\c&H005AD1F2}forno{\c&H00FFFFFF}
+Dialogue: 0,0:02:15.96,0:02:16.08,Normal,,0,0,0,,{\c&H005AD1F2}da{\c&H00FFFFFF} sua casa e sai
+Dialogue: 0,0:02:16.08,0:02:16.34,Normal,,0,0,0,,da {\c&H005AD1F2}sua{\c&H00FFFFFF} casa e sai
+Dialogue: 0,0:02:16.34,0:02:16.84,Normal,,0,0,0,,da sua {\c&H005AD1F2}casa{\c&H00FFFFFF} e sai
+Dialogue: 0,0:02:16.84,0:02:17.30,Normal,,0,0,0,,da sua casa {\c&H005AD1F2}e{\c&H00FFFFFF} sai
+Dialogue: 0,0:02:17.30,0:02:17.64,Normal,,0,0,0,,da sua casa e {\c&H005AD1F2}sai{\c&H00FFFFFF}
+Dialogue: 0,0:02:17.64,0:02:18.74,Normal,,0,0,0,,{\c&H005AD1F2}inteira,{\c&H00FFFFFF} só que isso aqui
+Dialogue: 0,0:02:18.74,0:02:18.94,Normal,,0,0,0,,inteira, {\c&H005AD1F2}só{\c&H00FFFFFF} que isso aqui
+Dialogue: 0,0:02:18.94,0:02:19.14,Normal,,0,0,0,,inteira, só {\c&H005AD1F2}que{\c&H00FFFFFF} isso aqui
+Dialogue: 0,0:02:19.14,0:02:19.36,Normal,,0,0,0,,inteira, só que {\c&H005AD1F2}isso{\c&H00FFFFFF} aqui
+Dialogue: 0,0:02:19.36,0:02:19.68,Normal,,0,0,0,,inteira, só que isso {\c&H005AD1F2}aqui{\c&H00FFFFFF}
+Dialogue: 0,0:02:19.68,0:02:20.00,Normal,,0,0,0,,{\c&H005AD1F2}não{\c&H00FFFFFF} é forno de casa.
+Dialogue: 0,0:02:20.00,0:02:20.22,Normal,,0,0,0,,não {\c&H005AD1F2}é{\c&H00FFFFFF} forno de casa.
+Dialogue: 0,0:02:20.22,0:02:20.76,Normal,,0,0,0,,não é {\c&H005AD1F2}forno{\c&H00FFFFFF} de casa.
+Dialogue: 0,0:02:20.76,0:02:20.88,Normal,,0,0,0,,não é forno {\c&H005AD1F2}de{\c&H00FFFFFF} casa.
+Dialogue: 0,0:02:20.88,0:02:22.08,Normal,,0,0,0,,não é forno de {\c&H005AD1F2}casa.{\c&H00FFFFFF}
+Dialogue: 0,0:02:22.14,0:02:23.06,Normal,,0,0,0,,{\c&H005AD1F2}Seiscentos{\c&H00FFFFFF} e 60 °C
+Dialogue: 0,0:02:23.06,0:02:23.53,Normal,,0,0,0,,Seiscentos {\c&H005AD1F2}e{\c&H00FFFFFF} 60 °C
+Dialogue: 0,0:02:23.53,0:02:24.01,Normal,,0,0,0,,Seiscentos e {\c&H005AD1F2}60{\c&H00FFFFFF} °C
+Dialogue: 0,0:02:24.01,0:02:24.48,Normal,,0,0,0,,Seiscentos e 60 {\c&H005AD1F2}°C{\c&H00FFFFFF}
+Dialogue: 0,0:02:24.48,0:02:24.88,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} o robô afunda até
+Dialogue: 0,0:02:24.88,0:02:25.04,Normal,,0,0,0,,e {\c&H005AD1F2}o{\c&H00FFFFFF} robô afunda até
+Dialogue: 0,0:02:25.04,0:02:25.42,Normal,,0,0,0,,e o {\c&H005AD1F2}robô{\c&H00FFFFFF} afunda até
+Dialogue: 0,0:02:25.42,0:02:25.98,Normal,,0,0,0,,e o robô {\c&H005AD1F2}afunda{\c&H00FFFFFF} até
+Dialogue: 0,0:02:25.98,0:02:26.40,Normal,,0,0,0,,e o robô afunda {\c&H005AD1F2}até{\c&H00FFFFFF}
+Dialogue: 0,0:02:26.40,0:02:26.56,Normal,,0,0,0,,{\c&H005AD1F2}os{\c&H00FFFFFF} joelhos e se espalha
+Dialogue: 0,0:02:26.56,0:02:27.20,Normal,,0,0,0,,os {\c&H005AD1F2}joelhos{\c&H00FFFFFF} e se espalha
+Dialogue: 0,0:02:27.20,0:02:27.64,Normal,,0,0,0,,os joelhos {\c&H005AD1F2}e{\c&H00FFFFFF} se espalha
+Dialogue: 0,0:02:27.64,0:02:27.80,Normal,,0,0,0,,os joelhos e {\c&H005AD1F2}se{\c&H00FFFFFF} espalha
+Dialogue: 0,0:02:27.80,0:02:28.44,Normal,,0,0,0,,os joelhos e se {\c&H005AD1F2}espalha{\c&H00FFFFFF}
+Dialogue: 0,0:02:28.44,0:02:28.66,Normal,,0,0,0,,{\c&H005AD1F2}pelo{\c&H00FFFFFF} chão feito água,
+Dialogue: 0,0:02:28.66,0:02:29.12,Normal,,0,0,0,,pelo {\c&H005AD1F2}chão{\c&H00FFFFFF} feito água,
+Dialogue: 0,0:02:29.12,0:02:29.54,Normal,,0,0,0,,pelo chão {\c&H005AD1F2}feito{\c&H00FFFFFF} água,
+Dialogue: 0,0:02:29.54,0:02:30.58,Normal,,0,0,0,,pelo chão feito {\c&H005AD1F2}água,{\c&H00FFFFFF}
+Dialogue: 0,0:02:30.58,0:02:31.08,Normal,,0,0,0,,{\c&H005AD1F2}sobram{\c&H00FFFFFF} 4 e só ficou
+Dialogue: 0,0:02:31.08,0:02:31.58,Normal,,0,0,0,,sobram {\c&H005AD1F2}4{\c&H00FFFFFF} e só ficou
+Dialogue: 0,0:02:31.58,0:02:32.10,Normal,,0,0,0,,sobram 4 {\c&H005AD1F2}e{\c&H00FFFFFF} só ficou
+Dialogue: 0,0:02:32.10,0:02:32.38,Normal,,0,0,0,,sobram 4 e {\c&H005AD1F2}só{\c&H00FFFFFF} ficou
+Dialogue: 0,0:02:32.38,0:02:32.78,Normal,,0,0,0,,sobram 4 e só {\c&H005AD1F2}ficou{\c&H00FFFFFF}
+Dialogue: 0,0:02:32.78,0:02:33.32,Normal,,0,0,0,,{\c&H005AD1F2}metal{\c&H00FFFFFF} pesado!
+Dialogue: 0,0:02:33.32,0:02:34.52,Normal,,0,0,0,,metal {\c&H005AD1F2}pesado!{\c&H00FFFFFF}
+Dialogue: 0,0:02:35.01,0:02:35.11,Normal,,0,0,0,,{\c&H005AD1F2}O{\c&H00FFFFFF} porco de bronze começa
+Dialogue: 0,0:02:35.11,0:02:35.57,Normal,,0,0,0,,O {\c&H005AD1F2}porco{\c&H00FFFFFF} de bronze começa
+Dialogue: 0,0:02:35.57,0:02:35.71,Normal,,0,0,0,,O porco {\c&H005AD1F2}de{\c&H00FFFFFF} bronze começa
+Dialogue: 0,0:02:35.71,0:02:36.07,Normal,,0,0,0,,O porco de {\c&H005AD1F2}bronze{\c&H00FFFFFF} começa
+Dialogue: 0,0:02:36.07,0:02:36.55,Normal,,0,0,0,,O porco de bronze {\c&H005AD1F2}começa{\c&H00FFFFFF}
+Dialogue: 0,0:02:36.55,0:02:36.85,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} suar e o focinho
+Dialogue: 0,0:02:36.85,0:02:37.37,Normal,,0,0,0,,a {\c&H005AD1F2}suar{\c&H00FFFFFF} e o focinho
+Dialogue: 0,0:02:37.37,0:02:37.73,Normal,,0,0,0,,a suar {\c&H005AD1F2}e{\c&H00FFFFFF} o focinho
+Dialogue: 0,0:02:37.73,0:02:37.81,Normal,,0,0,0,,a suar e {\c&H005AD1F2}o{\c&H00FFFFFF} focinho
+Dialogue: 0,0:02:37.81,0:02:38.33,Normal,,0,0,0,,a suar e o {\c&H005AD1F2}focinho{\c&H00FFFFFF}
+Dialogue: 0,0:02:38.33,0:02:39.42,Normal,,0,0,0,,{\c&H005AD1F2}brilha,{\c&H00FFFFFF} 950 °C e ele
+Dialogue: 0,0:02:39.42,0:02:40.52,Normal,,0,0,0,,brilha, {\c&H005AD1F2}950{\c&H00FFFFFF} °C e ele
+Dialogue: 0,0:02:40.52,0:02:41.61,Normal,,0,0,0,,brilha, 950 {\c&H005AD1F2}°C{\c&H00FFFFFF} e ele
+Dialogue: 0,0:02:41.61,0:02:41.95,Normal,,0,0,0,,brilha, 950 °C {\c&H005AD1F2}e{\c&H00FFFFFF} ele
+Dialogue: 0,0:02:41.95,0:02:42.15,Normal,,0,0,0,,brilha, 950 °C e {\c&H005AD1F2}ele{\c&H00FFFFFF}
+Dialogue: 0,0:02:42.15,0:02:42.85,Normal,,0,0,0,,{\c&H005AD1F2}escorre{\c&H00FFFFFF} de focinho primeiro,
+Dialogue: 0,0:02:42.85,0:02:42.97,Normal,,0,0,0,,escorre {\c&H005AD1F2}de{\c&H00FFFFFF} focinho primeiro,
+Dialogue: 0,0:02:42.97,0:02:43.55,Normal,,0,0,0,,escorre de {\c&H005AD1F2}focinho{\c&H00FFFFFF} primeiro,
+Dialogue: 0,0:02:43.55,0:02:44.49,Normal,,0,0,0,,escorre de focinho {\c&H005AD1F2}primeiro,{\c&H00FFFFFF}
+Dialogue: 0,0:02:44.49,0:02:45.48,Normal,,0,0,0,,{\c&H005AD1F2}sobram{\c&H00FFFFFF} 3!
+Dialogue: 0,0:02:45.48,0:02:46.46,Normal,,0,0,0,,sobram {\c&H005AD1F2}3!{\c&H00FFFFFF}
+Dialogue: 0,0:02:46.46,0:02:46.72,Normal,,0,0,0,,{\c&H005AD1F2}Pato{\c&H00FFFFFF} de ouro,
+Dialogue: 0,0:02:46.72,0:02:46.96,Normal,,0,0,0,,Pato {\c&H005AD1F2}de{\c&H00FFFFFF} ouro,
+Dialogue: 0,0:02:46.96,0:02:47.62,Normal,,0,0,0,,Pato de {\c&H005AD1F2}ouro,{\c&H00FFFFFF}
+Dialogue: 0,0:02:47.62,0:02:48.00,Normal,,0,0,0,,{\c&H005AD1F2}touro{\c&H00FFFFFF} de ferro e coruja
+Dialogue: 0,0:02:48.00,0:02:48.16,Normal,,0,0,0,,touro {\c&H005AD1F2}de{\c&H00FFFFFF} ferro e coruja
+Dialogue: 0,0:02:48.16,0:02:48.70,Normal,,0,0,0,,touro de {\c&H005AD1F2}ferro{\c&H00FFFFFF} e coruja
+Dialogue: 0,0:02:48.70,0:02:49.04,Normal,,0,0,0,,touro de ferro {\c&H005AD1F2}e{\c&H00FFFFFF} coruja
+Dialogue: 0,0:02:49.04,0:02:49.68,Normal,,0,0,0,,touro de ferro e {\c&H005AD1F2}coruja{\c&H00FFFFFF}
+Dialogue: 0,0:02:49.68,0:02:49.82,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} tungstênio, a fornalha
+Dialogue: 0,0:02:49.82,0:02:51.12,Normal,,0,0,0,,de {\c&H005AD1F2}tungstênio,{\c&H00FFFFFF} a fornalha
+Dialogue: 0,0:02:51.12,0:02:51.24,Normal,,0,0,0,,de tungstênio, {\c&H005AD1F2}a{\c&H00FFFFFF} fornalha
+Dialogue: 0,0:02:51.24,0:02:51.90,Normal,,0,0,0,,de tungstênio, a {\c&H005AD1F2}fornalha{\c&H00FFFFFF}
+Dialogue: 0,0:02:51.90,0:02:52.26,Normal,,0,0,0,,{\c&H005AD1F2}passa{\c&H00FFFFFF} de 1.000 °C
+Dialogue: 0,0:02:52.26,0:02:52.69,Normal,,0,0,0,,passa {\c&H005AD1F2}de{\c&H00FFFFFF} 1.000 °C
+Dialogue: 0,0:02:52.69,0:02:53.11,Normal,,0,0,0,,passa de {\c&H005AD1F2}1.000{\c&H00FFFFFF} °C
+Dialogue: 0,0:02:53.11,0:02:53.54,Normal,,0,0,0,,passa de 1.000 {\c&H005AD1F2}°C{\c&H00FFFFFF}
+Dialogue: 0,0:02:53.54,0:02:53.94,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} os três já estão
+Dialogue: 0,0:02:53.94,0:02:54.18,Normal,,0,0,0,,e {\c&H005AD1F2}os{\c&H00FFFFFF} três já estão
+Dialogue: 0,0:02:54.18,0:02:54.46,Normal,,0,0,0,,e os {\c&H005AD1F2}três{\c&H00FFFFFF} já estão
+Dialogue: 0,0:02:54.46,0:02:54.74,Normal,,0,0,0,,e os três {\c&H005AD1F2}já{\c&H00FFFFFF} estão
+Dialogue: 0,0:02:54.74,0:02:55.10,Normal,,0,0,0,,e os três já {\c&H005AD1F2}estão{\c&H00FFFFFF}
+Dialogue: 0,0:02:55.10,0:02:55.28,Normal,,0,0,0,,{\c&H005AD1F2}em{\c&H00FFFFFF} brasa, então chegou
+Dialogue: 0,0:02:55.28,0:02:56.20,Normal,,0,0,0,,em {\c&H005AD1F2}brasa,{\c&H00FFFFFF} então chegou
+Dialogue: 0,0:02:56.20,0:02:56.58,Normal,,0,0,0,,em brasa, {\c&H005AD1F2}então{\c&H00FFFFFF} chegou
+Dialogue: 0,0:02:56.58,0:02:57.00,Normal,,0,0,0,,em brasa, então {\c&H005AD1F2}chegou{\c&H00FFFFFF}
+Dialogue: 0,0:02:57.00,0:02:57.30,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} hora da reviravolta.
+Dialogue: 0,0:02:57.30,0:02:57.58,Normal,,0,0,0,,a {\c&H005AD1F2}hora{\c&H00FFFFFF} da reviravolta.
+Dialogue: 0,0:02:57.58,0:02:57.74,Normal,,0,0,0,,a hora {\c&H005AD1F2}da{\c&H00FFFFFF} reviravolta.
+Dialogue: 0,0:02:57.74,0:02:58.94,Normal,,0,0,0,,a hora da {\c&H005AD1F2}reviravolta.{\c&H00FFFFFF}
+Dialogue: 0,0:02:59.61,0:02:59.77,Normal,,0,0,0,,{\c&H005AD1F2}O{\c&H00FFFFFF} Remendo puxa a alavanca,
+Dialogue: 0,0:02:59.77,0:03:00.29,Normal,,0,0,0,,O {\c&H005AD1F2}Remendo{\c&H00FFFFFF} puxa a alavanca,
+Dialogue: 0,0:03:00.29,0:03:00.87,Normal,,0,0,0,,O Remendo {\c&H005AD1F2}puxa{\c&H00FFFFFF} a alavanca,
+Dialogue: 0,0:03:00.87,0:03:01.03,Normal,,0,0,0,,O Remendo puxa {\c&H005AD1F2}a{\c&H00FFFFFF} alavanca,
+Dialogue: 0,0:03:01.03,0:03:02.05,Normal,,0,0,0,,O Remendo puxa a {\c&H005AD1F2}alavanca,{\c&H00FFFFFF}
+Dialogue: 0,0:03:02.05,0:03:02.13,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} porta abre e
+Dialogue: 0,0:03:02.13,0:03:02.53,Normal,,0,0,0,,a {\c&H005AD1F2}porta{\c&H00FFFFFF} abre e
+Dialogue: 0,0:03:02.53,0:03:03.07,Normal,,0,0,0,,a porta {\c&H005AD1F2}abre{\c&H00FFFFFF} e
+Dialogue: 0,0:03:03.07,0:03:03.51,Normal,,0,0,0,,a porta abre {\c&H005AD1F2}e{\c&H00FFFFFF}
+Dialogue: 0,0:03:03.51,0:03:03.63,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} lava de vulcão entra
+Dialogue: 0,0:03:03.63,0:03:04.05,Normal,,0,0,0,,a {\c&H005AD1F2}lava{\c&H00FFFFFF} de vulcão entra
+Dialogue: 0,0:03:04.05,0:03:04.27,Normal,,0,0,0,,a lava {\c&H005AD1F2}de{\c&H00FFFFFF} vulcão entra
+Dialogue: 0,0:03:04.27,0:03:04.83,Normal,,0,0,0,,a lava de {\c&H005AD1F2}vulcão{\c&H00FFFFFF} entra
+Dialogue: 0,0:03:04.83,0:03:05.19,Normal,,0,0,0,,a lava de vulcão {\c&H005AD1F2}entra{\c&H00FFFFFF}
+Dialogue: 0,0:03:05.19,0:03:05.93,Normal,,0,0,0,,{\c&H005AD1F2}correndo{\c&H00FFFFFF} pelo chão direto
+Dialogue: 0,0:03:05.93,0:03:06.17,Normal,,0,0,0,,correndo {\c&H005AD1F2}pelo{\c&H00FFFFFF} chão direto
+Dialogue: 0,0:03:06.17,0:03:06.67,Normal,,0,0,0,,correndo pelo {\c&H005AD1F2}chão{\c&H00FFFFFF} direto
+Dialogue: 0,0:03:06.67,0:03:07.59,Normal,,0,0,0,,correndo pelo chão {\c&H005AD1F2}direto{\c&H00FFFFFF}
+Dialogue: 0,0:03:07.59,0:03:07.81,Normal,,0,0,0,,{\c&H005AD1F2}nos{\c&H00FFFFFF} pés dos três finalistas!
+Dialogue: 0,0:03:07.81,0:03:08.25,Normal,,0,0,0,,nos {\c&H005AD1F2}pés{\c&H00FFFFFF} dos três finalistas!
+Dialogue: 0,0:03:08.25,0:03:08.37,Normal,,0,0,0,,nos pés {\c&H005AD1F2}dos{\c&H00FFFFFF} três finalistas!
+Dialogue: 0,0:03:08.37,0:03:08.85,Normal,,0,0,0,,nos pés dos {\c&H005AD1F2}três{\c&H00FFFFFF} finalistas!
+Dialogue: 0,0:03:08.85,0:03:10.05,Normal,,0,0,0,,nos pés dos três {\c&H005AD1F2}finalistas!{\c&H00FFFFFF}
+Dialogue: 0,0:03:10.64,0:03:10.78,Normal,,0,0,0,,{\c&H005AD1F2}E{\c&H00FFFFFF} quem cai é justo
+Dialogue: 0,0:03:10.78,0:03:10.94,Normal,,0,0,0,,E {\c&H005AD1F2}quem{\c&H00FFFFFF} cai é justo
+Dialogue: 0,0:03:10.94,0:03:11.32,Normal,,0,0,0,,E quem {\c&H005AD1F2}cai{\c&H00FFFFFF} é justo
+Dialogue: 0,0:03:11.32,0:03:11.62,Normal,,0,0,0,,E quem cai {\c&H005AD1F2}é{\c&H00FFFFFF} justo
+Dialogue: 0,0:03:11.62,0:03:12.08,Normal,,0,0,0,,E quem cai é {\c&H005AD1F2}justo{\c&H00FFFFFF}
+Dialogue: 0,0:03:12.08,0:03:12.34,Normal,,0,0,0,,{\c&H005AD1F2}o{\c&H00FFFFFF} mais caro,
+Dialogue: 0,0:03:12.34,0:03:12.62,Normal,,0,0,0,,o {\c&H005AD1F2}mais{\c&H00FFFFFF} caro,
+Dialogue: 0,0:03:12.62,0:03:13.50,Normal,,0,0,0,,o mais {\c&H005AD1F2}caro,{\c&H00FFFFFF}
+Dialogue: 0,0:03:13.50,0:03:13.60,Normal,,0,0,0,,{\c&H005AD1F2}o{\c&H00FFFFFF} pato de ouro derrete
+Dialogue: 0,0:03:13.60,0:03:14.12,Normal,,0,0,0,,o {\c&H005AD1F2}pato{\c&H00FFFFFF} de ouro derrete
+Dialogue: 0,0:03:14.12,0:03:14.26,Normal,,0,0,0,,o pato {\c&H005AD1F2}de{\c&H00FFFFFF} ouro derrete
+Dialogue: 0,0:03:14.26,0:03:14.56,Normal,,0,0,0,,o pato de {\c&H005AD1F2}ouro{\c&H00FFFFFF} derrete
+Dialogue: 0,0:03:14.56,0:03:15.22,Normal,,0,0,0,,o pato de ouro {\c&H005AD1F2}derrete{\c&H00FFFFFF}
+Dialogue: 0,0:03:15.22,0:03:15.64,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} sai boiando na lava,
+Dialogue: 0,0:03:15.64,0:03:15.90,Normal,,0,0,0,,e {\c&H005AD1F2}sai{\c&H00FFFFFF} boiando na lava,
+Dialogue: 0,0:03:15.90,0:03:16.64,Normal,,0,0,0,,e sai {\c&H005AD1F2}boiando{\c&H00FFFFFF} na lava,
+Dialogue: 0,0:03:16.64,0:03:16.84,Normal,,0,0,0,,e sai boiando {\c&H005AD1F2}na{\c&H00FFFFFF} lava,
+Dialogue: 0,0:03:16.84,0:03:17.66,Normal,,0,0,0,,e sai boiando na {\c&H005AD1F2}lava,{\c&H00FFFFFF}
+Dialogue: 0,0:03:17.66,0:03:18.61,Normal,,0,0,0,,{\c&H005AD1F2}sobram{\c&H00FFFFFF} 2!
+Dialogue: 0,0:03:18.61,0:03:19.55,Normal,,0,0,0,,sobram {\c&H005AD1F2}2!{\c&H00FFFFFF}
+Dialogue: 0,0:03:19.55,0:03:20.43,Normal,,0,0,0,,{\c&H005AD1F2}Final,{\c&H00FFFFFF} touro contra coruja
+Dialogue: 0,0:03:20.43,0:03:20.73,Normal,,0,0,0,,Final, {\c&H005AD1F2}touro{\c&H00FFFFFF} contra coruja
+Dialogue: 0,0:03:20.73,0:03:21.11,Normal,,0,0,0,,Final, touro {\c&H005AD1F2}contra{\c&H00FFFFFF} coruja
+Dialogue: 0,0:03:21.11,0:03:21.77,Normal,,0,0,0,,Final, touro contra {\c&H005AD1F2}coruja{\c&H00FFFFFF}
+Dialogue: 0,0:03:21.77,0:03:22.01,Normal,,0,0,0,,{\c&H005AD1F2}se{\c&H00FFFFFF} encarando dentro da lava,
+Dialogue: 0,0:03:22.01,0:03:22.69,Normal,,0,0,0,,se {\c&H005AD1F2}encarando{\c&H00FFFFFF} dentro da lava,
+Dialogue: 0,0:03:22.69,0:03:23.13,Normal,,0,0,0,,se encarando {\c&H005AD1F2}dentro{\c&H00FFFFFF} da lava,
+Dialogue: 0,0:03:23.13,0:03:23.43,Normal,,0,0,0,,se encarando dentro {\c&H005AD1F2}da{\c&H00FFFFFF} lava,
+Dialogue: 0,0:03:23.43,0:03:24.31,Normal,,0,0,0,,se encarando dentro da {\c&H005AD1F2}lava,{\c&H00FFFFFF}
+Dialogue: 0,0:03:24.31,0:03:24.41,Normal,,0,0,0,,{\c&H005AD1F2}o{\c&H00FFFFFF} touro aguenta firme
+Dialogue: 0,0:03:24.41,0:03:24.87,Normal,,0,0,0,,o {\c&H005AD1F2}touro{\c&H00FFFFFF} aguenta firme
+Dialogue: 0,0:03:24.87,0:03:25.41,Normal,,0,0,0,,o touro {\c&H005AD1F2}aguenta{\c&H00FFFFFF} firme
+Dialogue: 0,0:03:25.41,0:03:26.09,Normal,,0,0,0,,o touro aguenta {\c&H005AD1F2}firme{\c&H00FFFFFF}
+Dialogue: 0,0:03:26.09,0:03:26.51,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} por isso o Remendo
+Dialogue: 0,0:03:26.51,0:03:26.73,Normal,,0,0,0,,e {\c&H005AD1F2}por{\c&H00FFFFFF} isso o Remendo
+Dialogue: 0,0:03:26.73,0:03:27.09,Normal,,0,0,0,,e por {\c&H005AD1F2}isso{\c&H00FFFFFF} o Remendo
+Dialogue: 0,0:03:27.09,0:03:27.49,Normal,,0,0,0,,e por isso {\c&H005AD1F2}o{\c&H00FFFFFF} Remendo
+Dialogue: 0,0:03:27.49,0:03:28.03,Normal,,0,0,0,,e por isso o {\c&H005AD1F2}Remendo{\c&H00FFFFFF}
+Dialogue: 0,0:03:28.03,0:03:28.61,Normal,,0,0,0,,{\c&H005AD1F2}fecha{\c&H00FFFFFF} a porta e manda
+Dialogue: 0,0:03:28.61,0:03:28.73,Normal,,0,0,0,,fecha {\c&H005AD1F2}a{\c&H00FFFFFF} porta e manda
+Dialogue: 0,0:03:28.73,0:03:29.17,Normal,,0,0,0,,fecha a {\c&H005AD1F2}porta{\c&H00FFFFFF} e manda
+Dialogue: 0,0:03:29.17,0:03:29.65,Normal,,0,0,0,,fecha a porta {\c&H005AD1F2}e{\c&H00FFFFFF} manda
+Dialogue: 0,0:03:29.65,0:03:30.09,Normal,,0,0,0,,fecha a porta e {\c&H005AD1F2}manda{\c&H00FFFFFF}
+Dialogue: 0,0:03:30.09,0:03:30.47,Normal,,0,0,0,,{\c&H005AD1F2}tudo{\c&H00FFFFFF} para 1.500 °C.
+Dialogue: 0,0:03:30.47,0:03:32.28,Normal,,0,0,0,,tudo {\c&H005AD1F2}para{\c&H00FFFFFF} 1.500 °C.
+Dialogue: 0,0:03:32.28,0:03:34.10,Normal,,0,0,0,,tudo para {\c&H005AD1F2}1.500{\c&H00FFFFFF} °C.
+Dialogue: 0,0:03:34.10,0:03:35.30,Normal,,0,0,0,,tudo para 1.500 {\c&H005AD1F2}°C.{\c&H00FFFFFF}
+Dialogue: 0,0:03:35.91,0:03:36.03,Normal,,0,0,0,,{\c&H005AD1F2}O{\c&H00FFFFFF} touro treme,
+Dialogue: 0,0:03:36.03,0:03:36.47,Normal,,0,0,0,,O {\c&H005AD1F2}touro{\c&H00FFFFFF} treme,
+Dialogue: 0,0:03:36.47,0:03:37.31,Normal,,0,0,0,,O touro {\c&H005AD1F2}treme,{\c&H00FFFFFF}
+Dialogue: 0,0:03:37.31,0:03:38.07,Normal,,0,0,0,,{\c&H005AD1F2}abaixa{\c&H00FFFFFF} os chifres bem devagar
+Dialogue: 0,0:03:38.07,0:03:38.23,Normal,,0,0,0,,abaixa {\c&H005AD1F2}os{\c&H00FFFFFF} chifres bem devagar
+Dialogue: 0,0:03:38.23,0:03:38.75,Normal,,0,0,0,,abaixa os {\c&H005AD1F2}chifres{\c&H00FFFFFF} bem devagar
+Dialogue: 0,0:03:38.75,0:03:39.19,Normal,,0,0,0,,abaixa os chifres {\c&H005AD1F2}bem{\c&H00FFFFFF} devagar
+Dialogue: 0,0:03:39.19,0:03:39.85,Normal,,0,0,0,,abaixa os chifres bem {\c&H005AD1F2}devagar{\c&H00FFFFFF}
+Dialogue: 0,0:03:39.85,0:03:40.31,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} escorre, acabou!
+Dialogue: 0,0:03:40.31,0:03:41.41,Normal,,0,0,0,,e {\c&H005AD1F2}escorre,{\c&H00FFFFFF} acabou!
+Dialogue: 0,0:03:41.41,0:03:42.61,Normal,,0,0,0,,e escorre, {\c&H005AD1F2}acabou!{\c&H00FFFFFF}
+Dialogue: 0,0:03:42.87,0:03:42.97,Normal,,0,0,0,,{\c&H005AD1F2}A{\c&H00FFFFFF} coruja de tungstênio
+Dialogue: 0,0:03:42.97,0:03:43.59,Normal,,0,0,0,,A {\c&H005AD1F2}coruja{\c&H00FFFFFF} de tungstênio
+Dialogue: 0,0:03:43.59,0:03:43.73,Normal,,0,0,0,,A coruja {\c&H005AD1F2}de{\c&H00FFFFFF} tungstênio
+Dialogue: 0,0:03:43.73,0:03:44.63,Normal,,0,0,0,,A coruja de {\c&H005AD1F2}tungstênio{\c&H00FFFFFF}
+Dialogue: 0,0:03:44.63,0:03:45.07,Normal,,0,0,0,,{\c&H005AD1F2}é{\c&H00FFFFFF} a campeã e
+Dialogue: 0,0:03:45.07,0:03:45.17,Normal,,0,0,0,,é {\c&H005AD1F2}a{\c&H00FFFFFF} campeã e
+Dialogue: 0,0:03:45.17,0:03:46.05,Normal,,0,0,0,,é a {\c&H005AD1F2}campeã{\c&H00FFFFFF} e
+Dialogue: 0,0:03:46.05,0:03:46.47,Normal,,0,0,0,,é a campeã {\c&H005AD1F2}e{\c&H00FFFFFF}
+Dialogue: 0,0:03:46.47,0:03:46.67,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} pé no meio
+Dialogue: 0,0:03:46.67,0:03:47.05,Normal,,0,0,0,,de {\c&H005AD1F2}pé{\c&H00FFFFFF} no meio
+Dialogue: 0,0:03:47.05,0:03:47.21,Normal,,0,0,0,,de pé {\c&H005AD1F2}no{\c&H00FFFFFF} meio
+Dialogue: 0,0:03:47.21,0:03:47.53,Normal,,0,0,0,,de pé no {\c&H005AD1F2}meio{\c&H00FFFFFF}
+Dialogue: 0,0:03:47.53,0:03:47.89,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} 8 poças,
+Dialogue: 0,0:03:47.89,0:03:48.25,Normal,,0,0,0,,de {\c&H005AD1F2}8{\c&H00FFFFFF} poças,
+Dialogue: 0,0:03:48.25,0:03:49.19,Normal,,0,0,0,,de 8 {\c&H005AD1F2}poças,{\c&H00FFFFFF}
+Dialogue: 0,0:03:49.19,0:03:49.59,Normal,,0,0,0,,{\c&H005AD1F2}porque{\c&H00FFFFFF} ela só derreteria
+Dialogue: 0,0:03:49.59,0:03:49.89,Normal,,0,0,0,,porque {\c&H005AD1F2}ela{\c&H00FFFFFF} só derreteria
+Dialogue: 0,0:03:49.89,0:03:50.23,Normal,,0,0,0,,porque ela {\c&H005AD1F2}só{\c&H00FFFFFF} derreteria
+Dialogue: 0,0:03:50.23,0:03:51.11,Normal,,0,0,0,,porque ela só {\c&H005AD1F2}derreteria{\c&H00FFFFFF}
+Dialogue: 0,0:03:51.11,0:03:52.71,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} 3.422 °C!
+Dialogue: 0,0:03:52.71,0:03:54.31,Normal,,0,0,0,,a {\c&H005AD1F2}3.422{\c&H00FFFFFF} °C!
+Dialogue: 0,0:03:54.31,0:03:55.51,Normal,,0,0,0,,a 3.422 {\c&H005AD1F2}°C!{\c&H00FFFFFF}
+Dialogue: 0,0:03:55.91,0:03:56.07,Normal,,0,0,0,,{\c&H005AD1F2}Só{\c&H00FFFFFF} que ela não
+Dialogue: 0,0:03:56.07,0:03:56.27,Normal,,0,0,0,,Só {\c&H005AD1F2}que{\c&H00FFFFFF} ela não
+Dialogue: 0,0:03:56.27,0:03:56.45,Normal,,0,0,0,,Só que {\c&H005AD1F2}ela{\c&H00FFFFFF} não
+Dialogue: 0,0:03:56.45,0:03:56.77,Normal,,0,0,0,,Só que ela {\c&H005AD1F2}não{\c&H00FFFFFF}
+Dialogue: 0,0:03:56.77,0:03:57.03,Normal,,0,0,0,,{\c&H005AD1F2}é{\c&H00FFFFFF} a coisa mais resistente
+Dialogue: 0,0:03:57.03,0:03:57.15,Normal,,0,0,0,,é {\c&H005AD1F2}a{\c&H00FFFFFF} coisa mais resistente
+Dialogue: 0,0:03:57.15,0:03:57.45,Normal,,0,0,0,,é a {\c&H005AD1F2}coisa{\c&H00FFFFFF} mais resistente
+Dialogue: 0,0:03:57.45,0:03:57.89,Normal,,0,0,0,,é a coisa {\c&H005AD1F2}mais{\c&H00FFFFFF} resistente
+Dialogue: 0,0:03:57.89,0:03:58.69,Normal,,0,0,0,,é a coisa mais {\c&H005AD1F2}resistente{\c&H00FFFFFF}
+Dialogue: 0,0:03:58.69,0:03:58.89,Normal,,0,0,0,,{\c&H005AD1F2}do{\c&H00FFFFFF} mundo, existe um material
+Dialogue: 0,0:03:58.89,0:03:59.67,Normal,,0,0,0,,do {\c&H005AD1F2}mundo,{\c&H00FFFFFF} existe um material
+Dialogue: 0,0:03:59.67,0:04:00.05,Normal,,0,0,0,,do mundo, {\c&H005AD1F2}existe{\c&H00FFFFFF} um material
+Dialogue: 0,0:04:00.05,0:04:00.31,Normal,,0,0,0,,do mundo, existe {\c&H005AD1F2}um{\c&H00FFFFFF} material
+Dialogue: 0,0:04:00.31,0:04:00.79,Normal,,0,0,0,,do mundo, existe um {\c&H005AD1F2}material{\c&H00FFFFFF}
+Dialogue: 0,0:04:00.79,0:04:01.29,Normal,,0,0,0,,{\c&H005AD1F2}chamado{\c&H00FFFFFF} carboneto de háfnio
+Dialogue: 0,0:04:01.29,0:04:02.37,Normal,,0,0,0,,chamado {\c&H005AD1F2}carboneto{\c&H00FFFFFF} de háfnio
+Dialogue: 0,0:04:02.37,0:04:02.53,Normal,,0,0,0,,chamado carboneto {\c&H005AD1F2}de{\c&H00FFFFFF} háfnio
+Dialogue: 0,0:04:02.53,0:04:03.17,Normal,,0,0,0,,chamado carboneto de {\c&H005AD1F2}háfnio{\c&H00FFFFFF}
+Dialogue: 0,0:04:03.17,0:04:03.61,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} aguenta quase 4.000 °C.
+Dialogue: 0,0:04:03.61,0:04:04.11,Normal,,0,0,0,,que {\c&H005AD1F2}aguenta{\c&H00FFFFFF} quase 4.000 °C.
+Dialogue: 0,0:04:04.11,0:04:05.10,Normal,,0,0,0,,que aguenta {\c&H005AD1F2}quase{\c&H00FFFFFF} 4.000 °C.
+Dialogue: 0,0:04:05.10,0:04:06.10,Normal,,0,0,0,,que aguenta quase {\c&H005AD1F2}4.000{\c&H00FFFFFF} °C.
+Dialogue: 0,0:04:06.10,0:04:07.09,Normal,,0,0,0,,que aguenta quase 4.000 {\c&H005AD1F2}°C.{\c&H00FFFFFF}
+Dialogue: 0,0:04:07.09,0:04:07.43,Normal,,0,0,0,,{\c&H005AD1F2}Então{\c&H00FFFFFF} deixa o like
+Dialogue: 0,0:04:07.43,0:04:07.89,Normal,,0,0,0,,Então {\c&H005AD1F2}deixa{\c&H00FFFFFF} o like
+Dialogue: 0,0:04:07.89,0:04:08.09,Normal,,0,0,0,,Então deixa {\c&H005AD1F2}o{\c&H00FFFFFF} like
+Dialogue: 0,0:04:08.09,0:04:08.39,Normal,,0,0,0,,Então deixa o {\c&H005AD1F2}like{\c&H00FFFFFF}
+Dialogue: 0,0:04:08.39,0:04:08.57,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} se inscreve no Até
+Dialogue: 0,0:04:08.57,0:04:08.71,Normal,,0,0,0,,e {\c&H005AD1F2}se{\c&H00FFFFFF} inscreve no Até
+Dialogue: 0,0:04:08.71,0:04:09.31,Normal,,0,0,0,,e se {\c&H005AD1F2}inscreve{\c&H00FFFFFF} no Até
+Dialogue: 0,0:04:09.31,0:04:09.45,Normal,,0,0,0,,e se inscreve {\c&H005AD1F2}no{\c&H00FFFFFF} Até
+Dialogue: 0,0:04:09.45,0:04:09.81,Normal,,0,0,0,,e se inscreve no {\c&H005AD1F2}Até{\c&H00FFFFFF}
+Dialogue: 0,0:04:09.81,0:04:10.17,Normal,,0,0,0,,{\c&H005AD1F2}Onde{\c&H00FFFFFF} Aguenta, porque
+Dialogue: 0,0:04:10.17,0:04:11.01,Normal,,0,0,0,,Onde {\c&H005AD1F2}Aguenta,{\c&H00FFFFFF} porque
+Dialogue: 0,0:04:11.01,0:04:11.35,Normal,,0,0,0,,Onde Aguenta, {\c&H005AD1F2}porque{\c&H00FFFFFF}
+Dialogue: 0,0:04:11.35,0:04:11.53,Normal,,0,0,0,,{\c&H005AD1F2}no{\c&H00FFFFFF} próximo vídeo é
+Dialogue: 0,0:04:11.53,0:04:12.03,Normal,,0,0,0,,no {\c&H005AD1F2}próximo{\c&H00FFFFFF} vídeo é
+Dialogue: 0,0:04:12.03,0:04:12.57,Normal,,0,0,0,,no próximo {\c&H005AD1F2}vídeo{\c&H00FFFFFF} é
+Dialogue: 0,0:04:12.57,0:04:13.01,Normal,,0,0,0,,no próximo vídeo {\c&H005AD1F2}é{\c&H00FFFFFF}
+Dialogue: 0,0:04:13.01,0:04:13.13,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} coruja contra o carboneto
+Dialogue: 0,0:04:13.13,0:04:13.79,Normal,,0,0,0,,a {\c&H005AD1F2}coruja{\c&H00FFFFFF} contra o carboneto
+Dialogue: 0,0:04:13.79,0:04:14.27,Normal,,0,0,0,,a coruja {\c&H005AD1F2}contra{\c&H00FFFFFF} o carboneto
+Dialogue: 0,0:04:14.27,0:04:14.43,Normal,,0,0,0,,a coruja contra {\c&H005AD1F2}o{\c&H00FFFFFF} carboneto
+Dialogue: 0,0:04:14.43,0:04:15.27,Normal,,0,0,0,,a coruja contra o {\c&H005AD1F2}carboneto{\c&H00FFFFFF}
+Dialogue: 0,0:04:15.27,0:04:15.45,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} háfnio!
+Dialogue: 0,0:04:15.45,0:04:16.65,Normal,,0,0,0,,de {\c&H005AD1F2}háfnio!{\c&H00FFFFFF}
+Dialogue: 0,0:04:16.77,0:04:16.87,Normal,,0,0,0,,{\c&H005AD1F2}E{\c&H00FFFFFF} o Remendo já está
+Dialogue: 0,0:04:16.87,0:04:16.95,Normal,,0,0,0,,E {\c&H005AD1F2}o{\c&H00FFFFFF} Remendo já está
+Dialogue: 0,0:04:16.95,0:04:17.45,Normal,,0,0,0,,E o {\c&H005AD1F2}Remendo{\c&H00FFFFFF} já está
+Dialogue: 0,0:04:17.45,0:04:17.67,Normal,,0,0,0,,E o Remendo {\c&H005AD1F2}já{\c&H00FFFFFF} está
+Dialogue: 0,0:04:17.67,0:04:17.97,Normal,,0,0,0,,E o Remendo já {\c&H005AD1F2}está{\c&H00FFFFFF}
+Dialogue: 0,0:04:17.97,0:04:18.75,Normal,,0,0,0,,{\c&H005AD1F2}apontando{\c&H00FFFFFF} para o Sol.
+Dialogue: 0,0:04:18.75,0:04:18.99,Normal,,0,0,0,,apontando {\c&H005AD1F2}para{\c&H00FFFFFF} o Sol.
+Dialogue: 0,0:04:18.99,0:04:19.07,Normal,,0,0,0,,apontando para {\c&H005AD1F2}o{\c&H00FFFFFF} Sol.
+Dialogue: 0,0:04:19.07,0:04:20.27,Normal,,0,0,0,,apontando para o {\c&H005AD1F2}Sol.{\c&H00FFFFFF}

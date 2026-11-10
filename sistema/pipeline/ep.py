@@ -23,21 +23,28 @@ NOVAS = {
     "imagens": ("imagens", "midia/cenas", ["storyboard.md", "prompts_ia.md"], "prompts_ia.md → midia/cenas/ (cenógrafo)"),
     "motion": ("motion", "midia/motion", ["storyboard.md"], "midia/motion/ (clipes e cenas de motion)"),
     "som": ("som", "midia/sfx.csv", ["storyboard.md"], "midia/sfx.csv e trilha (sons.py buscar <termo>)"),
+    "dossiê": ("dossiê", "dossie.md", [], "dossie.md (pesquisador, antes do roteiro)"),
+    "fontes": ("fontes", "fontes.md", ["narracao.txt"], "fontes.md conferindo narracao.txt (pesquisador)"),
     "revisão": ("revisão", "passagem/revisao-final.md", ["midia/final.mp4"], "parecer em passagem/revisao-final.md"),
 }
 DONOS = {"roteiro": "roteirista", "voz": "narrador", "palavras": "narrador", "storyboard": "diretor", "imagens": "cenografo",
          "motion": "animador-2d", "som": "sonoplasta", "edl": "montador", "legenda": "montador", "final": "montador",
-         "revisão": "revisor", "publicação": "publicador", "postado": "orquestrador"}
+         "dossiê": "pesquisador", "fontes": "pesquisador", "revisão": "revisor", "publicação": "publicador", "postado": "orquestrador"}
 
 
 def etapas(v):
     if not (v / "brief.md").exists():
         return ETAPAS
+    br = (v / "brief.md").read_text(encoding="utf8")
+    t = (re.search(r"^tipo:\s*([\w-]+)", br, re.M) or [0, ""])[1]
+    pulada = re.search(r"^pesquisa:\s*pulada", br, re.M)
+    pre = [NOVAS["dossiê"]] if t in ("informativo", "competicao-fato") and not pulada else []
+    pos = [NOVAS["fontes"]] if t == "informativo" and not pulada else []
     sb = (v / "storyboard.md").read_text(encoding="utf8") if (v / "storyboard.md").exists() else ""
     tem = {"imagens": "IMAGEM" in sb or (v / "prompts_ia.md").exists(), "som": True,
            "motion": "MOTION" in sb and not re.search(r"formato:\s*3d", (v / "brief.md").read_text(encoding="utf8"))}
     novas = [NOVAS[n] for n in ("imagens", "motion", "som") if tem[n]]
-    return [y for e in ETAPAS for y in (novas if e[0] == "edl" else []) + [e] + ([NOVAS["revisão"]] if e[0] == "final" else [])]
+    return [y for e in ETAPAS for y in (pre if e[0] == "roteiro" else []) + (novas if e[0] == "edl" else []) + [e] + (pos if e[0] == "palavras" else []) + ([NOVAS["revisão"]] if e[0] == "final" else [])]
 
 def pendencias(v):
     ms = ((f, re.search(r"^estado:\s*(devolve:\S+|bloqueado)", f.read_text(encoding="utf8"), re.M)) for f in sorted((v / "passagem").glob("*.md")))

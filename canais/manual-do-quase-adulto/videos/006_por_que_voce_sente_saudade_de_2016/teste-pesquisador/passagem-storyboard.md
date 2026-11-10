@@ -1,0 +1,8 @@
+estado: pronto (teste; storyboard.md original intacto)
+entregue: teste-pesquisador/storyboard.md · 133 cenas, 0:00–11:20 sem buraco (fechei 8 lacunas do original nas pausas), 29 cenas de fonte, 21 fontes com crédito
+decisões: mestres, cor e cortes do original mantidos; prints só F1/F2/F9 (0:05, 3:55, 8:16); Fortune saiu do p3; Zhou p5 vira envelope lacrado (4) que abre no print de 8:16; clipes K: o tratamento vale na fala, a pausa com som não conta; pins Mississippi/Casa Branca e amostras de Zhou fora da tela
+medidas: 1:3 · 2:1 · 3:3 · 4:4 · 5:2 · 6:3 · 7:4 · 8:9 (teto 9,7); maior sequência igual 1; som sem repetição entre cenas de fonte seguidas; ~11,7 cenas/min
+pendências: [pesquisador] manchetes dez/2016 (16), Google Trends (13), série IBGE (17), curva Rubin (71), licença/crédito K1–K7, origem do Bambam (37), conferir título Routledge 2011 (104) · [roteirista] trocas do fontes.md (p3, p4, p14, p28, p35, p39, p43) e p48/p50 sem fonte · [montador] transição só corte/whip: variação das cenas de fonte vem do som e da entrada
+ajuste (zero prints): cena 2 Hofer vira ilustração (4), 48 Fortune cartão em paráfrase (5), 99 Zhou envelope abre com cartão em português (2); 0 prints; contagem 0·2·3·5·3·3·4·9 (soma 29), maior sequência 1; nenhuma vizinha mudou, só transição de 2 e 48 passou a whip
+material novo: arte do escritório de 1688 com título em latim redesenhado (2) · cartão Fortune em paráfrase, conferir texto da fonte antes de virar citação (48) · cartão em português de Zhou, sem amostras (99)
+aprendizado: com o selo obrigatório para fonte que volta, o 8 encosta no teto de um terço; ter ≥1 fonte nova com cartão de citação ou reencenação real alivia

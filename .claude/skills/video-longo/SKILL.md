@@ -19,7 +19,7 @@ Palavras = minutos × ppm do canal (`canal.md` › Voz; sem medida, 155): 8 min 
 - Primeira revelação da promessa (uma resposta, não mais contexto) até 2:30; re-gancho (pergunta) no meio; fecho volta à cena de abertura e ao primeiro tempo.
 - Um parágrafo = uma ideia que vira cena. Segunda pessoa, situações e números concretos.
 - Variar o ritmo pela direção (`<slow>`, `<fast>`, tom baixo), não por frases picadas.
-- Nunca inventar estudo, número ou autor: conferir os estudos centrais online antes de narrar. Anedota fora do estudo entra como "a história conta". Tema de saúde mental: uma linha indicando um profissional.
+- Nunca inventar estudo, número ou autor: escrever a partir do `dossie.md`; fato novo volta ao pesquisador. Anedota fora do estudo entra como "a história conta". Tema de saúde mental: uma linha indicando um profissional.
 - Competição ("último que…", "um vs outro") não usa esta estrutura: `competicao.md`.
 - Marcar em `marcos.txt` o parágrafo de cada marco (`promessa 3`, `gancho 5`, `revelacao 9`, `virada 31`) e rodar `python sistema/pipeline/medir.py <pasta>` antes de pedir aprovação.
 
@@ -28,7 +28,7 @@ Palavras = minutos × ppm do canal (`canal.md` › Voz; sem medida, 155): 8 min 
 
 ## 4. Storyboard → `storyboard.md`
 A partir de `audio/palavras.json`. Agrupar parágrafos em blocos; nem toda frase vira cena. ≈6–8 cenas-mestre, cada uma voltando 2–4×. Coluna Som preenchida (vira `sfx.csv`).
-Cada fonte citada (estudo, livro, autor): achar a página real (artigo, capa do livro), salvar o print recortado em `midia/fontes/` e virar cena MOTION com o print no momento em que é citada.
+Cada fonte citada ganha crédito na tela; o tratamento sai do cardápio de `producao/pesquisa.md` (o padrão é sem print; print só entra a pedido do diretor, no máximo 3 por vídeo, em português ou com legenda traduzida; nunca dois tratamentos iguais em sequência).
 
 ## 5. Prompts → `prompts_ia.md`
 Só as cenas IMAGEM, nos blocos ```img / ```edit de `formatos.md`; imagens em `midia/cenas/`.

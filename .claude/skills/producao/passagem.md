@@ -6,7 +6,8 @@ Na pasta do vídeo, além do que já existe.
 ```
 canal:
 formato: longo | vertical | 3d
-estrutura: informativo | competição | escala
+tipo: informativo | competicao-fato | competicao-livre | historia
+pesquisa: pulada (motivo)   # só se pulou
 ideia:
 duração e palavras-alvo: (ppm do canal)
 braço do CTA:
@@ -32,13 +33,13 @@ medidas: palavras, ppm, duração, custo de GPU
 pendências: [para quem] o quê, onde (parágrafo/cena)
 aprendizado: regra reutilizável, se houver
 ```
-Etapas: `pesquisa`, `roteiro`, `narracao`, `storyboard`, `cenas`, `motion`, `animacao3d`, `som`, `montagem`, `publicacao`. O retorno do agente ao orquestrador é o mesmo texto, ≤8 linhas. Pareceres do revisor, salvos pelo orquestrador: `passagem/revisao-roteiro.md` (R1), `revisao-final.md` (R2), `revisao-publicacao.md` (R3).
+Etapas: `dossie`, `fontes`, `roteiro`, `narracao`, `storyboard`, `cenas`, `motion`, `animacao3d`, `som`, `montagem`, `publicacao`. O retorno do agente ao orquestrador é o mesmo texto, ≤8 linhas. Pareceres do revisor, salvos pelo orquestrador: `passagem/revisao-roteiro.md` (R1), `revisao-final.md` (R2), `revisao-publicacao.md` (R3).
 
 ## Posse de arquivos
 | Arquivo | Dono |
 |---|---|
 | `brief.md`, `passagem/revisao-*.md`, arquivos do canal, skills, `postar.py` real | orquestrador |
-| `fontes.md`, `midia/fontes/` | pesquisador |
+| `dossie.md`, `fontes.md`, `midia/fontes/` (`dados_*.csv`, figuras; print só a pedido do diretor) | pesquisador |
 | `narracao.txt`, `marcos.txt` | roteirista |
 | `audio/` | narrador |
 | `storyboard.md` | diretor |

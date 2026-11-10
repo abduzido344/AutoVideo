@@ -3,6 +3,7 @@
 **Público e tema:** jovens adultos (18–30); dificuldades da vida adulta: lado psicológico, relações, rotina.
 **Tom:** português próximo, claro e respeitoso; exemplos do cotidiano e ações possíveis; não confundir experiência comum com diagnóstico.
 **Formatos:** longo 16:9 (~8 min) e vertical 9:16.
+**Tipo padrão:** informativo
 **Personagem:** `personagem/` (ficha + `rosto.jpg`, `corpo.jpg`). Prompt-base das imagens: `estilo.txt`. Cores e fontes: `tema.json`.
 **Voz:** `voz/voz.wav` (José) + `voz/voz.txt`. Medido: 151 ppm (006, `--enxuto`). Descrição dos vídeos: incluir "Built with Fish Audio".
 **Motion:** rig `motion/effectcraft/` (`vetor.mjs`); personalidade Premium/calma.

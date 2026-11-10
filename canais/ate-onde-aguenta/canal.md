@@ -4,6 +4,7 @@ Handle: @AteOndeAguenta (livre em 2026-11-01).
 
 **Nicho e subtemas:** limites das coisas em escala, do leve ao extremo absoluto, e como cada coisa reage em cada degrau. Subtemas: corpo humano · materiais e objetos · natureza e planeta · espaço e física extrema.
 **Produção:** 100% 3D por código em `C:/Users/Abduzido/AutoVideo_local/tres/` (Three.js + Remotion, sem Blender), seguindo as 6 regras de `C:/Users/Abduzido/AutoVideo_local/tres/regras.md`; sem Flow.
+**Tipo padrão:** competicao-fato
 **Público e promessa:** curiosos de 16–35 que rolam o feed à noite, adoram "e se…?" e discutem números nos comentários. "Do normal ao impossível, degrau por degrau: até onde seu corpo, as coisas e o planeta aguentam — e o que acontece quando passa do limite." Variações para alternar: "Até onde aguenta?" · "A escala do absurdo".
 **Intensidade:** dano implícito (racha, derrete, congela, desmonta; sem sangue). "Cru" (casca rompida com fibras) só no último degrau, 1–2 s, nunca na thumbnail.
 **Tom:** sempre energético, nunca tom baixo, lento ou calmo (vale para toda direção de voz: surpresa, ironia e tensão também em energia alta) · longo conversacional ("imagina que você…") · short intenso (ênfase em cada degrau) · trilha: drone grave que sobe a cada degrau, corte seco antes da ruptura + impacto.

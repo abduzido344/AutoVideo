@@ -1,0 +1,166 @@
+{
+ "imagem": "C2.png",
+ "tamanho": [
+  1280,
+  720
+ ],
+ "chao": {
+  "parede_chao_y": 600,
+  "horizonte_y": 300,
+  "obs": "linha sobe para a direita ate y~520"
+ },
+ "area_pisa": [
+  [
+   [
+    0,
+    640
+   ],
+   [
+    330,
+    640
+   ],
+   [
+    330,
+    720
+   ],
+   [
+    0,
+    720
+   ]
+  ],
+  [
+   [
+    880,
+    580
+   ],
+   [
+    1280,
+    580
+   ],
+   [
+    1280,
+    720
+   ],
+   [
+    880,
+    720
+   ]
+  ],
+  [
+   [
+    780,
+    670
+   ],
+   [
+    1280,
+    670
+   ],
+   [
+    1280,
+    720
+   ],
+   [
+    780,
+    720
+   ]
+  ]
+ ],
+ "escala_personagem": [
+  {
+   "pes_y": 600,
+   "altura_px": 315
+  },
+  {
+   "pes_y": 650,
+   "altura_px": 368
+  },
+  {
+   "pes_y": 700,
+   "altura_px": 420
+  }
+ ],
+ "objetos": [
+  {
+   "nome": "cama",
+   "caixa": [
+    160,
+    325,
+    965,
+    690
+   ],
+   "camada": "tras"
+  },
+  {
+   "nome": "abajur",
+   "caixa": [
+    498,
+    343,
+    530,
+    392
+   ],
+   "camada": "tras"
+  },
+  {
+   "nome": "janela_cortina",
+   "caixa": [
+    680,
+    15,
+    1135,
+    425
+   ],
+   "camada": "tras"
+  },
+  {
+   "nome": "cobertor_pe_da_cama",
+   "caixa": [
+    690,
+    440,
+    965,
+    690
+   ],
+   "camada": "frente"
+  }
+ ],
+ "frente_png": "C2_frente.png",
+ "frente_poligonos": [
+  [
+   [
+    690,
+    500
+   ],
+   [
+    800,
+    495
+   ],
+   [
+    940,
+    520
+   ],
+   [
+    962,
+    575
+   ],
+   [
+    940,
+    590
+   ],
+   [
+    800,
+    670
+   ],
+   [
+    765,
+    690
+   ],
+   [
+    740,
+    640
+   ],
+   [
+    700,
+    560
+   ]
+  ]
+ ],
+ "nota": "sem tapete e sem criado-mudo visivel; personagem senta na beira da cama (x 520-800) ou pisa a direita"
+}

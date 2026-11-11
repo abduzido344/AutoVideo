@@ -1,0 +1,128 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Normal,Segoe UI,60,&H00FFFFFF,&H00FFFFFF,&H00141414,&H80000000,-1,0,0,0,100,100,0,0,1,4,1,2,110,160,430,1
+Style: Gancho,Segoe UI,100,&H00FFFFFF,&H00FFFFFF,&H00141414,&H80000000,-1,0,0,0,100,100,0,0,1,7,3,2,80,80,470,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:00.14,Normal,,0,0,0,,{\c&H00C8E4F2}Todo{\c&H00FFFFFF} dia minha mãe
+Dialogue: 0,0:00:00.14,0:00:00.60,Normal,,0,0,0,,Todo {\c&H00C8E4F2}dia{\c&H00FFFFFF} minha mãe
+Dialogue: 0,0:00:00.60,0:00:00.86,Normal,,0,0,0,,Todo dia {\c&H00C8E4F2}minha{\c&H00FFFFFF} mãe
+Dialogue: 0,0:00:00.86,0:00:01.14,Normal,,0,0,0,,Todo dia minha {\c&H00C8E4F2}mãe{\c&H00FFFFFF}
+Dialogue: 0,0:00:01.14,0:00:01.66,Normal,,0,0,0,,{\c&H00C8E4F2}fazia{\c&H00FFFFFF} duas marmitas,
+Dialogue: 0,0:00:01.66,0:00:01.98,Normal,,0,0,0,,fazia {\c&H00C8E4F2}duas{\c&H00FFFFFF} marmitas,
+Dialogue: 0,0:00:01.98,0:00:03.18,Normal,,0,0,0,,fazia duas {\c&H00C8E4F2}marmitas,{\c&H00FFFFFF}
+Dialogue: 0,0:00:03.24,0:00:03.52,Normal,,0,0,0,,{\c&H00C8E4F2}uma{\c&H00FFFFFF} era minha
+Dialogue: 0,0:00:03.52,0:00:03.78,Normal,,0,0,0,,uma {\c&H00C8E4F2}era{\c&H00FFFFFF} minha
+Dialogue: 0,0:00:03.78,0:00:04.14,Normal,,0,0,0,,uma era {\c&H00C8E4F2}minha{\c&H00FFFFFF}
+Dialogue: 0,0:00:04.14,0:00:04.76,Normal,,0,0,0,,{\c&H00C8E4F2}e{\c&H00FFFFFF} a outra ela
+Dialogue: 0,0:00:04.76,0:00:04.88,Normal,,0,0,0,,e {\c&H00C8E4F2}a{\c&H00FFFFFF} outra ela
+Dialogue: 0,0:00:04.88,0:00:05.28,Normal,,0,0,0,,e a {\c&H00C8E4F2}outra{\c&H00FFFFFF} ela
+Dialogue: 0,0:00:05.28,0:00:05.54,Normal,,0,0,0,,e a outra {\c&H00C8E4F2}ela{\c&H00FFFFFF}
+Dialogue: 0,0:00:05.54,0:00:06.12,Normal,,0,0,0,,{\c&H00C8E4F2}levava{\c&H00FFFFFF} até o portão.
+Dialogue: 0,0:00:06.12,0:00:06.48,Normal,,0,0,0,,levava {\c&H00C8E4F2}até{\c&H00FFFFFF} o portão.
+Dialogue: 0,0:00:06.48,0:00:06.64,Normal,,0,0,0,,levava até {\c&H00C8E4F2}o{\c&H00FFFFFF} portão.
+Dialogue: 0,0:00:06.64,0:00:07.74,Normal,,0,0,0,,levava até o {\c&H00C8E4F2}portão.{\c&H00FFFFFF}
+Dialogue: 0,0:00:07.74,0:00:07.86,Normal,,0,0,0,,{\c&H00C8E4F2}Eu{\c&H00FFFFFF} reclamava que ela
+Dialogue: 0,0:00:07.86,0:00:08.62,Normal,,0,0,0,,Eu {\c&H00C8E4F2}reclamava{\c&H00FFFFFF} que ela
+Dialogue: 0,0:00:08.62,0:00:08.82,Normal,,0,0,0,,Eu reclamava {\c&H00C8E4F2}que{\c&H00FFFFFF} ela
+Dialogue: 0,0:00:08.82,0:00:08.98,Normal,,0,0,0,,Eu reclamava que {\c&H00C8E4F2}ela{\c&H00FFFFFF}
+Dialogue: 0,0:00:08.98,0:00:09.16,Normal,,0,0,0,,{\c&H00C8E4F2}já{\c&H00FFFFFF} trabalhava tanto
+Dialogue: 0,0:00:09.16,0:00:09.78,Normal,,0,0,0,,já {\c&H00C8E4F2}trabalhava{\c&H00FFFFFF} tanto
+Dialogue: 0,0:00:09.78,0:00:10.32,Normal,,0,0,0,,já trabalhava {\c&H00C8E4F2}tanto{\c&H00FFFFFF}
+Dialogue: 0,0:00:10.32,0:00:10.88,Normal,,0,0,0,,{\c&H00C8E4F2}e{\c&H00FFFFFF} ainda ia cozinhar
+Dialogue: 0,0:00:10.88,0:00:11.22,Normal,,0,0,0,,e {\c&H00C8E4F2}ainda{\c&H00FFFFFF} ia cozinhar
+Dialogue: 0,0:00:11.22,0:00:11.48,Normal,,0,0,0,,e ainda {\c&H00C8E4F2}ia{\c&H00FFFFFF} cozinhar
+Dialogue: 0,0:00:11.48,0:00:12.16,Normal,,0,0,0,,e ainda ia {\c&H00C8E4F2}cozinhar{\c&H00FFFFFF}
+Dialogue: 0,0:00:12.16,0:00:12.32,Normal,,0,0,0,,{\c&H00C8E4F2}pros{\c&H00FFFFFF} outros, mas ela
+Dialogue: 0,0:00:12.32,0:00:13.30,Normal,,0,0,0,,pros {\c&H00C8E4F2}outros,{\c&H00FFFFFF} mas ela
+Dialogue: 0,0:00:13.30,0:00:13.58,Normal,,0,0,0,,pros outros, {\c&H00C8E4F2}mas{\c&H00FFFFFF} ela
+Dialogue: 0,0:00:13.58,0:00:13.84,Normal,,0,0,0,,pros outros, mas {\c&H00C8E4F2}ela{\c&H00FFFFFF}
+Dialogue: 0,0:00:13.84,0:00:14.68,Normal,,0,0,0,,{\c&H00C8E4F2}continuava{\c&H00FFFFFF} fazendo
+Dialogue: 0,0:00:14.68,0:00:15.12,Normal,,0,0,0,,continuava {\c&H00C8E4F2}fazendo{\c&H00FFFFFF}
+Dialogue: 0,0:00:15.12,0:00:15.42,Normal,,0,0,0,,{\c&H00C8E4F2}as{\c&H00FFFFFF} duas.
+Dialogue: 0,0:00:15.42,0:00:16.60,Normal,,0,0,0,,as {\c&H00C8E4F2}duas.{\c&H00FFFFFF}
+Dialogue: 0,0:00:16.60,0:00:16.74,Normal,,0,0,0,,{\c&H00C8E4F2}Um{\c&H00FFFFFF} dia fui atrás
+Dialogue: 0,0:00:16.74,0:00:17.10,Normal,,0,0,0,,Um {\c&H00C8E4F2}dia{\c&H00FFFFFF} fui atrás
+Dialogue: 0,0:00:17.10,0:00:17.38,Normal,,0,0,0,,Um dia {\c&H00C8E4F2}fui{\c&H00FFFFFF} atrás
+Dialogue: 0,0:00:17.38,0:00:17.74,Normal,,0,0,0,,Um dia fui {\c&H00C8E4F2}atrás{\c&H00FFFFFF}
+Dialogue: 0,0:00:17.74,0:00:18.26,Normal,,0,0,0,,{\c&H00C8E4F2}dela{\c&H00FFFFFF} e vi
+Dialogue: 0,0:00:18.26,0:00:18.78,Normal,,0,0,0,,dela {\c&H00C8E4F2}e{\c&H00FFFFFF} vi
+Dialogue: 0,0:00:18.78,0:00:18.98,Normal,,0,0,0,,dela e {\c&H00C8E4F2}vi{\c&H00FFFFFF}
+Dialogue: 0,0:00:18.98,0:00:19.12,Normal,,0,0,0,,{\c&H00C8E4F2}um{\c&H00FFFFFF} senhor devolvendo
+Dialogue: 0,0:00:19.12,0:00:19.54,Normal,,0,0,0,,um {\c&H00C8E4F2}senhor{\c&H00FFFFFF} devolvendo
+Dialogue: 0,0:00:19.54,0:00:20.38,Normal,,0,0,0,,um senhor {\c&H00C8E4F2}devolvendo{\c&H00FFFFFF}
+Dialogue: 0,0:00:20.38,0:00:20.50,Normal,,0,0,0,,{\c&H00C8E4F2}a{\c&H00FFFFFF} vasilha lavada,
+Dialogue: 0,0:00:20.50,0:00:21.04,Normal,,0,0,0,,a {\c&H00C8E4F2}vasilha{\c&H00FFFFFF} lavada,
+Dialogue: 0,0:00:21.04,0:00:22.12,Normal,,0,0,0,,a vasilha {\c&H00C8E4F2}lavada,{\c&H00FFFFFF}
+Dialogue: 0,0:00:22.12,0:00:22.86,Normal,,0,0,0,,{\c&H00C8E4F2}embrulhada{\c&H00FFFFFF} num pano.
+Dialogue: 0,0:00:22.86,0:00:23.02,Normal,,0,0,0,,embrulhada {\c&H00C8E4F2}num{\c&H00FFFFFF} pano.
+Dialogue: 0,0:00:23.02,0:00:24.18,Normal,,0,0,0,,embrulhada num {\c&H00C8E4F2}pano.{\c&H00FFFFFF}
+Dialogue: 0,0:00:24.18,0:00:24.44,Normal,,0,0,0,,{\c&H00C8E4F2}Minha{\c&H00FFFFFF} mãe ajeitou
+Dialogue: 0,0:00:24.44,0:00:24.66,Normal,,0,0,0,,Minha {\c&H00C8E4F2}mãe{\c&H00FFFFFF} ajeitou
+Dialogue: 0,0:00:24.66,0:00:25.26,Normal,,0,0,0,,Minha mãe {\c&H00C8E4F2}ajeitou{\c&H00FFFFFF}
+Dialogue: 0,0:00:25.26,0:00:25.38,Normal,,0,0,0,,{\c&H00C8E4F2}a{\c&H00FFFFFF} gola da camisa
+Dialogue: 0,0:00:25.38,0:00:25.78,Normal,,0,0,0,,a {\c&H00C8E4F2}gola{\c&H00FFFFFF} da camisa
+Dialogue: 0,0:00:25.78,0:00:25.90,Normal,,0,0,0,,a gola {\c&H00C8E4F2}da{\c&H00FFFFFF} camisa
+Dialogue: 0,0:00:25.90,0:00:26.36,Normal,,0,0,0,,a gola da {\c&H00C8E4F2}camisa{\c&H00FFFFFF}
+Dialogue: 0,0:00:26.36,0:00:26.82,Normal,,0,0,0,,{\c&H00C8E4F2}dele{\c&H00FFFFFF} e perguntou
+Dialogue: 0,0:00:26.82,0:00:27.30,Normal,,0,0,0,,dele {\c&H00C8E4F2}e{\c&H00FFFFFF} perguntou
+Dialogue: 0,0:00:27.30,0:00:27.92,Normal,,0,0,0,,dele e {\c&H00C8E4F2}perguntou{\c&H00FFFFFF}
+Dialogue: 0,0:00:27.92,0:00:28.12,Normal,,0,0,0,,{\c&H00C8E4F2}se{\c&H00FFFFFF} tinha comido
+Dialogue: 0,0:00:28.12,0:00:28.42,Normal,,0,0,0,,se {\c&H00C8E4F2}tinha{\c&H00FFFFFF} comido
+Dialogue: 0,0:00:28.42,0:00:28.86,Normal,,0,0,0,,se tinha {\c&H00C8E4F2}comido{\c&H00FFFFFF}
+Dialogue: 0,0:00:28.86,0:00:29.74,Normal,,0,0,0,,{\c&H00C8E4F2}tudo,{\c&H00FFFFFF} chamando
+Dialogue: 0,0:00:29.74,0:00:30.28,Normal,,0,0,0,,tudo, {\c&H00C8E4F2}chamando{\c&H00FFFFFF}
+Dialogue: 0,0:00:30.28,0:00:30.56,Normal,,0,0,0,,{\c&H00C8E4F2}aquele{\c&H00FFFFFF} senhor
+Dialogue: 0,0:00:30.56,0:00:31.06,Normal,,0,0,0,,aquele {\c&H00C8E4F2}senhor{\c&H00FFFFFF}
+Dialogue: 0,0:00:31.06,0:00:31.34,Normal,,0,0,0,,{\c&H00C8E4F2}de{\c&H00FFFFFF} professor.
+Dialogue: 0,0:00:31.34,0:00:32.54,Normal,,0,0,0,,de {\c&H00C8E4F2}professor.{\c&H00FFFFFF}
+Dialogue: 0,0:00:32.77,0:00:33.21,Normal,,0,0,0,,{\c&H00C8E4F2}Esperei{\c&H00FFFFFF} ele ir
+Dialogue: 0,0:00:33.21,0:00:33.47,Normal,,0,0,0,,Esperei {\c&H00C8E4F2}ele{\c&H00FFFFFF} ir
+Dialogue: 0,0:00:33.47,0:00:33.67,Normal,,0,0,0,,Esperei ele {\c&H00C8E4F2}ir{\c&H00FFFFFF}
+Dialogue: 0,0:00:33.67,0:00:34.13,Normal,,0,0,0,,{\c&H00C8E4F2}embora{\c&H00FFFFFF} e perguntei
+Dialogue: 0,0:00:34.13,0:00:34.65,Normal,,0,0,0,,embora {\c&H00C8E4F2}e{\c&H00FFFFFF} perguntei
+Dialogue: 0,0:00:34.65,0:00:35.31,Normal,,0,0,0,,embora e {\c&H00C8E4F2}perguntei{\c&H00FFFFFF}
+Dialogue: 0,0:00:35.31,0:00:35.47,Normal,,0,0,0,,{\c&H00C8E4F2}de{\c&H00FFFFFF} onde
+Dialogue: 0,0:00:35.47,0:00:35.75,Normal,,0,0,0,,de {\c&H00C8E4F2}onde{\c&H00FFFFFF}
+Dialogue: 0,0:00:35.75,0:00:36.01,Normal,,0,0,0,,{\c&H00C8E4F2}se{\c&H00FFFFFF} conheciam.
+Dialogue: 0,0:00:36.01,0:00:37.15,Normal,,0,0,0,,se {\c&H00C8E4F2}conheciam.{\c&H00FFFFFF}
+Dialogue: 0,0:00:37.15,0:00:37.37,Normal,,0,0,0,,{\c&H00C8E4F2}Ela{\c&H00FFFFFF} disse que ele
+Dialogue: 0,0:00:37.37,0:00:37.77,Normal,,0,0,0,,Ela {\c&H00C8E4F2}disse{\c&H00FFFFFF} que ele
+Dialogue: 0,0:00:37.77,0:00:38.05,Normal,,0,0,0,,Ela disse {\c&H00C8E4F2}que{\c&H00FFFFFF} ele
+Dialogue: 0,0:00:38.05,0:00:38.25,Normal,,0,0,0,,Ela disse que {\c&H00C8E4F2}ele{\c&H00FFFFFF}
+Dialogue: 0,0:00:38.25,0:00:38.37,Normal,,0,0,0,,{\c&H00C8E4F2}a{\c&H00FFFFFF} ensinou a ler
+Dialogue: 0,0:00:38.37,0:00:38.85,Normal,,0,0,0,,a {\c&H00C8E4F2}ensinou{\c&H00FFFFFF} a ler
+Dialogue: 0,0:00:38.85,0:00:38.97,Normal,,0,0,0,,a ensinou {\c&H00C8E4F2}a{\c&H00FFFFFF} ler
+Dialogue: 0,0:00:38.97,0:00:39.23,Normal,,0,0,0,,a ensinou a {\c&H00C8E4F2}ler{\c&H00FFFFFF}
+Dialogue: 0,0:00:39.23,0:00:39.51,Normal,,0,0,0,,{\c&H00C8E4F2}quando{\c&H00FFFFFF} não tinha
+Dialogue: 0,0:00:39.51,0:00:39.77,Normal,,0,0,0,,quando {\c&H00C8E4F2}não{\c&H00FFFFFF} tinha
+Dialogue: 0,0:00:39.77,0:00:40.11,Normal,,0,0,0,,quando não {\c&H00C8E4F2}tinha{\c&H00FFFFFF}
+Dialogue: 0,0:00:40.11,0:00:40.71,Normal,,0,0,0,,{\c&H00C8E4F2}dinheiro{\c&H00FFFFFF} nem pro
+Dialogue: 0,0:00:40.71,0:00:41.07,Normal,,0,0,0,,dinheiro {\c&H00C8E4F2}nem{\c&H00FFFFFF} pro
+Dialogue: 0,0:00:41.07,0:00:41.31,Normal,,0,0,0,,dinheiro nem {\c&H00C8E4F2}pro{\c&H00FFFFFF}
+Dialogue: 0,0:00:41.31,0:00:42.51,Normal,,0,0,0,,{\c&H00C8E4F2}caderno.{\c&H00FFFFFF}
+Dialogue: 0,0:00:42.57,0:00:42.69,Normal,,0,0,0,,{\c&H00C8E4F2}No{\c&H00FFFFFF} dia seguinte
+Dialogue: 0,0:00:42.69,0:00:42.95,Normal,,0,0,0,,No {\c&H00C8E4F2}dia{\c&H00FFFFFF} seguinte
+Dialogue: 0,0:00:42.95,0:00:43.41,Normal,,0,0,0,,No dia {\c&H00C8E4F2}seguinte{\c&H00FFFFFF}
+Dialogue: 0,0:00:43.41,0:00:44.13,Normal,,0,0,0,,{\c&H00C8E4F2}acordei{\c&H00FFFFFF} mais cedo
+Dialogue: 0,0:00:44.13,0:00:44.33,Normal,,0,0,0,,acordei {\c&H00C8E4F2}mais{\c&H00FFFFFF} cedo
+Dialogue: 0,0:00:44.33,0:00:44.91,Normal,,0,0,0,,acordei mais {\c&H00C8E4F2}cedo{\c&H00FFFFFF}
+Dialogue: 0,0:00:44.91,0:00:45.37,Normal,,0,0,0,,{\c&H00C8E4F2}e{\c&H00FFFFFF} quando minha mãe
+Dialogue: 0,0:00:45.37,0:00:45.63,Normal,,0,0,0,,e {\c&H00C8E4F2}quando{\c&H00FFFFFF} minha mãe
+Dialogue: 0,0:00:45.63,0:00:45.93,Normal,,0,0,0,,e quando {\c&H00C8E4F2}minha{\c&H00FFFFFF} mãe
+Dialogue: 0,0:00:45.93,0:00:46.21,Normal,,0,0,0,,e quando minha {\c&H00C8E4F2}mãe{\c&H00FFFFFF}
+Dialogue: 0,0:00:46.21,0:00:46.67,Normal,,0,0,0,,{\c&H00C8E4F2}entrou{\c&H00FFFFFF} na cozinha,
+Dialogue: 0,0:00:46.67,0:00:46.77,Normal,,0,0,0,,entrou {\c&H00C8E4F2}na{\c&H00FFFFFF} cozinha,
+Dialogue: 0,0:00:46.77,0:00:47.69,Normal,,0,0,0,,entrou na {\c&H00C8E4F2}cozinha,{\c&H00FFFFFF}
+Dialogue: 0,0:00:47.69,0:00:48.01,Normal,,0,0,0,,{\c&H00C8E4F2}as{\c&H00FFFFFF} duas marmitas já
+Dialogue: 0,0:00:48.01,0:00:48.31,Normal,,0,0,0,,as {\c&H00C8E4F2}duas{\c&H00FFFFFF} marmitas já
+Dialogue: 0,0:00:48.31,0:00:49.11,Normal,,0,0,0,,as duas {\c&H00C8E4F2}marmitas{\c&H00FFFFFF} já
+Dialogue: 0,0:00:49.11,0:00:49.35,Normal,,0,0,0,,as duas marmitas {\c&H00C8E4F2}já{\c&H00FFFFFF}
+Dialogue: 0,0:00:49.35,0:00:49.89,Normal,,0,0,0,,{\c&H00C8E4F2}estavam{\c&H00FFFFFF} prontas.
+Dialogue: 0,0:00:49.89,0:00:51.09,Normal,,0,0,0,,estavam {\c&H00C8E4F2}prontas.{\c&H00FFFFFF}

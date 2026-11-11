@@ -7,7 +7,7 @@
 **Personagem:** `personagem/` (ficha + `rosto.jpg`, `corpo.jpg`). Prompt-base das imagens: `estilo.txt`. Cores e fontes: `tema.json`.
 **Voz:** `voz/voz.wav` (José) + `voz/voz.txt`. Medido: 151 ppm (006, `--enxuto`). Descrição dos vídeos: incluir "Built with Fish Audio".
 **Motion:** rig `motion/effectcraft/` (`vetor.mjs`); personalidade Premium/calma.
-**A definir:** logo, banner final, frequência, identidade musical. Propostas de capa/perfil em `identidade/`.
+**A definir:** `tema.json` (não existe; trilha usa −22 dB padrão), logo, banner final, frequência, identidade musical. Propostas de capa/perfil em `identidade/`.
 
 ## Publicação (por vídeo)
 Título · alternativas · thumbnail (ideia + texto) · descrição · fontes e créditos · arquivo final · legendas · data · URL · observações.

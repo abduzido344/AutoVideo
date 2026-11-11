@@ -7,7 +7,8 @@ Dois tipos de cena. Personagem, objeto em movimento e efeito são sempre código
 ## Planos
 - Âncora 3–4 s; corte 1,5–2,5 s. Dois planos seguidos nunca com o mesmo enquadramento.
 - Enquadramentos: GERAL · HERÓI · AÇÃO · CLOSE (rosto, mão, objeto) · INSERT (objeto sozinho) · DIVIDIDO · REAÇÃO.
-- Cenário mínimo, objetos nomeados. Luz neutra (cor só na edição).
+- Objetos nomeados. Luz neutra (cor só na edição).
+- **Cenário construído**: cena com personagem não fica em fundo chapado. O diretor escolhe os cenários (lugares que voltam 2–4×, ex.: rua, quarto, escritório) e marca na Fonte `cenário C1`. O cenógrafo gera o cenário vazio (`modal_img.py`) e grava `midia/cenas/C1.mapa.json` (linha do chão/horizonte em px, área onde o personagem pisa, objetos com caixa e camada frente/trás, recortes PNG da camada da frente). O animador põe o rig animado dentro: escala pela profundidade, pés na linha do chão, sombra de contato, objeto da frente por cima, câmera com paralaxe leve. Fundo chapado só em gráfico, número e citação.
 
 ## Reaproveitar
 Poucas cenas-mestre que voltam 2–4×: outro enquadramento, congelado + zoom, outra cor, motion por cima, rima visual (a abertura volta no fim, quente). Banco de cenas em `canal.md`.

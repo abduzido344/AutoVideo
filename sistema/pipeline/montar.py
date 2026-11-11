@@ -19,9 +19,9 @@ W, H = 1920, 1080
 IMAGEM = (".png", ".jpg", ".jpeg", ".webp")
 TRANS = {"", "corte", "whip", "flash", "fim"}
 COR = {
-    "fria": "colorbalance=rs=-.05:gs=-.01:bs=.07:rm=-.03:bm=.04,eq=saturation=.88",
+    "fria": "colorbalance=rs=-.2:gs=-.04:bs=.22:rm=-.15:bm=.18:rh=-.08:bh=.1,eq=saturation=.85",
     "neutra": "null",
-    "quente": "colorbalance=rs=.06:gs=.01:bs=-.06:rm=.04:bm=-.04,eq=saturation=1.06",
+    "quente": "colorbalance=rs=.12:gs=.02:bs=-.14:rm=.1:bm=-.12:rh=.06:bh=-.08,eq=saturation=1.1",
 }
 
 

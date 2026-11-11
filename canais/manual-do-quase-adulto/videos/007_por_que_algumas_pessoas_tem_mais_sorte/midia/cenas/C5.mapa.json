@@ -1,0 +1,137 @@
+{
+ "imagem": "C5.png",
+ "tamanho": [
+  1280,
+  720
+ ],
+ "chao": {
+  "parede_chao_y": 575,
+  "horizonte_y": 300
+ },
+ "area_pisa": [
+  [
+   [
+    0,
+    590
+   ],
+   [
+    1280,
+    590
+   ],
+   [
+    1280,
+    720
+   ],
+   [
+    0,
+    720
+   ]
+  ]
+ ],
+ "escala_personagem": [
+  {
+   "pes_y": 580,
+   "altura_px": 520
+  },
+  {
+   "pes_y": 650,
+   "altura_px": 560
+  },
+  {
+   "pes_y": 710,
+   "altura_px": 600
+  }
+ ],
+ "objetos": [
+  {
+   "nome": "escrivaninha",
+   "caixa": [
+    515,
+    348,
+    1045,
+    622
+   ],
+   "camada": "tras"
+  },
+  {
+   "nome": "caneca",
+   "caixa": [
+    578,
+    312,
+    632,
+    361
+   ],
+   "camada": "frente"
+  },
+  {
+   "nome": "notebook",
+   "caixa": [
+    705,
+    345,
+    840,
+    375
+   ],
+   "camada": "frente"
+  },
+  {
+   "nome": "cadeira",
+   "caixa": [
+    740,
+    350,
+    965,
+    692
+   ],
+   "camada": "frente"
+  },
+  {
+   "nome": "estante",
+   "caixa": [
+    1015,
+    205,
+    1215,
+    592
+   ],
+   "camada": "tras"
+  }
+ ],
+ "frente_png": "C5_frente.png",
+ "frente_poligonos": [
+  [
+   [
+    515,
+    390
+   ],
+   [
+    540,
+    348
+   ],
+   [
+    1020,
+    350
+   ],
+   [
+    1045,
+    390
+   ]
+  ],
+  [
+   [
+    578,
+    312
+   ],
+   [
+    632,
+    312
+   ],
+   [
+    632,
+    361
+   ],
+   [
+    578,
+    361
+   ]
+  ]
+ ],
+ "nota": "piso livre a esquerda (x 0-500) para andar; cadeira giratoria ja no quadro"
+}

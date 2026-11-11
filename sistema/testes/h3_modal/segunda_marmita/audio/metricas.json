@@ -1,0 +1,39 @@
+{
+  "client_seconds_including_app": 130.33568570000352,
+  "calls": [
+    {
+      "paragraph": 1,
+      "client_seconds": 76.66625680000288,
+      "bytes": 688172
+    },
+    {
+      "paragraph": 2,
+      "client_seconds": 10.511739500012482,
+      "bytes": 827436
+    },
+    {
+      "paragraph": 3,
+      "client_seconds": 7.440813600027468,
+      "bytes": 700460
+    },
+    {
+      "paragraph": 4,
+      "client_seconds": 8.670543499989435,
+      "bytes": 770092
+    },
+    {
+      "paragraph": 5,
+      "client_seconds": 9.87399789999472,
+      "bytes": 884780
+    },
+    {
+      "paragraph": 6,
+      "client_seconds": 7.928290099982405,
+      "bytes": 819244
+    }
+  ],
+  "words": 116,
+  "estimate_before_run_usd": 0.23721804511278194,
+  "voice": "synthetic female Brazilian Portuguese; p001 unconditioned, subsequent p001 reference",
+  "billing": "Total faturado n\u00e3o consultado; estimativa anterior n\u00e3o \u00e9 medi\u00e7\u00e3o de cobran\u00e7a"
+}

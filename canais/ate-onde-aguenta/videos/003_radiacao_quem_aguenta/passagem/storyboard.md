@@ -1,0 +1,8 @@
+estado: pronto
+entregue: storyboard.md (112 cenas 3D, 0:00–8:30, sem cortar fala; elenco, lugares, faltas, VFX e trilha no topo)
+decisões: 8 mestres (GERAL, RAIOX, COMPARAÇÃO, MEDIDOR, REMENDO, PLACAR, PLACA, CHEGADA) · insetos e tardígrado em escala de jogo (0,35–0,5 m) · braço robótico do teto faz peteleco e coroinha (rima p3→p32→p39→p52) · 5ª marca com poeira como pista em p1/p5/p40/p41 · flash branco único em 6:52 (pausa → bactéria) · cor fria até 6:38 → neutra até 6:52 → quente
+decisões: raio-X em p13–14, p16, p24–25, p34–35, p37, p41, p46–48; time-lapse das colônias em p41 (PlacaPetri + Relogio em dias); zero prints e zero créditos (competição); dígitos só na edição
+medidas: 112 cenas, 13,2/min (acima dos ~10/min do longo por causa da regra 6 do 3D), cena de 1,2 a 8,4 s · GPU 0
+pendências: [animador-3d] modelar barata-alemã, mosca-das-frutas, tardígrado (+ bolinha seca), órgãos de mosca e tardígrado, bactéria macro, capa Dsup, partículas Mn/Fe, cópias do genoma, placa com colônias laranja-avermelhadas + pedestal + coroinha, medidor de dose até 15 mil, braço robótico, botões/alavanca/joystick/monitor do controle, acessórios do Zé (protetor, óculos, bisnaga, crachá, maca), objetos de comparação · teste de 4 s = cena 1
+pendências: [sonoplasta] trilha sugerida no topo; coluna Som → sfx.csv · [montador] numeros.txt com Gy por degrau, botão de inscrever na cena 37 (p17) · p25: Whisper perdeu o início, cena 52 usa o começo do parágrafo
+aprendizado: em longo 3D, linha do storyboard = cena com cortes internos de ~1 s; 8 mestres bastam se os enquadramentos variarem dentro de cada um

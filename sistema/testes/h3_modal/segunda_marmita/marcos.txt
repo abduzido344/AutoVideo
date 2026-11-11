@@ -1,0 +1,4 @@
+gancho 1
+revelacao 4
+virada 5
+desfecho 6

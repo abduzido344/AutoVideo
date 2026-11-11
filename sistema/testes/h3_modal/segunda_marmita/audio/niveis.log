@@ -1,0 +1,26 @@
+[aist#0:0/pcm_s16le @ 000002b41781f1c0] Guessed Channel Layout: mono
+Input #0, wav, from 'sistema/testes/h3_modal/segunda_marmita/audio/narracao.wav':
+  Metadata:
+    encoder         : Lavf61.7.100
+  Duration: 00:00:51.14, bitrate: 705 kb/s
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 44100 Hz, mono, s16, 705 kb/s
+[Parsed_volumedetect_0 @ 000002b4178d16c0] n_samples: 0
+Stream mapping:
+  Stream #0:0 -> #0:0 (pcm_s16le (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, null, to 'pipe:':
+  Metadata:
+    encoder         : Lavf61.7.100
+  Stream #0:0: Audio: pcm_s16le, 44100 Hz, mono, s16, 705 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+[Parsed_volumedetect_0 @ 000002b415cf2b00] n_samples: 2255159
+[Parsed_volumedetect_0 @ 000002b415cf2b00] mean_volume: -19.2 dB
+[Parsed_volumedetect_0 @ 000002b415cf2b00] max_volume: -3.0 dB
+[Parsed_volumedetect_0 @ 000002b415cf2b00] histogram_3db: 12
+[Parsed_volumedetect_0 @ 000002b415cf2b00] histogram_4db: 41
+[Parsed_volumedetect_0 @ 000002b415cf2b00] histogram_5db: 229
+[Parsed_volumedetect_0 @ 000002b415cf2b00] histogram_6db: 1173
+[Parsed_volumedetect_0 @ 000002b415cf2b00] histogram_7db: 3620
+[out#0/null @ 000002b41781fec0] video:0KiB audio:4405KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown
+size=N/A time=00:00:51.13 bitrate=N/A speed= 571x    

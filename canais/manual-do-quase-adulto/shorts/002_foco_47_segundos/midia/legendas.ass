@@ -1,0 +1,107 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Normal,Segoe UI,72,&H00FFFFFF,&H00FFFFFF,&H00141414,&H80000000,-1,0,0,0,100,100,0,0,1,5,2,2,80,80,430,1
+Style: Gancho,Segoe UI,100,&H00FFFFFF,&H00FFFFFF,&H00141414,&H80000000,-1,0,0,0,100,100,0,0,1,7,3,2,80,80,470,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:00.40,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}Quarenta{\c&H00FFFFFF} e sete
+Dialogue: 0,0:00:00.40,0:00:00.40,Gancho,,0,0,0,,Quarenta {\c&H005AD1F2}e{\c&H00FFFFFF} sete
+Dialogue: 0,0:00:00.40,0:00:00.70,Gancho,,0,0,0,,Quarenta e {\c&H005AD1F2}sete{\c&H00FFFFFF}
+Dialogue: 0,0:00:00.70,0:00:01.16,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}segundos{\c&H00FFFFFF} é a média
+Dialogue: 0,0:00:01.16,0:00:01.40,Gancho,,0,0,0,,segundos {\c&H005AD1F2}é{\c&H00FFFFFF} a média
+Dialogue: 0,0:00:01.40,0:00:01.48,Gancho,,0,0,0,,segundos é {\c&H005AD1F2}a{\c&H00FFFFFF} média
+Dialogue: 0,0:00:01.48,0:00:01.84,Gancho,,0,0,0,,segundos é a {\c&H005AD1F2}média{\c&H00FFFFFF}
+Dialogue: 0,0:00:01.84,0:00:02.04,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}que{\c&H00FFFFFF} a atenção numa
+Dialogue: 0,0:00:02.04,0:00:02.10,Gancho,,0,0,0,,que {\c&H005AD1F2}a{\c&H00FFFFFF} atenção numa
+Dialogue: 0,0:00:02.10,0:00:02.54,Gancho,,0,0,0,,que a {\c&H005AD1F2}atenção{\c&H00FFFFFF} numa
+Dialogue: 0,0:00:02.54,0:00:02.78,Gancho,,0,0,0,,que a atenção {\c&H005AD1F2}numa{\c&H00FFFFFF}
+Dialogue: 0,0:00:02.78,0:00:03.22,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}tela{\c&H00FFFFFF} dura antes
+Dialogue: 0,0:00:03.22,0:00:03.64,Gancho,,0,0,0,,tela {\c&H005AD1F2}dura{\c&H00FFFFFF} antes
+Dialogue: 0,0:00:03.64,0:00:04.16,Gancho,,0,0,0,,tela dura {\c&H005AD1F2}antes{\c&H00FFFFFF}
+Dialogue: 0,0:00:04.16,0:00:04.38,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}de{\c&H00FFFFFF} pular para outra.
+Dialogue: 0,0:00:04.38,0:00:04.74,Gancho,,0,0,0,,de {\c&H005AD1F2}pular{\c&H00FFFFFF} para outra.
+Dialogue: 0,0:00:04.74,0:00:05.00,Gancho,,0,0,0,,de pular {\c&H005AD1F2}para{\c&H00FFFFFF} outra.
+Dialogue: 0,0:00:05.00,0:00:05.86,Gancho,,0,0,0,,de pular para {\c&H005AD1F2}outra.{\c&H00FFFFFF}
+Dialogue: 0,0:00:05.86,0:00:06.10,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}Você{\c&H00FFFFFF} abre o notebook
+Dialogue: 0,0:00:06.10,0:00:06.38,Gancho,,0,0,0,,Você {\c&H005AD1F2}abre{\c&H00FFFFFF} o notebook
+Dialogue: 0,0:00:06.38,0:00:06.50,Gancho,,0,0,0,,Você abre {\c&H005AD1F2}o{\c&H00FFFFFF} notebook
+Dialogue: 0,0:00:06.50,0:00:06.96,Gancho,,0,0,0,,Você abre o {\c&H005AD1F2}notebook{\c&H00FFFFFF}
+Dialogue: 0,0:00:06.96,0:00:07.30,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}para{\c&H00FFFFFF} trabalhar,
+Dialogue: 0,0:00:07.30,0:00:08.20,Gancho,,0,0,0,,para {\c&H005AD1F2}trabalhar,{\c&H00FFFFFF}
+Dialogue: 0,0:00:08.20,0:00:08.26,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}o{\c&H00FFFFFF} celular vibra
+Dialogue: 0,0:00:08.26,0:00:08.60,Gancho,,0,0,0,,o {\c&H005AD1F2}celular{\c&H00FFFFFF} vibra
+Dialogue: 0,0:00:08.60,0:00:09.36,Gancho,,0,0,0,,o celular {\c&H005AD1F2}vibra{\c&H00FFFFFF}
+Dialogue: 0,0:00:09.36,0:00:09.58,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}e{\c&H00FFFFFF} quando percebe já
+Dialogue: 0,0:00:09.58,0:00:09.78,Gancho,,0,0,0,,e {\c&H005AD1F2}quando{\c&H00FFFFFF} percebe já
+Dialogue: 0,0:00:09.78,0:00:10.60,Gancho,,0,0,0,,e quando {\c&H005AD1F2}percebe{\c&H00FFFFFF} já
+Dialogue: 0,0:00:10.60,0:00:10.90,Gancho,,0,0,0,,e quando percebe {\c&H005AD1F2}já{\c&H00FFFFFF}
+Dialogue: 0,0:00:10.90,0:00:11.20,Gancho,,0,0,0,,{\fscx85\fscy85\t(0,140,\fscx100\fscy100)}{\c&H005AD1F2}está{\c&H00FFFFFF} em outra aba.
+Dialogue: 0,0:00:11.20,0:00:11.42,Gancho,,0,0,0,,está {\c&H005AD1F2}em{\c&H00FFFFFF} outra aba.
+Dialogue: 0,0:00:11.42,0:00:11.72,Gancho,,0,0,0,,está em {\c&H005AD1F2}outra{\c&H00FFFFFF} aba.
+Dialogue: 0,0:00:11.72,0:00:12.59,Gancho,,0,0,0,,está em outra {\c&H005AD1F2}aba.{\c&H00FFFFFF}
+Dialogue: 0,0:00:12.59,0:00:12.71,Normal,,0,0,0,,{\c&H005AD1F2}Só{\c&H00FFFFFF} que em 2004
+Dialogue: 0,0:00:12.71,0:00:12.87,Normal,,0,0,0,,Só {\c&H005AD1F2}que{\c&H00FFFFFF} em 2004
+Dialogue: 0,0:00:12.87,0:00:13.43,Normal,,0,0,0,,Só que {\c&H005AD1F2}em{\c&H00FFFFFF} 2004
+Dialogue: 0,0:00:13.43,0:00:13.99,Normal,,0,0,0,,Só que em {\c&H005AD1F2}2004{\c&H00FFFFFF}
+Dialogue: 0,0:00:13.99,0:00:14.23,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} pesquisadora
+Dialogue: 0,0:00:14.23,0:00:14.89,Normal,,0,0,0,,a {\c&H005AD1F2}pesquisadora{\c&H00FFFFFF}
+Dialogue: 0,0:00:14.89,0:00:15.31,Normal,,0,0,0,,{\c&H005AD1F2}Gloria{\c&H00FFFFFF} Mark da UC
+Dialogue: 0,0:00:15.31,0:00:15.89,Normal,,0,0,0,,Gloria {\c&H005AD1F2}Mark{\c&H00FFFFFF} da UC
+Dialogue: 0,0:00:15.89,0:00:16.25,Normal,,0,0,0,,Gloria Mark {\c&H005AD1F2}da{\c&H00FFFFFF} UC
+Dialogue: 0,0:00:16.25,0:00:16.69,Normal,,0,0,0,,Gloria Mark da {\c&H005AD1F2}UC{\c&H00FFFFFF}
+Dialogue: 0,0:00:16.69,0:00:17.45,Normal,,0,0,0,,{\c&H005AD1F2}Irvine{\c&H00FFFFFF} publicou
+Dialogue: 0,0:00:17.45,0:00:18.15,Normal,,0,0,0,,Irvine {\c&H005AD1F2}publicou{\c&H00FFFFFF}
+Dialogue: 0,0:00:18.15,0:00:18.29,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} essa média era
+Dialogue: 0,0:00:18.29,0:00:18.49,Normal,,0,0,0,,que {\c&H005AD1F2}essa{\c&H00FFFFFF} média era
+Dialogue: 0,0:00:18.49,0:00:18.95,Normal,,0,0,0,,que essa {\c&H005AD1F2}média{\c&H00FFFFFF} era
+Dialogue: 0,0:00:18.95,0:00:19.25,Normal,,0,0,0,,que essa média {\c&H005AD1F2}era{\c&H00FFFFFF}
+Dialogue: 0,0:00:19.25,0:00:19.51,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} 2,5 minutos.
+Dialogue: 0,0:00:19.51,0:00:19.77,Normal,,0,0,0,,de {\c&H005AD1F2}2,5{\c&H00FFFFFF} minutos.
+Dialogue: 0,0:00:19.77,0:00:20.97,Normal,,0,0,0,,de 2,5 {\c&H005AD1F2}minutos.{\c&H00FFFFFF}
+Dialogue: 0,0:00:23.08,0:00:23.16,Normal,,0,0,0,,{\c&H005AD1F2}E{\c&H00FFFFFF} ela diz
+Dialogue: 0,0:00:23.16,0:00:23.28,Normal,,0,0,0,,E {\c&H005AD1F2}ela{\c&H00FFFFFF} diz
+Dialogue: 0,0:00:23.28,0:00:23.56,Normal,,0,0,0,,E ela {\c&H005AD1F2}diz{\c&H00FFFFFF}
+Dialogue: 0,0:00:23.56,0:00:23.74,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} se recuperar
+Dialogue: 0,0:00:23.74,0:00:23.88,Normal,,0,0,0,,que {\c&H005AD1F2}se{\c&H00FFFFFF} recuperar
+Dialogue: 0,0:00:23.88,0:00:24.56,Normal,,0,0,0,,que se {\c&H005AD1F2}recuperar{\c&H00FFFFFF}
+Dialogue: 0,0:00:24.56,0:00:24.68,Normal,,0,0,0,,{\c&H005AD1F2}de{\c&H00FFFFFF} uma interrupção
+Dialogue: 0,0:00:24.68,0:00:24.78,Normal,,0,0,0,,de {\c&H005AD1F2}uma{\c&H00FFFFFF} interrupção
+Dialogue: 0,0:00:24.78,0:00:25.50,Normal,,0,0,0,,de uma {\c&H005AD1F2}interrupção{\c&H00FFFFFF}
+Dialogue: 0,0:00:25.50,0:00:25.88,Normal,,0,0,0,,{\c&H005AD1F2}pode{\c&H00FFFFFF} levar quase
+Dialogue: 0,0:00:25.88,0:00:26.24,Normal,,0,0,0,,pode {\c&H005AD1F2}levar{\c&H00FFFFFF} quase
+Dialogue: 0,0:00:26.24,0:00:27.16,Normal,,0,0,0,,pode levar {\c&H005AD1F2}quase{\c&H00FFFFFF}
+Dialogue: 0,0:00:27.16,0:00:28.07,Normal,,0,0,0,,{\c&H005AD1F2}30min.{\c&H00FFFFFF}
+Dialogue: 0,0:00:28.07,0:00:28.35,Normal,,0,0,0,,{\c&H005AD1F2}Então{\c&H00FFFFFF} quando
+Dialogue: 0,0:00:28.35,0:00:28.61,Normal,,0,0,0,,Então {\c&H005AD1F2}quando{\c&H00FFFFFF}
+Dialogue: 0,0:00:28.61,0:00:28.81,Normal,,0,0,0,,{\c&H005AD1F2}o{\c&H00FFFFFF} celular vibrar
+Dialogue: 0,0:00:28.81,0:00:29.15,Normal,,0,0,0,,o {\c&H005AD1F2}celular{\c&H00FFFFFF} vibrar
+Dialogue: 0,0:00:29.15,0:00:29.97,Normal,,0,0,0,,o celular {\c&H005AD1F2}vibrar{\c&H00FFFFFF}
+Dialogue: 0,0:00:29.97,0:00:30.43,Normal,,0,0,0,,{\c&H005AD1F2}lembra{\c&H00FFFFFF} que olhar
+Dialogue: 0,0:00:30.43,0:00:30.59,Normal,,0,0,0,,lembra {\c&H005AD1F2}que{\c&H00FFFFFF} olhar
+Dialogue: 0,0:00:30.59,0:00:30.93,Normal,,0,0,0,,lembra que {\c&H005AD1F2}olhar{\c&H00FFFFFF}
+Dialogue: 0,0:00:30.93,0:00:31.31,Normal,,0,0,0,,{\c&H005AD1F2}leva{\c&H00FFFFFF} um segundo
+Dialogue: 0,0:00:31.31,0:00:31.69,Normal,,0,0,0,,leva {\c&H005AD1F2}um{\c&H00FFFFFF} segundo
+Dialogue: 0,0:00:31.69,0:00:32.23,Normal,,0,0,0,,leva um {\c&H005AD1F2}segundo{\c&H00FFFFFF}
+Dialogue: 0,0:00:32.23,0:00:32.65,Normal,,0,0,0,,{\c&H005AD1F2}e{\c&H00FFFFFF} voltar leva bem
+Dialogue: 0,0:00:32.65,0:00:33.05,Normal,,0,0,0,,e {\c&H005AD1F2}voltar{\c&H00FFFFFF} leva bem
+Dialogue: 0,0:00:33.05,0:00:33.61,Normal,,0,0,0,,e voltar {\c&H005AD1F2}leva{\c&H00FFFFFF} bem
+Dialogue: 0,0:00:33.61,0:00:34.01,Normal,,0,0,0,,e voltar leva {\c&H005AD1F2}bem{\c&H00FFFFFF}
+Dialogue: 0,0:00:34.01,0:00:35.01,Normal,,0,0,0,,{\c&H005AD1F2}mais.{\c&H00FFFFFF}
+Dialogue: 0,0:00:35.01,0:00:35.25,Normal,,0,0,0,,{\c&H005AD1F2}Segue{\c&H00FFFFFF} o canal
+Dialogue: 0,0:00:35.25,0:00:35.35,Normal,,0,0,0,,Segue {\c&H005AD1F2}o{\c&H00FFFFFF} canal
+Dialogue: 0,0:00:35.35,0:00:35.65,Normal,,0,0,0,,Segue o {\c&H005AD1F2}canal{\c&H00FFFFFF}
+Dialogue: 0,0:00:35.65,0:00:35.91,Normal,,0,0,0,,{\c&H005AD1F2}que{\c&H00FFFFFF} a gente explica
+Dialogue: 0,0:00:35.91,0:00:35.97,Normal,,0,0,0,,que {\c&H005AD1F2}a{\c&H00FFFFFF} gente explica
+Dialogue: 0,0:00:35.97,0:00:36.11,Normal,,0,0,0,,que a {\c&H005AD1F2}gente{\c&H00FFFFFF} explica
+Dialogue: 0,0:00:36.11,0:00:36.67,Normal,,0,0,0,,que a gente {\c&H005AD1F2}explica{\c&H00FFFFFF}
+Dialogue: 0,0:00:36.67,0:00:36.81,Normal,,0,0,0,,{\c&H005AD1F2}a{\c&H00FFFFFF} vida adulta
+Dialogue: 0,0:00:36.81,0:00:37.01,Normal,,0,0,0,,a {\c&H005AD1F2}vida{\c&H00FFFFFF} adulta
+Dialogue: 0,0:00:37.01,0:00:37.51,Normal,,0,0,0,,a vida {\c&H005AD1F2}adulta{\c&H00FFFFFF}
+Dialogue: 0,0:00:37.51,0:00:37.67,Normal,,0,0,0,,{\c&H005AD1F2}com{\c&H00FFFFFF} ciência.
+Dialogue: 0,0:00:37.67,0:00:38.87,Normal,,0,0,0,,com {\c&H005AD1F2}ciência.{\c&H00FFFFFF}

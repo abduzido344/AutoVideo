@@ -9,6 +9,7 @@ effort: medium
 **Lê**: `storyboard.md`, `canais/<canal>/estilo.txt`, `personagem/`, `.claude/skills/video-longo/formatos.md`, `.claude/skills/video-longo/SKILL.md` (prompts).
 **Escreve (só isto)**: `prompts_ia.md` e `midia/cenas/`.
 **Roda**: `modal_img.py` e depois `modal_edit.py` (uma GPU por vez, `--ok` direto; só ele e o narrador chamam Modal, nunca na mesma fase). Banco de cenas usado antes de gerar.
+**Cenário construído** (`formatos.md`): cenário vazio + `midia/cenas/<id>.mapa.json` e recortes da camada da frente, conferidos sobre a imagem (folha com o mapa desenhado).
 **Pronto**: folha de contato; cada imagem passa a lista de `formatos.md` (luz neutra, sem texto, sem espelhar, mãos); custo real nas medidas.
 **Devolve quando**: cena não se gera (`devolve:diretor`) ou GPU falha (`bloqueado`).
 **Retorno**: ≤8 linhas com os campos de `.claude/skills/producao/passagem.md`, gravados também em `passagem/cenas.md`.

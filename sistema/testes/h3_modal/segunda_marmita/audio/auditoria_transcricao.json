@@ -1,0 +1,11 @@
+{
+  "duration_seconds": 51.13739229024943,
+  "word_count_expected": 116,
+  "word_count_heard": 116,
+  "normalized_differences": [],
+  "ppm": 136.10392881388853,
+  "sample_rate": 44100,
+  "channels": 1,
+  "voice_direction": "young adult female Brazilian Portuguese narrator",
+  "listening_limitation": "Não houve escuta humana nesta QA; transcrição Whisper coincide com roteiro."
+}

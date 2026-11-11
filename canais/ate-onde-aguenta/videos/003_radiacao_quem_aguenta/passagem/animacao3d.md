@@ -1,0 +1,9 @@
+estado: pronto (G3b: 3 correções aplicadas, aguarda aprovação do teste)
+entregue: tres/src/cobaia/Insetos.tsx (Barata, Mosca, Tardigrado + seco, Boca), cobaia/ZeProtetor.tsx (Zé de protetor, óculos, bisnaga e crachá presos aos ossos), cenarios/radiacao.tsx (Medidor, Braco, Colonias+Pedestal, Coroinha, Maca, Bisnaga, Facho com poeira, Vapor), cenarios/camara003.tsx (câmara, placar de 5, emissor, luz), videos/ate-onde-aguenta/l003.tsx (+ _planos.json, _palavras.json; composições l003 e elenco003 em Root.tsx), midia/elenco_contato.png, midia/teste4s.mp4, midia/teste4s_contato.png
+decisões: Zé = Competidor com o look do Zé de 002 e pele creme (protetor no corpo todo), sem editar gente3d; acessórios seguem hand_r/spine_03 por useFrame
+decisões: medidor em escala log (0–15 mil Gy, 240°): 4 setores de rodada, limites do Zé 4,5, faixa 6–8, insetos 300–1000, tardígrado 5 mil, bactéria 15 mil; sem dígitos
+decisões: marcas a 1,1 m (Zé, barata, mosca, tardígrado, 5ª vazia com facho e poeira); cena 1 em 3 cortes no teste (de costas → porta fecha com vapor → 5ª marca), 5 na cena inteira
+decisões (G3b): plano 1 recuado (câmera 0,5 m, z 4,7) com o Zé inteiro de boné; vão da porta = corredor escuro com faixas de luz baixa (Corredor em camara003); barata refeita: oval achatada e larga, pronoto com 2 faixas, asas cobrindo o abdômen, pernas curtas e grossas com espinhos, antenas longas, ~0,45 m
+medidas: teste 120 quadros 1920×1080 em ~34 s; tsc limpo; GPU 0
+pendências: [animador-3d] órgãos dos bichos, objetos de comparação e cenas 2–112; pernas da barata com fase por distância (faseDe) para não deslizar · [diretor] bichos a 0,45–0,5 m ficam pequenos no plano geral: pedir closes baixos
+aprendizado: acessório em personagem Quaternius sem mexer no componente: matriz do osso × inversa do osso em repouso, aplicada em useFrame(-1)

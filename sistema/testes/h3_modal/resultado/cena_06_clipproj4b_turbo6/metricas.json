@@ -1,0 +1,677 @@
+{
+  "remote_seconds_including_shutdown": 59.526729062,
+  "estimated_requested_resource_usd": 0.08173258007128849,
+  "workflow": {
+    "1": {
+      "class_type": "UNETLoader",
+      "inputs": {
+        "unet_name": "minimax_h3_fl2va_bf16.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    "2": {
+      "class_type": "ClipProjLoader",
+      "inputs": {
+        "clip_name": "qwen3vl_4b_fp8_scaled.safetensors",
+        "type": "auto",
+        "projection": "mmh3-4b-ClipProj-v3.1.safetensors",
+        "device": "cuda:0",
+        "mode": "streaming"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+      }
+    },
+    "4": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+      }
+    },
+    "5": {
+      "class_type": "LoadImage",
+      "inputs": {
+        "image": "start.png"
+      }
+    },
+    "6": {
+      "class_type": "MiniMaxH3ImageToVideo",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ],
+        "prompt": "Locked vertical shot. The daughter wearing the beige apron finishes setting the second closed lunchbox beside the first, then glances toward her mother with a small loving smile. Her mother pauses in the doorway, touched. Preserve faces, clothing, both lunchboxes, hand anatomy and kitchen layout. Small continuous motion, neutral daylight. Quiet room ambience, no speech, no music, no text, no cuts.",
+        "width": 480,
+        "height": 832,
+        "length": 124,
+        "first_frame": [
+          "5",
+          0
+        ]
+      }
+    },
+    "7": {
+      "class_type": "MiniMaxH3TurboLoRA",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "lora_name": "minimax_h3_turbo_v4_step600_ema.safetensors",
+        "strength": 1.0,
+        "low_vram": false
+      }
+    },
+    "8": {
+      "class_type": "BasicGuider",
+      "inputs": {
+        "model": [
+          "7",
+          0
+        ],
+        "conditioning": [
+          "6",
+          0
+        ]
+      }
+    },
+    "9": {
+      "class_type": "RandomNoise",
+      "inputs": {
+        "noise_seed": 42
+      }
+    },
+    "10": {
+      "class_type": "MiniMaxH3TurboSampler",
+      "inputs": {}
+    },
+    "11": {
+      "class_type": "BasicScheduler",
+      "inputs": {
+        "model": [
+          "7",
+          0
+        ],
+        "scheduler": "simple",
+        "steps": 6,
+        "denoise": 1.0
+      }
+    },
+    "12": {
+      "class_type": "SamplerCustomAdvanced",
+      "inputs": {
+        "noise": [
+          "9",
+          0
+        ],
+        "guider": [
+          "8",
+          0
+        ],
+        "sampler": [
+          "10",
+          0
+        ],
+        "sigmas": [
+          "11",
+          0
+        ],
+        "latent_image": [
+          "6",
+          1
+        ]
+      }
+    },
+    "13": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "12",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "14": {
+      "class_type": "VAEDecodeAudio",
+      "inputs": {
+        "samples": [
+          "12",
+          0
+        ],
+        "vae": [
+          "4",
+          0
+        ]
+      }
+    },
+    "15": {
+      "class_type": "CreateVideo",
+      "inputs": {
+        "images": [
+          "13",
+          0
+        ],
+        "audio": [
+          "14",
+          0
+        ],
+        "fps": 24
+      }
+    },
+    "16": {
+      "class_type": "SaveVideo",
+      "inputs": {
+        "video": [
+          "15",
+          0
+        ],
+        "filename_prefix": "turbo6",
+        "format": "mp4",
+        "codec": "h264"
+      }
+    }
+  },
+  "history": {
+    "prompt": [
+      0,
+      "e4f64aed-4719-45a8-8e7a-6ef8b360d4ee",
+      {
+        "1": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "minimax_h3_fl2va_bf16.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "2": {
+          "class_type": "ClipProjLoader",
+          "inputs": {
+            "clip_name": "qwen3vl_4b_fp8_scaled.safetensors",
+            "type": "auto",
+            "projection": "mmh3-4b-ClipProj-v3.1.safetensors",
+            "device": "cuda:0",
+            "mode": "streaming"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+          }
+        },
+        "4": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+          }
+        },
+        "5": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "start.png"
+          }
+        },
+        "6": {
+          "class_type": "MiniMaxH3ImageToVideo",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ],
+            "prompt": "Locked vertical shot. The daughter wearing the beige apron finishes setting the second closed lunchbox beside the first, then glances toward her mother with a small loving smile. Her mother pauses in the doorway, touched. Preserve faces, clothing, both lunchboxes, hand anatomy and kitchen layout. Small continuous motion, neutral daylight. Quiet room ambience, no speech, no music, no text, no cuts.",
+            "width": 480,
+            "height": 832,
+            "length": 124,
+            "first_frame": [
+              "5",
+              0
+            ]
+          }
+        },
+        "7": {
+          "class_type": "MiniMaxH3TurboLoRA",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "lora_name": "minimax_h3_turbo_v4_step600_ema.safetensors",
+            "strength": 1.0,
+            "low_vram": false
+          }
+        },
+        "8": {
+          "class_type": "BasicGuider",
+          "inputs": {
+            "model": [
+              "7",
+              0
+            ],
+            "conditioning": [
+              "6",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "RandomNoise",
+          "inputs": {
+            "noise_seed": 42
+          }
+        },
+        "10": {
+          "class_type": "MiniMaxH3TurboSampler",
+          "inputs": {}
+        },
+        "11": {
+          "class_type": "BasicScheduler",
+          "inputs": {
+            "model": [
+              "7",
+              0
+            ],
+            "scheduler": "simple",
+            "steps": 6,
+            "denoise": 1.0
+          }
+        },
+        "12": {
+          "class_type": "SamplerCustomAdvanced",
+          "inputs": {
+            "noise": [
+              "9",
+              0
+            ],
+            "guider": [
+              "8",
+              0
+            ],
+            "sampler": [
+              "10",
+              0
+            ],
+            "sigmas": [
+              "11",
+              0
+            ],
+            "latent_image": [
+              "6",
+              1
+            ]
+          }
+        },
+        "13": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "12",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "14": {
+          "class_type": "VAEDecodeAudio",
+          "inputs": {
+            "samples": [
+              "12",
+              0
+            ],
+            "vae": [
+              "4",
+              0
+            ]
+          }
+        },
+        "15": {
+          "class_type": "CreateVideo",
+          "inputs": {
+            "images": [
+              "13",
+              0
+            ],
+            "audio": [
+              "14",
+              0
+            ],
+            "fps": 24.0
+          }
+        },
+        "16": {
+          "class_type": "SaveVideo",
+          "inputs": {
+            "video": [
+              "15",
+              0
+            ],
+            "filename_prefix": "turbo6",
+            "format": "mp4",
+            "codec": "h264"
+          }
+        }
+      },
+      {
+        "create_time": 1794361142620
+      },
+      [
+        "16"
+      ]
+    ],
+    "outputs": {
+      "16": {
+        "images": [
+          {
+            "filename": "turbo6_00001_.mp4",
+            "subfolder": "",
+            "type": "output",
+            "metadata": {
+              "kind": "video",
+              "width": 480,
+              "height": 832,
+              "duration": 5.166666666666667,
+              "fps": 24.0,
+              "frame_count": 124
+            }
+          }
+        ],
+        "animated": [
+          true
+        ]
+      }
+    },
+    "status": {
+      "status_str": "success",
+      "completed": true,
+      "messages": [
+        [
+          "execution_start",
+          {
+            "prompt_id": "e4f64aed-4719-45a8-8e7a-6ef8b360d4ee",
+            "timestamp": 1794361142621
+          }
+        ],
+        [
+          "execution_cached",
+          {
+            "nodes": [],
+            "prompt_id": "e4f64aed-4719-45a8-8e7a-6ef8b360d4ee",
+            "timestamp": 1794361142626
+          }
+        ],
+        [
+          "execution_success",
+          {
+            "prompt_id": "e4f64aed-4719-45a8-8e7a-6ef8b360d4ee",
+            "timestamp": 1794361187711
+          }
+        ]
+      ]
+    },
+    "meta": {
+      "16": {
+        "node_id": "16",
+        "display_node": "16",
+        "parent_node": null,
+        "real_node_id": "16"
+      }
+    }
+  },
+  "system_stats": {
+    "system": {
+      "os": "linux",
+      "ram_total": 1459549130752,
+      "ram_free": 1455260475392,
+      "comfyui_version": "0.45.0",
+      "required_frontend_version": "1.58.5",
+      "installed_templates_version": "0.11.106",
+      "required_templates_version": "0.11.106",
+      "comfy_package_versions": [
+        {
+          "name": "comfyui-frontend-package",
+          "installed": "1.58.5",
+          "required": "1.58.5"
+        },
+        {
+          "name": "comfyui-workflow-templates",
+          "installed": "0.11.106",
+          "required": "0.11.106"
+        },
+        {
+          "name": "comfyui-embedded-docs",
+          "installed": "0.5.16",
+          "required": "0.5.16"
+        },
+        {
+          "name": "comfy-aimdo",
+          "installed": "0.6.0",
+          "required": "0.6.0"
+        },
+        {
+          "name": "comfy-kitchen",
+          "installed": "0.2.41",
+          "required": "0.2.41"
+        }
+      ],
+      "python_version": "3.12.10 (main, May 21 2025, 23:34:56) [GCC 12.2.0]",
+      "pytorch_version": "2.14.1+cu130",
+      "embedded_python": false,
+      "deploy_environment": "local-git",
+      "argv": [
+        "main.py",
+        "--listen",
+        "127.0.0.1",
+        "--port",
+        "8188",
+        "--disable-auto-launch",
+        "--use-pytorch-cross-attention",
+        "--preview-method",
+        "none"
+      ]
+    },
+    "devices": [
+      {
+        "name": "cuda:0 NVIDIA RTX PRO 6000 Blackwell Server Edition : cudaMallocAsync",
+        "type": "cuda",
+        "index": 0,
+        "vram_total": 102016548864,
+        "vram_free": 101429936128,
+        "torch_vram_total": 0,
+        "torch_vram_free": 0
+      }
+    ]
+  },
+  "probe": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "h264",
+        "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+        "profile": "High",
+        "codec_type": "video",
+        "codec_tag_string": "avc1",
+        "codec_tag": "0x31637661",
+        "width": 480,
+        "height": 832,
+        "coded_width": 480,
+        "coded_height": 832,
+        "closed_captions": 0,
+        "film_grain": 0,
+        "has_b_frames": 2,
+        "pix_fmt": "yuv420p",
+        "level": 30,
+        "color_range": "tv",
+        "color_space": "bt709",
+        "color_transfer": "iec61966-2-1",
+        "color_primaries": "bt709",
+        "chroma_location": "left",
+        "field_order": "progressive",
+        "refs": 1,
+        "is_avc": "true",
+        "nal_length_size": "4",
+        "id": "0x1",
+        "r_frame_rate": "24/1",
+        "avg_frame_rate": "24/1",
+        "time_base": "1/12288",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 63488,
+        "duration": "5.166667",
+        "bit_rate": "2202483",
+        "bits_per_raw_sample": "8",
+        "nb_frames": "124",
+        "extradata_size": 49,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0
+        },
+        "tags": {
+          "language": "und",
+          "handler_name": "VideoHandler",
+          "vendor_id": "[0][0][0][0]"
+        }
+      },
+      {
+        "index": 1,
+        "codec_name": "aac",
+        "codec_long_name": "AAC (Advanced Audio Coding)",
+        "profile": "LC",
+        "codec_type": "audio",
+        "codec_tag_string": "mp4a",
+        "codec_tag": "0x6134706d",
+        "sample_fmt": "fltp",
+        "sample_rate": "32000",
+        "channels": 2,
+        "channel_layout": "stereo",
+        "bits_per_sample": 0,
+        "id": "0x2",
+        "r_frame_rate": "0/0",
+        "avg_frame_rate": "0/0",
+        "time_base": "1/32000",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 165334,
+        "duration": "5.166688",
+        "bit_rate": "127095",
+        "nb_frames": "163",
+        "extradata_size": 5,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0
+        },
+        "tags": {
+          "language": "und",
+          "handler_name": "SoundHandler",
+          "vendor_id": "[0][0][0][0]"
+        }
+      }
+    ],
+    "format": {
+      "filename": "/opt/ComfyUI/output/turbo6_00001_.mp4",
+      "nb_streams": 2,
+      "nb_programs": 0,
+      "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+      "format_long_name": "QuickTime / MOV",
+      "start_time": "0.000000",
+      "duration": "5.166688",
+      "size": "1512914",
+      "bit_rate": "2342566",
+      "probe_score": 100,
+      "tags": {
+        "major_brand": "isom",
+        "minor_version": "512",
+        "compatible_brands": "isomiso2avc1mp41",
+        "prompt": "{\"1\": {\"class_type\": \"UNETLoader\", \"inputs\": {\"unet_name\": \"minimax_h3_fl2va_bf16.safetensors\", \"weight_dtype\": \"default\"}}, \"2\": {\"class_type\": \"ClipProjLoader\", \"inputs\": {\"clip_name\": \"qwen3vl_4b_fp8_scaled.safetensors\", \"type\": \"auto\", \"projection\": \"mmh3-4b-ClipProj-v3.1.safetensors\", \"device\": \"cuda:0\", \"mode\": \"streaming\"}}, \"3\": {\"class_type\": \"VAELoader\", \"inputs\": {\"vae_name\": \"minimax_h3_video_vae_fp16.safetensors\"}}, \"4\": {\"class_type\": \"VAELoader\", \"inputs\": {\"vae_name\": \"minimax_h3_audio_vae_fp32.safetensors\"}}, \"5\": {\"class_type\": \"LoadImage\", \"inputs\": {\"image\": \"start.png\"}, \"is_changed\": [\"720a911b1c5022ff19395a43ceecff4661a6dc687333ca0578058ed6ffaa0f9c\"]}, \"6\": {\"class_type\": \"MiniMaxH3ImageToVideo\", \"inputs\": {\"clip\": [\"2\", 0], \"vae\": [\"3\", 0], \"prompt\": \"Locked vertical shot. The daughter wearing the beige apron finishes setting the second closed lunchbox beside the first, then glances toward her mother with a small loving smile. Her mother pauses in the doorway, touched. Preserve faces, clothing, both lunchboxes, hand anatomy and kitchen layout. Small continuous motion, neutral daylight. Quiet room ambience, no speech, no music, no text, no cuts.\", \"width\": 480, \"height\": 832, \"length\": 124, \"first_frame\": [\"5\", 0]}}, \"7\": {\"class_type\": \"MiniMaxH3TurboLoRA\", \"inputs\": {\"model\": [\"1\", 0], \"lora_name\": \"minimax_h3_turbo_v4_step600_ema.safetensors\", \"strength\": 1.0, \"low_vram\": false}}, \"8\": {\"class_type\": \"BasicGuider\", \"inputs\": {\"model\": [\"7\", 0], \"conditioning\": [\"6\", 0]}}, \"9\": {\"class_type\": \"RandomNoise\", \"inputs\": {\"noise_seed\": 42}}, \"10\": {\"class_type\": \"MiniMaxH3TurboSampler\", \"inputs\": {}}, \"11\": {\"class_type\": \"BasicScheduler\", \"inputs\": {\"model\": [\"7\", 0], \"scheduler\": \"simple\", \"steps\": 6, \"denoise\": 1.0}}, \"12\": {\"class_type\": \"SamplerCustomAdvanced\", \"inputs\": {\"noise\": [\"9\", 0], \"guider\": [\"8\", 0], \"sampler\": [\"10\", 0], \"sigmas\": [\"11\", 0], \"latent_image\": [\"6\", 1]}}, \"13\": {\"class_type\": \"VAEDecode\", \"inputs\": {\"samples\": [\"12\", 0], \"vae\": [\"3\", 0]}}, \"14\": {\"class_type\": \"VAEDecodeAudio\", \"inputs\": {\"samples\": [\"12\", 0], \"vae\": [\"4\", 0]}}, \"15\": {\"class_type\": \"CreateVideo\", \"inputs\": {\"images\": [\"13\", 0], \"audio\": [\"14\", 0], \"fps\": 24.0}}, \"16\": {\"class_type\": \"SaveVideo\", \"inputs\": {\"video\": [\"15\", 0], \"filename_prefix\": \"turbo6\", \"format\": \"mp4\", \"codec\": \"h264\"}}}",
+        "encoder": "Lavf63.1.102"
+      }
+    }
+  },
+  "revisions": {
+    "comfy": "0228a9d73cd7c2daf8f61fe13d56b12efe307171",
+    "turbo": "4274783a23afcfdbea3b4876cb79effd6c510785",
+    "clipproj": "c01ba8fb8f41b4f2094dbd0b185cdc238fb6134c"
+  },
+  "model_files": [
+    [
+      "Comfy-Org/MiniMax-H3",
+      "54472221d27c695fca9621b0c3ed52f06c4af707",
+      "diffusion_models/minimax_h3_fl2va_bf16.safetensors"
+    ],
+    [
+      "Comfy-Org/MiniMax-H3",
+      "54472221d27c695fca9621b0c3ed52f06c4af707",
+      "vae/minimax_h3_video_vae_fp16.safetensors"
+    ],
+    [
+      "Comfy-Org/MiniMax-H3",
+      "54472221d27c695fca9621b0c3ed52f06c4af707",
+      "vae/minimax_h3_audio_vae_fp32.safetensors"
+    ],
+    [
+      "Comfy-Org/Krea-2",
+      "588feaf955b08b9ac4723eeb751752ab045dba71",
+      "text_encoders/qwen3vl_4b_fp8_scaled.safetensors"
+    ],
+    [
+      "NicoLab28/ClipProj-MiniMax-H3",
+      "2ebdbcdc27a29a9607efdb221a9afcb9a0cdd808",
+      "mmh3-4b-ClipProj-v3.1.safetensors"
+    ],
+    [
+      "larryvrh/MiniMax-H3-Turbo-Lora",
+      "43a74557ac3f6539db8e0f2a959d03feb7a81480",
+      "minimax_h3_turbo_v4_step600_ema.safetensors"
+    ]
+  ],
+  "client_call_seconds": 66.6214525999967,
+  "first_image": "C:\\Users\\Abduzido\\OneDrive\\Documentos\\Auto_Video\\sistema\\testes\\h3_modal\\segunda_marmita\\imagens\\06_o_gesto_da_filha.png",
+  "last_image": null
+}

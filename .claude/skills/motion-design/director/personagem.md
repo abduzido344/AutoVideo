@@ -85,6 +85,12 @@ Nenhuma bolinha, anel ou círculo de articulação aparece no vídeo final, mesm
 - O contato fica visível: os dedos sobrepõem a borda do objeto.
 - A mão continua a linha do antebraço só até ±20–30°.
 
+## Personagem no cenário
+Cenário gerado + `mapa.json` do cenógrafo (`video-longo/formatos.md`): pés na linha do chão, escala pela profundidade (mais alto na tela = menor), sombra de contato, recorte da camada da frente por cima do rig, câmera com paralaxe leve (fundo mais devagar). Conferir na folha de contato se o personagem "pisa" no chão.
+
+## Figurantes
+Figurante nunca é o protagonista recolorido: outro cabelo, pele, altura, roupa e acessório. Usar os do canal (`motion/effectcraft/m007_fig.mjs`: jorge, leo, dani, bia) ou criar novos no mesmo traço.
+
 ## Imagens geradas (Modal)
 Para cenário, fundo, objeto, inserto ou pose que o rig não tem. Lista `nome: prompt` (uma por linha) → PNG na pasta; pula os que já existem. Dizer o custo e pedir ok antes de rodar.
 - **Sem personagem** (cenário, fundo de cena, objeto): `python sistema/pipeline/modal_img.py prompts.txt <video>/midia/img [--vertical]` — Z-Image-Turbo, L4, 1280×720, ~US$ 0,002/imagem + 1–2 min para subir. Segue o prompt só em parte: detalhe importante em destaque.

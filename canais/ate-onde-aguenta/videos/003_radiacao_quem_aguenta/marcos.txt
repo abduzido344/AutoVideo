@@ -1,0 +1,5 @@
+promessa 1
+escada 2
+acao 3
+revelacao 15
+virada 43

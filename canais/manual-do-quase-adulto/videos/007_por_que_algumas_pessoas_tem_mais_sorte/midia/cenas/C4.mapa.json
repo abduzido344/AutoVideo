@@ -1,0 +1,144 @@
+{
+ "imagem": "C4.png",
+ "tamanho": [
+  1280,
+  720
+ ],
+ "chao": {
+  "parede_chao_y": 600,
+  "horizonte_y": 280,
+  "obs": "cabine vista de lado; piso quase todo coberto pelas poltronas"
+ },
+ "area_pisa": [
+  [
+   [
+    0,
+    570
+   ],
+   [
+    230,
+    570
+   ],
+   [
+    230,
+    720
+   ],
+   [
+    0,
+    720
+   ]
+  ],
+  [
+   [
+    1120,
+    610
+   ],
+   [
+    1280,
+    610
+   ],
+   [
+    1280,
+    720
+   ],
+   [
+    1120,
+    720
+   ]
+  ]
+ ],
+ "escala_personagem": [
+  {
+   "pes_y": 560,
+   "altura_px": 300
+  },
+  {
+   "pes_y": 640,
+   "altura_px": 340
+  },
+  {
+   "pes_y": 720,
+   "altura_px": 380
+  }
+ ],
+ "objetos": [
+  {
+   "nome": "poltrona_janela",
+   "caixa": [
+    230,
+    222,
+    700,
+    720
+   ],
+   "camada": "tras"
+  },
+  {
+   "nome": "mesinha",
+   "caixa": [
+    103,
+    452,
+    436,
+    530
+   ],
+   "camada": "tras"
+  },
+  {
+   "nome": "poltrona_da_frente",
+   "caixa": [
+    740,
+    222,
+    1125,
+    720
+   ],
+   "camada": "frente"
+  },
+  {
+   "nome": "janelas_ovais",
+   "caixa": [
+    0,
+    150,
+    1200,
+    440
+   ],
+   "camada": "tras"
+  }
+ ],
+ "frente_png": "C4_frente.png",
+ "frente_poligonos": [
+  [
+   [
+    770,
+    300
+   ],
+   [
+    800,
+    235
+   ],
+   [
+    900,
+    222
+   ],
+   [
+    1060,
+    228
+   ],
+   [
+    1125,
+    260
+   ],
+   [
+    1125,
+    720
+   ],
+   [
+    745,
+    720
+   ],
+   [
+    738,
+    520
+   ]
+  ]
+ ],
+ "nota": "personagem sentado na poltrona_janela (altura sentada ~300 px); escala de pe nos corredores"
+}

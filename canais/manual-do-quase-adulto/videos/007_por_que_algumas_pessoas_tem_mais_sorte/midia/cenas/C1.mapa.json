@@ -1,0 +1,127 @@
+{
+ "imagem": "C1.png",
+ "tamanho": [
+  1280,
+  720
+ ],
+ "chao": {
+  "parede_chao_y": 566,
+  "horizonte_y": 300
+ },
+ "area_pisa": [
+  [
+   [
+    0,
+    580
+   ],
+   [
+    1280,
+    580
+   ],
+   [
+    1280,
+    720
+   ],
+   [
+    0,
+    720
+   ]
+  ]
+ ],
+ "escala_personagem": [
+  {
+   "pes_y": 600,
+   "altura_px": 321
+  },
+  {
+   "pes_y": 650,
+   "altura_px": 375
+  },
+  {
+   "pes_y": 710,
+   "altura_px": 440
+  }
+ ],
+ "objetos": [
+  {
+   "nome": "lousa",
+   "caixa": [
+    217,
+    73,
+    1066,
+    395
+   ],
+   "camada": "tras"
+  },
+  {
+   "nome": "mesa",
+   "caixa": [
+    403,
+    466,
+    886,
+    720
+   ],
+   "camada": "tras"
+  },
+  {
+   "nome": "cadeira",
+   "caixa": [
+    559,
+    525,
+    737,
+    720
+   ],
+   "camada": "tras"
+  },
+  {
+   "nome": "jornal",
+   "caixa": [
+    562,
+    468,
+    753,
+    502
+   ],
+   "camada": "frente"
+  },
+  {
+   "nome": "cronometro",
+   "caixa": [
+    477,
+    459,
+    519,
+    494
+   ],
+   "camada": "frente"
+  }
+ ],
+ "frente_png": "C1_frente.png",
+ "frente_poligonos": [
+  [
+   [
+    455,
+    466
+   ],
+   [
+    835,
+    466
+   ],
+   [
+    886,
+    510
+   ],
+   [
+    886,
+    520
+   ],
+   [
+    403,
+    520
+   ],
+   [
+    403,
+    510
+   ]
+  ]
+ ],
+ "nota": "quadro de cortica e piso de taco nao saiu: lousa no lugar; mesa centro, andar pelos lados e na frente da mesa"
+}

@@ -1,0 +1,3 @@
+gancho 1
+revelacao 3
+virada 6

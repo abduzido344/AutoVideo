@@ -1,0 +1,4 @@
+promessa 3
+gancho 6
+revelacao 10
+virada 23

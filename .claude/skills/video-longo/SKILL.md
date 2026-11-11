@@ -14,9 +14,10 @@ Uma linha por ideia: título · prova (link, views) · gancho · ação visual (
 ## 2. Roteiro → `narracao.txt`
 Palavras = minutos × ppm do canal (`canal.md` › Voz; sem medida, 155): 8 min ≈ 1.250. Parágrafos separados por linha em branco, números por extenso.
 - Pontuação de fala e direção de voz (ironia, entusiasmo, tom baixo, tensão…): `voz.md`. Frases corridas, poucos sinais; uma `[direção]` em cada parágrafo que tem intenção própria.
-- Abertura até ~1:00 (≈150 palavras) em 3 tempos: curiosidade de filosofia/história → fato crítico do problema → fato que aponta a solução ("guarda essa ideia", pago depois com "lembra da ideia que eu pedi para você guardar?"). **A promessa do vídeo é dita até 0:30**, em uma frase, logo depois do 1º tempo. Primeira frase em um padrão: contrário, pergunta, número, erro ou história.
+- Abertura até ~1:00 (≈150 palavras) em 3 tempos: curiosidade de filosofia/história → fato crítico do problema → fato que aponta a solução, pago depois sem bordão (nunca "guarda essa ideia" nem "lembra da ideia que eu pedi para você guardar"). **A promessa do vídeo é dita até 0:30**, em uma frase, logo depois do 1º tempo. Primeira frase em um padrão: contrário, pergunta, número, erro ou história.
 - CTA de inscrição (~10 s, `[warm, friendly]`, ligado ao tema) nunca antes da promessa. Em teste (`publicacao` › Teste de CTA): pasta de número ímpar, logo depois da primeira revelação (2–3 min); par, dentro da última cena.
 - Primeira revelação da promessa (uma resposta, não mais contexto) até 2:30; re-gancho (pergunta) no meio; fecho volta à cena de abertura e ao primeiro tempo.
+- Ideia tirada de um vídeo viral: manter o hook, o arco e o tom dele (ex.: motivacional) adaptados ao público; não se afastar do original.
 - Um parágrafo = uma ideia que vira cena. Segunda pessoa, situações e números concretos.
 - Variar o ritmo pela direção (`<slow>`, `<fast>`, tom baixo), não por frases picadas.
 - Nunca inventar estudo, número ou autor: escrever a partir do `dossie.md`; fato novo volta ao pesquisador. Anedota fora do estudo entra como "a história conta". Tema de saúde mental: uma linha indicando um profissional.

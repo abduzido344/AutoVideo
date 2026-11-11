@@ -1,0 +1,1 @@
+Trilha instrumental original sintetizada localmente por montar_reel.py. Osciladores senoidais, sequência harmônica simples, sem gravações ou samples de terceiros. Mix abaixo da voz com ducking.

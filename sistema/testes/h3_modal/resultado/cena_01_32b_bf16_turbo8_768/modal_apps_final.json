@@ -1,0 +1,26 @@
+[
+  {
+    "app_id": "ap-Hr4ClUgVnpz3nDfhKJVFuv",
+    "description": "teste-h3-32b-bf16-turbo8-768-cena01",
+    "state": "stopped",
+    "tasks": "0",
+    "created_at": "2026-11-11 08:43:24-03:00",
+    "stopped_at": "2026-11-11 09:07:44-03:00"
+  },
+  {
+    "app_id": "ap-9wtnEWugEl3z5aN1VEWd1b",
+    "description": "estudio-ltx",
+    "state": "stopped",
+    "tasks": "0",
+    "created_at": "2026-11-11 08:44:38-03:00",
+    "stopped_at": "2026-11-11 08:54:08-03:00"
+  },
+  {
+    "app_id": "ap-OebSmJKzOyXwA2BDbxUbJk",
+    "description": "estudio-ltx",
+    "state": "stopped",
+    "tasks": "0",
+    "created_at": "2026-11-11 08:36:20-03:00",
+    "stopped_at": "2026-11-11 08:44:03-03:00"
+  }
+]

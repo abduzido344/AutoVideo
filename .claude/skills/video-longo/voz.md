@@ -44,3 +44,5 @@ O Drama 3 segue direção em linguagem natural entre colchetes. A referência `v
 A direção não saiu na prova? Mais qualificadores concretos (`[very low, almost a whisper, slow]`), parágrafo mais curto, `--refazer=N` só nele.
 
 - **Ritmo e energia vêm da referência, não da tag** (medido 08/11/2026): `[very fast…]` não muda palavras/s e `<emphasis>` alonga. Para energia alta, gerar 4 takes com a voz atual e direção forte, escolher o melhor (Whisper ok, pitch ±3 st) e acelerar 1,15–1,2× com atempo como nova referência; `--ritmo` no máximo 1,05 depois disso.
+- **Parágrafo de uma frase curta sai ruim** (007, 10/11/2026): com menos de ~15 palavras a voz embola ou engole o começo. Juntar com o vizinho ou alongar a frase antes de narrar; conferir no Whisper cada parágrafo curto.
+- **Termo estrangeiro ou latino vai com grafia fonética só no texto enviado à voz** (003 AOA, 10/11/2026): "gray" → "grei", "Dsup" → "dê-ésse-u-pê", "Deinococcus radiodurans" → "deinocócus radiodúrans"; `narracao.txt` fica intacto.

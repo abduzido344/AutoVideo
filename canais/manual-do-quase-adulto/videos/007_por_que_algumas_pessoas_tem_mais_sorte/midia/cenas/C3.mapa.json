@@ -1,0 +1,158 @@
+{
+ "imagem": "C3.png",
+ "tamanho": [
+  1280,
+  720
+ ],
+ "chao": {
+  "parede_chao_y": 582,
+  "horizonte_y": 300,
+  "obs": "calcada estreita y 582-635; abaixo, guia e rua"
+ },
+ "area_pisa": [
+  [
+   [
+    0,
+    586
+   ],
+   [
+    1280,
+    586
+   ],
+   [
+    1280,
+    636
+   ],
+   [
+    0,
+    636
+   ]
+  ]
+ ],
+ "escala_personagem": [
+  {
+   "pes_y": 590,
+   "altura_px": 360
+  },
+  {
+   "pes_y": 615,
+   "altura_px": 372
+  },
+  {
+   "pes_y": 635,
+   "altura_px": 385
+  }
+ ],
+ "objetos": [
+  {
+   "nome": "poste",
+   "caixa": [
+    78,
+    0,
+    135,
+    622
+   ],
+   "camada": "tras"
+  },
+  {
+   "nome": "fachada_vitrine_toldo",
+   "caixa": [
+    548,
+    70,
+    1180,
+    575
+   ],
+   "camada": "tras"
+  },
+  {
+   "nome": "vaso_planta",
+   "caixa": [
+    497,
+    400,
+    592,
+    592
+   ],
+   "camada": "frente"
+  },
+  {
+   "nome": "cavalete",
+   "caixa": [
+    195,
+    450,
+    330,
+    607
+   ],
+   "camada": "frente"
+  }
+ ],
+ "frente_png": "C3_frente.png",
+ "frente_poligonos": [
+  [
+   [
+    205,
+    455
+   ],
+   [
+    290,
+    452
+   ],
+   [
+    330,
+    596
+   ],
+   [
+    255,
+    607
+   ],
+   [
+    197,
+    592
+   ]
+  ],
+  [
+   [
+    517,
+    522
+   ],
+   [
+    584,
+    522
+   ],
+   [
+    578,
+    590
+   ],
+   [
+    530,
+    592
+   ]
+  ],
+  [
+   [
+    498,
+    430
+   ],
+   [
+    530,
+    402
+   ],
+   [
+    570,
+    410
+   ],
+   [
+    592,
+    470
+   ],
+   [
+    560,
+    525
+   ],
+   [
+    515,
+    520
+   ]
+  ]
+ ],
+ "nota": "fila ao longo da calcada, x 300-1250; vitrine escura a direita do vaso"
+}

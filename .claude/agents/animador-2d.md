@@ -11,6 +11,7 @@ skills:
 **Lê**: `storyboard.md`, `audio/palavras.json`, `.claude/skills/motion-design/director/personagem.md`, `.claude/skills/video-longo/edicao.md` › Motion graphics, `canais/<canal>/motion/effectcraft/manual_poses.md`.
 **Escreve (só isto)**: `canais/<canal>/motion/effectcraft/mNNN*.mjs` e `midia/motion/`.
 **Pronto**: 1 quadro por cena em folha de contato conferida, depois render; toda linha MOTION tem arquivo com a duração da cena; elemento entra na palavra.
-**Devolve quando**: imagem de fundo ainda não existe (`devolve:cenografo`) ou cena pede mudança de storyboard (`devolve:diretor`).
+Cena com `cenário`: personagem dentro do cenário pelo `mapa.json` (escala por profundidade, pés no chão, sombra, frente por cima, paralaxe leve).
+**Devolve quando**: imagem de fundo ou mapa ainda não existe (`devolve:cenografo`) ou cena pede mudança de storyboard (`devolve:diretor`).
 **Retorno**: ≤8 linhas com os campos de `.claude/skills/producao/passagem.md`, gravados também em `passagem/motion.md`.
 Não edita arquivo de outro dono; não faz commit.

@@ -1,0 +1,50 @@
+[
+  {
+    "app_id": "ap-Mfdwu5UCpReVUeuBsz4Nea",
+    "description": "teste-isolado-minimax-h3-fl2va",
+    "state": "stopped",
+    "tasks": "0",
+    "created_at": "2026-11-10 22:02:19-03:00",
+    "stopped_at": "2026-11-10 22:07:18-03:00"
+  },
+  {
+    "app_id": "ap-zIIAs1eIRSLyNql5vxzDe3",
+    "description": "teste-isolado-minimax-h3-fl2va",
+    "state": "stopped",
+    "tasks": "0",
+    "created_at": "2026-11-10 21:51:15-03:00",
+    "stopped_at": "2026-11-10 22:01:40-03:00"
+  },
+  {
+    "app_id": "ap-9AB3pa8pzo6jhydb39069d",
+    "description": "teste-ltx23-referencia-gpus",
+    "state": "stopped",
+    "tasks": "0",
+    "created_at": "2026-11-10 21:10:37-03:00",
+    "stopped_at": "2026-11-10 21:20:17-03:00"
+  },
+  {
+    "app_id": "ap-WP2XlJH6Jv1OPf0POT4Dw4",
+    "description": "teste-ltx23-referencia-gpus",
+    "state": "stopped",
+    "tasks": "0",
+    "created_at": "2026-11-10 21:02:23-03:00",
+    "stopped_at": "2026-11-10 21:09:49-03:00"
+  },
+  {
+    "app_id": "ap-HvbTloVDbjIQJujsmWHwYs",
+    "description": "teste-isolado-ltx23",
+    "state": "stopped",
+    "tasks": "0",
+    "created_at": "2026-11-10 20:46:17-03:00",
+    "stopped_at": "2026-11-10 20:55:28-03:00"
+  },
+  {
+    "app_id": "ap-rTnAcDhu45YSdX23Th26fx",
+    "description": "teste-isolado-ltx23",
+    "state": "stopped",
+    "tasks": "0",
+    "created_at": "2026-11-10 20:46:08-03:00",
+    "stopped_at": "2026-11-10 20:49:09-03:00"
+  }
+]

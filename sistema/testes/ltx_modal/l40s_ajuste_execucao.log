@@ -1,0 +1,275 @@
+C:\Users\Abduzido\AppData\Roaming\Python\Python314\site-packages\modal\_utils\async_utils.py:43: DeprecationWarning: 'asyncio.WindowsSelectorEventLoopPolicy' is deprecated and slated for removal in Python 3.16
+  asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+C:\Users\Abduzido\AppData\Roaming\Python\Python314\site-packages\modal\_utils\async_utils.py:43: DeprecationWarning: 'asyncio.set_event_loop_policy' is deprecated and slated for removal in Python 3.16
+  asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+✓ Initialized. View run at 
+https://modal.com/apps/abduzido344/main/ap-9AB3pa8pzo6jhydb39069d
+✓ Created objects.
+├── 🔨 Created mount 
+│   C:\Users\Abduzido\OneDrive\Documentos\Auto_Video\sistema\testes\ltx_modal\c
+│   omparar.py
+├── 🔨 Created mount 
+│   C:\Users\Abduzido\OneDrive\Documentos\Auto_Video\sistema\testes\ltx_modal\t
+│   este.py
+├── 🔨 Created function baixar.
+├── 🔨 Created function rtx.
+└── 🔨 Created function l40s.
+INFO 11-11 00:11:03.711 [__init__.py:47] CUDA is available
+INFO 11-11 00:11:05.312 [utils.py:696] Diffusers version: 0.33.0.dev0
+INFO 11-11 00:11:05.316 [utils.py:696] Diffusers version: 0.33.0.dev0
+INFO 11-11 00:11:05.317 [uniproc_executor.py:60] Initializing UniprocExecutor with master port: 28587
+INFO 11-11 00:11:05.423 [parallel_state.py:955] Initializing distributed environment with world_size=1, device=cuda:0
+INFO 11-11 00:11:05.423 [parallel_state.py:755] Using nccl backend for CUDA platform
+[W1111 00:11:05.050258418 ProcessGroupNCCL.cpp:1001] Warning: TORCH_NCCL_AVOID_RECORD_STREAMS is the default now, this environment variable is thus deprecated. (function operator())
+INFO 11-11 00:11:05.441 [__init__.py:39] Building pipeline of type: basic
+INFO 11-11 00:11:05.441 [utils.py:696] Diffusers version: 0.33.0.dev0
+INFO 11-11 00:11:05.442 [utils.py:696] Diffusers version: 0.33.0.dev0
+INFO 11-11 00:11:05.443 [pipeline_registry.py:153] Loading pipelines for types: ['basic']
+INFO 11-11 00:11:05.590 [pipeline_registry.py:195] Loaded 56 pipeline classes across 1 types
+INFO 11-11 00:11:05.590 [utils.py:544] Model already exists locally at /models/ltx23
+INFO 11-11 00:11:05.590 [__init__.py:56] Model path: /models/ltx23
+INFO 11-11 00:11:05.590 [profiler.py:198] Torch profiler disabled; returning no-op controller
+INFO 11-11 00:11:05.590 [composed_pipeline_base.py:172] Loading pipeline modules...
+INFO 11-11 00:11:05.591 [utils.py:544] Model already exists locally at /models/ltx23
+INFO 11-11 00:11:05.591 [composed_pipeline_base.py:485] Model path: /models/ltx23
+INFO 11-11 00:11:05.591 [utils.py:696] Diffusers version: 0.33.0.dev0
+INFO 11-11 00:11:05.591 [ltx2_pipeline.py:190] Loading pipeline modules from config: {'_class_name': 'LTX2Pipeline', '_diffusers_version': '0.33.0.dev0', 'transformer': ['diffusers', 'LTX2Transformer3DModel'], 'vae': ['diffusers', 'CausalVideoAutoencoder'], 'text_encoder': ['transformers', 'LTX2GemmaTextEncoderModel'], 'tokenizer': ['transformers', 'AutoTokenizer'], 'audio_vae': ['diffusers', 'LTX2AudioDecoder'], 'vocoder': ['diffusers', 'LTX2Vocoder']}
+INFO 11-11 00:11:05.591 [component_loader.py:1659] Loading transformer using diffusers from /models/ltx23/transformer
+INFO 11-11 00:11:05.592 [component_loader.py:1229] transformer cls_name: LTX2Transformer3DModel
+INFO 11-11 00:11:05.592 [component_loader.py:1296] Loading model from 1 safetensors files: ['/models/ltx23/transformer/model.safetensors']
+INFO 11-11 00:11:05.592 [component_loader.py:1305] Loading model from LTX2Transformer3DModel, default_dtype: torch.bfloat16
+INFO 11-11 00:11:05.592 [component_loader.py:1329] Worker 0 transformer attention backend: TORCH_SDPA
+INFO 11-11 00:11:05.592 [fsdp_load.py:413] Loading model with default_dtype: torch.bfloat16
+INFO 11-11 00:11:05.597 [cuda.py:174] Trying FASTVIDEO_ATTENTION_BACKEND=TORCH_SDPA
+INFO 11-11 00:11:05.597 [cuda.py:175] Selected backend: AttentionBackendEnum.TORCH_SDPA
+INFO 11-11 00:11:05.597 [cuda.py:300] Using Torch SDPA backend.
+INFO 11-11 00:11:05.597 [cuda.py:174] Trying FASTVIDEO_ATTENTION_BACKEND=TORCH_SDPA
+INFO 11-11 00:11:05.597 [cuda.py:175] Selected backend: AttentionBackendEnum.TORCH_SDPA
+INFO 11-11 00:11:05.597 [cuda.py:300] Using Torch SDPA backend.
+INFO 11-11 00:11:05.598 [cuda.py:174] Trying FASTVIDEO_ATTENTION_BACKEND=TORCH_SDPA
+INFO 11-11 00:11:05.598 [cuda.py:175] Selected backend: AttentionBackendEnum.TORCH_SDPA
+INFO 11-11 00:11:05.598 [cuda.py:300] Using Torch SDPA backend.
+INFO 11-11 00:11:05.598 [cuda.py:174] Trying FASTVIDEO_ATTENTION_BACKEND=TORCH_SDPA
+INFO 11-11 00:11:05.598 [cuda.py:175] Selected backend: AttentionBackendEnum.TORCH_SDPA
+INFO 11-11 00:11:05.598 [cuda.py:300] Using Torch SDPA backend.
+INFO 11-11 00:11:05.598 [cuda.py:174] Trying FASTVIDEO_ATTENTION_BACKEND=TORCH_SDPA
+INFO 11-11 00:11:05.599 [cuda.py:175] Selected backend: AttentionBackendEnum.TORCH_SDPA
+INFO 11-11 00:11:05.599 [cuda.py:300] Using Torch SDPA backend.
+INFO 11-11 00:11:05.961 [fsdp_load.py:497] Loading transformer weights with to_cpu=True
+Loading safetensors checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:07<00:00,  7.84s/it]
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:07<00:00,  7.84s/it]
+
+INFO 11-11 00:11:23.465 [fsdp_load.py:214] Converting loaded model weights for FP8 linear layers
+INFO 11-11 00:11:24.492 [component_loader.py:1382] Loaded model with 0.46B parameters
+INFO 11-11 00:11:31.807 [ltx2_pipeline.py:265] Loaded module transformer from /models/ltx23/transformer
+INFO 11-11 00:11:31.807 [component_loader.py:1659] Loading vae using diffusers from /models/ltx23/vae
+INFO 11-11 00:11:35.237 [ltx2_pipeline.py:265] Loaded module vae from /models/ltx23/vae
+INFO 11-11 00:11:35.238 [component_loader.py:1659] Loading text_encoder using transformers from /models/ltx23/text_encoder
+INFO 11-11 00:11:35.239 [component_loader.py:333] HF Model config: {'architectures': ['LTX2GemmaTextEncoderModel'], 'hidden_size': 3840, 'num_hidden_layers': 48, 'num_attention_heads': 16, 'text_len': 1024, 'pad_token_id': 0, 'eos_token_id': 1, 'gemma_model_path': '/models/ltx23/text_encoder/gemma', 'gemma_dtype': 'bfloat16', 'padding_side': 'left', 'feature_extractor_in_features': 188160, 'feature_extractor_out_features': 3840, 'audio_feature_extractor_out_features': 2048, 'caption_proj_before_connector': True, 'caption_projection_first_linear': False, 'caption_proj_input_norm': False, 'caption_projection_second_linear': False, 'connector_num_attention_heads': 32, 'connector_attention_head_dim': 128, 'connector_num_layers': 8, 'audio_connector_num_attention_heads': 32, 'audio_connector_attention_head_dim': 64, 'audio_connector_num_layers': 8, 'connector_positional_embedding_theta': 10000.0, 'connector_positional_embedding_max_pos': [4096], 'connector_rope_type': 'split', 'connector_double_precision_rope': True, 'connector_apply_gated_attention': True, 'connector_num_learnable_registers': 128, 'video_feature_extractor_out_features': 4096}
+Loading safetensors checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:01<00:00,  1.42s/it]
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:01<00:00,  1.42s/it]
+
+INFO 11-11 00:11:43.505 [component_loader.py:482] Loading weights took 1.51 seconds
+INFO 11-11 00:11:48.567 [ltx2_pipeline.py:265] Loaded module text_encoder from /models/ltx23/text_encoder
+INFO 11-11 00:11:48.568 [component_loader.py:1659] Loading tokenizer using transformers from /models/ltx23/tokenizer
+INFO 11-11 00:11:48.568 [component_loader.py:700] Loading tokenizer from /models/ltx23/tokenizer
+INFO 11-11 00:11:49.945 [component_loader.py:798] Loaded tokenizer: GemmaTokenizer
+INFO 11-11 00:11:49.946 [ltx2_pipeline.py:265] Loaded module tokenizer from /models/ltx23/tokenizer
+INFO 11-11 00:11:49.946 [component_loader.py:1659] Loading audio_vae using diffusers from /models/ltx23/audio_vae
+INFO 11-11 00:11:50.116 [ltx2_pipeline.py:265] Loaded module audio_vae from /models/ltx23/audio_vae
+INFO 11-11 00:11:50.116 [component_loader.py:1659] Loading vocoder using diffusers from /models/ltx23/vocoder
+INFO 11-11 00:11:50.825 [ltx2_pipeline.py:265] Loaded module vocoder from /models/ltx23/vocoder
+INFO 11-11 00:11:50.825 [component_loader.py:1659] Loading spatial_upsampler using diffusers from /models/ltx23/spatial_upscaler
+INFO 11-11 00:11:53.318 [ltx2_pipeline.py:299] Loaded module spatial_upsampler from /models/ltx23/spatial_upscaler
+INFO 11-11 00:11:53.319 [lora_pipeline.py:268] trainable_transformer_modules: dict_keys(['transformer'])
+INFO 11-11 00:11:53.319 [__init__.py:61] Pipelines instantiated
+INFO 11-11 00:11:53.321 [utils.py:696] Diffusers version: 0.33.0.dev0
+INFO 11-11 00:11:53.321 [utils.py:696] Diffusers version: 0.33.0.dev0
+INFO 11-11 00:11:53.322 [video_generator.py:926] 
+INFO 11-11 00:11:53.322 [video_generator.py:926]                       height: 1088
+INFO 11-11 00:11:53.322 [video_generator.py:926]                        width: 1920
+INFO 11-11 00:11:53.322 [video_generator.py:926]                 video_length: 121
+INFO 11-11 00:11:53.322 [video_generator.py:926]                       prompt: A small orange robot stands on a wooden workbench in a bright workshop. The robot slowly raises its right hand and waves toward the camera, then turns its head slightly to the left. Its metal joints move smoothly. A locked medium shot, neutral daylight, realistic materials, soft shadows, shallow depth of field. Gentle mechanical whirring and quiet room ambience. No dialogue, no text, no logos.
+INFO 11-11 00:11:53.322 [video_generator.py:926]                       image_path: None
+INFO 11-11 00:11:53.322 [video_generator.py:926]                   neg_prompt: 
+INFO 11-11 00:11:53.322 [video_generator.py:926]                         seed: 42
+INFO 11-11 00:11:53.322 [video_generator.py:926]                  infer_steps: 8
+INFO 11-11 00:11:53.322 [video_generator.py:926]        num_videos_per_prompt: 1
+INFO 11-11 00:11:53.322 [video_generator.py:926]               guidance_scale: 1.0
+INFO 11-11 00:11:53.322 [video_generator.py:926]                     n_tokens: 1011840
+INFO 11-11 00:11:53.322 [video_generator.py:926]                   flow_shift: None
+INFO 11-11 00:11:53.322 [video_generator.py:926]      embedded_guidance_scale: 6.0
+INFO 11-11 00:11:53.322 [video_generator.py:926]                   save_video: True
+INFO 11-11 00:11:53.322 [video_generator.py:926]                   output_path: /tmp/raw_0.mp4
+INFO 11-11 00:11:53.322 [video_generator.py:926]         
+INFO 11-11 00:11:53.323 [composed_pipeline_base.py:402] Creating pipeline stages...
+INFO 11-11 00:11:53.323 [composed_pipeline_base.py:787] Running pipeline stages: dict_keys(['input_validation_stage', 'prompt_encoding_stage', 'ltx2_refine_init_stage', 'latent_preparation_stage', 'denoising_stage', 'ltx2_upsample_stage', 'ltx2_refine_denoising_stage', 'audio_decoding_stage', 'decoding_stage'])
+INFO 11-11 00:11:53.323 [base.py:182] [input_validation_stage|InputValidationStage] Starting execution
+INFO 11-11 00:11:53.323 [base.py:190] [input_validation_stage|InputValidationStage] Execution completed in 0.053463000000419925 ms
+INFO 11-11 00:11:53.324 [base.py:193] [input_validation_stage|InputValidationStage] Memory peak_allocated=2.16 GiB reserved=7.83 GiB resident_after=2.16 GiB
+INFO 11-11 00:11:53.324 [base.py:182] [prompt_encoding_stage|LTX2TextEncodingStage] Starting execution
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+
+[1ALoading weights:   0%|          | 0/1065 [00:00<?, ?it/s]
+[1ALoading weights:   3%|▎         | 33/1065 [00:00<00:03, 318.94it/s]
+[1ALoading weights:   9%|▊         | 93/1065 [00:00<00:02, 461.22it/s]
+[1ALoading weights:  13%|█▎        | 139/1065 [00:00<00:02, 426.39it/s]
+[1ALoading weights:  17%|█▋        | 182/1065 [00:00<00:02, 389.13it/s]
+[1ALoading weights:  21%|██        | 223/1065 [00:00<00:02, 350.21it/s]
+[1ALoading weights:  24%|██▍       | 259/1065 [00:00<00:02, 353.02it/s]
+[1ALoading weights:  28%|██▊       | 295/1065 [00:00<00:02, 330.24it/s]
+[1ALoading weights:  31%|███       | 329/1065 [00:00<00:02, 299.24it/s]
+[1ALoading weights:  36%|███▌      | 379/1065 [00:01<00:01, 350.38it/s]
+[1ALoading weights:  39%|███▉      | 416/1065 [00:01<00:01, 334.65it/s]
+[1ALoading weights:  42%|████▏     | 451/1065 [00:01<00:02, 277.37it/s]
+[1ALoading weights:  46%|████▌     | 488/1065 [00:01<00:01, 294.13it/s]
+[1ALoading weights:  49%|████▉     | 520/1065 [00:01<00:01, 278.89it/s]
+[1ALoading weights:  52%|█████▏    | 550/1065 [00:01<00:01, 261.93it/s]
+[1ALoading weights:  59%|█████▉    | 633/1065 [00:01<00:01, 400.11it/s]
+[1ALoading weights:  66%|██████▌   | 702/1065 [00:01<00:00, 473.72it/s]Loading weights: 100%|██████████| 1065/1065 [00:02<00:00, 526.10it/s]
+INFO 11-11 00:12:13.133 [base.py:190] [prompt_encoding_stage|LTX2TextEncodingStage] Execution completed in 19809.115690000013 ms
+INFO 11-11 00:12:13.134 [base.py:193] [prompt_encoding_stage|LTX2TextEncodingStage] Memory peak_allocated=30.15 GiB reserved=3.19 GiB resident_after=2.19 GiB
+INFO 11-11 00:12:13.135 [base.py:182] [ltx2_refine_init_stage|LTX2RefineInitStage] Starting execution
+INFO 11-11 00:12:13.136 [ltx2_refine.py:96] [LTX2] Refinement enabled: stage1=960x544 stage2=1920x1088
+INFO 11-11 00:12:13.136 [base.py:190] [ltx2_refine_init_stage|LTX2RefineInitStage] Execution completed in 0.06714600000634618 ms
+INFO 11-11 00:12:13.136 [base.py:193] [ltx2_refine_init_stage|LTX2RefineInitStage] Memory peak_allocated=2.20 GiB reserved=3.19 GiB resident_after=2.19 GiB
+INFO 11-11 00:12:13.136 [base.py:182] [latent_preparation_stage|LTX2LatentPreparationStage] Starting execution
+INFO 11-11 00:12:16.024 [ltx2_latent_preparation.py:220] [LTX2] Applied conditioning for stage-1: images=1 latent=False.
+INFO 11-11 00:12:16.024 [base.py:190] [latent_preparation_stage|LTX2LatentPreparationStage] Execution completed in 2887.949003000003 ms
+INFO 11-11 00:12:16.025 [base.py:193] [latent_preparation_stage|LTX2LatentPreparationStage] Memory peak_allocated=2.21 GiB reserved=3.19 GiB resident_after=2.20 GiB
+INFO 11-11 00:12:16.028 [base.py:182] [denoising_stage|LTX2DenoisingStage] Starting execution
+INFO 11-11 00:12:18.336 [ltx2_denoising.py:315] [LTX2] Using official distilled sigma schedule
+INFO 11-11 00:12:18.336 [ltx2_denoising.py:505] [LTX2] Denoising start: steps=8 dtype=torch.bfloat16 cfg=1.0 cfg_video=3.0 cfg_audio=7.0 mod_video=3.0 mod_audio=3.0 rescale=0.70 stg_video=1.0 stg_audio=1.0 sigmas_shape=(9,) latents_shape=(1, 128, 16, 17, 30)
+
+[1A  0%|          | 0/8 [00:00<?, ?it/s]
+[1A 12%|█▎        | 1/8 [00:09<01:05,  9.39s/it]
+[1A 25%|██▌       | 2/8 [00:18<00:54,  9.08s/it]
+[1A 38%|███▊      | 3/8 [00:27<00:44,  9.00s/it]
+[1A 50%|█████     | 4/8 [00:36<00:35,  8.96s/it]
+[1A 62%|██████▎   | 5/8 [00:44<00:26,  8.94s/it]
+[1A 75%|███████▌  | 6/8 [00:53<00:17,  8.94s/it]
+[1A 88%|████████▊ | 7/8 [01:02<00:08,  8.94s/it]100%|██████████| 8/8 [01:11<00:00,  8.94s/it]100%|██████████| 8/8 [01:11<00:00,  8.97s/it]
+INFO 11-11 00:13:30.136 [ltx2_denoising.py:812] [LTX2] Denoising done.
+INFO 11-11 00:13:37.493 [base.py:190] [denoising_stage|LTX2DenoisingStage] Execution completed in 81464.894801 ms
+INFO 11-11 00:13:37.494 [base.py:193] [denoising_stage|LTX2DenoisingStage] Memory peak_allocated=23.09 GiB reserved=3.19 GiB resident_after=2.20 GiB
+INFO 11-11 00:13:37.495 [base.py:182] [ltx2_upsample_stage|LTX2UpsampleStage] Starting execution
+INFO 11-11 00:13:37.495 [ltx2_refine.py:160] [LTX2] Cast latents to torch.float32 on cuda:0 for upsampler.
+INFO 11-11 00:13:49.326 [ltx2_refine.py:201] [LTX2] Applied conditioning for stage-2: images=1 latent=False.
+INFO 11-11 00:13:49.327 [base.py:190] [ltx2_upsample_stage|LTX2UpsampleStage] Execution completed in 11831.973062000003 ms
+INFO 11-11 00:13:49.327 [base.py:193] [ltx2_upsample_stage|LTX2UpsampleStage] Memory peak_allocated=2.81 GiB reserved=3.42 GiB resident_after=2.21 GiB
+INFO 11-11 00:13:49.327 [base.py:182] [ltx2_refine_denoising_stage|LTX2DenoisingStage] Starting execution
+INFO 11-11 00:13:51.572 [ltx2_denoising.py:303] [LTX2] Using override sigma schedule, [0.909375, 0.725, 0.421875, 0.0]
+INFO 11-11 00:13:51.572 [ltx2_denoising.py:505] [LTX2] Denoising start: steps=3 dtype=torch.bfloat16 cfg=1.0 cfg_video=1.0 cfg_audio=1.0 mod_video=3.0 mod_audio=3.0 rescale=0.70 stg_video=1.0 stg_audio=1.0 sigmas_shape=(4,) latents_shape=(1, 128, 16, 34, 60)
+
+[1A  0%|          | 0/3 [00:00<?, ?it/s]
+[1A 33%|███▎      | 1/3 [00:34<01:09, 34.88s/it]
+[1A 67%|██████▋   | 2/3 [01:10<00:35, 35.18s/it]
+[1A100%|██████████| 3/3 [01:45<00:00, 35.37s/it]
+[1A100%|██████████| 3/3 [01:45<00:00, 35.29s/it]
+INFO 11-11 00:15:37.446 [ltx2_denoising.py:812] [LTX2] Denoising done.
+INFO 11-11 00:15:41.954 [base.py:190] [ltx2_refine_denoising_stage|LTX2DenoisingStage] Execution completed in 112626.11915 ms
+INFO 11-11 00:15:41.955 [base.py:193] [ltx2_refine_denoising_stage|LTX2DenoisingStage] Memory peak_allocated=31.36 GiB reserved=3.21 GiB resident_after=2.21 GiB
+INFO 11-11 00:15:41.955 [base.py:182] [audio_decoding_stage|LTX2AudioDecodingStage] Starting execution
+INFO 11-11 00:15:42.284 [base.py:190] [audio_decoding_stage|LTX2AudioDecodingStage] Execution completed in 329.0243310000278 ms
+INFO 11-11 00:15:42.285 [base.py:193] [audio_decoding_stage|LTX2AudioDecodingStage] Memory peak_allocated=2.31 GiB reserved=3.21 GiB resident_after=2.21 GiB
+INFO 11-11 00:15:42.285 [base.py:182] [decoding_stage|DecodingStage] Starting execution
+INFO 11-11 00:15:57.895 [base.py:190] [decoding_stage|DecodingStage] Execution completed in 15609.362626999995 ms
+INFO 11-11 00:15:57.895 [base.py:193] [decoding_stage|DecodingStage] Memory peak_allocated=9.44 GiB reserved=20.59 GiB resident_after=5.03 GiB
+INFO 11-11 00:15:58.024 [video_generator.py:1053] Generated successfully in 244.70 seconds
+INFO 11-11 00:15:58.295 [video_generator.py:1097] PostDecodeFrameProcessStage completed in 0.271 s
+INFO 11-11 00:15:58.881 [video_generator.py:1466] Wrote frames to ffmpeg stdin in 0.577 s
+INFO 11-11 00:15:58.982 [video_generator.py:1171] Saved video to /tmp/raw_0.mp4
+INFO 11-11 00:15:58.982 [video_generator.py:1173] VideoSaveStage completed in 0.687 s
+INFO 11-11 00:15:58.982 [video_generator.py:1176] AudioMuxStage completed in 0.000 s
+INFO 11-11 00:15:58.982 [video_generator.py:1181] End-to-end latency: 245.66 seconds
+RUN_RESULT {"index": 1, "kind": "first", "wall_seconds": 245.663190171, "gpu_generation_usd": 0.13314944907268197, "peak_allocated_gib": 31.363004684448242, "stages": {"input_validation_stage": {"peak_allocated_mb": 2211.93994140625, "peak_reserved_mb": 8020.0, "execution_time": 5.3463000000419925e-05, "timestamp": 1794355913.324228, "stage_class": "InputValidationStage"}, "prompt_encoding_stage": {"peak_allocated_mb": 30877.42529296875, "peak_reserved_mb": 31698.0, "execution_time": 19.809115690000013, "timestamp": 1794355933.1347194, "stage_class": "LTX2TextEncodingStage", "component_metric": "text_encoder_time_s"}, "ltx2_refine_init_stage": {"peak_allocated_mb": 2249.10546875, "peak_reserved_mb": 3264.0, "execution_time": 6.714600000634618e-05, "timestamp": 1794355933.1366348, "stage_class": "LTX2RefineInitStage"}, "latent_preparation_stage": {"peak_allocated_mb": 2261.63525390625, "peak_reserved_mb": 3264.0, "execution_time": 2.887949003000003, "timestamp": 1794355936.0253005, "stage_class": "LTX2LatentPreparationStage"}, "denoising_stage": {"peak_allocated_mb": 23646.6689453125, "peak_reserved_mb": 23986.0, "execution_time": 81.464894801, "timestamp": 1794356017.4948945, "stage_class": "LTX2DenoisingStage"}, "ltx2_upsample_stage": {"peak_allocated_mb": 2875.634765625, "peak_reserved_mb": 3502.0, "execution_time": 11.831973062000003, "timestamp": 1794356029.3277943, "stage_class": "LTX2UpsampleStage"}, "ltx2_refine_denoising_stage": {"peak_allocated_mb": 32115.716796875, "peak_reserved_mb": 33494.0, "execution_time": 112.62611915, "timestamp": 1794356141.9554844, "stage_class": "LTX2DenoisingStage"}, "audio_decoding_stage": {"peak_allocated_mb": 2366.38916015625, "peak_reserved_mb": 3286.0, "execution_time": 0.3290243310000278, "timestamp": 1794356142.285464, "stage_class": "LTX2AudioDecodingStage"}, "decoding_stage": {"peak_allocated_mb": 9663.0078125, "peak_reserved_mb": 21086.0, "execution_time": 15.609362626999996, "timestamp": 1794356157.895773, "stage_class": "DecodingStage", "component_metric": "vae_decode_time_s"}, "PostDecodeFrameProcessStage": {"execution_time": 0.27057796600001893, "timestamp": 1794356158.295307}, "VideoSaveStage": {"execution_time": 0.6871528240000089, "timestamp": 1794356158.9826984}, "AudioMuxStage": {"execution_time": 0.0, "timestamp": 1794356158.9827385}}, "probe": {"streams": [{"index": 0, "codec_name": "h264", "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10", "profile": "High", "codec_type": "video", "codec_tag_string": "avc1", "codec_tag": "0x31637661", "width": 1920, "height": 1080, "coded_width": 1920, "coded_height": 1080, "closed_captions": 0, "film_grain": 0, "has_b_frames": 2, "pix_fmt": "yuv420p", "level": 40, "chroma_location": "left", "field_order": "progressive", "refs": 1, "is_avc": "true", "nal_length_size": "4", "id": "0x1", "r_frame_rate": "24/1", "avg_frame_rate": "24/1", "time_base": "1/12288", "start_pts": 0, "start_time": "0.000000", "duration_ts": 61952, "duration": "5.041667", "bit_rate": "8599503", "bits_per_raw_sample": "8", "nb_frames": "121", "extradata_size": 47, "disposition": {"default": 1, "dub": 0, "original": 0, "comment": 0, "lyrics": 0, "karaoke": 0, "forced": 0, "hearing_impaired": 0, "visual_impaired": 0, "clean_effects": 0, "attached_pic": 0, "timed_thumbnails": 0, "captions": 0, "descriptions": 0, "metadata": 0, "dependent": 0, "still_image": 0}, "tags": {"language": "und", "handler_name": "VideoHandler", "vendor_id": "[0][0][0][0]", "encoder": "Lavc59.37.100 libx264"}}, {"index": 1, "codec_name": "aac", "codec_long_name": "AAC (Advanced Audio Coding)", "profile": "LC", "codec_type": "audio", "codec_tag_string": "mp4a", "codec_tag": "0x6134706d", "sample_fmt": "fltp", "sample_rate": "48000", "channels": 2, "channel_layout": "stereo", "bits_per_sample": 0, "id": "0x2", "r_frame_rate": "0/0", "avg_frame_rate": "0/0", "time_base": "1/48000", "start_pts": 0, "start_time": "0.000000", "duration_ts": 241968, "duration": "5.041000", "bit_rate": "126811", "nb_frames": "238", "extradata_size": 5, "disposition": {"default": 1, "dub": 0, "original": 0, "comment": 0, "lyrics": 0, "karaoke": 0, "forced": 0, "hearing_impaired": 0, "visual_impaired": 0, "clean_effects": 0, "attached_pic": 0, "timed_thumbnails": 0, "captions": 0, "descriptions": 0, "metadata": 0, "dependent": 0, "still_image": 0}, "tags": {"language": "und", "handler_name": "SoundHandler", "vendor_id": "[0][0][0][0]"}}], "format": {"filename": "/tmp/final_0.mp4", "nb_streams": 2, "nb_programs": 0, "format_name": "mov,mp4,m4a,3gp,3g2,mj2", "format_long_name": "QuickTime / MOV", "start_time": "0.000000", "duration": "5.042000", "size": "5504265", "bit_rate": "8733462", "probe_score": 100, "tags": {"major_brand": "isom", "minor_version": "512", "compatible_brands": "isomiso2avc1mp41", "encoder": "Lavf59.27.100"}}}}
+INFO 11-11 00:16:00.127 [utils.py:696] Diffusers version: 0.33.0.dev0
+INFO 11-11 00:16:00.128 [utils.py:696] Diffusers version: 0.33.0.dev0
+INFO 11-11 00:16:00.128 [video_generator.py:926] 
+INFO 11-11 00:16:00.128 [video_generator.py:926]                       height: 1088
+INFO 11-11 00:16:00.128 [video_generator.py:926]                        width: 1920
+INFO 11-11 00:16:00.128 [video_generator.py:926]                 video_length: 121
+INFO 11-11 00:16:00.128 [video_generator.py:926]                       prompt: A small orange robot stands on a wooden workbench in a bright workshop. The robot slowly raises its right hand and waves toward the camera, then turns its head slightly to the left. Its metal joints move smoothly. A locked medium shot, neutral daylight, realistic materials, soft shadows, shallow depth of field. Gentle mechanical whirring and quiet room ambience. No dialogue, no text, no logos.
+INFO 11-11 00:16:00.128 [video_generator.py:926]                       image_path: None
+INFO 11-11 00:16:00.128 [video_generator.py:926]                   neg_prompt: 
+INFO 11-11 00:16:00.128 [video_generator.py:926]                         seed: 42
+INFO 11-11 00:16:00.128 [video_generator.py:926]                  infer_steps: 8
+INFO 11-11 00:16:00.128 [video_generator.py:926]        num_videos_per_prompt: 1
+INFO 11-11 00:16:00.128 [video_generator.py:926]               guidance_scale: 1.0
+INFO 11-11 00:16:00.128 [video_generator.py:926]                     n_tokens: 1011840
+INFO 11-11 00:16:00.128 [video_generator.py:926]                   flow_shift: None
+INFO 11-11 00:16:00.128 [video_generator.py:926]      embedded_guidance_scale: 6.0
+INFO 11-11 00:16:00.128 [video_generator.py:926]                   save_video: True
+INFO 11-11 00:16:00.128 [video_generator.py:926]                   output_path: /tmp/raw_1.mp4
+INFO 11-11 00:16:00.128 [video_generator.py:926]         
+INFO 11-11 00:16:00.129 [composed_pipeline_base.py:787] Running pipeline stages: dict_keys(['input_validation_stage', 'prompt_encoding_stage', 'ltx2_refine_init_stage', 'latent_preparation_stage', 'denoising_stage', 'ltx2_upsample_stage', 'ltx2_refine_denoising_stage', 'audio_decoding_stage', 'decoding_stage'])
+INFO 11-11 00:16:00.129 [base.py:182] [input_validation_stage|InputValidationStage] Starting execution
+INFO 11-11 00:16:00.130 [base.py:190] [input_validation_stage|InputValidationStage] Execution completed in 0.052698999979838845 ms
+INFO 11-11 00:16:00.130 [base.py:193] [input_validation_stage|InputValidationStage] Memory peak_allocated=2.17 GiB reserved=23.42 GiB resident_after=2.17 GiB
+INFO 11-11 00:16:00.130 [base.py:182] [prompt_encoding_stage|LTX2TextEncodingStage] Starting execution
+INFO 11-11 00:16:12.458 [base.py:190] [prompt_encoding_stage|LTX2TextEncodingStage] Execution completed in 12327.711004000037 ms
+INFO 11-11 00:16:12.459 [base.py:193] [prompt_encoding_stage|LTX2TextEncodingStage] Memory peak_allocated=30.09 GiB reserved=6.09 GiB resident_after=2.19 GiB
+INFO 11-11 00:16:12.459 [base.py:182] [ltx2_refine_init_stage|LTX2RefineInitStage] Starting execution
+INFO 11-11 00:16:12.459 [ltx2_refine.py:96] [LTX2] Refinement enabled: stage1=960x544 stage2=1920x1088
+INFO 11-11 00:16:12.459 [base.py:190] [ltx2_refine_init_stage|LTX2RefineInitStage] Execution completed in 0.06133400000862821 ms
+INFO 11-11 00:16:12.459 [base.py:193] [ltx2_refine_init_stage|LTX2RefineInitStage] Memory peak_allocated=2.20 GiB reserved=6.09 GiB resident_after=2.19 GiB
+INFO 11-11 00:16:12.460 [base.py:182] [latent_preparation_stage|LTX2LatentPreparationStage] Starting execution
+INFO 11-11 00:16:15.301 [ltx2_latent_preparation.py:220] [LTX2] Applied conditioning for stage-1: images=1 latent=False.
+INFO 11-11 00:16:15.302 [base.py:190] [latent_preparation_stage|LTX2LatentPreparationStage] Execution completed in 2841.8581380000205 ms
+INFO 11-11 00:16:15.303 [base.py:193] [latent_preparation_stage|LTX2LatentPreparationStage] Memory peak_allocated=2.21 GiB reserved=6.09 GiB resident_after=2.20 GiB
+INFO 11-11 00:16:15.303 [base.py:182] [denoising_stage|LTX2DenoisingStage] Starting execution
+INFO 11-11 00:16:17.973 [ltx2_denoising.py:315] [LTX2] Using official distilled sigma schedule
+INFO 11-11 00:16:17.973 [ltx2_denoising.py:505] [LTX2] Denoising start: steps=8 dtype=torch.bfloat16 cfg=1.0 cfg_video=3.0 cfg_audio=7.0 mod_video=3.0 mod_audio=3.0 rescale=0.70 stg_video=1.0 stg_audio=1.0 sigmas_shape=(9,) latents_shape=(1, 128, 16, 17, 30)
+
+[1A  0%|          | 0/8 [00:00<?, ?it/s]
+[1A 12%|█▎        | 1/8 [00:08<01:02,  8.89s/it]
+[1A 25%|██▌       | 2/8 [00:17<00:53,  8.95s/it]
+[1A 38%|███▊      | 3/8 [00:26<00:44,  8.97s/it]
+[1A 50%|█████     | 4/8 [00:35<00:35,  8.97s/it]
+[1A 62%|██████▎   | 5/8 [00:44<00:26,  8.98s/it]
+[1A 75%|███████▌  | 6/8 [00:53<00:17,  8.99s/it]
+[1A 88%|████████▊ | 7/8 [01:02<00:08,  9.00s/it]100%|██████████| 8/8 [01:11<00:00,  9.01s/it]100%|██████████| 8/8 [01:11<00:00,  8.99s/it]
+INFO 11-11 00:17:29.865 [ltx2_denoising.py:812] [LTX2] Denoising done.
+INFO 11-11 00:17:34.657 [base.py:190] [denoising_stage|LTX2DenoisingStage] Execution completed in 79354.06440599996 ms
+INFO 11-11 00:17:34.658 [base.py:193] [denoising_stage|LTX2DenoisingStage] Memory peak_allocated=23.09 GiB reserved=6.09 GiB resident_after=2.20 GiB
+INFO 11-11 00:17:34.658 [base.py:182] [ltx2_upsample_stage|LTX2UpsampleStage] Starting execution
+INFO 11-11 00:17:34.659 [ltx2_refine.py:160] [LTX2] Cast latents to torch.float32 on cuda:0 for upsampler.
+INFO 11-11 00:17:46.072 [ltx2_refine.py:201] [LTX2] Applied conditioning for stage-2: images=1 latent=False.
+INFO 11-11 00:17:46.072 [base.py:190] [ltx2_upsample_stage|LTX2UpsampleStage] Execution completed in 11413.66231699999 ms
+INFO 11-11 00:17:46.073 [base.py:193] [ltx2_upsample_stage|LTX2UpsampleStage] Memory peak_allocated=2.81 GiB reserved=6.09 GiB resident_after=2.21 GiB
+INFO 11-11 00:17:46.073 [base.py:182] [ltx2_refine_denoising_stage|LTX2DenoisingStage] Starting execution
+INFO 11-11 00:17:48.446 [ltx2_denoising.py:303] [LTX2] Using override sigma schedule, [0.909375, 0.725, 0.421875, 0.0]
+INFO 11-11 00:17:48.446 [ltx2_denoising.py:505] [LTX2] Denoising start: steps=3 dtype=torch.bfloat16 cfg=1.0 cfg_video=1.0 cfg_audio=1.0 mod_video=3.0 mod_audio=3.0 rescale=0.70 stg_video=1.0 stg_audio=1.0 sigmas_shape=(4,) latents_shape=(1, 128, 16, 34, 60)
+
+[1A  0%|          | 0/3 [00:00<?, ?it/s]
+[1A 33%|███▎      | 1/3 [00:35<01:10, 35.02s/it]
+[1A 67%|██████▋   | 2/3 [01:10<00:35, 35.40s/it]
+[1A100%|██████████| 3/3 [01:46<00:00, 35.53s/it]100%|██████████| 3/3 [01:46<00:00, 35.46s/it]
+INFO 11-11 00:19:34.812 [ltx2_denoising.py:812] [LTX2] Denoising done.
+INFO 11-11 00:19:39.347 [base.py:190] [ltx2_refine_denoising_stage|LTX2DenoisingStage] Execution completed in 113273.652271 ms
+INFO 11-11 00:19:39.348 [base.py:193] [ltx2_refine_denoising_stage|LTX2DenoisingStage] Memory peak_allocated=31.36 GiB reserved=6.11 GiB resident_after=2.21 GiB
+INFO 11-11 00:19:39.349 [base.py:182] [audio_decoding_stage|LTX2AudioDecodingStage] Starting execution
+INFO 11-11 00:19:39.561 [base.py:190] [audio_decoding_stage|LTX2AudioDecodingStage] Execution completed in 212.1095710000418 ms
+INFO 11-11 00:19:39.561 [base.py:193] [audio_decoding_stage|LTX2AudioDecodingStage] Memory peak_allocated=2.31 GiB reserved=6.11 GiB resident_after=2.21 GiB
+INFO 11-11 00:19:39.562 [base.py:182] [decoding_stage|DecodingStage] Starting execution
+INFO 11-11 00:19:55.073 [base.py:190] [decoding_stage|DecodingStage] Execution completed in 15511.334915000021 ms
+INFO 11-11 00:19:55.074 [base.py:193] [decoding_stage|DecodingStage] Memory peak_allocated=9.44 GiB reserved=19.15 GiB resident_after=5.03 GiB
+INFO 11-11 00:19:55.202 [video_generator.py:1053] Generated successfully in 235.07 seconds
+INFO 11-11 00:19:55.469 [video_generator.py:1097] PostDecodeFrameProcessStage completed in 0.266 s
+INFO 11-11 00:19:56.027 [video_generator.py:1466] Wrote frames to ffmpeg stdin in 0.555 s
+INFO 11-11 00:19:56.139 [video_generator.py:1171] Saved video to /tmp/raw_1.mp4
+INFO 11-11 00:19:56.140 [video_generator.py:1173] VideoSaveStage completed in 0.671 s
+INFO 11-11 00:19:56.140 [video_generator.py:1176] AudioMuxStage completed in 0.000 s
+INFO 11-11 00:19:56.140 [video_generator.py:1181] End-to-end latency: 236.01 seconds
+RUN_RESULT {"index": 2, "kind": "warm", "wall_seconds": 236.014356347, "gpu_generation_usd": 0.127919781140074, "peak_allocated_gib": 31.36361837387085, "stages": {"input_validation_stage": {"peak_allocated_mb": 2224.744140625, "peak_reserved_mb": 23980.0, "execution_time": 5.2698999979838845e-05, "timestamp": 1794356160.1306293, "stage_class": "InputValidationStage"}, "prompt_encoding_stage": {"peak_allocated_mb": 30814.8232421875, "peak_reserved_mb": 31478.0, "execution_time": 12.327711004000037, "timestamp": 1794356172.459224, "stage_class": "LTX2TextEncodingStage", "component_metric": "text_encoder_time_s"}, "ltx2_refine_init_stage": {"peak_allocated_mb": 2249.63623046875, "peak_reserved_mb": 6234.0, "execution_time": 6.133400000862821e-05, "timestamp": 1794356172.4600875, "stage_class": "LTX2RefineInitStage"}, "latent_preparation_stage": {"peak_allocated_mb": 2261.650390625, "peak_reserved_mb": 6234.0, "execution_time": 2.8418581380000205, "timestamp": 1794356175.3032095, "stage_class": "LTX2LatentPreparationStage"}, "denoising_stage": {"peak_allocated_mb": 23647.18408203125, "peak_reserved_mb": 23986.0, "execution_time": 79.35406440599996, "timestamp": 1794356254.6587076, "stage_class": "LTX2DenoisingStage"}, "ltx2_upsample_stage": {"peak_allocated_mb": 2875.666015625, "peak_reserved_mb": 6236.0, "execution_time": 11.41366231699999, "timestamp": 1794356266.073308, "stage_class": "LTX2UpsampleStage"}, "ltx2_refine_denoising_stage": {"peak_allocated_mb": 32116.34521484375, "peak_reserved_mb": 33494.0, "execution_time": 113.273652271, "timestamp": 1794356379.349061, "stage_class": "LTX2DenoisingStage"}, "audio_decoding_stage": {"peak_allocated_mb": 2366.544921875, "peak_reserved_mb": 6254.0, "execution_time": 0.2121095710000418, "timestamp": 1794356379.5621188, "stage_class": "LTX2AudioDecodingStage"}, "decoding_stage": {"peak_allocated_mb": 9662.31982421875, "peak_reserved_mb": 19610.0, "execution_time": 15.51133491500002, "timestamp": 1794356395.0743885, "stage_class": "DecodingStage", "component_metric": "vae_decode_time_s"}, "PostDecodeFrameProcessStage": {"execution_time": 0.2661034530000279, "timestamp": 1794356395.469158}, "VideoSaveStage": {"execution_time": 0.6706766130000688, "timestamp": 1794356396.140109}, "AudioMuxStage": {"execution_time": 0.0, "timestamp": 1794356396.1401436}}, "probe": {"streams": [{"index": 0, "codec_name": "h264", "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10", "profile": "High", "codec_type": "video", "codec_tag_string": "avc1", "codec_tag": "0x31637661", "width": 1920, "height": 1080, "coded_width": 1920, "coded_height": 1080, "closed_captions": 0, "film_grain": 0, "has_b_frames": 2, "pix_fmt": "yuv420p", "level": 40, "chroma_location": "left", "field_order": "progressive", "refs": 1, "is_avc": "true", "nal_length_size": "4", "id": "0x1", "r_frame_rate": "24/1", "avg_frame_rate": "24/1", "time_base": "1/12288", "start_pts": 0, "start_time": "0.000000", "duration_ts": 61952, "duration": "5.041667", "bit_rate": "8599503", "bits_per_raw_sample": "8", "nb_frames": "121", "extradata_size": 47, "disposition": {"default": 1, "dub": 0, "original": 0, "comment": 0, "lyrics": 0, "karaoke": 0, "forced": 0, "hearing_impaired": 0, "visual_impaired": 0, "clean_effects": 0, "attached_pic": 0, "timed_thumbnails": 0, "captions": 0, "descriptions": 0, "metadata": 0, "dependent": 0, "still_image": 0}, "tags": {"language": "und", "handler_name": "VideoHandler", "vendor_id": "[0][0][0][0]", "encoder": "Lavc59.37.100 libx264"}}, {"index": 1, "codec_name": "aac", "codec_long_name": "AAC (Advanced Audio Coding)", "profile": "LC", "codec_type": "audio", "codec_tag_string": "mp4a", "codec_tag": "0x6134706d", "sample_fmt": "fltp", "sample_rate": "48000", "channels": 2, "channel_layout": "stereo", "bits_per_sample": 0, "id": "0x2", "r_frame_rate": "0/0", "avg_frame_rate": "0/0", "time_base": "1/48000", "start_pts": 0, "start_time": "0.000000", "duration_ts": 241968, "duration": "5.041000", "bit_rate": "126662", "nb_frames": "238", "extradata_size": 5, "disposition": {"default": 1, "dub": 0, "original": 0, "comment": 0, "lyrics": 0, "karaoke": 0, "forced": 0, "hearing_impaired": 0, "visual_impaired": 0, "clean_effects": 0, "attached_pic": 0, "timed_thumbnails": 0, "captions": 0, "descriptions": 0, "metadata": 0, "dependent": 0, "still_image": 0}, "tags": {"language": "und", "handler_name": "SoundHandler", "vendor_id": "[0][0][0][0]"}}], "format": {"filename": "/tmp/final_1.mp4", "nb_streams": 2, "nb_programs": 0, "format_name": "mov,mp4,m4a,3gp,3g2,mj2", "format_long_name": "QuickTime / MOV", "start_time": "0.000000", "duration": "5.042000", "size": "5504171", "bit_rate": "8733313", "probe_score": 100, "tags": {"major_brand": "isom", "minor_version": "512", "compatible_brands": "isomiso2avc1mp41", "encoder": "Lavf59.27.100"}}}}
+INFO 11-11 00:19:57.268 [uniproc_executor.py:248] Shutting down UniprocExecutor...
+INFO 11-11 00:19:57.268 [gpu_worker.py:196] Worker 0 shutting down...
+INFO 11-11 00:19:57.714 [gpu_worker.py:205] Worker 0 shutdown complete
+INFO 11-11 00:19:57.714 [uniproc_executor.py:257] UniprocExecutor shutdown complete
+l40s success C:\Users\Abduzido\OneDrive\Documentos\Auto_Video\sistema\testes\ltx_modal\comparacao\l40s
+Stopping app - local entrypoint completed.
+[modal-client] 2026-11-10T21:19:51-0300 Timed out waiting for final app logs.
+✓ App completed. View run at 
+https://modal.com/apps/abduzido344/main/ap-9AB3pa8pzo6jhydb39069d

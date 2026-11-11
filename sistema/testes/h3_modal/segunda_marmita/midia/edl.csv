@@ -1,0 +1,7 @@
+inicio,fim,fonte,de,ate,zoom,trans
+0.000000,7.739000,cenas/cena_01_lenta.mp4,0,,1>1.025@0.5;0.5,corte
+7.739000,16.597000,cenas/cena_02_lenta.mp4,0,,1>1.025@0.5;0.5,corte
+16.597000,24.184000,cenas/cena_03_valida_lenta.mp4,0,,1>1.025@0.5;0.5,corte
+24.184000,32.769000,cenas/cena_04_lenta.mp4,0,,1>1.025@0.5;0.5,corte
+32.769000,42.566000,cenas/cena_05_lenta.mp4,0,,1>1.025@0.5;0.5,corte
+42.566000,51.137392,cenas/cena_06_lenta.mp4,0,,1>1.025@0.5;0.5,fim

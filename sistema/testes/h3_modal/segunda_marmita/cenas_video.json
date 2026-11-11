@@ -1,0 +1,39 @@
+{
+  "title": "A segunda marmita",
+  "mode": "start_image",
+  "fps": 24,
+  "frames_per_test": 124,
+  "note": "Clipes de teste independentes; ajustar duração depois de gravar a narração. Sem falas geradas: voz entra na edição.",
+  "scenes": [
+    {
+      "id": "01",
+      "image": "imagens/01_duas_marmitas_vertical.png",
+      "prompt": "Locked vertical shot. The mother slowly finishes placing one spoonful of food in the lunchbox and pauses. Her daughter watches quietly from the doorway. Preserve faces, clothing, kitchen layout, two lunchboxes and natural hand anatomy. Subtle breathing, neutral daylight, one continuous take. Quiet room ambience, no speech, no music, no text, no cuts."
+    },
+    {
+      "id": "02",
+      "image": "imagens/02_a_reclamacao.png",
+      "prompt": "Locked vertical shot. The daughter makes one small questioning hand gesture toward her mother, then lowers her hand. The mother listens calmly with a patient expression. Preserve faces, clothing, both closed lunchboxes and kitchen layout. Restrained natural motion, no exaggerated expression. Quiet room ambience, no speech, no music, no text, no cuts."
+    },
+    {
+      "id": "03",
+      "image": "imagens/03_o_portao.png",
+      "prompt": "Locked vertical shot at the gate. The elderly teacher and mother gently steady the lunchbox on its folded towel, exchanging a small grateful smile. The daughter stays in the doorway watching. Keep the lunchbox supported throughout; preserve faces, hands, clothing, gate and background. Minimal movement, neutral daylight. Quiet outdoor ambience, no speech, no music, no text, no cuts."
+    },
+    {
+      "id": "04",
+      "image": "imagens/04_o_professor_v3.png",
+      "prompt": "Locked vertical close shot. The mother gently finishes straightening the elderly teacher's shirt collar with her raised hand. Her other arm keeps supporting the towel and steel lunchbox steadily. The teacher lowers his eyes and smiles softly. The daughter remains in the background doorway. Preserve natural connected arms and hands, faces and all props. Tiny motion only. Quiet outdoor ambience, no speech, no music, no text, no cuts."
+    },
+    {
+      "id": "05",
+      "image": "imagens/05_a_revelacao.png",
+      "prompt": "Locked vertical shot in the kitchen. The daughter gently squeezes her mother's hand on the table and looks at her with understanding. Her mother gives a small tender smile. Preserve their faces, clothing, hand contact, both lunchboxes and kitchen. Restrained natural breathing, no tears. Quiet room ambience, no speech, no music, no text, no cuts."
+    },
+    {
+      "id": "06",
+      "image": "imagens/06_o_gesto_da_filha.png",
+      "prompt": "Locked vertical shot. The daughter wearing the beige apron finishes setting the second closed lunchbox beside the first, then glances toward her mother with a small loving smile. Her mother pauses in the doorway, touched. Preserve faces, clothing, both lunchboxes, hand anatomy and kitchen layout. Small continuous motion, neutral daylight. Quiet room ambience, no speech, no music, no text, no cuts."
+    }
+  ]
+}

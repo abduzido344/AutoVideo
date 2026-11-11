@@ -1,0 +1,896 @@
+C:\Users\Abduzido\AppData\Roaming\Python\Python314\site-packages\modal\_utils\async_utils.py:43: DeprecationWarning: 'asyncio.WindowsSelectorEventLoopPolicy' is deprecated and slated for removal in Python 3.16
+  asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+C:\Users\Abduzido\AppData\Roaming\Python\Python314\site-packages\modal\_utils\async_utils.py:43: DeprecationWarning: 'asyncio.set_event_loop_policy' is deprecated and slated for removal in Python 3.16
+  asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+✓ Initialized. View run at 
+https://modal.com/apps/abduzido344/main/ap-WP2XlJH6Jv1OPf0POT4Dw4
+✓ Created objects.
+├── 🔨 Created mount 
+│   C:\Users\Abduzido\OneDrive\Documentos\Auto_Video\sistema\testes\ltx_modal\c
+│   omparar.py
+├── 🔨 Created mount 
+│   C:\Users\Abduzido\OneDrive\Documentos\Auto_Video\sistema\testes\ltx_modal\t
+│   este.py
+├── 🔨 Created function baixar.
+├── 🔨 Created function rtx.
+└── 🔨 Created function l40s.
+INFO 11-11 00:02:43.546 [__init__.py:47] CUDA is available
+INFO 11-11 00:02:44.814 [utils.py:696] Diffusers version: 0.33.0.dev0
+INFO 11-11 00:02:44.817 [utils.py:696] Diffusers version: 0.33.0.dev0
+INFO 11-11 00:02:44.818 [uniproc_executor.py:60] Initializing UniprocExecutor with master port: 26126
+INFO 11-11 00:02:44.932 [parallel_state.py:955] Initializing distributed environment with world_size=1, device=cuda:0
+INFO 11-11 00:02:44.932 [parallel_state.py:755] Using nccl backend for CUDA platform
+[W1111 00:02:44.016787203 ProcessGroupNCCL.cpp:1001] Warning: TORCH_NCCL_AVOID_RECORD_STREAMS is the default now, this environment variable is thus deprecated. (function operator())
+INFO 11-11 00:02:44.950 [__init__.py:39] Building pipeline of type: basic
+INFO 11-11 00:02:44.950 [utils.py:696] Diffusers version: 0.33.0.dev0
+INFO 11-11 00:02:44.951 [utils.py:696] Diffusers version: 0.33.0.dev0
+INFO 11-11 00:02:44.951 [pipeline_registry.py:153] Loading pipelines for types: ['basic']
+INFO 11-11 00:02:45.054 [pipeline_registry.py:195] Loaded 56 pipeline classes across 1 types
+INFO 11-11 00:02:45.054 [utils.py:544] Model already exists locally at /models/ltx23
+INFO 11-11 00:02:45.054 [__init__.py:56] Model path: /models/ltx23
+INFO 11-11 00:02:45.054 [profiler.py:198] Torch profiler disabled; returning no-op controller
+INFO 11-11 00:02:45.054 [composed_pipeline_base.py:172] Loading pipeline modules...
+INFO 11-11 00:02:45.055 [utils.py:544] Model already exists locally at /models/ltx23
+INFO 11-11 00:02:45.055 [composed_pipeline_base.py:485] Model path: /models/ltx23
+INFO 11-11 00:02:45.055 [utils.py:696] Diffusers version: 0.33.0.dev0
+INFO 11-11 00:02:45.055 [ltx2_pipeline.py:190] Loading pipeline modules from config: {'_class_name': 'LTX2Pipeline', '_diffusers_version': '0.33.0.dev0', 'transformer': ['diffusers', 'LTX2Transformer3DModel'], 'vae': ['diffusers', 'CausalVideoAutoencoder'], 'text_encoder': ['transformers', 'LTX2GemmaTextEncoderModel'], 'tokenizer': ['transformers', 'AutoTokenizer'], 'audio_vae': ['diffusers', 'LTX2AudioDecoder'], 'vocoder': ['diffusers', 'LTX2Vocoder']}
+INFO 11-11 00:02:45.055 [component_loader.py:1659] Loading transformer using diffusers from /models/ltx23/transformer
+INFO 11-11 00:02:45.055 [component_loader.py:1229] transformer cls_name: LTX2Transformer3DModel
+INFO 11-11 00:02:45.056 [component_loader.py:1296] Loading model from 1 safetensors files: ['/models/ltx23/transformer/model.safetensors']
+INFO 11-11 00:02:45.056 [component_loader.py:1305] Loading model from LTX2Transformer3DModel, default_dtype: torch.bfloat16
+INFO 11-11 00:02:45.056 [component_loader.py:1329] Worker 0 transformer attention backend: TORCH_SDPA
+INFO 11-11 00:02:45.056 [fsdp_load.py:413] Loading model with default_dtype: torch.bfloat16
+INFO 11-11 00:02:45.059 [cuda.py:174] Trying FASTVIDEO_ATTENTION_BACKEND=TORCH_SDPA
+INFO 11-11 00:02:45.059 [cuda.py:175] Selected backend: AttentionBackendEnum.TORCH_SDPA
+INFO 11-11 00:02:45.059 [cuda.py:300] Using Torch SDPA backend.
+INFO 11-11 00:02:45.060 [cuda.py:174] Trying FASTVIDEO_ATTENTION_BACKEND=TORCH_SDPA
+INFO 11-11 00:02:45.060 [cuda.py:175] Selected backend: AttentionBackendEnum.TORCH_SDPA
+INFO 11-11 00:02:45.060 [cuda.py:300] Using Torch SDPA backend.
+INFO 11-11 00:02:45.060 [cuda.py:174] Trying FASTVIDEO_ATTENTION_BACKEND=TORCH_SDPA
+INFO 11-11 00:02:45.060 [cuda.py:175] Selected backend: AttentionBackendEnum.TORCH_SDPA
+INFO 11-11 00:02:45.060 [cuda.py:300] Using Torch SDPA backend.
+INFO 11-11 00:02:45.060 [cuda.py:174] Trying FASTVIDEO_ATTENTION_BACKEND=TORCH_SDPA
+INFO 11-11 00:02:45.060 [cuda.py:175] Selected backend: AttentionBackendEnum.TORCH_SDPA
+INFO 11-11 00:02:45.060 [cuda.py:300] Using Torch SDPA backend.
+INFO 11-11 00:02:45.061 [cuda.py:174] Trying FASTVIDEO_ATTENTION_BACKEND=TORCH_SDPA
+INFO 11-11 00:02:45.061 [cuda.py:175] Selected backend: AttentionBackendEnum.TORCH_SDPA
+INFO 11-11 00:02:45.061 [cuda.py:300] Using Torch SDPA backend.
+INFO 11-11 00:02:45.549 [fsdp_load.py:497] Loading transformer weights with to_cpu=False
+Loading safetensors checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:21<00:00, 21.69s/it]
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:21<00:00, 21.69s/it]
+
+INFO 11-11 00:03:07.374 [component_loader.py:1382] Loaded model with 18.99B parameters
+INFO 11-11 00:03:07.381 [ltx2_pipeline.py:265] Loaded module transformer from /models/ltx23/transformer
+INFO 11-11 00:03:07.381 [component_loader.py:1659] Loading vae using diffusers from /models/ltx23/vae
+INFO 11-11 00:03:10.843 [ltx2_pipeline.py:265] Loaded module vae from /models/ltx23/vae
+INFO 11-11 00:03:10.843 [component_loader.py:1659] Loading text_encoder using transformers from /models/ltx23/text_encoder
+INFO 11-11 00:03:10.845 [component_loader.py:333] HF Model config: {'architectures': ['LTX2GemmaTextEncoderModel'], 'hidden_size': 3840, 'num_hidden_layers': 48, 'num_attention_heads': 16, 'text_len': 1024, 'pad_token_id': 0, 'eos_token_id': 1, 'gemma_model_path': '/models/ltx23/text_encoder/gemma', 'gemma_dtype': 'bfloat16', 'padding_side': 'left', 'feature_extractor_in_features': 188160, 'feature_extractor_out_features': 3840, 'audio_feature_extractor_out_features': 2048, 'caption_proj_before_connector': True, 'caption_projection_first_linear': False, 'caption_proj_input_norm': False, 'caption_projection_second_linear': False, 'connector_num_attention_heads': 32, 'connector_attention_head_dim': 128, 'connector_num_layers': 8, 'audio_connector_num_attention_heads': 32, 'audio_connector_attention_head_dim': 64, 'audio_connector_num_layers': 8, 'connector_positional_embedding_theta': 10000.0, 'connector_positional_embedding_max_pos': [4096], 'connector_rope_type': 'split', 'connector_double_precision_rope': True, 'connector_apply_gated_attention': True, 'connector_num_learnable_registers': 128, 'video_feature_extractor_out_features': 4096}
+Loading safetensors checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:04<00:00,  4.64s/it]
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:04<00:00,  4.64s/it]
+
+INFO 11-11 00:03:20.995 [component_loader.py:482] Loading weights took 4.76 seconds
+INFO 11-11 00:03:22.581 [ltx2_pipeline.py:265] Loaded module text_encoder from /models/ltx23/text_encoder
+INFO 11-11 00:03:22.582 [component_loader.py:1659] Loading tokenizer using transformers from /models/ltx23/tokenizer
+INFO 11-11 00:03:22.582 [component_loader.py:700] Loading tokenizer from /models/ltx23/tokenizer
+INFO 11-11 00:03:24.002 [component_loader.py:798] Loaded tokenizer: GemmaTokenizer
+INFO 11-11 00:03:24.002 [ltx2_pipeline.py:265] Loaded module tokenizer from /models/ltx23/tokenizer
+INFO 11-11 00:03:24.002 [component_loader.py:1659] Loading audio_vae using diffusers from /models/ltx23/audio_vae
+INFO 11-11 00:03:24.690 [ltx2_pipeline.py:265] Loaded module audio_vae from /models/ltx23/audio_vae
+INFO 11-11 00:03:24.690 [component_loader.py:1659] Loading vocoder using diffusers from /models/ltx23/vocoder
+INFO 11-11 00:03:25.494 [ltx2_pipeline.py:265] Loaded module vocoder from /models/ltx23/vocoder
+INFO 11-11 00:03:25.495 [component_loader.py:1659] Loading spatial_upsampler using diffusers from /models/ltx23/spatial_upscaler
+INFO 11-11 00:03:27.576 [ltx2_pipeline.py:299] Loaded module spatial_upsampler from /models/ltx23/spatial_upscaler
+INFO 11-11 00:03:27.576 [lora_pipeline.py:268] trainable_transformer_modules: dict_keys(['transformer'])
+INFO 11-11 00:03:27.577 [__init__.py:61] Pipelines instantiated
+INFO 11-11 00:03:27.578 [utils.py:696] Diffusers version: 0.33.0.dev0
+INFO 11-11 00:03:27.579 [utils.py:696] Diffusers version: 0.33.0.dev0
+INFO 11-11 00:03:27.579 [video_generator.py:926] 
+INFO 11-11 00:03:27.579 [video_generator.py:926]                       height: 1088
+INFO 11-11 00:03:27.579 [video_generator.py:926]                        width: 1920
+INFO 11-11 00:03:27.579 [video_generator.py:926]                 video_length: 121
+INFO 11-11 00:03:27.579 [video_generator.py:926]                       prompt: A small orange robot stands on a wooden workbench in a bright workshop. The robot slowly raises its right hand and waves toward the camera, then turns its head slightly to the left. Its metal joints move smoothly. A locked medium shot, neutral daylight, realistic materials, soft shadows, shallow depth of field. Gentle mechanical whirring and quiet room ambience. No dialogue, no text, no logos.
+INFO 11-11 00:03:27.579 [video_generator.py:926]                       image_path: None
+INFO 11-11 00:03:27.579 [video_generator.py:926]                   neg_prompt: 
+INFO 11-11 00:03:27.579 [video_generator.py:926]                         seed: 42
+INFO 11-11 00:03:27.579 [video_generator.py:926]                  infer_steps: 8
+INFO 11-11 00:03:27.579 [video_generator.py:926]        num_videos_per_prompt: 1
+INFO 11-11 00:03:27.579 [video_generator.py:926]               guidance_scale: 1.0
+INFO 11-11 00:03:27.579 [video_generator.py:926]                     n_tokens: 1011840
+INFO 11-11 00:03:27.579 [video_generator.py:926]                   flow_shift: None
+INFO 11-11 00:03:27.579 [video_generator.py:926]      embedded_guidance_scale: 6.0
+INFO 11-11 00:03:27.579 [video_generator.py:926]                   save_video: True
+INFO 11-11 00:03:27.579 [video_generator.py:926]                   output_path: /tmp/raw_0.mp4
+INFO 11-11 00:03:27.579 [video_generator.py:926]         
+INFO 11-11 00:03:27.580 [composed_pipeline_base.py:402] Creating pipeline stages...
+INFO 11-11 00:03:27.580 [composed_pipeline_base.py:787] Running pipeline stages: dict_keys(['input_validation_stage', 'prompt_encoding_stage', 'ltx2_refine_init_stage', 'latent_preparation_stage', 'denoising_stage', 'ltx2_upsample_stage', 'ltx2_refine_denoising_stage', 'audio_decoding_stage', 'decoding_stage'])
+INFO 11-11 00:03:27.580 [base.py:182] [input_validation_stage|InputValidationStage] Starting execution
+INFO 11-11 00:03:27.581 [base.py:190] [input_validation_stage|InputValidationStage] Execution completed in 0.06039899999876752 ms
+INFO 11-11 00:03:27.581 [base.py:193] [input_validation_stage|InputValidationStage] Memory peak_allocated=38.92 GiB reserved=45.53 GiB resident_after=38.92 GiB
+INFO 11-11 00:03:27.581 [base.py:182] [prompt_encoding_stage|LTX2TextEncodingStage] Starting execution
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+
+[1ALoading weights:   0%|          | 0/1065 [00:00<?, ?it/s]
+[1ALoading weights:   1%|          | 12/1065 [00:02<03:54,  4.49it/s]
+[1ALoading weights:   1%|▏         | 15/1065 [00:03<03:23,  5.16it/s]
+[1ALoading weights:   3%|▎         | 29/1065 [00:03<01:18, 13.20it/s]
+[1ALoading weights:   3%|▎         | 35/1065 [00:04<01:39, 10.31it/s]
+[1ALoading weights:   5%|▌         | 54/1065 [00:05<01:24, 12.02it/s]
+[1ALoading weights:   5%|▌         | 58/1065 [00:06<01:52,  8.92it/s]
+[1ALoading weights:   9%|▉         | 95/1065 [00:06<00:39, 24.70it/s]
+[1ALoading weights:  15%|█▍        | 157/1065 [00:06<00:15, 59.62it/s]
+[1ALoading weights:  19%|█▉        | 204/1065 [00:06<00:09, 90.93it/s]
+[1ALoading weights:  24%|██▍       | 255/1065 [00:06<00:06, 132.35it/s]
+[1ALoading weights:  29%|██▉       | 312/1065 [00:07<00:04, 185.46it/s]
+[1ALoading weights:  35%|███▌      | 373/1065 [00:07<00:02, 246.88it/s]
+[1ALoading weights:  40%|███▉      | 421/1065 [00:07<00:02, 237.65it/s]
+[1ALoading weights:  44%|████▍     | 468/1065 [00:07<00:02, 276.30it/s]
+[1ALoading weights:  50%|█████     | 534/1065 [00:07<00:01, 346.65it/s]
+[1ALoading weights:  66%|██████▋   | 708/1065 [00:07<00:00, 643.84it/s]
+[1ALoading weights: 100%|██████████| 1065/1065 [00:07<00:00, 137.82it/s]
+INFO 11-11 00:03:43.835 [base.py:190] [prompt_encoding_stage|LTX2TextEncodingStage] Execution completed in 16253.950627999999 ms
+INFO 11-11 00:03:43.836 [base.py:193] [prompt_encoding_stage|LTX2TextEncodingStage] Memory peak_allocated=66.92 GiB reserved=67.98 GiB resident_after=61.75 GiB
+INFO 11-11 00:03:43.836 [base.py:182] [ltx2_refine_init_stage|LTX2RefineInitStage] Starting execution
+INFO 11-11 00:03:43.836 [ltx2_refine.py:96] [LTX2] Refinement enabled: stage1=960x544 stage2=1920x1088
+INFO 11-11 00:03:43.836 [base.py:190] [ltx2_refine_init_stage|LTX2RefineInitStage] Execution completed in 0.055222000000298976 ms
+INFO 11-11 00:03:43.836 [base.py:193] [ltx2_refine_init_stage|LTX2RefineInitStage] Memory peak_allocated=61.75 GiB reserved=67.98 GiB resident_after=61.75 GiB
+INFO 11-11 00:03:43.837 [base.py:182] [latent_preparation_stage|LTX2LatentPreparationStage] Starting execution
+INFO 11-11 00:03:44.109 [ltx2_latent_preparation.py:220] [LTX2] Applied conditioning for stage-1: images=1 latent=False.
+INFO 11-11 00:03:44.109 [base.py:190] [latent_preparation_stage|LTX2LatentPreparationStage] Execution completed in 272.2946250000007 ms
+INFO 11-11 00:03:44.109 [base.py:193] [latent_preparation_stage|LTX2LatentPreparationStage] Memory peak_allocated=61.87 GiB reserved=67.98 GiB resident_after=61.75 GiB
+INFO 11-11 00:03:44.110 [base.py:182] [denoising_stage|LTX2DenoisingStage] Starting execution
+INFO 11-11 00:03:44.110 [ltx2_denoising.py:315] [LTX2] Using official distilled sigma schedule
+INFO 11-11 00:03:44.110 [ltx2_denoising.py:505] [LTX2] Denoising start: steps=8 dtype=torch.bfloat16 cfg=1.0 cfg_video=3.0 cfg_audio=7.0 mod_video=3.0 mod_audio=3.0 rescale=0.70 stg_video=1.0 stg_audio=1.0 sigmas_shape=(9,) latents_shape=(1, 128, 16, 17, 30)
+
+[1A  0%|          | 0/8 [00:00<?, ?it/s]
+[1A 12%|█▎        | 1/8 [00:04<00:34,  4.87s/it]
+[1A 25%|██▌       | 2/8 [00:09<00:29,  4.89s/it]
+[1A 38%|███▊      | 3/8 [00:14<00:24,  4.90s/it]
+[1A 50%|█████     | 4/8 [00:19<00:19,  4.90s/it]
+[1A 62%|██████▎   | 5/8 [00:24<00:14,  4.90s/it]
+[1A 75%|███████▌  | 6/8 [00:29<00:09,  4.90s/it]
+[1A 88%|████████▊ | 7/8 [00:34<00:04,  4.90s/it]
+[1A100%|██████████| 8/8 [00:39<00:00,  4.90s/it]
+[1A100%|██████████| 8/8 [00:39<00:00,  4.90s/it]
+INFO 11-11 00:04:23.317 [ltx2_denoising.py:812] [LTX2] Denoising done.
+INFO 11-11 00:04:23.387 [base.py:190] [denoising_stage|LTX2DenoisingStage] Execution completed in 39276.739545 ms
+INFO 11-11 00:04:23.387 [base.py:193] [denoising_stage|LTX2DenoisingStage] Memory peak_allocated=64.49 GiB reserved=67.98 GiB resident_after=61.75 GiB
+INFO 11-11 00:04:23.387 [base.py:182] [ltx2_upsample_stage|LTX2UpsampleStage] Starting execution
+INFO 11-11 00:04:23.387 [ltx2_refine.py:160] [LTX2] Cast latents to torch.float32 on cuda:0 for upsampler.
+INFO 11-11 00:04:23.548 [ltx2_refine.py:201] [LTX2] Applied conditioning for stage-2: images=1 latent=False.
+INFO 11-11 00:04:23.587 [base.py:190] [ltx2_upsample_stage|LTX2UpsampleStage] Execution completed in 199.24920999999074 ms
+INFO 11-11 00:04:23.587 [base.py:193] [ltx2_upsample_stage|LTX2UpsampleStage] Memory peak_allocated=62.95 GiB reserved=67.98 GiB resident_after=61.76 GiB
+INFO 11-11 00:04:23.588 [base.py:182] [ltx2_refine_denoising_stage|LTX2DenoisingStage] Starting execution
+INFO 11-11 00:04:23.588 [ltx2_denoising.py:303] [LTX2] Using override sigma schedule, [0.909375, 0.725, 0.421875, 0.0]
+INFO 11-11 00:04:23.588 [ltx2_denoising.py:505] [LTX2] Denoising start: steps=3 dtype=torch.bfloat16 cfg=1.0 cfg_video=1.0 cfg_audio=1.0 mod_video=3.0 mod_audio=3.0 rescale=0.70 stg_video=1.0 stg_audio=1.0 sigmas_shape=(4,) latents_shape=(1, 128, 16, 34, 60)
+
+[1A  0%|          | 0/3 [00:00<?, ?it/s]
+[1A 33%|███▎      | 1/3 [00:19<00:39, 19.60s/it]
+[1A 67%|██████▋   | 2/3 [00:39<00:19, 19.82s/it]
+[1A100%|██████████| 3/3 [00:59<00:00, 19.90s/it]100%|██████████| 3/3 [00:59<00:00, 19.86s/it]
+INFO 11-11 00:05:23.166 [ltx2_denoising.py:812] [LTX2] Denoising done.
+INFO 11-11 00:05:23.523 [base.py:190] [ltx2_refine_denoising_stage|LTX2DenoisingStage] Execution completed in 59934.93222299999 ms
+INFO 11-11 00:05:23.523 [base.py:193] [ltx2_refine_denoising_stage|LTX2DenoisingStage] Memory peak_allocated=72.67 GiB reserved=75.95 GiB resident_after=61.76 GiB
+INFO 11-11 00:05:23.523 [base.py:182] [audio_decoding_stage|LTX2AudioDecodingStage] Starting execution
+INFO 11-11 00:05:23.736 [base.py:190] [audio_decoding_stage|LTX2AudioDecodingStage] Execution completed in 212.89646900001458 ms
+INFO 11-11 00:05:23.737 [base.py:193] [audio_decoding_stage|LTX2AudioDecodingStage] Memory peak_allocated=61.87 GiB reserved=75.95 GiB resident_after=61.76 GiB
+INFO 11-11 00:05:23.737 [base.py:182] [decoding_stage|DecodingStage] Starting execution
+INFO 11-11 00:05:30.892 [base.py:190] [decoding_stage|DecodingStage] Execution completed in 7154.714902999985 ms
+INFO 11-11 00:05:30.893 [base.py:193] [decoding_stage|DecodingStage] Memory peak_allocated=67.63 GiB reserved=78.78 GiB resident_after=64.59 GiB
+INFO 11-11 00:05:30.953 [video_generator.py:1053] Generated successfully in 123.37 seconds
+INFO 11-11 00:05:31.034 [video_generator.py:1097] PostDecodeFrameProcessStage completed in 0.080 s
+INFO 11-11 00:05:31.395 [video_generator.py:1466] Wrote frames to ffmpeg stdin in 0.354 s
+INFO 11-11 00:05:31.481 [video_generator.py:1171] Saved video to /tmp/raw_0.mp4
+INFO 11-11 00:05:31.481 [video_generator.py:1173] VideoSaveStage completed in 0.447 s
+INFO 11-11 00:05:31.481 [video_generator.py:1176] AudioMuxStage completed in 0.000 s
+INFO 11-11 00:05:31.481 [video_generator.py:1181] End-to-end latency: 123.90 seconds
+RUN_RESULT {"index": 1, "kind": "first", "wall_seconds": 123.90491589300001, "gpu_generation_usd": 0.104327939181906, "peak_allocated_gib": 68.11785888671875, "stages": {"input_validation_stage": {"peak_allocated_mb": 39853.2890625, "peak_reserved_mb": 46626.0, "execution_time": 6.039899999876752e-05, "timestamp": 1794355407.5816994, "stage_class": "InputValidationStage"}, "prompt_encoding_stage": {"peak_allocated_mb": 68526.3564453125, "peak_reserved_mb": 69612.0, "execution_time": 16.253950628, "timestamp": 1794355423.836319, "stage_class": "LTX2TextEncodingStage", "component_metric": "text_encoder_time_s"}, "ltx2_refine_init_stage": {"peak_allocated_mb": 63232.05712890625, "peak_reserved_mb": 69612.0, "execution_time": 5.5222000000298976e-05, "timestamp": 1794355423.8370564, "stage_class": "LTX2RefineInitStage"}, "latent_preparation_stage": {"peak_allocated_mb": 63358.42431640625, "peak_reserved_mb": 69612.0, "execution_time": 0.2722946250000007, "timestamp": 1794355424.1101089, "stage_class": "LTX2LatentPreparationStage"}, "denoising_stage": {"peak_allocated_mb": 66038.142578125, "peak_reserved_mb": 69614.0, "execution_time": 39.276739545, "timestamp": 1794355463.3876922, "stage_class": "LTX2DenoisingStage"}, "ltx2_upsample_stage": {"peak_allocated_mb": 64457.36767578125, "peak_reserved_mb": 69614.0, "execution_time": 0.19924920999999074, "timestamp": 1794355463.5880814, "stage_class": "LTX2UpsampleStage"}, "ltx2_refine_denoising_stage": {"peak_allocated_mb": 74411.9052734375, "peak_reserved_mb": 77776.0, "execution_time": 59.93493222299999, "timestamp": 1794355523.5238214, "stage_class": "LTX2DenoisingStage"}, "audio_decoding_stage": {"peak_allocated_mb": 63356.59765625, "peak_reserved_mb": 77776.0, "execution_time": 0.21289646900001458, "timestamp": 1794355523.737623, "stage_class": "LTX2AudioDecodingStage"}, "decoding_stage": {"peak_allocated_mb": 69256.50390625, "peak_reserved_mb": 80670.0, "execution_time": 7.154714902999984, "timestamp": 1794355530.893271, "stage_class": "DecodingStage", "component_metric": "vae_decode_time_s"}, "PostDecodeFrameProcessStage": {"execution_time": 0.0800285580000093, "timestamp": 1794355531.0343084}, "VideoSaveStage": {"execution_time": 0.44736551899998744, "timestamp": 1794355531.4819458}, "AudioMuxStage": {"execution_time": 0.0, "timestamp": 1794355531.481973}}, "probe": {"streams": [{"index": 0, "codec_name": "h264", "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10", "profile": "High", "codec_type": "video", "codec_tag_string": "avc1", "codec_tag": "0x31637661", "width": 1920, "height": 1080, "coded_width": 1920, "coded_height": 1080, "closed_captions": 0, "film_grain": 0, "has_b_frames": 2, "pix_fmt": "yuv420p", "level": 40, "chroma_location": "left", "field_order": "progressive", "refs": 1, "is_avc": "true", "nal_length_size": "4", "id": "0x1", "r_frame_rate": "24/1", "avg_frame_rate": "24/1", "time_base": "1/12288", "start_pts": 0, "start_time": "0.000000", "duration_ts": 61952, "duration": "5.041667", "bit_rate": "7585074", "bits_per_raw_sample": "8", "nb_frames": "121", "extradata_size": 47, "disposition": {"default": 1, "dub": 0, "original": 0, "comment": 0, "lyrics": 0, "karaoke": 0, "forced": 0, "hearing_impaired": 0, "visual_impaired": 0, "clean_effects": 0, "attached_pic": 0, "timed_thumbnails": 0, "captions": 0, "descriptions": 0, "metadata": 0, "dependent": 0, "still_image": 0}, "tags": {"language": "und", "handler_name": "VideoHandler", "vendor_id": "[0][0][0][0]", "encoder": "Lavc59.37.100 libx264"}}, {"index": 1, "codec_name": "aac", "codec_long_name": "AAC (Advanced Audio Coding)", "profile": "LC", "codec_type": "audio", "codec_tag_string": "mp4a", "codec_tag": "0x6134706d", "sample_fmt": "fltp", "sample_rate": "48000", "channels": 2, "channel_layout": "stereo", "bits_per_sample": 0, "id": "0x2", "r_frame_rate": "0/0", "avg_frame_rate": "0/0", "time_base": "1/48000", "start_pts": 0, "start_time": "0.000000", "duration_ts": 241968, "duration": "5.041000", "bit_rate": "126670", "nb_frames": "238", "extradata_size": 5, "disposition": {"default": 1, "dub": 0, "original": 0, "comment": 0, "lyrics": 0, "karaoke": 0, "forced": 0, "hearing_impaired": 0, "visual_impaired": 0, "clean_effects": 0, "attached_pic": 0, "timed_thumbnails": 0, "captions": 0, "descriptions": 0, "metadata": 0, "dependent": 0, "still_image": 0}, "tags": {"language": "und", "handler_name": "SoundHandler", "vendor_id": "[0][0][0][0]"}}], "format": {"filename": "/tmp/final_0.mp4", "nb_streams": 2, "nb_programs": 0, "format_name": "mov,mp4,m4a,3gp,3g2,mj2", "format_long_name": "QuickTime / MOV", "start_time": "0.000000", "duration": "5.042000", "size": "4865266", "bit_rate": "7719581", "probe_score": 100, "tags": {"major_brand": "isom", "minor_version": "512", "compatible_brands": "isomiso2avc1mp41", "encoder": "Lavf59.27.100"}}}}
+INFO 11-11 00:05:32.318 [utils.py:696] Diffusers version: 0.33.0.dev0
+INFO 11-11 00:05:32.319 [utils.py:696] Diffusers version: 0.33.0.dev0
+INFO 11-11 00:05:32.320 [video_generator.py:926] 
+INFO 11-11 00:05:32.320 [video_generator.py:926]                       height: 1088
+INFO 11-11 00:05:32.320 [video_generator.py:926]                        width: 1920
+INFO 11-11 00:05:32.320 [video_generator.py:926]                 video_length: 121
+INFO 11-11 00:05:32.320 [video_generator.py:926]                       prompt: A small orange robot stands on a wooden workbench in a bright workshop. The robot slowly raises its right hand and waves toward the camera, then turns its head slightly to the left. Its metal joints move smoothly. A locked medium shot, neutral daylight, realistic materials, soft shadows, shallow depth of field. Gentle mechanical whirring and quiet room ambience. No dialogue, no text, no logos.
+INFO 11-11 00:05:32.320 [video_generator.py:926]                       image_path: None
+INFO 11-11 00:05:32.320 [video_generator.py:926]                   neg_prompt: 
+INFO 11-11 00:05:32.320 [video_generator.py:926]                         seed: 42
+INFO 11-11 00:05:32.320 [video_generator.py:926]                  infer_steps: 8
+INFO 11-11 00:05:32.320 [video_generator.py:926]        num_videos_per_prompt: 1
+INFO 11-11 00:05:32.320 [video_generator.py:926]               guidance_scale: 1.0
+INFO 11-11 00:05:32.320 [video_generator.py:926]                     n_tokens: 1011840
+INFO 11-11 00:05:32.320 [video_generator.py:926]                   flow_shift: None
+INFO 11-11 00:05:32.320 [video_generator.py:926]      embedded_guidance_scale: 6.0
+INFO 11-11 00:05:32.320 [video_generator.py:926]                   save_video: True
+INFO 11-11 00:05:32.320 [video_generator.py:926]                   output_path: /tmp/raw_1.mp4
+INFO 11-11 00:05:32.320 [video_generator.py:926]         
+INFO 11-11 00:05:32.320 [composed_pipeline_base.py:787] Running pipeline stages: dict_keys(['input_validation_stage', 'prompt_encoding_stage', 'ltx2_refine_init_stage', 'latent_preparation_stage', 'denoising_stage', 'ltx2_upsample_stage', 'ltx2_refine_denoising_stage', 'audio_decoding_stage', 'decoding_stage'])
+INFO 11-11 00:05:32.320 [base.py:182] [input_validation_stage|InputValidationStage] Starting execution
+INFO 11-11 00:05:32.321 [base.py:190] [input_validation_stage|InputValidationStage] Execution completed in 0.04802099999778875 ms
+INFO 11-11 00:05:32.321 [base.py:193] [input_validation_stage|InputValidationStage] Memory peak_allocated=61.73 GiB reserved=81.61 GiB resident_after=61.73 GiB
+INFO 11-11 00:05:32.321 [base.py:182] [prompt_encoding_stage|LTX2TextEncodingStage] Starting execution
+INFO 11-11 00:05:33.139 [base.py:190] [prompt_encoding_stage|LTX2TextEncodingStage] Execution completed in 817.889493999985 ms
+INFO 11-11 00:05:33.140 [base.py:193] [prompt_encoding_stage|LTX2TextEncodingStage] Memory peak_allocated=66.92 GiB reserved=81.61 GiB resident_after=61.75 GiB
+INFO 11-11 00:05:33.140 [base.py:182] [ltx2_refine_init_stage|LTX2RefineInitStage] Starting execution
+INFO 11-11 00:05:33.140 [ltx2_refine.py:96] [LTX2] Refinement enabled: stage1=960x544 stage2=1920x1088
+INFO 11-11 00:05:33.140 [base.py:190] [ltx2_refine_init_stage|LTX2RefineInitStage] Execution completed in 0.04863199998794698 ms
+INFO 11-11 00:05:33.141 [base.py:193] [ltx2_refine_init_stage|LTX2RefineInitStage] Memory peak_allocated=61.75 GiB reserved=81.61 GiB resident_after=61.75 GiB
+INFO 11-11 00:05:33.141 [base.py:182] [latent_preparation_stage|LTX2LatentPreparationStage] Starting execution
+INFO 11-11 00:05:33.180 [ltx2_latent_preparation.py:220] [LTX2] Applied conditioning for stage-1: images=1 latent=False.
+INFO 11-11 00:05:33.184 [base.py:190] [latent_preparation_stage|LTX2LatentPreparationStage] Execution completed in 42.64046099999064 ms
+INFO 11-11 00:05:33.184 [base.py:193] [latent_preparation_stage|LTX2LatentPreparationStage] Memory peak_allocated=61.87 GiB reserved=81.61 GiB resident_after=61.75 GiB
+INFO 11-11 00:05:33.184 [base.py:182] [denoising_stage|LTX2DenoisingStage] Starting execution
+INFO 11-11 00:05:33.184 [ltx2_denoising.py:315] [LTX2] Using official distilled sigma schedule
+INFO 11-11 00:05:33.185 [ltx2_denoising.py:505] [LTX2] Denoising start: steps=8 dtype=torch.bfloat16 cfg=1.0 cfg_video=3.0 cfg_audio=7.0 mod_video=3.0 mod_audio=3.0 rescale=0.70 stg_video=1.0 stg_audio=1.0 sigmas_shape=(9,) latents_shape=(1, 128, 16, 17, 30)
+
+[1A  0%|          | 0/8 [00:00<?, ?it/s]
+[1A 12%|█▎        | 1/8 [00:04<00:33,  4.84s/it]
+[1A 25%|██▌       | 2/8 [00:09<00:29,  4.88s/it]
+[1A 38%|███▊      | 3/8 [00:14<00:24,  4.90s/it]
+[1A 50%|█████     | 4/8 [00:19<00:19,  4.90s/it]
+[1A 62%|██████▎   | 5/8 [00:24<00:14,  4.91s/it]
+[1A 75%|███████▌  | 6/8 [00:29<00:09,  4.91s/it]
+[1A 88%|████████▊ | 7/8 [00:34<00:04,  4.91s/it]
+[1A100%|██████████| 8/8 [00:39<00:00,  4.91s/it]
+[1A100%|██████████| 8/8 [00:39<00:00,  4.90s/it]
+INFO 11-11 00:06:12.409 [ltx2_denoising.py:812] [LTX2] Denoising done.
+INFO 11-11 00:06:12.479 [base.py:190] [denoising_stage|LTX2DenoisingStage] Execution completed in 39294.237905000016 ms
+INFO 11-11 00:06:12.479 [base.py:193] [denoising_stage|LTX2DenoisingStage] Memory peak_allocated=64.49 GiB reserved=81.61 GiB resident_after=61.75 GiB
+INFO 11-11 00:06:12.480 [base.py:182] [ltx2_upsample_stage|LTX2UpsampleStage] Starting execution
+INFO 11-11 00:06:12.480 [ltx2_refine.py:160] [LTX2] Cast latents to torch.float32 on cuda:0 for upsampler.
+INFO 11-11 00:06:12.609 [ltx2_refine.py:201] [LTX2] Applied conditioning for stage-2: images=1 latent=False.
+INFO 11-11 00:06:12.648 [base.py:190] [ltx2_upsample_stage|LTX2UpsampleStage] Execution completed in 168.51880600000868 ms
+INFO 11-11 00:06:12.649 [base.py:193] [ltx2_upsample_stage|LTX2UpsampleStage] Memory peak_allocated=62.95 GiB reserved=81.61 GiB resident_after=61.76 GiB
+INFO 11-11 00:06:12.649 [base.py:182] [ltx2_refine_denoising_stage|LTX2DenoisingStage] Starting execution
+INFO 11-11 00:06:12.649 [ltx2_denoising.py:303] [LTX2] Using override sigma schedule, [0.909375, 0.725, 0.421875, 0.0]
+INFO 11-11 00:06:12.649 [ltx2_denoising.py:505] [LTX2] Denoising start: steps=3 dtype=torch.bfloat16 cfg=1.0 cfg_video=1.0 cfg_audio=1.0 mod_video=3.0 mod_audio=3.0 rescale=0.70 stg_video=1.0 stg_audio=1.0 sigmas_shape=(4,) latents_shape=(1, 128, 16, 34, 60)
+
+[1A  0%|          | 0/3 [00:00<?, ?it/s]
+[1A 33%|███▎      | 1/3 [00:19<00:39, 19.64s/it]
+[1A 67%|██████▋   | 2/3 [00:39<00:19, 19.86s/it]
+[1A100%|██████████| 3/3 [00:59<00:00, 19.92s/it]
+[1A100%|██████████| 3/3 [00:59<00:00, 19.88s/it]
+INFO 11-11 00:07:12.302 [ltx2_denoising.py:812] [LTX2] Denoising done.
+INFO 11-11 00:07:12.660 [base.py:190] [ltx2_refine_denoising_stage|LTX2DenoisingStage] Execution completed in 60011.33798200001 ms
+INFO 11-11 00:07:12.661 [base.py:193] [ltx2_refine_denoising_stage|LTX2DenoisingStage] Memory peak_allocated=72.67 GiB reserved=81.61 GiB resident_after=61.76 GiB
+INFO 11-11 00:07:12.661 [base.py:182] [audio_decoding_stage|LTX2AudioDecodingStage] Starting execution
+INFO 11-11 00:07:12.779 [base.py:190] [audio_decoding_stage|LTX2AudioDecodingStage] Execution completed in 117.86797899998191 ms
+INFO 11-11 00:07:12.780 [base.py:193] [audio_decoding_stage|LTX2AudioDecodingStage] Memory peak_allocated=61.87 GiB reserved=81.61 GiB resident_after=61.76 GiB
+INFO 11-11 00:07:12.781 [base.py:182] [decoding_stage|DecodingStage] Starting execution
+INFO 11-11 00:07:19.933 [base.py:190] [decoding_stage|DecodingStage] Execution completed in 7152.2912010000255 ms
+INFO 11-11 00:07:19.933 [base.py:193] [decoding_stage|DecodingStage] Memory peak_allocated=67.63 GiB reserved=81.61 GiB resident_after=64.59 GiB
+INFO 11-11 00:07:19.994 [video_generator.py:1053] Generated successfully in 107.67 seconds
+INFO 11-11 00:07:20.069 [video_generator.py:1097] PostDecodeFrameProcessStage completed in 0.075 s
+INFO 11-11 00:07:20.417 [video_generator.py:1466] Wrote frames to ffmpeg stdin in 0.345 s
+INFO 11-11 00:07:20.501 [video_generator.py:1171] Saved video to /tmp/raw_1.mp4
+INFO 11-11 00:07:20.501 [video_generator.py:1173] VideoSaveStage completed in 0.432 s
+INFO 11-11 00:07:20.501 [video_generator.py:1176] AudioMuxStage completed in 0.000 s
+INFO 11-11 00:07:20.501 [video_generator.py:1181] End-to-end latency: 108.18 seconds
+RUN_RESULT {"index": 2, "kind": "warm", "wall_seconds": 108.18431602599998, "gpu_generation_usd": 0.09109119409389198, "peak_allocated_gib": 68.11788892745972, "stages": {"input_validation_stage": {"peak_allocated_mb": 63207.07080078125, "peak_reserved_mb": 83564.0, "execution_time": 4.802099999778875e-05, "timestamp": 1794355532.321826, "stage_class": "InputValidationStage"}, "prompt_encoding_stage": {"peak_allocated_mb": 68526.38720703125, "peak_reserved_mb": 83564.0, "execution_time": 0.817889493999985, "timestamp": 1794355533.14052, "stage_class": "LTX2TextEncodingStage", "component_metric": "text_encoder_time_s"}, "ltx2_refine_init_stage": {"peak_allocated_mb": 63232.087890625, "peak_reserved_mb": 83564.0, "execution_time": 4.863199998794698e-05, "timestamp": 1794355533.1412373, "stage_class": "LTX2RefineInitStage"}, "latent_preparation_stage": {"peak_allocated_mb": 63358.455078125, "peak_reserved_mb": 83564.0, "execution_time": 0.04264046099999064, "timestamp": 1794355533.1845427, "stage_class": "LTX2LatentPreparationStage"}, "denoising_stage": {"peak_allocated_mb": 66038.17333984375, "peak_reserved_mb": 83564.0, "execution_time": 39.29423790500002, "timestamp": 1794355572.4798033, "stage_class": "LTX2DenoisingStage"}, "ltx2_upsample_stage": {"peak_allocated_mb": 64457.3984375, "peak_reserved_mb": 83564.0, "execution_time": 0.16851880600000868, "timestamp": 1794355572.649319, "stage_class": "LTX2UpsampleStage"}, "ltx2_refine_denoising_stage": {"peak_allocated_mb": 74411.93603515625, "peak_reserved_mb": 83564.0, "execution_time": 60.011337982000015, "timestamp": 1794355632.6615632, "stage_class": "LTX2DenoisingStage"}, "audio_decoding_stage": {"peak_allocated_mb": 63356.62841796875, "peak_reserved_mb": 83564.0, "execution_time": 0.11786797899998191, "timestamp": 1794355632.7809188, "stage_class": "LTX2AudioDecodingStage"}, "decoding_stage": {"peak_allocated_mb": 69256.53466796875, "peak_reserved_mb": 83564.0, "execution_time": 7.1522912010000255, "timestamp": 1794355639.934105, "stage_class": "DecodingStage", "component_metric": "vae_decode_time_s"}, "PostDecodeFrameProcessStage": {"execution_time": 0.07502055999998447, "timestamp": 1794355640.0699468}, "VideoSaveStage": {"execution_time": 0.43155584900000576, "timestamp": 1794355640.5017734}, "AudioMuxStage": {"execution_time": 0.0, "timestamp": 1794355640.5017998}}, "probe": {"streams": [{"index": 0, "codec_name": "h264", "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10", "profile": "High", "codec_type": "video", "codec_tag_string": "avc1", "codec_tag": "0x31637661", "width": 1920, "height": 1080, "coded_width": 1920, "coded_height": 1080, "closed_captions": 0, "film_grain": 0, "has_b_frames": 2, "pix_fmt": "yuv420p", "level": 40, "chroma_location": "left", "field_order": "progressive", "refs": 1, "is_avc": "true", "nal_length_size": "4", "id": "0x1", "r_frame_rate": "24/1", "avg_frame_rate": "24/1", "time_base": "1/12288", "start_pts": 0, "start_time": "0.000000", "duration_ts": 61952, "duration": "5.041667", "bit_rate": "7585074", "bits_per_raw_sample": "8", "nb_frames": "121", "extradata_size": 47, "disposition": {"default": 1, "dub": 0, "original": 0, "comment": 0, "lyrics": 0, "karaoke": 0, "forced": 0, "hearing_impaired": 0, "visual_impaired": 0, "clean_effects": 0, "attached_pic": 0, "timed_thumbnails": 0, "captions": 0, "descriptions": 0, "metadata": 0, "dependent": 0, "still_image": 0}, "tags": {"language": "und", "handler_name": "VideoHandler", "vendor_id": "[0][0][0][0]", "encoder": "Lavc59.37.100 libx264"}}, {"index": 1, "codec_name": "aac", "codec_long_name": "AAC (Advanced Audio Coding)", "profile": "LC", "codec_type": "audio", "codec_tag_string": "mp4a", "codec_tag": "0x6134706d", "sample_fmt": "fltp", "sample_rate": "48000", "channels": 2, "channel_layout": "stereo", "bits_per_sample": 0, "id": "0x2", "r_frame_rate": "0/0", "avg_frame_rate": "0/0", "time_base": "1/48000", "start_pts": 0, "start_time": "0.000000", "duration_ts": 241968, "duration": "5.041000", "bit_rate": "126670", "nb_frames": "238", "extradata_size": 5, "disposition": {"default": 1, "dub": 0, "original": 0, "comment": 0, "lyrics": 0, "karaoke": 0, "forced": 0, "hearing_impaired": 0, "visual_impaired": 0, "clean_effects": 0, "attached_pic": 0, "timed_thumbnails": 0, "captions": 0, "descriptions": 0, "metadata": 0, "dependent": 0, "still_image": 0}, "tags": {"language": "und", "handler_name": "SoundHandler", "vendor_id": "[0][0][0][0]"}}], "format": {"filename": "/tmp/final_1.mp4", "nb_streams": 2, "nb_programs": 0, "format_name": "mov,mp4,m4a,3gp,3g2,mj2", "format_long_name": "QuickTime / MOV", "start_time": "0.000000", "duration": "5.042000", "size": "4865266", "bit_rate": "7719581", "probe_score": 100, "tags": {"major_brand": "isom", "minor_version": "512", "compatible_brands": "isomiso2avc1mp41", "encoder": "Lavf59.27.100"}}}}
+INFO 11-11 00:07:21.340 [uniproc_executor.py:248] Shutting down UniprocExecutor...
+INFO 11-11 00:07:21.340 [gpu_worker.py:196] Worker 0 shutting down...
+INFO 11-11 00:07:21.962 [gpu_worker.py:205] Worker 0 shutdown complete
+INFO 11-11 00:07:21.963 [uniproc_executor.py:257] UniprocExecutor shutdown complete
+rtx_pro_6000 success C:\Users\Abduzido\OneDrive\Documentos\Auto_Video\sistema\testes\ltx_modal\comparacao\rtx_pro_6000
+INFO 11-11 00:07:50.996 [__init__.py:47] CUDA is available
+INFO 11-11 00:07:53.440 [utils.py:696] Diffusers version: 0.33.0.dev0
+INFO 11-11 00:07:53.447 [utils.py:696] Diffusers version: 0.33.0.dev0
+INFO 11-11 00:07:53.447 [uniproc_executor.py:60] Initializing UniprocExecutor with master port: 47596
+INFO 11-11 00:07:53.568 [parallel_state.py:955] Initializing distributed environment with world_size=1, device=cuda:0
+INFO 11-11 00:07:53.568 [parallel_state.py:755] Using nccl backend for CUDA platform
+[W1111 00:07:53.308769763 ProcessGroupNCCL.cpp:1001] Warning: TORCH_NCCL_AVOID_RECORD_STREAMS is the default now, this environment variable is thus deprecated. (function operator())
+INFO 11-11 00:07:53.592 [__init__.py:39] Building pipeline of type: basic
+INFO 11-11 00:07:53.593 [utils.py:696] Diffusers version: 0.33.0.dev0
+INFO 11-11 00:07:53.593 [utils.py:696] Diffusers version: 0.33.0.dev0
+INFO 11-11 00:07:53.593 [pipeline_registry.py:153] Loading pipelines for types: ['basic']
+INFO 11-11 00:07:54.082 [pipeline_registry.py:195] Loaded 56 pipeline classes across 1 types
+INFO 11-11 00:07:54.082 [utils.py:544] Model already exists locally at /models/ltx23
+INFO 11-11 00:07:54.082 [__init__.py:56] Model path: /models/ltx23
+INFO 11-11 00:07:54.083 [profiler.py:198] Torch profiler disabled; returning no-op controller
+INFO 11-11 00:07:54.083 [composed_pipeline_base.py:172] Loading pipeline modules...
+INFO 11-11 00:07:54.083 [utils.py:544] Model already exists locally at /models/ltx23
+INFO 11-11 00:07:54.083 [composed_pipeline_base.py:485] Model path: /models/ltx23
+INFO 11-11 00:07:54.083 [utils.py:696] Diffusers version: 0.33.0.dev0
+INFO 11-11 00:07:54.083 [ltx2_pipeline.py:190] Loading pipeline modules from config: {'_class_name': 'LTX2Pipeline', '_diffusers_version': '0.33.0.dev0', 'transformer': ['diffusers', 'LTX2Transformer3DModel'], 'vae': ['diffusers', 'CausalVideoAutoencoder'], 'text_encoder': ['transformers', 'LTX2GemmaTextEncoderModel'], 'tokenizer': ['transformers', 'AutoTokenizer'], 'audio_vae': ['diffusers', 'LTX2AudioDecoder'], 'vocoder': ['diffusers', 'LTX2Vocoder']}
+INFO 11-11 00:07:54.084 [component_loader.py:1659] Loading transformer using diffusers from /models/ltx23/transformer
+INFO 11-11 00:07:54.084 [component_loader.py:1229] transformer cls_name: LTX2Transformer3DModel
+INFO 11-11 00:07:54.085 [component_loader.py:1296] Loading model from 1 safetensors files: ['/models/ltx23/transformer/model.safetensors']
+INFO 11-11 00:07:54.085 [component_loader.py:1305] Loading model from LTX2Transformer3DModel, default_dtype: torch.bfloat16
+INFO 11-11 00:07:54.085 [component_loader.py:1329] Worker 0 transformer attention backend: TORCH_SDPA
+INFO 11-11 00:07:54.085 [fsdp_load.py:413] Loading model with default_dtype: torch.bfloat16
+INFO 11-11 00:07:54.093 [cuda.py:174] Trying FASTVIDEO_ATTENTION_BACKEND=TORCH_SDPA
+INFO 11-11 00:07:54.093 [cuda.py:175] Selected backend: AttentionBackendEnum.TORCH_SDPA
+INFO 11-11 00:07:54.094 [cuda.py:300] Using Torch SDPA backend.
+INFO 11-11 00:07:54.094 [cuda.py:174] Trying FASTVIDEO_ATTENTION_BACKEND=TORCH_SDPA
+INFO 11-11 00:07:54.094 [cuda.py:175] Selected backend: AttentionBackendEnum.TORCH_SDPA
+INFO 11-11 00:07:54.094 [cuda.py:300] Using Torch SDPA backend.
+INFO 11-11 00:07:54.095 [cuda.py:174] Trying FASTVIDEO_ATTENTION_BACKEND=TORCH_SDPA
+INFO 11-11 00:07:54.095 [cuda.py:175] Selected backend: AttentionBackendEnum.TORCH_SDPA
+INFO 11-11 00:07:54.095 [cuda.py:300] Using Torch SDPA backend.
+INFO 11-11 00:07:54.096 [cuda.py:174] Trying FASTVIDEO_ATTENTION_BACKEND=TORCH_SDPA
+INFO 11-11 00:07:54.096 [cuda.py:175] Selected backend: AttentionBackendEnum.TORCH_SDPA
+INFO 11-11 00:07:54.096 [cuda.py:300] Using Torch SDPA backend.
+INFO 11-11 00:07:54.096 [cuda.py:174] Trying FASTVIDEO_ATTENTION_BACKEND=TORCH_SDPA
+INFO 11-11 00:07:54.096 [cuda.py:175] Selected backend: AttentionBackendEnum.TORCH_SDPA
+INFO 11-11 00:07:54.096 [cuda.py:300] Using Torch SDPA backend.
+INFO 11-11 00:07:54.305 [fsdp_load.py:497] Loading transformer weights with to_cpu=True
+Loading safetensors checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:19<00:00, 19.41s/it]
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:19<00:00, 19.41s/it]
+
+INFO 11-11 00:08:24.272 [fsdp_load.py:214] Converting loaded model weights for FP8 linear layers
+INFO 11-11 00:08:25.423 [component_loader.py:1382] Loaded model with 0.46B parameters
+INFO 11-11 00:08:25.438 [ltx2_pipeline.py:265] Loaded module transformer from /models/ltx23/transformer
+INFO 11-11 00:08:25.438 [component_loader.py:1659] Loading vae using diffusers from /models/ltx23/vae
+INFO 11-11 00:08:31.050 [ltx2_pipeline.py:265] Loaded module vae from /models/ltx23/vae
+INFO 11-11 00:08:31.050 [component_loader.py:1659] Loading text_encoder using transformers from /models/ltx23/text_encoder
+INFO 11-11 00:08:31.052 [component_loader.py:333] HF Model config: {'architectures': ['LTX2GemmaTextEncoderModel'], 'hidden_size': 3840, 'num_hidden_layers': 48, 'num_attention_heads': 16, 'text_len': 1024, 'pad_token_id': 0, 'eos_token_id': 1, 'gemma_model_path': '/models/ltx23/text_encoder/gemma', 'gemma_dtype': 'bfloat16', 'padding_side': 'left', 'feature_extractor_in_features': 188160, 'feature_extractor_out_features': 3840, 'audio_feature_extractor_out_features': 2048, 'caption_proj_before_connector': True, 'caption_projection_first_linear': False, 'caption_proj_input_norm': False, 'caption_projection_second_linear': False, 'connector_num_attention_heads': 32, 'connector_attention_head_dim': 128, 'connector_num_layers': 8, 'audio_connector_num_attention_heads': 32, 'audio_connector_attention_head_dim': 64, 'audio_connector_num_layers': 8, 'connector_positional_embedding_theta': 10000.0, 'connector_positional_embedding_max_pos': [4096], 'connector_rope_type': 'split', 'connector_double_precision_rope': True, 'connector_apply_gated_attention': True, 'connector_num_learnable_registers': 128, 'video_feature_extractor_out_features': 4096}
+Loading safetensors checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:05<00:00,  5.13s/it]
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:05<00:00,  5.13s/it]
+
+INFO 11-11 00:08:47.719 [component_loader.py:482] Loading weights took 5.39 seconds
+INFO 11-11 00:08:59.467 [ltx2_pipeline.py:265] Loaded module text_encoder from /models/ltx23/text_encoder
+INFO 11-11 00:08:59.468 [component_loader.py:1659] Loading tokenizer using transformers from /models/ltx23/tokenizer
+INFO 11-11 00:08:59.468 [component_loader.py:700] Loading tokenizer from /models/ltx23/tokenizer
+INFO 11-11 00:09:01.542 [component_loader.py:798] Loaded tokenizer: GemmaTokenizer
+INFO 11-11 00:09:01.543 [ltx2_pipeline.py:265] Loaded module tokenizer from /models/ltx23/tokenizer
+INFO 11-11 00:09:01.543 [component_loader.py:1659] Loading audio_vae using diffusers from /models/ltx23/audio_vae
+INFO 11-11 00:09:02.107 [ltx2_pipeline.py:265] Loaded module audio_vae from /models/ltx23/audio_vae
+INFO 11-11 00:09:02.108 [component_loader.py:1659] Loading vocoder using diffusers from /models/ltx23/vocoder
+INFO 11-11 00:09:03.450 [ltx2_pipeline.py:265] Loaded module vocoder from /models/ltx23/vocoder
+INFO 11-11 00:09:03.451 [component_loader.py:1659] Loading spatial_upsampler using diffusers from /models/ltx23/spatial_upscaler
+INFO 11-11 00:09:07.437 [ltx2_pipeline.py:299] Loaded module spatial_upsampler from /models/ltx23/spatial_upscaler
+INFO 11-11 00:09:07.437 [lora_pipeline.py:268] trainable_transformer_modules: dict_keys(['transformer'])
+INFO 11-11 00:09:07.437 [__init__.py:61] Pipelines instantiated
+INFO 11-11 00:09:07.439 [utils.py:696] Diffusers version: 0.33.0.dev0
+INFO 11-11 00:09:07.439 [utils.py:696] Diffusers version: 0.33.0.dev0
+INFO 11-11 00:09:07.440 [video_generator.py:926] 
+INFO 11-11 00:09:07.440 [video_generator.py:926]                       height: 1088
+INFO 11-11 00:09:07.440 [video_generator.py:926]                        width: 1920
+INFO 11-11 00:09:07.440 [video_generator.py:926]                 video_length: 121
+INFO 11-11 00:09:07.440 [video_generator.py:926]                       prompt: A small orange robot stands on a wooden workbench in a bright workshop. The robot slowly raises its right hand and waves toward the camera, then turns its head slightly to the left. Its metal joints move smoothly. A locked medium shot, neutral daylight, realistic materials, soft shadows, shallow depth of field. Gentle mechanical whirring and quiet room ambience. No dialogue, no text, no logos.
+INFO 11-11 00:09:07.440 [video_generator.py:926]                       image_path: None
+INFO 11-11 00:09:07.440 [video_generator.py:926]                   neg_prompt: 
+INFO 11-11 00:09:07.440 [video_generator.py:926]                         seed: 42
+INFO 11-11 00:09:07.440 [video_generator.py:926]                  infer_steps: 8
+INFO 11-11 00:09:07.440 [video_generator.py:926]        num_videos_per_prompt: 1
+INFO 11-11 00:09:07.440 [video_generator.py:926]               guidance_scale: 1.0
+INFO 11-11 00:09:07.440 [video_generator.py:926]                     n_tokens: 1011840
+INFO 11-11 00:09:07.440 [video_generator.py:926]                   flow_shift: None
+INFO 11-11 00:09:07.440 [video_generator.py:926]      embedded_guidance_scale: 6.0
+INFO 11-11 00:09:07.440 [video_generator.py:926]                   save_video: True
+INFO 11-11 00:09:07.440 [video_generator.py:926]                   output_path: /tmp/raw_0.mp4
+INFO 11-11 00:09:07.440 [video_generator.py:926]         
+INFO 11-11 00:09:07.441 [composed_pipeline_base.py:402] Creating pipeline stages...
+INFO 11-11 00:09:07.442 [composed_pipeline_base.py:787] Running pipeline stages: dict_keys(['input_validation_stage', 'prompt_encoding_stage', 'ltx2_refine_init_stage', 'latent_preparation_stage', 'denoising_stage', 'ltx2_upsample_stage', 'ltx2_refine_denoising_stage', 'audio_decoding_stage', 'decoding_stage'])
+INFO 11-11 00:09:07.442 [base.py:182] [input_validation_stage|InputValidationStage] Starting execution
+INFO 11-11 00:09:07.442 [base.py:190] [input_validation_stage|InputValidationStage] Execution completed in 0.05714099999920563 ms
+INFO 11-11 00:09:07.442 [base.py:193] [input_validation_stage|InputValidationStage] Memory peak_allocated=20.28 GiB reserved=25.96 GiB resident_after=20.28 GiB
+INFO 11-11 00:09:07.443 [base.py:182] [prompt_encoding_stage|LTX2TextEncodingStage] Starting execution
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+
+[1ALoading weights:   0%|          | 0/1065 [00:00<?, ?it/s]
+[1ALoading weights:   0%|          | 2/1065 [00:00<01:01, 17.25it/s]
+[1ALoading weights:   3%|▎         | 30/1065 [00:00<00:06, 155.23it/s]
+[1ALoading weights:   5%|▍         | 51/1065 [00:00<00:05, 178.68it/s]
+[1ALoading weights:   7%|▋         | 70/1065 [00:00<00:05, 169.93it/s]
+[1ALoading weights:   9%|▉         | 101/1065 [00:00<00:04, 208.62it/s]
+[1ALoading weights:  12%|█▏        | 129/1065 [00:00<00:04, 222.36it/s]
+[1ALoading weights:  15%|█▍        | 159/1065 [00:00<00:03, 227.81it/s]
+[1ALoading weights:  17%|█▋        | 182/1065 [00:00<00:03, 224.21it/s]
+[1ALoading weights:  21%|██        | 223/1065 [00:01<00:03, 269.80it/s]
+[1ALoading weights:  24%|██▍       | 259/1065 [00:01<00:02, 287.60it/s]
+[1ALoading weights:  27%|██▋       | 288/1065 [00:01<00:02, 274.59it/s]
+[1ALoading weights:  30%|███       | 320/1065 [00:01<00:02, 284.14it/s]
+[1ALoading weights:  34%|███▍      | 367/1065 [00:01<00:02, 329.29it/s]
+[1ALoading weights:  38%|███▊      | 401/1065 [00:01<00:02, 317.00it/s]
+[1ALoading weights:  41%|████      | 433/1065 [00:01<00:02, 312.00it/s]
+[1ALoading weights:  44%|████▍     | 467/1065 [00:01<00:01, 311.54it/s]
+[1ALoading weights:  47%|████▋     | 499/1065 [00:01<00:02, 243.46it/s]
+[1ALoading weights:  50%|████▉     | 528/1065 [00:02<00:02, 232.38it/s]
+[1ALoading weights:  53%|█████▎    | 562/1065 [00:02<00:02, 247.79it/s]
+[1ALoading weights:  56%|█████▌    | 593/1065 [00:02<00:01, 259.88it/s]
+[1ALoading weights:  65%|██████▍   | 687/1065 [00:02<00:00, 430.17it/s]
+[1ALoading weights:  73%|███████▎  | 776/1065 [00:02<00:00, 549.31it/s]
+[1ALoading weights:  83%|████████▎ | 888/1065 [00:02<00:00, 705.94it/s]
+[1ALoading weights:  94%|█████████▎| 998/1065 [00:02<00:00, 809.41it/s]Loading weights: 100%|██████████| 1065/1065 [00:02<00:00, 379.99it/s]
+ERROR 11-11 00:09:35.629 [base.py:211] [prompt_encoding_stage|LTX2TextEncodingStage] Error during execution after 28185.673984999994 ms: CUDA out of memory. Tried to allocate 30.00 MiB. GPU 0 has a total capacity of 44.42 GiB of which 58.81 MiB is free. Process 1 has 44.33 GiB memory in use. Of the allocated memory 43.50 GiB is allocated by PyTorch, and 317.51 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)
+ERROR 11-11 00:09:35.657 [base.py:212] [prompt_encoding_stage|LTX2TextEncodingStage] Traceback: Traceback (most recent call last):
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/fastvideo/pipelines/stages/base.py", line 187, in _execute
+ERROR 11-11 00:09:35.657 [base.py:212]     result = self.forward(batch, fastvideo_args)
+ERROR 11-11 00:09:35.657 [base.py:212]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+ERROR 11-11 00:09:35.657 [base.py:212]     return func(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [base.py:212]            ^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/fastvideo/pipelines/basic/ltx2/stages/ltx2_text_encoding.py", line 43, in forward
+ERROR 11-11 00:09:35.657 [base.py:212]     return super().forward(batch, fastvideo_args)
+ERROR 11-11 00:09:35.657 [base.py:212]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+ERROR 11-11 00:09:35.657 [base.py:212]     return func(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [base.py:212]            ^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/fastvideo/pipelines/stages/text_encoding.py", line 73, in forward
+ERROR 11-11 00:09:35.657 [base.py:212]     prompt_embeds_list, prompt_masks_list = self.encode_text(
+ERROR 11-11 00:09:35.657 [base.py:212]                                             ^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+ERROR 11-11 00:09:35.657 [base.py:212]     return func(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [base.py:212]            ^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/fastvideo/pipelines/stages/text_encoding.py", line 330, in encode_text
+ERROR 11-11 00:09:35.657 [base.py:212]     outputs = text_encoder(
+ERROR 11-11 00:09:35.657 [base.py:212]               ^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+ERROR 11-11 00:09:35.657 [base.py:212]     return self._call_impl(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [base.py:212]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1884, in _call_impl
+ERROR 11-11 00:09:35.657 [base.py:212]     return inner()
+ERROR 11-11 00:09:35.657 [base.py:212]            ^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1832, in inner
+ERROR 11-11 00:09:35.657 [base.py:212]     result = forward_call(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [base.py:212]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/fastvideo/models/encoders/gemma.py", line 617, in forward
+ERROR 11-11 00:09:35.657 [base.py:212]     outputs = model(
+ERROR 11-11 00:09:35.657 [base.py:212]               ^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+ERROR 11-11 00:09:35.657 [base.py:212]     return self._call_impl(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [base.py:212]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+ERROR 11-11 00:09:35.657 [base.py:212]     return forward_call(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [base.py:212]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/transformers/utils/generic.py", line 939, in wrapper
+ERROR 11-11 00:09:35.657 [base.py:212]     output = func(self, *args, **kwargs)
+ERROR 11-11 00:09:35.657 [base.py:212]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/transformers/models/gemma3/modeling_gemma3.py", line 1002, in forward
+ERROR 11-11 00:09:35.657 [base.py:212]     outputs = self.model(
+ERROR 11-11 00:09:35.657 [base.py:212]               ^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+ERROR 11-11 00:09:35.657 [base.py:212]     return self._call_impl(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [base.py:212]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+ERROR 11-11 00:09:35.657 [base.py:212]     return forward_call(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [base.py:212]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/transformers/utils/generic.py", line 939, in wrapper
+ERROR 11-11 00:09:35.657 [base.py:212]     output = func(self, *args, **kwargs)
+ERROR 11-11 00:09:35.657 [base.py:212]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/transformers/models/gemma3/modeling_gemma3.py", line 901, in forward
+ERROR 11-11 00:09:35.657 [base.py:212]     outputs = self.language_model(
+ERROR 11-11 00:09:35.657 [base.py:212]               ^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+ERROR 11-11 00:09:35.657 [base.py:212]     return self._call_impl(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [base.py:212]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+ERROR 11-11 00:09:35.657 [base.py:212]     return forward_call(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [base.py:212]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/transformers/utils/generic.py", line 1068, in wrapper
+ERROR 11-11 00:09:35.657 [base.py:212]     output = func(self, *args, **kwargs)
+ERROR 11-11 00:09:35.657 [base.py:212]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/transformers/utils/output_capturing.py", line 262, in wrapper
+ERROR 11-11 00:09:35.657 [base.py:212]     outputs = func(self, *args, **kwargs)
+ERROR 11-11 00:09:35.657 [base.py:212]               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/transformers/models/gemma3/modeling_gemma3.py", line 564, in forward
+ERROR 11-11 00:09:35.657 [base.py:212]     hidden_states = decoder_layer(
+ERROR 11-11 00:09:35.657 [base.py:212]                     ^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/transformers/modeling_layers.py", line 114, in __call__
+ERROR 11-11 00:09:35.657 [base.py:212]     return super().__call__(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [base.py:212]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+ERROR 11-11 00:09:35.657 [base.py:212]     return self._call_impl(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [base.py:212]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1884, in _call_impl
+ERROR 11-11 00:09:35.657 [base.py:212]     return inner()
+ERROR 11-11 00:09:35.657 [base.py:212]            ^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1832, in inner
+ERROR 11-11 00:09:35.657 [base.py:212]     result = forward_call(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [base.py:212]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/transformers/models/gemma3/modeling_gemma3.py", line 425, in forward
+ERROR 11-11 00:09:35.657 [base.py:212]     hidden_states = self.mlp(hidden_states)
+ERROR 11-11 00:09:35.657 [base.py:212]                     ^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+ERROR 11-11 00:09:35.657 [base.py:212]     return self._call_impl(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [base.py:212]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+ERROR 11-11 00:09:35.657 [base.py:212]     return forward_call(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [base.py:212]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [base.py:212]   File "/usr/local/lib/python3.12/site-packages/transformers/models/gemma3/modeling_gemma3.py", line 132, in forward
+ERROR 11-11 00:09:35.657 [base.py:212]     down_proj = self.down_proj(self.act_fn(self.gate_proj(x)) * self.up_proj(x))
+ERROR 11-11 00:09:35.657 [base.py:212]                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~
+ERROR 11-11 00:09:35.657 [base.py:212] torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 30.00 MiB. GPU 0 has a total capacity of 44.42 GiB of which 58.81 MiB is free. Process 1 has 44.33 GiB memory in use. Of the allocated memory 43.50 GiB is allocated by PyTorch, and 317.51 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)
+ERROR 11-11 00:09:35.657 [base.py:212] 
+ERROR 11-11 00:09:35.657 [worker_base.py:86] Error executing method 'execute_forward'. This might cause deadlock in distributed execution.
+ERROR 11-11 00:09:35.657 [worker_base.py:86] Traceback (most recent call last):
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/fastvideo/worker/worker_base.py", line 78, in execute_method
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     return run_method(self, method, args, kwargs)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/fastvideo/utils.py", line 834, in run_method
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     return func(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]            ^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/fastvideo/worker/gpu_worker.py", line 175, in execute_forward
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     output_batch = self.pipeline.forward(forward_batch, self.fastvideo_args)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     return func(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]            ^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/fastvideo/pipelines/composed_pipeline_base.py", line 791, in forward
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     batch = stage(batch, fastvideo_args)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/fastvideo/pipelines/stages/base.py", line 157, in __call__
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     result = self._execute(batch, fastvideo_args, stage_key, stage_class_name, stage_name)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/fastvideo/pipelines/stages/base.py", line 187, in _execute
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     result = self.forward(batch, fastvideo_args)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     return func(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]            ^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/fastvideo/pipelines/basic/ltx2/stages/ltx2_text_encoding.py", line 43, in forward
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     return super().forward(batch, fastvideo_args)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     return func(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]            ^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/fastvideo/pipelines/stages/text_encoding.py", line 73, in forward
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     prompt_embeds_list, prompt_masks_list = self.encode_text(
+ERROR 11-11 00:09:35.657 [worker_base.py:86]                                             ^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     return func(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]            ^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/fastvideo/pipelines/stages/text_encoding.py", line 330, in encode_text
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     outputs = text_encoder(
+ERROR 11-11 00:09:35.657 [worker_base.py:86]               ^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     return self._call_impl(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1884, in _call_impl
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     return inner()
+ERROR 11-11 00:09:35.657 [worker_base.py:86]            ^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1832, in inner
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     result = forward_call(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/fastvideo/models/encoders/gemma.py", line 617, in forward
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     outputs = model(
+ERROR 11-11 00:09:35.657 [worker_base.py:86]               ^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     return self._call_impl(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     return forward_call(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/transformers/utils/generic.py", line 939, in wrapper
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     output = func(self, *args, **kwargs)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/transformers/models/gemma3/modeling_gemma3.py", line 1002, in forward
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     outputs = self.model(
+ERROR 11-11 00:09:35.657 [worker_base.py:86]               ^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     return self._call_impl(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     return forward_call(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/transformers/utils/generic.py", line 939, in wrapper
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     output = func(self, *args, **kwargs)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/transformers/models/gemma3/modeling_gemma3.py", line 901, in forward
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     outputs = self.language_model(
+ERROR 11-11 00:09:35.657 [worker_base.py:86]               ^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     return self._call_impl(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     return forward_call(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/transformers/utils/generic.py", line 1068, in wrapper
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     output = func(self, *args, **kwargs)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/transformers/utils/output_capturing.py", line 262, in wrapper
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     outputs = func(self, *args, **kwargs)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/transformers/models/gemma3/modeling_gemma3.py", line 564, in forward
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     hidden_states = decoder_layer(
+ERROR 11-11 00:09:35.657 [worker_base.py:86]                     ^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/transformers/modeling_layers.py", line 114, in __call__
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     return super().__call__(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     return self._call_impl(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1884, in _call_impl
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     return inner()
+ERROR 11-11 00:09:35.657 [worker_base.py:86]            ^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1832, in inner
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     result = forward_call(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/transformers/models/gemma3/modeling_gemma3.py", line 425, in forward
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     hidden_states = self.mlp(hidden_states)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]                     ^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     return self._call_impl(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     return forward_call(*args, **kwargs)
+ERROR 11-11 00:09:35.657 [worker_base.py:86]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ERROR 11-11 00:09:35.657 [worker_base.py:86]   File "/usr/local/lib/python3.12/site-packages/transformers/models/gemma3/modeling_gemma3.py", line 132, in forward
+ERROR 11-11 00:09:35.657 [worker_base.py:86]     down_proj = self.down_proj(self.act_fn(self.gate_proj(x)) * self.up_proj(x))
+ERROR 11-11 00:09:35.657 [worker_base.py:86]                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~
+ERROR 11-11 00:09:35.657 [worker_base.py:86] torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 30.00 MiB. GPU 0 has a total capacity of 44.42 GiB of which 58.81 MiB is free. Process 1 has 44.33 GiB memory in use. Of the allocated memory 43.50 GiB is allocated by PyTorch, and 317.51 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/entrypoints/video_generator.py", line 968, in execute_forward_thread
+    result_container["output_batch"] = self.executor.execute_forward(batch, fastvideo_args)
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/worker/uniproc_executor.py", line 79, in execute_forward
+    responses: list[ForwardBatch] = self.collective_rpc("execute_forward",
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/worker/uniproc_executor.py", line 242, in collective_rpc
+    return [self.driver_worker.execute_method(method, *args, **kwargs)]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/worker/worker_base.py", line 87, in execute_method
+    raise e
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/worker/worker_base.py", line 78, in execute_method
+    return run_method(self, method, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/utils.py", line 834, in run_method
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/worker/gpu_worker.py", line 175, in execute_forward
+    output_batch = self.pipeline.forward(forward_batch, self.fastvideo_args)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/pipelines/composed_pipeline_base.py", line 791, in forward
+    batch = stage(batch, fastvideo_args)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/pipelines/stages/base.py", line 157, in __call__
+    result = self._execute(batch, fastvideo_args, stage_key, stage_class_name, stage_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/pipelines/stages/base.py", line 187, in _execute
+    result = self.forward(batch, fastvideo_args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/pipelines/basic/ltx2/stages/ltx2_text_encoding.py", line 43, in forward
+    return super().forward(batch, fastvideo_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/pipelines/stages/text_encoding.py", line 73, in forward
+    prompt_embeds_list, prompt_masks_list = self.encode_text(
+                                            ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/pipelines/stages/text_encoding.py", line 330, in encode_text
+    outputs = text_encoder(
+              ^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1884, in _call_impl
+    return inner()
+           ^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1832, in inner
+    result = forward_call(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/models/encoders/gemma.py", line 617, in forward
+    outputs = model(
+              ^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/transformers/utils/generic.py", line 939, in wrapper
+    output = func(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/transformers/models/gemma3/modeling_gemma3.py", line 1002, in forward
+    outputs = self.model(
+              ^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/transformers/utils/generic.py", line 939, in wrapper
+    output = func(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/transformers/models/gemma3/modeling_gemma3.py", line 901, in forward
+    outputs = self.language_model(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/transformers/utils/generic.py", line 1068, in wrapper
+    output = func(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/transformers/utils/output_capturing.py", line 262, in wrapper
+    outputs = func(self, *args, **kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/transformers/models/gemma3/modeling_gemma3.py", line 564, in forward
+    hidden_states = decoder_layer(
+                    ^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/transformers/modeling_layers.py", line 114, in __call__
+    return super().__call__(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1884, in _call_impl
+    return inner()
+           ^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1832, in inner
+    result = forward_call(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/transformers/models/gemma3/modeling_gemma3.py", line 425, in forward
+    hidden_states = self.mlp(hidden_states)
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/transformers/models/gemma3/modeling_gemma3.py", line 132, in forward
+    down_proj = self.down_proj(self.act_fn(self.gate_proj(x)) * self.up_proj(x))
+                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 30.00 MiB. GPU 0 has a total capacity of 44.42 GiB of which 58.81 MiB is free. Process 1 has 44.33 GiB memory in use. Of the allocated memory 43.50 GiB is allocated by PyTorch, and 317.51 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/comparar.py", line 60, in executar
+    result = generator.generate_video(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/entrypoints/video_generator.py", line 566, in generate_video
+    return self._generate_video_impl(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/entrypoints/video_generator.py", line 754, in _generate_video_impl
+    return self._generate_single_video(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/entrypoints/video_generator.py", line 1018, in _generate_single_video
+    raise RuntimeError("Forward execution thread failed.\n"
+RuntimeError: Forward execution thread failed.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/entrypoints/video_generator.py", line 968, in execute_forward_thread
+    result_container["output_batch"] = self.executor.execute_forward(batch, fastvideo_args)
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/worker/uniproc_executor.py", line 79, in execute_forward
+    responses: list[ForwardBatch] = self.collective_rpc("execute_forward",
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/worker/uniproc_executor.py", line 242, in collective_rpc
+    return [self.driver_worker.execute_method(method, *args, **kwargs)]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/worker/worker_base.py", line 87, in execute_method
+    raise e
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/worker/worker_base.py", line 78, in execute_method
+    return run_method(self, method, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/utils.py", line 834, in run_method
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/worker/gpu_worker.py", line 175, in execute_forward
+    output_batch = self.pipeline.forward(forward_batch, self.fastvideo_args)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/pipelines/composed_pipeline_base.py", line 791, in forward
+    batch = stage(batch, fastvideo_args)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/pipelines/stages/base.py", line 157, in __call__
+    result = self._execute(batch, fastvideo_args, stage_key, stage_class_name, stage_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/pipelines/stages/base.py", line 187, in _execute
+    result = self.forward(batch, fastvideo_args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/pipelines/basic/ltx2/stages/ltx2_text_encoding.py", line 43, in forward
+    return super().forward(batch, fastvideo_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/pipelines/stages/text_encoding.py", line 73, in forward
+    prompt_embeds_list, prompt_masks_list = self.encode_text(
+                                            ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/pipelines/stages/text_encoding.py", line 330, in encode_text
+    outputs = text_encoder(
+              ^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1884, in _call_impl
+    return inner()
+           ^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1832, in inner
+    result = forward_call(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/fastvideo/models/encoders/gemma.py", line 617, in forward
+    outputs = model(
+              ^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/transformers/utils/generic.py", line 939, in wrapper
+    output = func(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/transformers/models/gemma3/modeling_gemma3.py", line 1002, in forward
+    outputs = self.model(
+              ^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/transformers/utils/generic.py", line 939, in wrapper
+    output = func(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/transformers/models/gemma3/modeling_gemma3.py", line 901, in forward
+    outputs = self.language_model(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/transformers/utils/generic.py", line 1068, in wrapper
+    output = func(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/transformers/utils/output_capturing.py", line 262, in wrapper
+    outputs = func(self, *args, **kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/transformers/models/gemma3/modeling_gemma3.py", line 564, in forward
+    hidden_states = decoder_layer(
+                    ^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/transformers/modeling_layers.py", line 114, in __call__
+    return super().__call__(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1884, in _call_impl
+    return inner()
+           ^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1832, in inner
+    result = forward_call(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/transformers/models/gemma3/modeling_gemma3.py", line 425, in forward
+    hidden_states = self.mlp(hidden_states)
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/transformers/models/gemma3/modeling_gemma3.py", line 132, in forward
+    down_proj = self.down_proj(self.act_fn(self.gate_proj(x)) * self.up_proj(x))
+                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 30.00 MiB. GPU 0 has a total capacity of 44.42 GiB of which 58.81 MiB is free. Process 1 has 44.33 GiB memory in use. Of the allocated memory 43.50 GiB is allocated by PyTorch, and 317.51 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)
+
+
+INFO 11-11 00:09:35.665 [uniproc_executor.py:248] Shutting down UniprocExecutor...
+INFO 11-11 00:09:35.666 [gpu_worker.py:196] Worker 0 shutting down...
+INFO 11-11 00:09:36.091 [gpu_worker.py:205] Worker 0 shutdown complete
+INFO 11-11 00:09:36.091 [uniproc_executor.py:257] UniprocExecutor shutdown complete
+l40s error C:\Users\Abduzido\OneDrive\Documentos\Auto_Video\sistema\testes\ltx_modal\comparacao\l40s
+Stopping app - local entrypoint completed.
+[modal-client] 2026-11-10T21:09:26-0300 Timed out waiting for final app logs.
+✓ App completed. View run at 
+https://modal.com/apps/abduzido344/main/ap-WP2XlJH6Jv1OPf0POT4Dw4
